@@ -1,6 +1,8 @@
 name: Deploy
 on:
-  push
+  push:
+    paths:
+      - 'packages/workers/*'
   
 jobs:
   deploy-media-worker:
