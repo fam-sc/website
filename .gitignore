@@ -9,3 +9,4 @@ node_modules
 .next
 tsconfig.tsbuildinfo
 .env.local
+dist

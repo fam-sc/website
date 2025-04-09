@@ -16,12 +16,13 @@ const compat = new FlatCompat({
 export default tseslint.config(
   {
     ignores: [
-      '.next',
+      'packages/website/.next',
+      'packages/website/next-env.d.ts',
+      'packages/website/next.config.ts',
+      'packages/workers/worker-configuration.d.ts',
       'node_modules',
       'eslint.config.mts',
       'prettier.config.mjs',
-      'next.config.ts',
-      'next-env.d.ts',
       'vitest.config.ts',
     ],
   },
@@ -38,7 +39,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: true,
-        project: './tsconfig.json',
+        project: ['./tsconfig.json', './packages/website/tsconfig.json'],
         tsconfigRootDir: __dirname,
       },
     },

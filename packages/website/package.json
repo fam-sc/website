@@ -1,0 +1,25 @@
+{
+  "name": "@sc-fam/website",
+  "packageManager": "yarn@4.8.1",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "build:no-emit": "tsc --noEmit",
+    "start": "next start",
+    "test": "vitest --run"
+  },
+  "dependencies": {
+    "mongodb": "6.15.0",
+    "next": "15.2.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sass": "1.86.3",
+    "sass-loader": "16.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "22.14.0",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.1",
+    "typescript": "5.8.3"
+  }
+}

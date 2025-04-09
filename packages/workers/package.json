@@ -1,0 +1,13 @@
+{
+  "name": "@sc-fam/workers",
+  "scripts": {
+    "build": "tsc",
+    "build:no-emit": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "generate-types": "wrangler types"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "wrangler": "4.9.1"
+  }
+}
