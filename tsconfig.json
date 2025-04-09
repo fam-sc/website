@@ -10,13 +10,20 @@
     "jsx": "preserve",
     "allowJs": true,
     "checkJs": false,
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "incremental": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "include": [
     "src",
-    "eslint.config.mts",
-    "prettier.config.mjs",
-    "webpack.config.ts",
-    "vitest.config.ts",
-  ]
+    ".next/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }
