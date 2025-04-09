@@ -12,7 +12,7 @@ jobs:
           node-version: v22.14.0
       - run: corepack enable
       - name: Install dependencies
-        run: yarn workspace focus @sc-fam/workers
+        run: yarn workspaces focus @sc-fam/workers
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
