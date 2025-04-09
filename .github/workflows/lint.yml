@@ -13,6 +13,6 @@ jobs:
           node-version: v22.14.0
       - run: corepack enable
       - name: Install dependencies
-        run: yarn workspaces focus sc-fam
+        run: yarn install
       - name: Lint
         run: yarn lint
