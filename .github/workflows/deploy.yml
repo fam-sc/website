@@ -1,0 +1,23 @@
+name: Deploy
+on:
+  push:
+    paths:
+      - 'packages/workers/*'
+  
+jobs:
+  deploy-media-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: v22.14.0
+      - run: corepack enable
+      - name: Install dependencies
+        run: yarn workspaces focus @sc-fam/workers
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            workingDirectory: ./packages/workers
