@@ -1,0 +1,33 @@
+openapi: '3.0.3'
+info:
+  title: Media server API
+  version: '1.0'
+
+servers:
+  - url: https://media.sc-fam.workers.dev/
+
+paths:
+  /{fileId}:
+    get:
+      summary: Returns content of the given file
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: File not found
+    put:
+      summary: Updates content of given file.
+      description: "The client must be authorized: the request should have `X-Auth-Key` header"
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Not authorized
+    delete:
+      summary: Deletes the file
+      description: "The client must be authorized: the request should have `X-Auth-Key` header"
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Not authorized
