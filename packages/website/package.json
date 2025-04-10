@@ -6,7 +6,9 @@
     "build": "next build",
     "build:no-emit": "tsc --noEmit",
     "start": "next start",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "storybook:start": "storybook dev -p 6006",
+    "storybook:build": "storybook build"
   },
   "dependencies": {
     "mongodb": "6.15.0",
@@ -17,9 +19,15 @@
     "sass-loader": "16.0.5"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "8.6.12",
+    "@storybook/addon-essentials": "8.6.12",
+    "@storybook/addon-interactions": "8.6.12",
+    "@storybook/addon-links": "8.6.12",
+    "@storybook/nextjs": "8.6.12",
     "@types/node": "22.14.0",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
+    "storybook": "8.6.12",
     "typescript": "5.8.3",
     "vitest": "3.1.1"
   }
