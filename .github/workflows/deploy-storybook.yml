@@ -1,0 +1,26 @@
+name: Deploy storybook
+on:
+  push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: v22.14.0
+          cache: 'npm'
+      - run: corepack enable
+      - name: Install dependencies
+        run: yarn workspaces focus @sc-fam/website
+      - name: Build
+        working-directory: ./packages/website
+        run: yarn storybook:build
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy --project-name=sc-fam-storybook storybook-static
+          workingDirectory: ./packages/website
