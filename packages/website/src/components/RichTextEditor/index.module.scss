@@ -1,0 +1,33 @@
+.root {
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 4px;
+
+  :global(.ProseMirror:focus) {
+    outline: none;
+  }
+  
+  :global(.tiptap) {
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+}
+
+.menu {
+  margin-bottom: 4px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.toggle-button {
+  $size: 32px;
+
+  width: $size;
+  height: $size;
+
+  &[data-active=true] {
+    background: #bbb;
+  }
+}

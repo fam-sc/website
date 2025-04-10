@@ -54,6 +54,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 'off',
       'unicorn/prevent-abbreviations': 'off',
       'unicorn/filename-case': 'off',
+      "@typescript-eslint/restrict-template-expressions": "off"
     },
   },
   {
