@@ -1,0 +1,51 @@
+@use "sass:map";
+
+$variants: (
+  primary: (
+    base: #5f28cc,
+    hover: #44189d,
+    disabled: #6d5997,
+  ),
+  flat: (
+    base: #fff,
+    hover: #ccc,
+    disabled: #918d8d,
+  )
+);
+
+@mixin button-variant($name) {
+  .root-#{$name} {
+    $color: map.get($variants, $name);
+
+    background: map.get($color, base);
+
+    &:hover {
+      background: map.get($color, hover);
+    }
+
+    &:disabled {
+      background: map.get($color, disabled);
+    }
+
+    @content;
+  }
+};
+
+.root {
+  background: none;
+  outline: none;
+
+  border: none;
+  border-radius: 8px;
+  box-shadow: 1px 1px 4px #000;
+
+  transition: background-color .1s linear;
+
+  padding: 10px 16px;
+}
+
+@include button-variant('primary');
+
+@include button-variant('flat') {
+  box-shadow: none;
+};
