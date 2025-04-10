@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 $variants: (
   primary: (
@@ -10,7 +10,7 @@ $variants: (
     base: #fff,
     hover: #ccc,
     disabled: #918d8d,
-  )
+  ),
 );
 
 @mixin button-variant($name) {
@@ -29,7 +29,7 @@ $variants: (
 
     @content;
   }
-};
+}
 
 .root {
   background: none;
@@ -39,7 +39,7 @@ $variants: (
   border-radius: 8px;
   box-shadow: 1px 1px 4px #000;
 
-  transition: background-color .1s linear;
+  transition: background-color 0.1s linear;
 
   padding: 10px 16px;
 }
@@ -48,4 +48,4 @@ $variants: (
 
 @include button-variant('flat') {
   box-shadow: none;
-};
+}

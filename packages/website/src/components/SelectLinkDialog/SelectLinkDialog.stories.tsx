@@ -9,6 +9,5 @@ export default {
 type Story = StoryObj<typeof SelectLinkDialog>;
 
 export const Primary: Story = {
-  args: {
-  },
+  args: {},
 };

@@ -136,9 +136,6 @@ function LinkButton() {
           if (isActive) {
             editor.chain().focus().unsetLink().run();
           } else {
-            const { from, to } = editor.state.selection;
-            const text = editor.state.doc.textBetween(from, to, ' ');
-
             setIsOpen(true);
           }
         }}

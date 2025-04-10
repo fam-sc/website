@@ -6,7 +6,7 @@
   :global(.ProseMirror:focus) {
     outline: none;
   }
-  
+
   :global(.tiptap) {
     margin-left: 6px;
     margin-right: 6px;
@@ -27,7 +27,7 @@
   width: $size;
   height: $size;
 
-  &[data-active=true] {
+  &[data-active='true'] {
     background: #bbb;
   }
 }

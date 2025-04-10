@@ -3,14 +3,15 @@
   outline: none;
 
   border: 2px solid #aaa;
-  border-radius: .5em;
+  border-radius: 0.5em;
 
   padding: 8px 12px;
-  background-clip: content-box; 
+  background-clip: content-box;
 
-  transition: border-color .1s linear;
+  transition: border-color 0.1s linear;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: #000;
   }
 }
@@ -18,7 +19,8 @@
 .root-error {
   border-color: #f00;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: #ba1616;
   }
 }

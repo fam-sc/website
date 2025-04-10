@@ -1,6 +1,5 @@
 import { ReactElement, ReactNode, useEffect } from 'react';
 
-import { Button } from '../Button';
 import { IconButton } from '../IconButton';
 import { Typography } from '../Typography';
 
