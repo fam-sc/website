@@ -6,6 +6,6 @@ import { EntityCollection } from './base';
 
 export class UsefulLinkCollection extends EntityCollection<UsefulLink> {
   constructor(client: MongoClient) {
-    super(client, 'users');
+    super(client, 'usefulLinks');
   }
 }

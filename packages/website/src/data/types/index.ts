@@ -76,4 +76,6 @@ export type GalleryImage = {
 export type UsefulLink = {
   _id: string;
   href: string;
+  title: string;
+  imageId: string | null;
 };

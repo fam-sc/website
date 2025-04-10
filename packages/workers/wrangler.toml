@@ -6,3 +6,7 @@ minify = true
 [[r2_buckets]]
 binding = 'MEDIA_BUCKET'
 bucket_name = 'sc-fam-website'
+
+[observability]
+enabled = true
+head_sampling_rate = 1

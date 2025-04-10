@@ -1,0 +1,22 @@
+openapi: '3.0.3'
+info:
+  title: Website API
+  version: '1.0'
+
+paths:
+  "/usefulLinkImage/{id}":
+    get:
+      summary: Get image of the useful link
+      tags: ["Useful link"]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the useful link to get image of
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: The link was not found
