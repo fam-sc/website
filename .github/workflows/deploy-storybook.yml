@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Build
-        working-directory: packages/website
+        working-directory: ./packages/website
         run: yarn storybook:build
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
@@ -22,3 +22,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy --project-name=sc-fam-storybook storybook-static
+          working-directory: ./packages/website
