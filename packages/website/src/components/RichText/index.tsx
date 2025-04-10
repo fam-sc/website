@@ -7,7 +7,7 @@ import {
   RichTextElementNode,
   RichTextNode,
   RichTextString,
-} from '@/data/types/richText';
+} from '@/richText/types';
 
 export type RichTextProps = {
   text: RichTextString;
