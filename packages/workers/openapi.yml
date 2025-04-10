@@ -7,9 +7,18 @@ servers:
   - url: https://media.sc-fam.workers.dev/
 
 paths:
-  /{fileId}:
+  /{filePath}:
     get:
       summary: Returns content of the given file
+      description: "Contains custom header `X-Updated-On`: date when the file was last updated in ISO 8601 format"
+      parameters:
+        - in: path
+          name: filePath
+          required: true
+          schema:
+            type: string
+          description: File path of the file to get
+
       responses:
         '200':
           description: OK
@@ -18,6 +27,14 @@ paths:
     put:
       summary: Updates content of given file.
       description: "The client must be authorized: the request should have `X-Auth-Key` header"
+      parameters:
+        - in: path
+          name: filePath
+          required: true
+          schema:
+            type: string
+          description: File path of the file to put
+
       responses:
         '200':
           description: OK
@@ -26,6 +43,13 @@ paths:
     delete:
       summary: Deletes the file
       description: "The client must be authorized: the request should have `X-Auth-Key` header"
+      parameters:
+        - in: path
+          name: filePath
+          required: true
+          schema:
+            type: string
+          description: File path of the file to delete
       responses:
         '200':
           description: OK

@@ -1,5 +1,5 @@
-function isAuthorized(request: Request): boolean {
-  return request.headers.get('X-Auth-Key') === process.env.AUTH_KEY;
+function isAuthorized(request: Request, env: Env): boolean {
+  return request.headers.get('X-Auth-Key') === env.AUTH_KEY;
 }
 
 function nonAuthorized(): Response {
@@ -7,13 +7,14 @@ function nonAuthorized(): Response {
 }
 
 export default {
-  async fetch(request: Request, { MEDIA_BUCKET }: Env): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const { MEDIA_BUCKET } = env;
     const url = new URL(request.url);
     const key = url.pathname.slice(1);
 
     switch (request.method) {
       case 'DELETE': {
-        if (!isAuthorized(request)) {
+        if (!isAuthorized(request, env)) {
           return nonAuthorized();
         }
 
@@ -22,11 +23,14 @@ export default {
         return new Response(undefined, { status: 200 });
       }
       case 'PUT': {
-        if (!isAuthorized(request)) {
+        if (!isAuthorized(request, env)) {
           return nonAuthorized();
         }
 
-        await MEDIA_BUCKET.put(key, request.body);
+        const now = new Date().toISOString();
+        await MEDIA_BUCKET.put(key, request.body, {
+          customMetadata: { updatedOn: now },
+        });
 
         return new Response(undefined, { status: 200 });
       }
@@ -37,8 +41,14 @@ export default {
           return new Response('Object Not Found', { status: 404 });
         }
 
+        const updatedOn = object.customMetadata?.updatedOn;
+
         const headers = new Headers();
         object.writeHttpMetadata(headers);
+
+        if (updatedOn !== undefined) {
+          headers.set('X-Updated-On', updatedOn);
+        }
 
         return new Response(object.body, {
           headers,
