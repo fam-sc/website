@@ -1,6 +1,12 @@
 import { FC, ReactNode } from 'react';
+import Blockquote from '@tiptap/extension-blockquote';
+import Bold from '@tiptap/extension-bold';
+import Heading from '@tiptap/extension-heading';
+import Italic from '@tiptap/extension-italic';
+import Strike from '@tiptap/extension-strike';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
+import Text from '@tiptap/extension-text';
 import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import {
@@ -10,7 +16,6 @@ import {
   useCurrentEditor,
   useEditor,
 } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 
 import { IconButton } from '../IconButton';
 
@@ -149,7 +154,12 @@ type RichTextEditorProps = {
 export function RichTextEditor(props: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      Text,
+      Bold,
+      Italic,
+      Strike,
+      Blockquote,
+      Heading,
       Underline,
       Subscript,
       Superscript,
