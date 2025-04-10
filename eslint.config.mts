@@ -19,6 +19,7 @@ export default tseslint.config(
       'packages/website/.next',
       'packages/website/next-env.d.ts',
       'packages/website/next.config.ts',
+      'packages/website/storybook-static',
       'packages/workers/worker-configuration.d.ts',
       'node_modules',
       'eslint.config.mts',
@@ -42,6 +43,7 @@ export default tseslint.config(
         project: [
           './tsconfig.json',
           './packages/website/tsconfig.json',
+          './packages/website/.storybook/tsconfig.json',
           './packages/workers/tsconfig.json',
         ],
         tsconfigRootDir: __dirname,
@@ -52,6 +54,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 'off',
       'unicorn/prevent-abbreviations': 'off',
       'unicorn/filename-case': 'off',
+      '@typescript-eslint/restrict-template-expressions': 'off',
     },
   },
   {

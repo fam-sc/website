@@ -21,9 +21,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "downlevelIteration": true,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src", ".next/types/**/*.ts"]
+  "include": ["./src/**/*", "./.storybook/**/*", ".next/types/**/*.ts"]
 }

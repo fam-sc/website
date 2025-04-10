@@ -1,4 +1,4 @@
-import { RichTextString } from './richText';
+import { RichTextString } from '../../richText/types';
 
 export type UserRole = 'student' | 'sc' | 'admin';
 

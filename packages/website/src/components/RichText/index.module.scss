@@ -1,0 +1,241 @@
+@use '../../theme/breakpoints' as *;
+
+.root {
+  main {
+    display: block;
+  }
+
+  /**
+   * Correct the font size and margin on `h1` elements within `section` and
+   * `article` contexts in Chrome, Firefox, and Safari.
+   */
+
+  h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    a {
+      text-underline-position: auto;
+    }
+  }
+
+  /* Grouping content
+ ========================================================================== */
+
+  /**
+   * 1. Add the correct box sizing in Firefox.
+   * 2. Show the overflow in Edge and IE.
+   */
+
+  hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+  }
+
+  /**
+   * 1. Correct the inheritance and scaling of font size in all browsers.
+   * 2. Correct the odd `em` font sizing in all browsers.
+   */
+
+  pre {
+    font-family: monospace;
+    font-size: 1em;
+  }
+
+  /* Text-level semantics
+ ========================================================================== */
+
+  /**
+   * Remove the gray background on active links in IE 10.
+   */
+
+  a {
+    background: transparent;
+    text-decoration: underline;
+    text-underline-position: under;
+    word-break: normal !important;
+    color: unset;
+  }
+
+  /**
+   * 1. Remove the bottom border in Chrome 57-
+   * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+   */
+
+  abbr[title] {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  /**
+   * Add the correct font weight in Chrome, Edge, and Safari.
+   */
+
+  b,
+  strong {
+    font-weight: bolder;
+  }
+
+  /**
+   * 1. Correct the inheritance and scaling of font size in all browsers.
+   * 2. Correct the odd `em` font sizing in all browsers.
+   */
+
+  code,
+  kbd,
+  samp {
+    font-family: monospace;
+    font-size: 1em;
+  }
+
+  small {
+    font-size: 80%;
+  }
+
+  /**
+   * Prevent `sub` and `sup` elements from affecting the line height in
+   * all browsers.
+   */
+
+  sub,
+  sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+
+  sub {
+    bottom: -0.25em;
+  }
+
+  sup {
+    top: -0.5em;
+  }
+
+  /* Embedded content
+ ========================================================================== */
+
+  /**
+   * Remove the border on images inside links in IE 10.
+   */
+
+  img {
+    border-style: none;
+    max-width: 100%;
+    height: auto;
+
+    margin-top: 1em;
+  }
+
+  /* Interactive
+ ========================================================================== */
+
+  /*
+   * Add the correct display in Edge, IE 10+, and Firefox.
+   */
+
+  details {
+    display: block;
+  }
+
+  /*
+   * Add the correct display in all browsers.
+   */
+
+  summary {
+    display: list-item;
+  }
+
+  /* Misc
+ ========================================================================== */
+
+  /**
+   * Add the correct display in IE 10+.
+   */
+
+  template {
+    display: none;
+  }
+
+  /**
+   * Add the correct display in IE 10.
+   */
+
+  [hidden] {
+    display: none;
+  }
+
+  & p {
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    margin: 1.5em 0;
+  }
+
+  ul {
+    padding: 0;
+    list-style-position: outside;
+
+    li {
+      margin-left: 4;
+    }
+  }
+
+  ul,
+  li {
+    text-align: start;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+
+    @include breakpoint-up('tablet') {
+      table-layout: auto;
+    }
+  }
+
+  th,
+  td {
+    width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-all;
+    padding: 0.4rem;
+
+    @include breakpoint-up('tablet') {
+      width: auto;
+      word-wrap: initial;
+      overflow-wrap: initial;
+    }
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td {
+    border: 1px solid #000;
+    border-collapse: collapse;
+  }
+
+  blockquote {
+    border-left: 2px solid #000;
+
+    padding-left: 1em;
+    margin-left: 0;
+  }
+}
