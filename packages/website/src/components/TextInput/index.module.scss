@@ -1,26 +1,46 @@
+@mixin hover-or-focused() {
+  &:hover, &:has(input:focus) {
+    @content;
+  }
+}
+
 .root {
-  display: block;
-  outline: none;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
 
   border: 2px solid #aaa;
   border-radius: 0.5em;
 
-  padding: 8px 12px;
-  background-clip: content-box;
-
   transition: border-color 0.1s linear;
 
-  &:hover,
-  &:focus {
+  input {
+    background: transparent;
+    outline: none;
+    border: none;
+
+    align-self: stretch;
+    
+    width: 100%;
+
+    padding: 8px 12px;
+  }
+
+  @include hover-or-focused() {
     border-color: #000;
+  }
+
+  &[data-state=error] {
+    border-color: #f00;
+
+    @include hover-or-focused() {
+      border-color: #ba1616;
+    }
   }
 }
 
-.root-error {
-  border-color: #f00;
+.end-content {
+  align-self: stretch;
 
-  &:hover,
-  &:focus {
-    border-color: #ba1616;
-  }
+  margin: 4px;
 }

@@ -1,10 +1,15 @@
+$roundings: (
+  none: 0,
+  rounded: 8px,
+  circle: 9999px,
+);
+
 .root {
   background: none;
   outline: none;
 
   border: none;
-  border-radius: 8px;
-
+ 
   transition: background-color 0.1s linear;
 
   padding: 0;
@@ -18,4 +23,10 @@
   &:hover {
     background: #ccc;
   }
+
+  @each $key, $value in $roundings {
+    &[data-rounding="#{$key}"] {
+      border-radius: $value;
+    }
+  } 
 }
