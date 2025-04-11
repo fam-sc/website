@@ -5,6 +5,7 @@ import { MediaFileHeaders } from '@/api/media/headers';
 import { getChat, getFile, getFileDownloadUrl } from '@/api/telegram';
 import { isTelegramUrl, urlToChatId } from '@/api/telegram/utils';
 import { Repository } from '@/data/repo';
+import { notFound } from '@/utils/responses';
 
 // One day
 const INVALIDATE_TIME = 24 * 60 * 60 * 1000;
@@ -36,7 +37,7 @@ export async function GET(
   await using repo = await Repository.openConnection();
   const link = await repo.usefulLinks().findById(id);
   if (link === null) {
-    return new NextResponse('Not found', { status: 404 });
+    return notFound();
   }
 
   const path = `useful-links/${id}`;
@@ -69,5 +70,5 @@ export async function GET(
     return new NextResponse(fileContent);
   }
 
-  return new NextResponse('Not found', { status: 404 });
+  return notFound();
 }

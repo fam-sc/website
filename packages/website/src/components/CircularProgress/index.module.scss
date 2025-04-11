@@ -1,0 +1,23 @@
+.root {
+  $size: 128px;
+
+  display: block;
+
+  width: $size;
+  height: $size;
+  transform: rotate(-90deg);
+
+  circle {
+    fill: none;
+    stroke-width: 10px;
+    transition: all .2s linear;
+  }
+}
+
+.back-circle {
+  stroke: #bbb;
+}
+
+.arc {
+  stroke: #7b25a3;
+}
