@@ -34,7 +34,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sass": "1.86.3",
-    "sass-loader": "16.0.5"
+    "sass-loader": "16.0.5",
+    "sharp": "0.34.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "8.6.12",
