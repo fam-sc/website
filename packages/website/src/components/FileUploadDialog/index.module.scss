@@ -1,0 +1,17 @@
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-drop {
+  width: 100%;
+  align-self: stretch;
+}
+
+.progress {
+  $size: 64px;
+
+  width: $size;
+  height: $size;
+}
