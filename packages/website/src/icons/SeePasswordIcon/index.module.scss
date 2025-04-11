@@ -1,0 +1,9 @@
+.root {
+  .strike {
+    transition: stroke-dashoffset .2s linear;
+  }
+
+  &[data-active="true"] .strike {
+    stroke-dashoffset: 0;  
+  }
+}
