@@ -8,7 +8,7 @@
   transition: background-color .1s linear;
 
   &[data-over=true] {
-    background-color: #b21baa76;
+    background-color: var(--color-background-dark);
   }
 
   input {

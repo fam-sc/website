@@ -1,5 +1,8 @@
 .root {
+  fill: var(--color-text-on-background);
+
   .strike {
+    stroke: var(--color-text-on-background);
     transition: stroke-dashoffset .2s linear;
   }
 

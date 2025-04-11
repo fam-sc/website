@@ -20,8 +20,11 @@ $roundings: (
   align-items: center;
   justify-content: center;
 
+  color: var(--color-text-on-background);
+  fill: var(--color-text-on-background);
+
   &:hover {
-    background: #ccc;
+    background: var(--color-background-dark);
   }
 
   @each $key, $value in $roundings {

@@ -43,7 +43,9 @@ export function FileDropArea({ onFile, accept, className }: FileDropAreaProps) {
     >
       <label
         role="button"
-        className={classNames(buttonStyles.root, buttonStyles['root-primary'])}
+        data-variant="solid"
+        data-color="primary"
+        className={classNames(buttonStyles.root)}
       >
         <input
           type="file"

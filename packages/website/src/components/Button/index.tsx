@@ -4,20 +4,20 @@ import styles from './index.module.scss';
 
 import { classNames } from '@/utils/classNames';
 
-type ButtonVariant = 'primary' | 'flat';
+type ButtonVariant = 'flat' | 'solid' | 'outlined';
+type ButtonColor = 'primary';
 
 type ButtonProps = JSX.IntrinsicElements['button'] & {
   variant?: ButtonVariant;
+  color?: ButtonColor;
 };
 
-export function Button({ className, variant, ...rest }: ButtonProps) {
+export function Button({ className, variant, color, ...rest }: ButtonProps) {
   return (
     <button
-      className={classNames(
-        styles.root,
-        styles[`root-${variant ?? 'flat'}`],
-        className
-      )}
+      data-variant={variant ?? 'flat'}
+      data-color={color ?? 'primary'}
+      className={classNames(styles.root, className)}
       {...rest}
     />
   );

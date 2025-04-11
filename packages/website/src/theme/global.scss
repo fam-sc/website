@@ -1,0 +1,27 @@
+:root {
+  --color-background: #151641;
+  --color-background-dark: #111133;
+  --color-text-on-background: #fff;
+  --color-text-on-background-dark: #bfbfbf;
+
+  --color-primary: #F7FF00;
+  --color-primary-dark: #d6dd10;
+  --color-text-on-primary: #000;
+  --color-text-on-primary-dark: #333333;
+
+  --color-danger: #f00;
+  --color-danger-dark: #d31111;
+  --color-text-on-danger: #fff;
+  --color-text-on-danger-dark: #bfbfbf;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  background: var(--color-background);
+  color: var(--color-text-on-background);
+}

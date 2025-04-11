@@ -1,3 +1,5 @@
+import '../theme/global.scss';
+
 export default function RootLayout({
   children,
 }: Readonly<{
