@@ -1,10 +1,11 @@
-import { JSX, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import styles from './index.module.scss';
 
+import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 
-type InputProps = JSX.IntrinsicElements['input'];
+type InputProps = PropsMap['input'];
 
 export interface TextInputProps extends InputProps {
   isError?: boolean;

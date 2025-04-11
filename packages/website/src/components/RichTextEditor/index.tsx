@@ -26,6 +26,7 @@ import { IconButton } from '../IconButton';
 import { SelectLinkDialog } from '../SelectLinkDialog';
 
 import richTextStyles from '../RichText/index.module.scss';
+import typographyStyles from '../Typography/index.module.scss';
 import styles from './index.module.scss';
 
 import { AlignCenterIcon } from '@/icons/AlignCenterIcon';
@@ -40,6 +41,7 @@ import { StrikeIcon } from '@/icons/StrikeIcon';
 import { SubscriptIcon } from '@/icons/SubscriptIcon';
 import { SvgProps } from '@/icons/types';
 import { UnderlineIcon } from '@/icons/UnderlineIcon';
+import { classNames } from '@/utils/classNames';
 import { mapObjectToArray } from '@/utils/mapObject';
 
 const headerLevels = [1, 2, 3, 4, 5, 6] as const;
@@ -233,7 +235,11 @@ export function RichTextEditor(props: RichTextEditorProps) {
     <div className={styles.root}>
       <EditorContext.Provider value={{ editor }}>
         <Menu />
-        <EditorContent className={richTextStyles.root} editor={editor} />
+        <EditorContent
+          data-variant="body"
+          className={classNames(typographyStyles.root, richTextStyles.root)}
+          editor={editor}
+        />
       </EditorContext.Provider>
     </div>
   );

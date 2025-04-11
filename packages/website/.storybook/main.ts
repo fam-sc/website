@@ -16,6 +16,7 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
   ].map((name) => getAbsolutePath(name)),
   framework: getAbsolutePath('@storybook/nextjs'),
+  staticDirs: ['../public'],
   docs: {
     autodocs: false,
   },

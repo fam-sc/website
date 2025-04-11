@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+import { Typography } from '../Typography';
 
 import { ModalDialog } from '.';
 
@@ -13,11 +14,11 @@ type Story = StoryObj<typeof ModalDialog>;
 export const Primary: Story = {
   args: {
     title: 'Title',
-    children: 'Content',
+    children: <Typography>Content</Typography>,
     footer: (
       <>
         <Button>Cancel</Button>
-        <Button variant="primary">OK</Button>
+        <Button variant="solid">OK</Button>
       </>
     ),
   },

@@ -5,10 +5,10 @@
   justify-content: center;
   gap: 1em;
 
-  transition: background-color .1s linear;
+  transition: background-color 0.1s linear;
 
-  &[data-over=true] {
-    background-color: #b21baa76;
+  &[data-over='true'] {
+    background-color: var(--color-background-dark);
   }
 
   input {

@@ -21,7 +21,6 @@ export function SeePasswordIcon({ active, ...rest }: SeePasswordIconProps) {
         className={styles.strike}
         d="M40 -900 L920 -60"
         fill="transparent"
-        stroke="black"
         strokeWidth={80}
         strokeLinecap="round"
         strokeDasharray={2000}

@@ -1,9 +1,12 @@
 .root {
+  fill: var(--color-text-on-background);
+
   .strike {
-    transition: stroke-dashoffset .2s linear;
+    stroke: var(--color-text-on-background);
+    transition: stroke-dashoffset 0.2s linear;
   }
 
-  &[data-active="true"] .strike {
-    stroke-dashoffset: 0;  
+  &[data-active='true'] .strike {
+    stroke-dashoffset: 0;
   }
 }

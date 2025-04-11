@@ -1,30 +1,60 @@
 @use 'sass:map';
 
-$variants: (
+$color-map: (
   primary: (
-    base: #5f28cc,
-    hover: #44189d,
-    disabled: #6d5997,
+    base: 'primary',
+    hover: 'primary-dark',
+    disabled: 'background-dark',
+    text: (
+      solid: 'text-on-primary',
+      outlined: 'primary',
+      flat: 'text-on-background',
+    ),
+    textDisabled: (
+      solid: 'text-on-primary-dark',
+      outlined: 'primary-dark',
+      flat: 'text-on-background-dark',
+    ),
   ),
-  flat: (
-    base: #fff,
-    hover: #ccc,
-    disabled: #918d8d,
+  danger: (
+    base: 'danger',
+    hover: 'danger-dark',
+    disabled: 'background-dark',
+    text: (
+      solid: 'text-on-danger',
+      outlined: 'primary',
+      flat: 'text-on-danger',
+    ),
+    textDisabled: (
+      solid: 'text-on-danger-dark',
+      outlined: 'primary-dark',
+      flat: 'text-on-danger-dark',
+    ),
   ),
 );
 
-@mixin button-variant($name) {
-  .root-#{$name} {
-    $color: map.get($variants, $name);
+$variants: ('solid', 'outlined', 'flat');
 
-    background: map.get($color, base);
+@function get-color($colors, $names...) {
+  $result: map.get($colors, $names...);
+
+  @return var(--color-#{$result});
+}
+
+@mixin put-variable($colors, $name) {
+  --button-color-#{$name}: #{get-color($colors, $name)};
+}
+
+@mixin simple-variant($name, $property) {
+  &[data-variant='#{$name}'] {
+    #{$property}: var(--button-color-base);
 
     &:hover {
-      background: map.get($color, hover);
+      #{$property}: var(--button-color-hover);
     }
 
     &:disabled {
-      background: map.get($color, disabled);
+      #{$property}: var(--button-color-disabled);
     }
 
     @content;
@@ -37,15 +67,45 @@ $variants: (
 
   border: none;
   border-radius: 8px;
-  box-shadow: 1px 1px 4px #000;
 
-  transition: background-color 0.1s linear;
+  transition: all 0.1s linear;
 
   padding: 10px 16px;
-}
 
-@include button-variant('primary');
+  @each $color-name, $colors in $color-map {
+    &[data-color='#{$color-name}'] {
+      @include put-variable($colors, base);
+      @include put-variable($colors, hover);
+      @include put-variable($colors, disabled);
 
-@include button-variant('flat') {
-  box-shadow: none;
+      @each $variant in $variants {
+        &[data-variant='#{$variant}'] {
+          color: get-color($colors, text, $variant);
+
+          &:disabled {
+            color: get-color($colors, textDisabled, $variant);
+          }
+        }
+      }
+    }
+  }
+
+  @include simple-variant('solid', background-color) {
+    box-shadow: 1px 1px 4px #000;
+
+    &:disabled {
+      box-shadow: none;
+    }
+  }
+
+  @include simple-variant('outlined', border-color) {
+    border-width: 2px;
+    border-style: solid;
+  }
+
+  &[data-variant='flat'] {
+    &:hover:not(:disabled) {
+      background-color: var(--color-background-dark);
+    }
+  }
 }

@@ -1,7 +1,9 @@
 .root {
-  border: 1px solid #000;
+  border: 1px solid var(--color-text-on-background);
   border-radius: 8px;
   padding: 4px;
+
+  box-shadow: 0 0 2px var(--color-text-on-background);
 
   :global(.ProseMirror:focus) {
     outline: none;
@@ -28,6 +30,6 @@
   height: $size;
 
   &[data-active='true'] {
-    background: #bbb;
+    background: var(--color-background-dark);
   }
 }

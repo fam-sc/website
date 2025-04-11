@@ -1,6 +1,8 @@
 import React, { Key, ReactNode } from 'react';
 import Link from 'next/link';
 
+import { Typography } from '../Typography';
+
 import styles from './index.module.scss';
 
 import {
@@ -41,5 +43,9 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
 }
 
 export function RichText(props: RichTextProps) {
-  return <div className={styles['root']}>{renderNode(props.text)}</div>;
+  return (
+    <Typography as="div" className={styles.root}>
+      {renderNode(props.text)}
+    </Typography>
+  );
 }
