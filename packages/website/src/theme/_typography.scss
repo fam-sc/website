@@ -1,0 +1,60 @@
+@use 'sass:map';
+
+$variants: (
+  body: (
+    font-size: 16,
+    letter-spacing: 0.25,
+  ),
+  bodyLarge: (
+    font-size: 18,
+    letter-spacing: 0.5,
+  ),
+);
+
+$variant-headers: (
+  h1: (
+    font-size: 96,
+    letter-spacing: -1.5,
+  ),
+  h2: (
+    font-size: 60,
+    letter-spacing: -0.5,
+  ),
+  h3: (
+    font-size: 48,
+    letter-spacing: 0,
+  ),
+  h4: (
+    font-size: 34,
+    letter-spacing: 0.15,
+  ),
+  h5: (
+    font-size: 24,
+    letter-spacing: 0,
+  ),
+  h6: (
+    font-size: 20,
+    letter-spacing: 0.15,
+  ),
+);
+
+$all-variants: map.merge($variants, $variant-headers);
+
+$font: var(--font-murs-gothic);
+
+@function map-px-to-rem($options, $key) {
+  $value: map.get($options, $key);
+
+  @return #{$value * 0.0625}rem;
+}
+
+@mixin variant-body($options) {
+  font-size: map-px-to-rem($options, font-size);
+  letter-spacing: map-px-to-rem($options, letter-spacing);
+}
+
+@mixin variant-full-body($name) {
+  font-family: $font;
+
+  @include variant-body(map.get($all-variants, $name));
+}

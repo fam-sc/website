@@ -1,5 +1,8 @@
+@use '../../theme/typography' as *;
+
 @mixin hover-or-focused() {
-  &:hover, &:has(input:focus) {
+  &:hover,
+  &:has(input:focus) {
     @content;
   }
 }
@@ -15,6 +18,8 @@
   transition: border-color 0.1s linear;
 
   input {
+    @include variant-full-body('body');
+
     color: var(--color-text-on-background);
 
     background: transparent;
@@ -22,7 +27,7 @@
     border: none;
 
     align-self: stretch;
-    
+
     width: 100%;
 
     padding: 8px 12px;
@@ -32,7 +37,7 @@
     border-color: var(--color-text-on-background-dark);
   }
 
-  &[data-state=error] {
+  &[data-state='error'] {
     border-color: #f00;
 
     @include hover-or-focused() {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
+import { Button } from '../Button';
 import { Typography } from '../Typography';
 
-import buttonStyles from '../Button/index.module.scss';
 import styles from './index.module.scss';
 
 import { classNames } from '@/utils/classNames';
@@ -41,12 +41,7 @@ export function FileDropArea({ onFile, accept, className }: FileDropAreaProps) {
         }
       }}
     >
-      <label
-        role="button"
-        data-variant="solid"
-        data-color="primary"
-        className={classNames(buttonStyles.root)}
-      >
+      <Button variant="solid" as="label">
         <input
           type="file"
           accept={accept}
@@ -59,7 +54,7 @@ export function FileDropArea({ onFile, accept, className }: FileDropAreaProps) {
           }}
         />
         Виберіть файл
-      </label>
+      </Button>
 
       <Typography>Або перетяніть його</Typography>
     </div>

@@ -6,7 +6,7 @@ $color-map: (
     hover: 'primary-dark',
     disabled: 'background-dark',
     text: (
-      solid: 'text-on-primary', 
+      solid: 'text-on-primary',
       outlined: 'primary',
       flat: 'text-on-background',
     ),
@@ -14,14 +14,14 @@ $color-map: (
       solid: 'text-on-primary-dark',
       outlined: 'primary-dark',
       flat: 'text-on-background-dark',
-    )
+    ),
   ),
   danger: (
     base: 'danger',
     hover: 'danger-dark',
     disabled: 'background-dark',
     text: (
-      solid: 'text-on-danger', 
+      solid: 'text-on-danger',
       outlined: 'primary',
       flat: 'text-on-danger',
     ),
@@ -29,7 +29,7 @@ $color-map: (
       solid: 'text-on-danger-dark',
       outlined: 'primary-dark',
       flat: 'text-on-danger-dark',
-    )
+    ),
   ),
 );
 
@@ -38,7 +38,7 @@ $variants: ('solid', 'outlined', 'flat');
 @function get-color($colors, $names...) {
   $result: map.get($colors, $names...);
 
-  @return var(--color-#{$result});  
+  @return var(--color-#{$result});
 }
 
 @mixin put-variable($colors, $name) {
@@ -46,7 +46,7 @@ $variants: ('solid', 'outlined', 'flat');
 }
 
 @mixin simple-variant($name, $property) {
-  &[data-variant=#{$name}] {
+  &[data-variant='#{$name}'] {
     #{$property}: var(--button-color-base);
 
     &:hover {
@@ -67,19 +67,19 @@ $variants: ('solid', 'outlined', 'flat');
 
   border: none;
   border-radius: 8px;
-  
+
   transition: all 0.1s linear;
 
   padding: 10px 16px;
-  
+
   @each $color-name, $colors in $color-map {
-    &[data-color=#{$color-name}] {
+    &[data-color='#{$color-name}'] {
       @include put-variable($colors, base);
       @include put-variable($colors, hover);
       @include put-variable($colors, disabled);
 
       @each $variant in $variants {
-        &[data-variant=#{$variant}] {
+        &[data-variant='#{$variant}'] {
           color: get-color($colors, text, $variant);
 
           &:disabled {
@@ -90,7 +90,7 @@ $variants: ('solid', 'outlined', 'flat');
     }
   }
 
-  @include simple-variant("solid", background-color) {
+  @include simple-variant('solid', background-color) {
     box-shadow: 1px 1px 4px #000;
 
     &:disabled {
@@ -98,7 +98,7 @@ $variants: ('solid', 'outlined', 'flat');
     }
   }
 
-  @include simple-variant("outlined", border-color) {
+  @include simple-variant('outlined', border-color) {
     border-width: 2px;
     border-style: solid;
   }

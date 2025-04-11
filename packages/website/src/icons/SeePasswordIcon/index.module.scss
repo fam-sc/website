@@ -3,10 +3,10 @@
 
   .strike {
     stroke: var(--color-text-on-background);
-    transition: stroke-dashoffset .2s linear;
+    transition: stroke-dashoffset 0.2s linear;
   }
 
-  &[data-active="true"] .strike {
-    stroke-dashoffset: 0;  
+  &[data-active='true'] .strike {
+    stroke-dashoffset: 0;
   }
 }

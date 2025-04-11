@@ -5,9 +5,9 @@
   justify-content: center;
   gap: 1em;
 
-  transition: background-color .1s linear;
+  transition: background-color 0.1s linear;
 
-  &[data-over=true] {
+  &[data-over='true'] {
     background-color: var(--color-background-dark);
   }
 
