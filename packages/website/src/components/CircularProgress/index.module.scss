@@ -1,10 +1,10 @@
+@use '../../theme/utils' as *;
+
 .root {
-  $size: 128px;
+  @include size(128px);
 
   display: block;
 
-  width: $size;
-  height: $size;
   transform: rotate(-90deg);
 
   circle {

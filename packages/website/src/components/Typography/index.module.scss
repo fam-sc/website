@@ -12,9 +12,3 @@
     }
   }
 }
-
-@each $variant, $options in $variant-headers {
-  #{$variant}.root {
-    @include variant-body($options);
-  }
-}

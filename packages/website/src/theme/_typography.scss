@@ -9,9 +9,6 @@ $variants: (
     font-size: 18,
     letter-spacing: 0.5,
   ),
-);
-
-$variant-headers: (
   h1: (
     font-size: 96,
     letter-spacing: -1.5,
@@ -38,8 +35,6 @@ $variant-headers: (
   ),
 );
 
-$all-variants: map.merge($variants, $variant-headers);
-
 $font: var(--font-murs-gothic);
 
 @function map-px-to-rem($options, $key) {
@@ -56,5 +51,5 @@ $font: var(--font-murs-gothic);
 @mixin variant-full-body($name) {
   font-family: $font;
 
-  @include variant-body(map.get($all-variants, $name));
+  @include variant-body(map.get($variants, $name));
 }

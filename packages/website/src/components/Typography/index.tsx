@@ -25,15 +25,16 @@ export function Typography<As extends keyof PropsMap = 'p'>({
   children,
   ...rest
 }: ImpersonatedProps<TypographyProps, As>): ReactElement {
-  const baseProps = { className: classNames(styles.root, className), ...rest };
-
-  if (isHeader(variant)) {
-    return React.createElement(variant, baseProps, children);
-  }
+  const elementName =
+    _as === undefined ? (isHeader(variant) ? variant : 'p') : _as;
 
   return React.createElement(
-    _as ?? 'p',
-    { 'data-variant': variant, ...baseProps },
+    elementName,
+    {
+      className: classNames(styles.root, className),
+      'data-variant': variant,
+      ...rest,
+    },
     children
   );
 }
