@@ -46,7 +46,7 @@ $variants: ('solid', 'outlined', 'flat');
 }
 
 @mixin simple-variant($name, $property) {
-  &[data-variant='#{$name}'] {
+  &[data-button-variant='#{$name}'] {
     #{$property}: var(--button-color-base);
 
     &:hover {
@@ -79,7 +79,7 @@ $variants: ('solid', 'outlined', 'flat');
       @include put-variable($colors, disabled);
 
       @each $variant in $variants {
-        &[data-variant='#{$variant}'] {
+        &[data-button-variant='#{$variant}'] {
           color: get-color($colors, text, $variant);
 
           &:disabled {
@@ -103,7 +103,7 @@ $variants: ('solid', 'outlined', 'flat');
     border-style: solid;
   }
 
-  &[data-variant='flat'] {
+  &[data-button-variant='flat'] {
     &:hover:not(:disabled) {
       background-color: var(--color-background-dark);
     }

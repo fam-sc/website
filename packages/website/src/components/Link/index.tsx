@@ -4,12 +4,12 @@ import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { PropsOf } from '@/types/react';
+import { PropsOf, WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 
 type AnchorProps = PropsOf<typeof NextLink>;
 
-export interface LinkProps extends AnchorProps {
+export interface LinkProps extends AnchorProps, WithDataSpace<'link-variant'> {
   linkVariant?: 'clean' | 'underline';
 }
 
