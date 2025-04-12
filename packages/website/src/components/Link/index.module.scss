@@ -1,0 +1,8 @@
+.root {
+  text-underline-offset: 0.15em;
+  text-underline-position: from-font;
+
+  &[data-link-variant='clean'] {
+    text-decoration: none;
+  }
+}
