@@ -1,3 +1,5 @@
+@use '../../theme/utils' as *;
+
 .content {
   display: flex;
   align-items: center;
@@ -10,8 +12,5 @@
 }
 
 .progress {
-  $size: 64px;
-
-  width: $size;
-  height: $size;
+  @include size(64px);
 }

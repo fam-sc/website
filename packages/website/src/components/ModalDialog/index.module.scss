@@ -1,9 +1,10 @@
+@use '../../theme/utils' as *;
+
 .root {
   position: fixed;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  @include size(100%);
 
   background-color: #00000049;
 
@@ -61,8 +62,7 @@
 }
 
 .close {
-  width: 32px;
-  height: 32px;
+  @include size(32px);
 
   margin-left: auto;
 }
