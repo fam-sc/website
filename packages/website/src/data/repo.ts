@@ -2,6 +2,7 @@ import { MongoClient } from 'mongodb';
 
 import { EventCollection } from './collections/events';
 import { GalleryImageCollection } from './collections/galleryImages';
+import { SessionCollection } from './collections/sessions';
 import { UsefulLinkCollection } from './collections/usefulLinks';
 import { UserCollection } from './collections/users';
 
@@ -28,6 +29,10 @@ export class Repository implements AsyncDisposable {
 
   usefulLinks(): UsefulLinkCollection {
     return new UsefulLinkCollection(this.client);
+  }
+
+  sessions(): SessionCollection {
+    return new SessionCollection(this.client);
   }
 
   async [Symbol.asyncDispose](): Promise<void> {

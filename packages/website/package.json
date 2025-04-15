@@ -12,6 +12,7 @@
     "storybook:deploy": "wrangler pages deploy --project-name=sc-fam-storybook storybook-static"
   },
   "dependencies": {
+    "@node-rs/argon2": "2.0.2",
     "@tiptap/core": "2.11.7",
     "@tiptap/extension-blockquote": "2.11.7",
     "@tiptap/extension-bold": "2.11.7",
@@ -35,7 +36,8 @@
     "react-dom": "19.1.0",
     "sass": "1.86.3",
     "sass-loader": "16.0.5",
-    "sharp": "0.34.1"
+    "sharp": "0.34.1",
+    "zod": "3.24.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "8.6.12",
