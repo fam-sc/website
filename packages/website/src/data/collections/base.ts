@@ -4,7 +4,6 @@ import {
   Filter,
   InferIdType,
   MongoClient,
-  ObjectId,
   OptionalUnlessRequiredId,
   WithId,
 } from 'mongodb';
@@ -18,7 +17,7 @@ export class EntityCollection<T extends Document> {
     this.collectionName = collectionName;
   }
 
-  private collection(): Collection<T> {
+  protected collection(): Collection<T> {
     return this.client.db().collection(this.collectionName);
   }
 
@@ -27,10 +26,10 @@ export class EntityCollection<T extends Document> {
   }
 
   findById(id: InferIdType<T>): Promise<WithId<T> | null> {
-    return this.collection().findOne({ _id: new ObjectId(id) } as Filter<T>);
+    return this.collection().findOne({ _id: id } as Filter<T>);
   }
 
-  async insert(value: OptionalUnlessRequiredId<T>) {
-    await this.collection().insertOne(value);
+  insert(value: OptionalUnlessRequiredId<T>) {
+    return this.collection().insertOne(value);
   }
 }

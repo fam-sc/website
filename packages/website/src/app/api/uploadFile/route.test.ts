@@ -11,17 +11,17 @@ function createRequest(search: string, body?: BodyInit): NextRequest {
 }
 
 async function expectBadRequest(response: Response, message: string) {
-  const text = await response.text();
+  const result = await response.json();
 
   expect(response.status).toBe(400);
-  expect(text).toBe(message);
+  expect(result).toEqual({ message });
 }
 
 describe('errors', () => {
   test('invalid type section', async () => {
     const response = await POST(createRequest('?section=invalid_section'));
 
-    await expectBadRequest(response, 'Bad request: Invalid section');
+    await expectBadRequest(response, 'Invalid section');
   });
 
   test('too big file', async () => {
@@ -31,13 +31,13 @@ describe('errors', () => {
       createRequest('?section=rich-text-image', body)
     );
 
-    await expectBadRequest(response, 'Bad request: Too big file');
+    await expectBadRequest(response, 'Too big file');
   });
 
   test('no file', async () => {
     const response = await POST(createRequest('?section=rich-text-image'));
 
-    await expectBadRequest(response, 'Bad request: Expected a file');
+    await expectBadRequest(response, 'Expected a file');
   });
 
   test('invalid image', async () => {
@@ -46,6 +46,6 @@ describe('errors', () => {
       createRequest('?section=rich-text-image', body)
     );
 
-    await expectBadRequest(response, 'Bad request: Invalid image');
+    await expectBadRequest(response, 'Invalid image');
   });
 });

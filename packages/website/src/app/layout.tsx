@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import '../theme/global.scss';
 
 const mursGothic = localFont({
-  src: '../public/MursGothic-WideDark.ttf',
+  src: '../../public/MursGothic-WideDark.ttf',
   preload: true,
   variable: '--font-murs-gothic',
 });

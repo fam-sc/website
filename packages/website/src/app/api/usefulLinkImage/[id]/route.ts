@@ -1,11 +1,12 @@
+import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { fetchMediaFile, putMediaFile } from '@/api/media';
 import { MediaFileHeaders } from '@/api/media/headers';
+import { notFound } from '@/api/responses';
 import { getChat, getFile, getFileDownloadUrl } from '@/api/telegram';
 import { isTelegramUrl, urlToChatId } from '@/api/telegram/utils';
 import { Repository } from '@/data/repo';
-import { notFound } from '@/utils/responses';
 
 // One day
 const INVALIDATE_TIME = 24 * 60 * 60 * 1000;
@@ -35,7 +36,7 @@ export async function GET(
   const { id } = await params;
 
   await using repo = await Repository.openConnection();
-  const link = await repo.usefulLinks().findById(id);
+  const link = await repo.usefulLinks().findById(new ObjectId(id));
   if (link === null) {
     return notFound();
   }

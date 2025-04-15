@@ -1,24 +1,22 @@
-import { RichTextString } from '../../richText/types';
+import { ObjectId } from 'mongodb';
 
-export type UserRole = 'student' | 'sc' | 'admin';
+import { RichTextString } from '@/richText/types';
+
+export type UserRole = 'student' | 'group-head' | 'admin';
 
 export type User = {
-  _id: string;
   firstName: string;
   lastName: string;
   parentName: string | null;
   academicGroup: string;
-  academicCourse: number;
-  email: string | null;
+  email: string;
   telnum: string | null;
-  photoId: string;
+  photoId: string | null;
   role: UserRole;
-  username: string;
   passwordHash: string;
 };
 
 export type Poll = {
-  _id: string;
   startDate: Date;
   endDate: Date;
   title: string;
@@ -32,7 +30,6 @@ export type PollQuestion = {
 export type PollType = PollQuestion['type'];
 
 export type PollQuestionOption = {
-  _id: string;
   text: string;
 };
 
@@ -53,7 +50,6 @@ export type PollRespondentAnswer = {
 };
 
 export type Event = {
-  _id: string;
   title: string;
   startDate: Date;
   endDate: Date;
@@ -66,7 +62,6 @@ export type EventConclusion = {
 };
 
 export type GalleryImage = {
-  _id: string;
   remoteId: string;
   date: Date;
   eventId: string | null;
@@ -74,8 +69,18 @@ export type GalleryImage = {
 };
 
 export type UsefulLink = {
-  _id: string;
   href: string;
   title: string;
   imageId: string | null;
+};
+
+export type AuthSession = {
+  sessionId: bigint;
+  userId: ObjectId;
+};
+
+export type AuthSessionWithRole = {
+  sessionId: bigint;
+  userId: string;
+  role: UserRole;
 };
