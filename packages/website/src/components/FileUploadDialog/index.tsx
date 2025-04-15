@@ -9,7 +9,7 @@ import styles from './index.module.scss';
 export type FileUploadDialogProps = {
   // A number between 0 and 1 that specifies
   // how much of the sumbitted file is uploaded to the media server.
-  fileUploadProgress: number;
+  fileUploadProgress?: number;
 
   // It only works on the file chooser. User can still select a file different than 'accept' via file drop.
   // The logic shouldn't rely on it. Just a hint.
@@ -33,7 +33,7 @@ export function FileUploadDialog({
       contentClassName={styles.content}
       onClose={onClose}
     >
-      {isLoading ? (
+      {isLoading && fileUploadProgress !== undefined ? (
         <CircularProgress
           className={styles.progress}
           value={fileUploadProgress}

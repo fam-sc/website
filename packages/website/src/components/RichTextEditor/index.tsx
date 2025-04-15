@@ -3,6 +3,7 @@ import Blockquote from '@tiptap/extension-blockquote';
 import Bold from '@tiptap/extension-bold';
 import Document from '@tiptap/extension-document';
 import Heading from '@tiptap/extension-heading';
+import ImageExtension from '@tiptap/extension-image';
 import Italic from '@tiptap/extension-italic';
 import Link from '@tiptap/extension-link';
 import Paragraph from '@tiptap/extension-paragraph';
@@ -22,6 +23,7 @@ import {
   useEditor,
 } from '@tiptap/react';
 
+import { FileUploadDialog } from '../FileUploadDialog';
 import { IconButton } from '../IconButton';
 import { SelectLinkDialog } from '../SelectLinkDialog';
 
@@ -35,6 +37,8 @@ import { AlignLeftIcon } from '@/icons/AlignLeftIcon';
 import { AlignRightIcon } from '@/icons/AlignRightIcon';
 import { BlockQuoteIcon } from '@/icons/BlockQuoteIcon';
 import { BoldIcon } from '@/icons/BoldIcon';
+import { CheckIcon } from '@/icons/CheckIcon';
+import { ImageIcon } from '@/icons/ImageIcon';
 import { ItalicIcon } from '@/icons/ItalicIcon';
 import { LinkIcon } from '@/icons/LinkIcon';
 import { StrikeIcon } from '@/icons/StrikeIcon';
@@ -42,6 +46,7 @@ import { SubscriptIcon } from '@/icons/SubscriptIcon';
 import { SvgProps } from '@/icons/types';
 import { UnderlineIcon } from '@/icons/UnderlineIcon';
 import { classNames } from '@/utils/classNames';
+import { fileToDataUrl } from '@/utils/fileTransformations';
 import { mapObjectToArray } from '@/utils/mapObject';
 
 const headerLevels = [1, 2, 3, 4, 5, 6] as const;
@@ -71,6 +76,9 @@ const extensions: Extensions = [
     types: ['heading', 'paragraph'],
   }),
   Link,
+  ImageExtension.configure({
+    allowBase64: true,
+  }),
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -161,7 +169,51 @@ function LinkButton() {
   );
 }
 
-function Menu() {
+function InsertImageButton() {
+  const { editor } = useCurrentEditor();
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <IconButton
+        className={styles['toggle-button']}
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        <ImageIcon />
+      </IconButton>
+
+      {isOpen && (
+        <FileUploadDialog
+          accept=".png, .jpeg, .jpg, .webp"
+          onClose={() => {
+            setIsOpen(false);
+          }}
+          onSubmit={(file) => {
+            setIsOpen(false);
+
+            fileToDataUrl(file)
+              .then((src) => {
+                editor?.chain().focus().setImage({ src }).run();
+              })
+              .catch((error: unknown) => {
+                console.error(error);
+              });
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+type MenuProps = {
+  isChanged: boolean;
+
+  onSave: () => void;
+};
+
+function Menu({ isChanged, onSave }: MenuProps) {
   return (
     <div className={styles.menu}>
       <ToggleButton onToggle={(c) => c.toggleBold()} toggle="bold">
@@ -212,6 +264,18 @@ function Menu() {
       </ToggleButton>
 
       <LinkButton />
+
+      <InsertImageButton />
+
+      <IconButton
+        className={styles['save-button']}
+        data-active={isChanged}
+        onClick={() => {
+          onSave();
+        }}
+      >
+        <CheckIcon />
+      </IconButton>
     </div>
   );
 }
@@ -222,19 +286,31 @@ type RichTextEditorProps = {
    */
   text: string;
 
-  onTextChanged: (text: string) => void;
+  onSaveText?: (text: string) => void;
 };
 
 export function RichTextEditor(props: RichTextEditorProps) {
+  const [isChanged, setIsChanged] = useState(false);
   const editor = useEditor({
     extensions,
     content: props.text,
+    onUpdate: () => {
+      setIsChanged(true);
+    },
   });
 
   return (
     <div className={styles.root}>
       <EditorContext.Provider value={{ editor }}>
-        <Menu />
+        <Menu
+          isChanged={isChanged}
+          onSave={() => {
+            if (editor !== null) {
+              setIsChanged(false);
+              props.onSaveText?.(editor.getHTML());
+            }
+          }}
+        />
         <EditorContent
           data-variant="body"
           className={classNames(typographyStyles.root, richTextStyles.root)}
