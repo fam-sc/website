@@ -14,20 +14,29 @@ import {
   supportedRichTextTags,
 } from './types';
 
-import { getAttributeValue, HtmlNodeWithName } from '@/utils/html';
-import { linkIterator } from '@/utils/linkIterator';
+import {
+  getAttributeNumberValue,
+  getAttributeValue,
+  HtmlNodeWithName,
+} from '@/utils/html';
 import { normalizeToRelative } from '@/utils/url';
 
-type SurroundingContext = {
-  insideAnchor: boolean;
+type ImageInfo = {
+  filePath: string;
+  width: number;
+  height: number;
 };
+
+interface Context {
+  parseImageToPath(dataUrl: string): Promise<ImageInfo>;
+}
 
 type NodeOrFragment = ChildNode | DocumentFragment;
 
 type NodeTransformer<T extends NodeOrFragment = NodeOrFragment> = (
   element: T,
-  surroundingContext: SurroundingContext
-) => RichTextNode | undefined;
+  context: Context
+) => Promise<RichTextNode | undefined>;
 
 type TransformerMap<K extends string = string> = {
   [T in K]: NodeTransformer<HtmlNodeWithName<T>> | undefined;
@@ -47,12 +56,12 @@ function flattenRootNode(node: RichTextNode): RichTextNode {
   return node;
 }
 
-function transformChildNodes(
+async function transformChildNodes(
   nodes: ChildNode[],
-  surroundingContext: SurroundingContext
-): RichTextAtomNode[] {
-  const result = nodes.flatMap((node) =>
-    transformNode(node, surroundingContext)
+  context: Context
+): Promise<RichTextAtomNode[]> {
+  const result = await Promise.all(
+    nodes.flatMap((node) => transformNode(node, context))
   );
 
   return result.filter(
@@ -63,43 +72,46 @@ function transformChildNodes(
 
 function transformNode(
   node: NodeOrFragment,
-  surroundingContext: SurroundingContext
-): RichTextNode | undefined {
+  context: Context
+): Promise<RichTextNode | undefined> {
   const handler = handlerMap[node.nodeName] ?? defaultHandler;
 
-  return handler(node as Element, surroundingContext);
+  return handler(node as Element, context);
 }
 
 const handlerMap = createHandlerMap({
-  '#text': (element, { insideAnchor }) => {
-    // Don't try to find links inside a link.
-    if (!insideAnchor) {
-      // Find links and replace them with HTML anchors.
-      const elements: RichTextNode = [];
-
-      for (const part of linkIterator(element.value)) {
-        if (typeof part === 'string') {
-          elements.push(part);
-        } else {
-          elements.push({
-            name: 'a',
-            attrs: { href: normalizeToRelative(part.href) },
-            children: [part.text],
-          });
-        }
-      }
-
-      return elements;
+  img: async ({ attrs }, context) => {
+    const src = getAttributeValue(attrs, 'src');
+    if (src === undefined) {
+      throw new Error('Invalid image');
     }
 
-    return element.value;
+    let info: ImageInfo;
+
+    if (src.startsWith('data:')) {
+      info = await context.parseImageToPath(src);
+    } else {
+      const url = new URL(src);
+
+      const width = getAttributeNumberValue(attrs, 'width');
+      const height = getAttributeNumberValue(attrs, 'height');
+
+      if (width === undefined || height === undefined) {
+        throw new Error('No width or height in image');
+      }
+
+      // Trim first slash.
+      const filePath = url.pathname.slice(1);
+
+      info = { filePath, width, height };
+    }
+
+    return { name: '#image', ...info };
   },
-  a: ({ attrs, childNodes }) => {
+  a: async ({ attrs, childNodes }, context) => {
     let href = getAttributeValue(attrs, 'href');
     const parsedAttributes = transformArrayAttributesToRichText(attrs);
-    const children = transformChildNodes(childNodes, {
-      insideAnchor: true,
-    });
+    const children = await transformChildNodes(childNodes, context);
 
     if (href !== undefined) {
       href = normalizeToRelative(href);
@@ -117,32 +129,16 @@ const handlerMap = createHandlerMap({
       children,
     };
   },
-  div: ({ attrs, childNodes }, surroundingContext) => {
-    // Based on the assumption that div without style
-    // should not be in the markup at all.
-
-    const styleAttribute = attrs.find(({ name }) => name === 'style');
-    if (styleAttribute === undefined) {
-      return transformChildNodes(childNodes, surroundingContext);
-    }
-
-    return createRichTextNode({
-      name: 'div',
-      attrs: transformArrayAttributesToRichText(attrs),
-      children: transformChildNodes(childNodes, surroundingContext),
-    });
+  '#document-fragment': (element, context) => {
+    return transformChildNodes(element.childNodes, context);
   },
-  '#document-fragment': (element, surroundingContext) => {
-    return transformChildNodes(element.childNodes, surroundingContext);
-  },
+  '#text': (element) => Promise.resolve(element.value),
+
   // eslint-disable-next-line unicorn/no-useless-undefined
-  '#comment': () => undefined,
+  '#comment': () => Promise.resolve(undefined),
 });
 
-const defaultHandler: NodeTransformer<Element> = (
-  element,
-  surroundingContext
-) => {
+const defaultHandler: NodeTransformer<Element> = async (element, context) => {
   const { nodeName, childNodes, attrs } = element;
   if (!supportedRichTextTags.includes(nodeName)) {
     throw new Error(`Unsupported tag: ${serializeOuter(element)}`);
@@ -151,15 +147,16 @@ const defaultHandler: NodeTransformer<Element> = (
   return createRichTextNode({
     name: nodeName,
     attrs: transformArrayAttributesToRichText(attrs),
-    children: transformChildNodes(childNodes, surroundingContext),
+    children: await transformChildNodes(childNodes, context),
   });
 };
 
-export function parseHtmlToRichText(input: string): RichTextString {
+export async function parseHtmlToRichText(
+  input: string,
+  context: Context
+): Promise<RichTextString> {
   const fragment = parseFragment(input);
-  const result = transformNode(fragment, {
-    insideAnchor: false,
-  });
+  const result = await transformNode(fragment, context);
   if (result === undefined) {
     throw new Error('Root node cannot be undefined');
   }

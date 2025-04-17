@@ -48,3 +48,12 @@ export function getAttributeValue(
 ): string | undefined {
   return findAttributeByName(attributes, target)?.value;
 }
+
+export function getAttributeNumberValue(
+  attributes: Attribute[],
+  target: string
+): number | undefined {
+  const string = getAttributeValue(attributes, target);
+
+  return string === undefined ? undefined : Number.parseInt(string);
+}

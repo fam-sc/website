@@ -44,6 +44,17 @@ export interface RichTextElementNode {
   children?: RichTextAtomNode[];
 }
 
-export type RichTextAtomNode = RichTextPlainNode | RichTextElementNode;
+export interface RichTextImageNode {
+  name: '#image';
+  filePath: string;
+  width: number;
+  height: number;
+}
+
+export type RichTextAtomNode =
+  | RichTextPlainNode
+  | RichTextElementNode
+  | RichTextImageNode;
+
 export type RichTextNode = RichTextAtomNode | RichTextAtomNode[];
 export type RichTextString = RichTextNode;

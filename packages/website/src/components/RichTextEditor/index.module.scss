@@ -15,6 +15,25 @@
     margin-left: 6px;
     margin-right: 6px;
   }
+
+  &[aria-disabled=true] {
+    $color: var(--color-text-on-background-dark);
+
+    border-color: $color;
+
+    &, button {
+      color: $color;
+    }
+    
+    button {
+      fill: $color;
+      pointer-events: none;
+    }
+
+    :global(.tiptap) {
+      user-select: none;
+    }
+  }
 }
 
 .menu {
@@ -44,7 +63,7 @@
   transition: transform .05s linear;
 
   margin-left: auto;
-  
+
   &[data-active='false'] {
     transform: scale(0);
   }

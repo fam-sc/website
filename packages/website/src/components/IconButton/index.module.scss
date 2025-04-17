@@ -23,6 +23,8 @@ $roundings: (
   color: var(--color-text-on-background);
   fill: var(--color-text-on-background);
 
+  user-select: none;
+
   &:hover {
     background: var(--color-background-dark);
   }

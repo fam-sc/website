@@ -1,10 +1,12 @@
 import React, { Key, ReactNode } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
+import { getMediaFileUrl } from '@/api/media';
 import {
   RichTextElementNode,
   RichTextNode,
@@ -39,7 +41,22 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
     return key === undefined ? children : <div key={key}>{children}</div>;
   }
 
-  return typeof node === 'string' ? node : renderElementNode(node);
+  if (typeof node === 'string') {
+    return node;
+  }
+
+  if (node.name === '#image') {
+    return (
+      <Image
+        src={getMediaFileUrl(node.filePath)}
+        alt=""
+        width={node.width}
+        height={node.height}
+      />
+    );
+  }
+
+  return renderElementNode(node);
 }
 
 export function RichText(props: RichTextProps) {

@@ -1,4 +1,6 @@
-import { FC, ReactNode, useState } from 'react';
+'use client';
+
+import { FC, ReactNode, useEffect, useState } from 'react';
 import Blockquote from '@tiptap/extension-blockquote';
 import Bold from '@tiptap/extension-bold';
 import Document from '@tiptap/extension-document';
@@ -286,11 +288,13 @@ type RichTextEditorProps = {
    */
   text: string;
 
-  onSaveText?: (text: string) => void;
+  onSaveText?: (text: string) => Promise<string>;
 };
 
 export function RichTextEditor(props: RichTextEditorProps) {
   const [isChanged, setIsChanged] = useState(false);
+  const [saveInProgress, setSaveInProgress] = useState(true);
+
   const editor = useEditor({
     extensions,
     content: props.text,
@@ -299,15 +303,35 @@ export function RichTextEditor(props: RichTextEditorProps) {
     },
   });
 
+  useEffect(() => {
+    editor?.setEditable(!saveInProgress);
+  }, [editor, saveInProgress]);
+
   return (
-    <div className={styles.root}>
+    <div className={styles.root} aria-disabled={saveInProgress}>
       <EditorContext.Provider value={{ editor }}>
         <Menu
           isChanged={isChanged}
           onSave={() => {
             if (editor !== null) {
               setIsChanged(false);
-              props.onSaveText?.(editor.getHTML());
+
+              // Disallow changing the text if we're updating it -
+              // the update might return a different text (if we have an image in it).
+              setSaveInProgress(true);
+
+              props
+                .onSaveText?.(editor.getHTML())
+                .then((newText) => {
+                  editor.commands.setContent(newText);
+
+                  setSaveInProgress(false);
+                })
+                .catch((error: unknown) => {
+                  console.error(error);
+
+                  setSaveInProgress(false);
+                });
             }
           }}
         />
