@@ -22,15 +22,8 @@ const DECELERATION = 0.000_01;
 // Factor by which initial velocity (distance between two last points / time) is multiplied.
 const VELOCITY_FACTOR = 1;
 
-function setScaleOnChildNode(
-  parent: HTMLElement,
-  childIndex: number,
-  scale: number
-) {
-  const child = parent.childNodes[childIndex];
-  if (child instanceof HTMLElement) {
-    child.style.transform = `scale(${scale.toFixed(2)})`;
-  }
+function scale(value: number): string {
+  return `scale(${value.toFixed(2)})`;
 }
 
 export function Swiper<T extends { id: Key }>({
@@ -38,6 +31,8 @@ export function Swiper<T extends { id: Key }>({
   renderSlide,
 }: SwiperProps<T>) {
   const stripRef = useRef<HTMLDivElement | null>(null);
+  const indicatorRef = useRef<HTMLDivElement | null>(null);
+
   const stripWidthRef = useRef(0);
   const velocityRef = useRef(0);
 
@@ -54,8 +49,9 @@ export function Swiper<T extends { id: Key }>({
 
     selectedSlideRef.current = adjustedValue;
     const { current: strip } = stripRef;
+    const { current: indicator } = indicatorRef;
 
-    if (strip !== null) {
+    if (strip !== null && indicator !== null) {
       const tx =
         (100 / slides.length) * (Math.floor(slides.length / 2) - adjustedValue);
 
@@ -66,23 +62,28 @@ export function Swiper<T extends { id: Key }>({
 
       const fraction = adjustedValue - anchorIndex;
 
-      setScaleOnChildNode(
-        strip,
-        anchorIndex,
-        lerp(1, SLIDE_MAX_SCALE, 1 - fraction)
-      );
-
-      setScaleOnChildNode(
-        strip,
-        anchorIndex + 1,
-        lerp(1, SLIDE_MAX_SCALE, fraction)
-      );
-
       for (let i = 0; i < strip.childNodes.length; i++) {
-        const child = strip.childNodes[i];
+        const slide = strip.childNodes[i] as HTMLElement;
+        const indicatorButton = indicator.childNodes[i] as HTMLElement;
+        const selected = (nearestIndex === i).toString();
 
-        if (child instanceof HTMLElement) {
-          child.dataset.selected = (nearestIndex === i).toString();
+        slide.dataset.selected = selected;
+        indicatorButton.dataset.selected = selected;
+
+        switch (i) {
+          case anchorIndex: {
+            slide.style.transform = scale(
+              lerp(1, SLIDE_MAX_SCALE, 1 - fraction)
+            );
+            break;
+          }
+          case anchorIndex + 1: {
+            slide.style.transform = scale(lerp(1, SLIDE_MAX_SCALE, fraction));
+            break;
+          }
+          default: {
+            slide.style.transform = scale(1);
+          }
         }
       }
     }
@@ -161,8 +162,6 @@ export function Swiper<T extends { id: Key }>({
       if (velocity !== 0) {
         moveBy(velocity * delta);
 
-        console.log(velocity);
-
         // Decelerate velocity, don't let its absolute value be negative and preserve its sign
         velocityRef.current =
           Math.max(0, Math.abs(velocity) - delta * DECELERATION) *
@@ -200,7 +199,7 @@ export function Swiper<T extends { id: Key }>({
         ))}
       </div>
 
-      <div className={styles.indicator}>
+      <div className={styles.indicator} ref={indicatorRef}>
         {slides.map((_, index) => (
           <button
             key={index}
