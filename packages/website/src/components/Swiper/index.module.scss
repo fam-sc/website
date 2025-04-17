@@ -1,0 +1,100 @@
+@use '../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.strip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  height: 300px;
+
+  transition: transform .5s linear;
+
+  width: calc(100% * var(--slide-count));
+
+  @include breakpoint-up('md') {
+    width: auto;
+  }
+
+  &[data-manual-move=true] {
+    &, .slide-wrapper {
+      transition: none;
+    }
+  }
+}
+
+.slide-wrapper {
+  $height: .78;
+
+  width: 100%;
+  height: $height * 100%;
+
+  transition: transform .4s ease-in;
+  z-index: 0;
+
+  @include breakpoint-up('md') {
+    width: calc(100% / var(--slide-count));
+  }
+
+  &[data-selected=true] {
+    transform: scale(1 / $height);
+    z-index: 1 !important;
+
+    & > * { 
+      box-shadow: 0 0 1px #000; 
+    }
+  }
+
+  > * { 
+    border-radius: 2.25em;
+  }
+
+  > img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    user-select: none;  
+  }
+}
+
+.indicator {
+  display: flex;
+  flex-direction: row;
+  gap: 0.3em;
+
+  margin-top: 16px;
+
+  button {
+    $height: .25em;
+
+    width: 3.875em;
+    height: $height;
+
+    border: none;
+    outline: none;
+
+    border-radius: $height * 0.5;
+
+    transition: background-color .1s linear;
+
+    background: var(--color-text-on-background);
+
+    &:hover {
+      background: var(--color-text-on-background-dark);
+    }
+
+    &[data-selected=true] {
+      &, &:hover {
+        background: var(--color-primary);
+      }
+    }
+  }
+}
