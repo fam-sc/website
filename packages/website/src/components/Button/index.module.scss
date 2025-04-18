@@ -72,6 +72,8 @@ $variants: ('solid', 'outlined', 'flat');
 
   padding: 10px 16px;
 
+  font-weight: 700;
+
   @each $color-name, $colors in $color-map {
     &[data-color='#{$color-name}'] {
       @include put-variable($colors, base);
