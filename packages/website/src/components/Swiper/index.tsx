@@ -16,7 +16,7 @@ export type SwiperProps<T extends { id: Key }> = {
 const SLIDE_BASE_HEIGHT = 0.78;
 const SLIDE_MAX_SCALE = 1 / SLIDE_BASE_HEIGHT;
 
-// deceleration after swipe (in px/ms^2)
+// deceleration after swipe (in slide/ms^2)
 const DECELERATION = 0.000_01;
 
 // Factor by which initial velocity (distance between two last points / time) is multiplied.
@@ -36,12 +36,28 @@ export function Swiper<T extends { id: Key }>({
   const stripWidthRef = useRef(0);
   const velocityRef = useRef(0);
 
+  // Stores index of the selected slide.
+  // The index is float to handle the manual swiping.
   const selectedSlideRef = useRef(Math.floor(slides.length / 2));
 
   const animationManagerRef = useRef<AnimationManager | null>(null);
 
+  // Returns distance between two x-points on the screen converted to slide coordinates.
   function distance(x1: number, x2: number): number {
     return (slides.length * (x1 - x2)) / stripWidthRef.current;
+  }
+
+  function setVelocity(value: number) {
+    velocityRef.current = value;
+
+    const { current: animationManager } = animationManagerRef;
+
+    if (value > 0) {
+      animationManager?.startTicking();
+    } else {
+      setManualMoveStatus(false);
+      animationManager?.stop();
+    }
   }
 
   function setSelectedSlide(value: number) {
@@ -72,12 +88,14 @@ export function Swiper<T extends { id: Key }>({
 
         switch (i) {
           case anchorIndex: {
+            // Scale down current slide.
             slide.style.transform = scale(
               lerp(1, SLIDE_MAX_SCALE, 1 - fraction)
             );
             break;
           }
           case anchorIndex + 1: {
+            // Scale up the next slide.
             slide.style.transform = scale(lerp(1, SLIDE_MAX_SCALE, fraction));
             break;
           }
@@ -94,6 +112,7 @@ export function Swiper<T extends { id: Key }>({
   }
 
   function setManualMoveStatus(value: boolean) {
+    // If manual move mode is true, then auto transitions on slides are disabled.
     stripRef.current?.setAttribute('data-manual-move', value.toString());
   }
 
@@ -113,10 +132,6 @@ export function Swiper<T extends { id: Key }>({
           const relativeDx = distance(current.x, last.x);
 
           velocityRef.current = 0;
-
-          // Stop animation ticking because velocity is zero.
-          animationManagerRef.current?.stop();
-
           moveBy(relativeDx);
         },
         onUp: ({ current, last }) => {
@@ -124,10 +139,7 @@ export function Swiper<T extends { id: Key }>({
           const tx = current.time - last.time;
 
           if (dx !== 0 && tx !== 0) {
-            velocityRef.current = (dx / tx) * VELOCITY_FACTOR;
-
-            // Start animation ticking because velocity is not zero.
-            animationManagerRef.current?.startTicking();
+            setVelocity((dx / tx) * VELOCITY_FACTOR);
 
             accelerated = true;
           }
@@ -163,14 +175,10 @@ export function Swiper<T extends { id: Key }>({
         moveBy(velocity * delta);
 
         // Decelerate velocity, don't let its absolute value be negative and preserve its sign
-        velocityRef.current =
+        setVelocity(
           Math.max(0, Math.abs(velocity) - delta * DECELERATION) *
-          Math.sign(velocity);
-
-        if (velocityRef.current === 0) {
-          setManualMoveStatus(false);
-          manager.stop();
-        }
+            Math.sign(velocity)
+        );
       }
     });
 

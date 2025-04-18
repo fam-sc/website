@@ -34,13 +34,19 @@
   $height: .78;
 
   width: 100%;
-  height: $height * 100%;
+  height: 100%;
 
   transition: transform .4s ease-in;
   z-index: 0;
 
+  @include breakpoint-down('md') {
+    transform: none !important;
+  }
+
   @include breakpoint-up('md') {
-    width: calc(100% / var(--slide-count));
+    width: calc(100% / var(--slide-count)); 
+
+    height: $height * 100%;
   }
 
   &[data-selected=true] {

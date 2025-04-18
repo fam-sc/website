@@ -8,6 +8,15 @@ $breakpoints: (
   xl: 1536px,
 );
 
+
+@mixin breakpoint-down($name) {
+  $max-value: map.get($breakpoints, $name);
+
+  @media (max-width: $max-value) {
+    @content;
+  }
+}
+
 @mixin breakpoint-up($name) {
   $min-value: map.get($breakpoints, $name);
 

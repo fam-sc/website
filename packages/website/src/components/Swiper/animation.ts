@@ -12,19 +12,21 @@ export function createAnimationManager(
 
   return {
     startTicking() {
-      isRunning = true;
+      if (!isRunning) {
+        isRunning = true;
 
-      const checkingCallback = (time: number) => {
-        if (isRunning) {
-          const delta = frameTime === 0 ? 0 : time - frameTime;
-          callback(delta);
+        const checkingCallback = (time: number) => {
+          if (isRunning) {
+            const delta = frameTime === 0 ? 0 : time - frameTime;
+            callback(delta);
 
-          frameTime = time;
-          frameId = requestAnimationFrame(checkingCallback);
-        }
-      };
+            frameTime = time;
+            frameId = requestAnimationFrame(checkingCallback);
+          }
+        };
 
-      frameId = requestAnimationFrame(checkingCallback);
+        frameId = requestAnimationFrame(checkingCallback);
+      }
     },
     stop() {
       if (frameId !== 0) {
