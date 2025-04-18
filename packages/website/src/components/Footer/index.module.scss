@@ -1,0 +1,26 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 32px;
+  background: var(--color-background-dark);
+  color: var(--color-text-on-background);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.icons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+
+  img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+}
