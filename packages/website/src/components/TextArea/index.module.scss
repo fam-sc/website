@@ -1,0 +1,16 @@
+.root {
+  border: 2px solid var(--color-text-on-background);
+  border-radius: 1em;
+
+  height: 200px;
+
+  background: none;
+  outline: none;
+  resize: none;
+
+  margin: 0;
+  padding: .5em;
+
+  color: var(--color-text-on-background);
+  font-family: var(--font-murs-gothic);
+}
