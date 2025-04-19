@@ -16,3 +16,15 @@ export type ChatFullInfo = {
 export type ChatPhoto = {
   big_file_id: string;
 };
+
+export type Sticker = {
+  file_id: string;
+  file_unique_id: string;
+  type: 'regular' | 'mask' | 'custom_emoji';
+  width: number;
+  height: number;
+  is_animated: boolean;
+  is_video: boolean;
+  thumbnail: File;
+  custom_emoji_id?: string;
+};

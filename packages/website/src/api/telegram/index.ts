@@ -1,4 +1,4 @@
-import { ChatFullInfo, File } from './types';
+import { ChatFullInfo, File, Sticker } from './types';
 
 import { getEnvChecked } from '@/utils/env';
 
@@ -37,6 +37,10 @@ async function apiRequest<T>(
 
 export function getChat(chat_id: string): Promise<ChatFullInfo> {
   return apiRequest('getChat', { chat_id });
+}
+
+export async function getForumTopicIconStickers(): Promise<Sticker[]> {
+  return apiRequest('getForumTopicIconStickers');
 }
 
 export function getFile(file_id: string): Promise<File> {
