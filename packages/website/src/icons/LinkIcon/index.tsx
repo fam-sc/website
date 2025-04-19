@@ -1,4 +1,5 @@
 import { SvgProps } from '../types';
+
 export function LinkIcon(props: SvgProps) {
   return (
     <svg width="24px" height="24px" viewBox="0 -960 960 960" {...props}>

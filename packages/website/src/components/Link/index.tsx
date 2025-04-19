@@ -1,6 +1,6 @@
 import NextLink from 'next/link';
 
-import { Typography } from '../Typography';
+import { Typography, TypographyProps } from '../Typography';
 
 import styles from './index.module.scss';
 
@@ -9,7 +9,10 @@ import { classNames } from '@/utils/classNames';
 
 type AnchorProps = PropsOf<typeof NextLink>;
 
-export interface LinkProps extends AnchorProps, WithDataSpace<'link-variant'> {
+export interface LinkProps
+  extends TypographyProps,
+    AnchorProps,
+    WithDataSpace<'link-variant'> {
   linkVariant?: 'clean' | 'underline';
 }
 

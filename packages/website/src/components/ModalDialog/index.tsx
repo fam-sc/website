@@ -1,10 +1,11 @@
-import { ReactElement, ReactNode, useEffect } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 import { IconButton } from '../IconButton';
 import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
+import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
 
@@ -23,13 +24,7 @@ export function ModalDialog({
   contentClassName,
   onClose,
 }: ModalDialogProps) {
-  useEffect(() => {
-    document.body.style.overflowY = 'hidden';
-
-    return () => {
-      document.body.style.overflowY = 'auto';
-    };
-  });
+  useScrollbar(false);
 
   return (
     <div className={styles.root}>
