@@ -50,7 +50,7 @@ function Buttons() {
         Увійти
       </LinkButton>
 
-      <LinkButton href="#" variant="outlined" className={styles['sign-up']}>
+      <LinkButton href="#" variant="outlined">
         Зареєструватись
       </LinkButton>
     </div>

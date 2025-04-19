@@ -32,6 +32,19 @@ body {
   display: flex;
   flex-direction: column;
 
+  &::-webkit-scrollbar {
+    width: .5em;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: .25em;
+    background: var(--color-background-dark);
+  }
+
   > main {
     flex-grow: 1;
 
