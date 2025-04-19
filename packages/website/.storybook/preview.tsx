@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react';
 import localFont from 'next/font/local';
 
-import '../src/theme/global.scss';
+import '../src/theme/global.module.scss';
 
 const mursGothic = localFont({
   src: [

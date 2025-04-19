@@ -10,7 +10,7 @@
     "incremental": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "include": ["eslint.config.mts"],
   "exclude": ["./node_modules"]
