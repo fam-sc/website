@@ -17,12 +17,11 @@
 
 .greeting {
   margin: 2em 1.75em;
+  text-align: justify;
 
   @include desktop-view() {
     margin: 6em 5em;
   }
-
-  text-align: justify;
 }
 
 .greeting-header {

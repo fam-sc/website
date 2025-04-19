@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import fs from 'node:fs/promises';
 
 import { ClientComponent } from './client-component';
@@ -19,6 +20,10 @@ async function getSwiperImages(): Promise<(ImageInfo & { id: string })[]> {
     })
   );
 }
+
+export const metadata: Metadata = {
+  title: 'Головна',
+};
 
 export default async function HomePage() {
   const swiperImages = await getSwiperImages();
