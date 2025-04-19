@@ -7,3 +7,8 @@
   padding-left: $value;
   padding-right: $value;
 }
+
+@mixin mx($value) {
+  margin-left: $value;
+  margin-right: $value;
+}

@@ -10,14 +10,14 @@ type Story = StoryObj<typeof Button>;
 
 export const Solid: Story = {
   args: {
-    variant: 'solid',
+    buttonVariant: 'solid',
     children: 'Solid',
   },
 };
 
 export const SolidDisabled: Story = {
   args: {
-    variant: 'solid',
+    buttonVariant: 'solid',
     disabled: true,
     children: 'Solid',
   },
@@ -25,14 +25,14 @@ export const SolidDisabled: Story = {
 
 export const Outlined: Story = {
   args: {
-    variant: 'outlined',
+    buttonVariant: 'outlined',
     children: 'Outlined',
   },
 };
 
 export const OutlinedDisabled: Story = {
   args: {
-    variant: 'outlined',
+    buttonVariant: 'outlined',
     disabled: true,
     children: 'Outlined',
   },
@@ -40,14 +40,14 @@ export const OutlinedDisabled: Story = {
 
 export const Flat: Story = {
   args: {
-    variant: 'flat',
+    buttonVariant: 'flat',
     children: 'Flat',
   },
 };
 
 export const FlatDisabled: Story = {
   args: {
-    variant: 'flat',
+    buttonVariant: 'flat',
     disabled: true,
     children: 'Flat',
   },

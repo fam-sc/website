@@ -33,7 +33,7 @@ export function SelectLinkDialog(props: SelectLinkDialogProps) {
         <>
           <Button onClick={props.onClose}>Відмінити</Button>
           <Button
-            variant="solid"
+            buttonVariant="solid"
             disabled={!isValidLink}
             onClick={() => {
               props.onConfirmed?.({ link });

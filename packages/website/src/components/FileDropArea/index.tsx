@@ -41,7 +41,7 @@ export function FileDropArea({ onFile, accept, className }: FileDropAreaProps) {
         }
       }}
     >
-      <Button variant="solid" as="label">
+      <Button buttonVariant="solid" as="label">
         <input
           type="file"
           accept={accept}

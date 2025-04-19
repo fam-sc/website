@@ -16,10 +16,15 @@
   flex-direction: row;
   align-items: center;
 
-  margin: 0 40px;
-  padding: 10px 0;
+  margin: 0 10px;
+  padding: 7px 0;
 
   border-bottom: 3px solid var(--color-primary);
+
+  @include desktop-view() {
+    margin: 0 40px;
+    padding: 10px 0;
+  }
 }
 
 .logo {
@@ -39,13 +44,13 @@
 
   a {
     font-size: 1.1em !important;
-    font-weight: 600;
+    font-weight: 600 !important;
   }
 
   @include desktop-view() {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;  
+    justify-content: space-evenly;
   }
 }
 
@@ -66,7 +71,7 @@
 
   @include size(50px);
 
-  transition: border .1s linear;
+  transition: border 0.1s linear;
 
   margin-right: 1em;
 
@@ -91,7 +96,7 @@
 }
 
 .mobile-menu {
-  $top: 90px;
+  $top: 70px;
 
   position: absolute;
   display: flex;
@@ -101,15 +106,20 @@
   top: $top;
   width: 100%;
   height: calc(100% - $top);
+  z-index: 1000;
 
-  background: linear-gradient(var(--color-background), var(--color-background-dark) 20%);
+  background: linear-gradient(
+    var(--color-background),
+    var(--color-background-dark) 20%
+  );
 
   .nav {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    li, a {
+    li,
+    a {
       width: auto;
     }
   }
@@ -129,7 +139,8 @@
     @include size(5em);
   }
 
-  .buttons, .avatar {
+  .buttons,
+  .avatar {
     margin-bottom: 30px;
   }
 

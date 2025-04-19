@@ -3,34 +3,42 @@
 $variants: (
   body: (
     font-size: 16,
+    font-weight: 400,
     letter-spacing: 0.25,
   ),
   bodyLarge: (
     font-size: 18,
+    font-weight: 400,
     letter-spacing: 0.5,
   ),
   h1: (
     font-size: 96,
+    font-weight: 700,
     letter-spacing: -1.5,
   ),
   h2: (
     font-size: 60,
+    font-weight: 700,
     letter-spacing: -0.5,
   ),
   h3: (
     font-size: 48,
+    font-weight: 700,
     letter-spacing: 0,
   ),
   h4: (
     font-size: 34,
+    font-weight: 700,
     letter-spacing: 0.15,
   ),
   h5: (
     font-size: 24,
+    font-weight: 700,
     letter-spacing: 0,
   ),
   h6: (
     font-size: 20,
+    font-weight: 700,
     letter-spacing: 0.15,
   ),
 );
@@ -45,6 +53,7 @@ $font: var(--font-murs-gothic);
 
 @mixin variant-body($options) {
   font-size: map-px-to-rem($options, font-size);
+  font-weight: map.get($options, font-weight);
   letter-spacing: map-px-to-rem($options, letter-spacing);
 }
 

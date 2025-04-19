@@ -1,0 +1,40 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
+@mixin desktop-view() {
+  @include breakpoint-up('md') {
+    @content;
+  }
+}
+
+.image-swiper {
+  margin: 1em 0.5em 0 0.5em;
+
+  @include desktop-view() {
+    margin: 4em 0 0 0;
+  }
+}
+
+.greeting {
+  margin: 2em 1.75em;
+
+  @include desktop-view() {
+    margin: 6em 5em;
+  }
+
+  text-align: justify;
+}
+
+.greeting-header {
+  display: block;
+
+  margin-bottom: 1em;
+}
+
+.invitation {
+  margin: 0 1em 3em 1em;
+
+  @include desktop-view() {
+    margin: 0 6em 3em 6em;
+  }
+}

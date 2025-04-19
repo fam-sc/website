@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Logo from '@public/images/logo.png';
 import Image from 'next/image';
 
 import { IconButton } from '../IconButton';
@@ -9,7 +10,6 @@ import { LinkButton } from '../LinkButton';
 
 import styles from './index.module.scss';
 
-import Logo from '@/../public/images/logo.png';
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { MenuIcon } from '@/icons/MenuIcon';
@@ -46,11 +46,11 @@ function Navigation() {
 function Buttons() {
   return (
     <div className={styles.buttons}>
-      <LinkButton href="#" variant="solid">
+      <LinkButton href="#" buttonVariant="solid">
         Увійти
       </LinkButton>
 
-      <LinkButton href="#" variant="outlined">
+      <LinkButton href="#" buttonVariant="outlined">
         Зареєструватись
       </LinkButton>
     </div>

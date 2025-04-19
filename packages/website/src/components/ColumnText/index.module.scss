@@ -1,0 +1,10 @@
+@use '../../theme/breakpoints' as *;
+
+.root {
+  column-count: 1;
+  column-gap: 3em;
+
+  @include breakpoint-up('md') {
+    column-count: 2;
+  }
+}

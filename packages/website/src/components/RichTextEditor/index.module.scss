@@ -16,15 +16,16 @@
     margin-right: 6px;
   }
 
-  &[aria-disabled=true] {
+  &[aria-disabled='true'] {
     $color: var(--color-text-on-background-dark);
 
     border-color: $color;
 
-    &, button {
+    &,
+    button {
       color: $color;
     }
-    
+
     button {
       fill: $color;
       pointer-events: none;
@@ -60,7 +61,7 @@
   @extend .button;
 
   transform: scale(1);
-  transition: transform .05s linear;
+  transition: transform 0.05s linear;
 
   margin-left: auto;
 

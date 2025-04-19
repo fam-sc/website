@@ -33,7 +33,7 @@ body {
   flex-direction: column;
 
   &::-webkit-scrollbar {
-    width: .5em;
+    width: 0.5em;
   }
 
   &::-webkit-scrollbar-track {
@@ -41,13 +41,11 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    border-radius: .25em;
+    border-radius: 0.25em;
     background: var(--color-background-dark);
   }
 
   > main {
     flex-grow: 1;
-
-    @include px(10px);
   }
 }

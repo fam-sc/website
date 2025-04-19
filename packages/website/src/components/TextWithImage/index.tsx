@@ -5,7 +5,10 @@ import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
+import { classNames } from '@/utils/classNames';
+
 export type TextWithImageProps = {
+  className?: string;
   title: string;
   subtext: string;
   image: {
@@ -21,13 +24,14 @@ export type TextWithImageProps = {
 };
 
 export function TextWithImage({
+  className,
   title,
   subtext,
   image,
   button,
 }: TextWithImageProps) {
   return (
-    <div className={styles.root}>
+    <div className={classNames(styles.root, className)}>
       <div className={styles['image-wrapper']}>
         <Image
           src={image.src}
@@ -41,7 +45,7 @@ export function TextWithImage({
         <Typography variant="h4">{title}</Typography>
         <Typography>{subtext}</Typography>
         {button === undefined ? undefined : (
-          <LinkButton href={button.href} variant="solid" color="primary">
+          <LinkButton href={button.href} buttonVariant="solid" color="primary">
             {button.title}
           </LinkButton>
         )}

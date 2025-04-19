@@ -1,3 +1,5 @@
+'use client';
+
 import { CSSProperties, Key, ReactNode, useEffect, useRef } from 'react';
 
 import { AnimationManager, createAnimationManager } from './animation';
@@ -5,9 +7,11 @@ import { createTouchManager } from './touchManager';
 
 import styles from './index.module.scss';
 
+import { classNames } from '@/utils/classNames';
 import { coerce, lerp } from '@/utils/math';
 
 export type SwiperProps<T extends { id: Key }> = {
+  className?: string;
   slides: T[];
   renderSlide: (value: T) => ReactNode;
 };
@@ -27,6 +31,7 @@ function scale(value: number): string {
 }
 
 export function Swiper<T extends { id: Key }>({
+  className,
   slides,
   renderSlide,
 }: SwiperProps<T>) {
@@ -190,7 +195,7 @@ export function Swiper<T extends { id: Key }>({
   });
 
   return (
-    <div className={styles.root}>
+    <div className={classNames(styles.root, className)}>
       <div
         className={styles.strip}
         ref={stripRef}

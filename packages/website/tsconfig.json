@@ -2,11 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -25,14 +21,15 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "downlevelIteration": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"],
+      "@public/*": ["./public/*"]
     },
     "isolatedModules": true
   },
   "include": [
+    "next-env.d.ts",
     "./src/**/*",
     "./.storybook/**/*",
     ".next/types/**/*.ts"

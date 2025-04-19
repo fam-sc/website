@@ -18,7 +18,7 @@ export const Primary: Story = {
     footer: (
       <>
         <Button>Cancel</Button>
-        <Button variant="solid">OK</Button>
+        <Button buttonVariant="solid">OK</Button>
       </>
     ),
   },
