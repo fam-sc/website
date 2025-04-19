@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
 
@@ -84,21 +86,25 @@ export function Header({ userLogOn }: HeaderProps) {
 
   return (
     <header className={styles.root}>
-      <Image src={Logo} alt="Logo" className={styles.logo} />
+      <div className={styles.content}>
+        <Link href="/" className={styles.logo}>
+          <Image src={Logo} alt="Logo" />
+        </Link>
 
-      <Navigation />
-      {userLogOn ? <Avatar /> : <Buttons />}
+        <Navigation />
+        {userLogOn ? <Avatar /> : <Buttons />}
 
-      <IconButton
-        className={styles['menu-button']}
-        onClick={() => {
-          setMobileMenuOpen((state) => !state);
-        }}
-      >
-        {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
-      </IconButton>
+        <IconButton
+          className={styles['menu-button']}
+          onClick={() => {
+            setMobileMenuOpen((state) => !state);
+          }}
+        >
+          {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+        </IconButton>
 
-      {isMobileMenuOpen && <MobileMenu userLogOn={userLogOn} />}
+        {isMobileMenuOpen && <MobileMenu userLogOn={userLogOn} />}
+      </div>
     </header>
   );
 }

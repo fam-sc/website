@@ -1,5 +1,3 @@
-'use client';
-
 export default function HomePage() {
-  return <p>Home page</p>;
+  return <div style={{ height: '1000px' }}>Home page</div>;
 }

@@ -2,3 +2,8 @@
   width: $value;
   height: $value;
 }
+
+@mixin px($value) {
+  padding-left: $value;
+  padding-right: $value;
+}

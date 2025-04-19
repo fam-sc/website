@@ -15,9 +15,9 @@ export function Footer({ className }: FooterProps) {
   return (
     <footer className={classNames(styles.root, className)}>
       <div className={styles.section}>
-        <Typography >Баранівська Валерія</Typography>
-        <Typography >Хмарук Олег</Typography>
-        <Typography >2025</Typography>
+        <Typography>Баранівська Валерія</Typography>
+        <Typography>Хмарук Олег</Typography>
+        <Typography>2025</Typography>
       </div>
 
       <div className={styles.section}>

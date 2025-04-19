@@ -2,6 +2,10 @@ import localFont from 'next/font/local';
 
 import '../theme/global.scss';
 
+import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
+
+// Cannot move options to a helper - it all must be a constant.
 const mursGothic = localFont({
   src: [
     {
@@ -31,7 +35,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ua">
-      <body className={mursGothic.className}>{children}</body>
+      <body className={mursGothic.className}>
+        <Header userLogOn={false} />
+        <main>{children}</main>
+
+        <Footer />
+      </body>
     </html>
   );
 }

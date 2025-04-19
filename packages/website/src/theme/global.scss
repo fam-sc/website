@@ -27,3 +27,14 @@ body {
   background: var(--color-background);
   color: var(--color-text-on-background);
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  > main {
+    flex-grow: 1;
+
+    @include px(10px);
+  }
+}
