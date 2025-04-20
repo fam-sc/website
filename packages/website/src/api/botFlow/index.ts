@@ -4,8 +4,8 @@ import {
   fetchMediaObject,
   getMediaFileUrl,
   listMediaFiles,
-  putMediaFile,
   putMediaFileViaUrl,
+  putMediaObject,
 } from '../media';
 import { getFileDownloadUrlById, getForumTopicIconStickers } from '../telegram';
 import { Sticker } from '../telegram/types';
@@ -98,18 +98,23 @@ function mapKeys<T>(
   return result;
 }
 
-export async function saveBotFlow(value: BotFlowWithInMeta): Promise<void> {
+export async function saveBotFlow({
+  steps,
+  receptables,
+  meta,
+}: BotFlowWithInMeta): Promise<BotFlowWithInMeta> {
   const repo = BotRepository.createConnection();
 
   const stepIdMap = await repo.steps.upsert(
-    value.steps.map((step) => ({
+    steps.map((step) => ({
       id: step.id,
       templated: false,
       text: step.text,
     }))
   );
+
   const receptacleIdMap = await repo.receptacles.upsert(
-    value.receptables.map((receptacle) => ({
+    receptables.map((receptacle) => ({
       id: receptacle.id,
       emoji_id: receptacle.emojiId,
       announcement_text: '',
@@ -119,7 +124,7 @@ export async function saveBotFlow(value: BotFlowWithInMeta): Promise<void> {
     }))
   );
 
-  const options = value.steps.flatMap((step) =>
+  const options = steps.flatMap((step) =>
     step.options.map((option) => {
       return {
         id: option.id,
@@ -138,14 +143,28 @@ export async function saveBotFlow(value: BotFlowWithInMeta): Promise<void> {
 
   const optionIdMap = await repo.options.upsert(options);
 
-  const { positions } = value.meta;
+  const { positions } = meta;
+  const newPositions: PositionMap = {
+    step: mapKeys(positions.step, stepIdMap),
+    receptacle: mapKeys(positions.receptacle, receptacleIdMap),
+    option: mapKeys(positions.option, optionIdMap),
+  };
 
-  await putMediaFile(
-    NODE_POSITIONS_PATH,
-    JSON.stringify({
-      step: mapKeys(positions.step, stepIdMap),
-      receptacle: mapKeys(positions.receptacle, receptacleIdMap),
-      option: mapKeys(positions.option, optionIdMap),
-    })
-  );
+  await putMediaObject(NODE_POSITIONS_PATH, newPositions);
+
+  return {
+    steps: steps.map((step) => ({
+      id: stepIdMap[step.id],
+      text: step.text,
+      options: step.options.map(({ id, ...rest }) => ({
+        id: optionIdMap[id],
+        ...rest,
+      })),
+    })),
+    receptables: receptables.map(({ id, ...rest }) => ({
+      id: receptacleIdMap[id],
+      ...rest,
+    })),
+    meta: { positions: newPositions },
+  };
 }

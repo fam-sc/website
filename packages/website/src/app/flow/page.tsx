@@ -1,9 +1,5 @@
-import { ClientComponent } from './client';
+import { BotFlowBoardController } from '@/components/BotFlowBoardController';
 
-import { getBotFlow } from '@/api/botFlow';
-
-export default async function FlowPage() {
-  const flow = await getBotFlow();
-
-  return <ClientComponent flow={flow} />;
+export default function FlowPage() {
+  return <BotFlowBoardController />;
 }

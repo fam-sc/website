@@ -9,4 +9,8 @@
 .flow {
   width: 100%;
   flex-basis: auto;
+
+  :global(.react-flow__controls-button) {
+    background-color: var(--color-background-dark);
+  }
 }

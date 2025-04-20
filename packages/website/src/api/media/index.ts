@@ -1,10 +1,5 @@
 import { getEnvChecked } from '@/utils/env';
-
-function ensureOkResponse(response: Response) {
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-}
+import { ensureOkResponse, getJsonOrError } from '@/utils/fetch';
 
 export function getMediaFileUrl(path: string): string {
   return `https://media.sc-fam.workers.dev/${path}`;
@@ -42,10 +37,7 @@ async function putDeleteMediaFile(
   method: string,
   body?: BodyInit
 ): Promise<void> {
-  const response = await authFetch(path, {
-    method,
-    body,
-  });
+  const response = await authFetch(path, { method, body });
 
   if (response.status !== 200) {
     throw new Error(response.statusText);
@@ -54,6 +46,10 @@ async function putDeleteMediaFile(
 
 export function putMediaFile(path: string, body: BodyInit): Promise<void> {
   return putDeleteMediaFile(path, 'PUT', body);
+}
+
+export function putMediaObject(path: string, value: unknown): Promise<void> {
+  return putMediaFile(path, JSON.stringify(value));
 }
 
 export async function putMediaFileViaUrl(
@@ -82,9 +78,5 @@ export function deleteMediaFile(path: string): Promise<void> {
 export async function listMediaFiles(prefix: string): Promise<string[]> {
   const response = await authFetch(`list?prefix=${prefix}`);
 
-  if (response.ok) {
-    return (await response.json()) as string[];
-  }
-
-  throw new Error(response.statusText);
+  return getJsonOrError(response);
 }

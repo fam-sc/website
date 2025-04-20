@@ -13,7 +13,7 @@ export async function GET(_request: NextRequest): Promise<NextResponse> {
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const flow = (await request.json()) as BotFlowWithInMeta;
 
-  await saveBotFlow(flow);
+  const result = await saveBotFlow(flow);
 
-  return new NextResponse();
+  return new NextResponse(JSON.stringify(result));
 }
