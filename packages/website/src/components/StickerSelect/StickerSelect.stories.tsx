@@ -9,7 +9,5 @@ export default {
 type Story = StoryObj<typeof StickerSelect>;
 
 export const Primary: Story = {
-  args: {
-    
-  }
+  args: {},
 };

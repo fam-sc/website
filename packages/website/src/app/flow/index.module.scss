@@ -14,7 +14,7 @@
 
   background: #00000070;
 
-  &[data-visible=false] {
+  &[data-visible='false'] {
     display: none;
   }
 }

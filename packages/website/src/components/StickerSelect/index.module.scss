@@ -10,10 +10,11 @@
   padding: 0;
 
   li {
-    transition: background-color .1s linear;
+    transition: background-color 0.1s linear;
 
-    &:hover, &[data-selected=true] {
+    &:hover,
+    &[data-selected='true'] {
       background-color: var(--color-background-dark);
-    } 
+    }
   }
 }

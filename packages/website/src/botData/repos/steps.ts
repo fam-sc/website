@@ -18,7 +18,7 @@ export class StepRepository extends EntityRepository<Step> {
   insert(values: Step[]): Promise<string[]> {
     return this.table().insert(
       values.map((value) => ({ ...value, id: this.knex.fn.uuid() })),
-      'id',
+      'id'
     );
   }
 
@@ -31,7 +31,7 @@ export class StepRepository extends EntityRepository<Step> {
       values,
       () => this.table().select(['id']),
       (steps) => this.insert(steps),
-      (step) => this.update(step),
+      (step) => this.update(step)
     );
   }
 }

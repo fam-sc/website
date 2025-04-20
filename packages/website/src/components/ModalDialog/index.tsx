@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
 import { IconButton } from '../IconButton';
 import { Typography } from '../Typography';
@@ -8,7 +9,6 @@ import styles from './index.module.scss';
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
-import { createPortal } from 'react-dom';
 
 type ModalDialogProps = {
   title: string;

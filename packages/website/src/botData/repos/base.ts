@@ -25,13 +25,13 @@ export async function upsertBase<T extends { id: string }>(
   values: T[],
   getIds: () => Promise<{ id: string }[]>,
   insert: (values: T[]) => Promise<string[]>,
-  update: (value: T) => Promise<number>,
+  update: (value: T) => Promise<number>
 ): Promise<Record<string, string>> {
   const ids = await getIds();
   const current = new Set(ids.map(({ id }) => id));
 
   const [existValues, nonExistValues] = splitBy(values, (value) =>
-    current.has(value.id),
+    current.has(value.id)
   );
 
   const tasks: Promise<[string, string][]>[] = existValues.map(
@@ -40,7 +40,7 @@ export async function upsertBase<T extends { id: string }>(
 
       const result: [string, string] = [value.id, value.id];
       return [result];
-    },
+    }
   );
 
   if (nonExistValues.length > 0) {
@@ -49,7 +49,7 @@ export async function upsertBase<T extends { id: string }>(
         const ids = await insert(nonExistValues);
 
         return ids.map((value, index) => [value, ids[index]]);
-      })(),
+      })()
     );
   }
 
