@@ -1,20 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Button,
-  Listbox,
-  ListboxItem,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from '@heroui/react';
 import Image from 'next/image';
 
-import { Sticker } from '@/types/botFlow';
+import { Button } from '../Button';
+import { ModalDialog } from '../ModalDialog';
+
+import styles from './index.module.scss';
+
+import { Sticker } from '@/botFlow/types';
 
 export type StickerSelectProps = {
   stickers: Sticker[];
@@ -25,7 +19,7 @@ export type StickerSelectProps = {
 function StickerImage({ sticker }: { sticker: Sticker }) {
   return (
     <Image
-      className="size-10"
+      className={styles['sticker']}
       src={sticker.source}
       alt="sticker"
       width={sticker.width}
@@ -40,75 +34,64 @@ export function StickerSelect({
   onEmojiChanged,
 }: StickerSelectProps) {
   const selectedSticker = stickers.find(
-    (sticker) => sticker.id === selectedStickerId,
+    (sticker) => sticker.id === selectedStickerId
   );
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const [isOpen, setIsOpen] = useState(false);
+
   const [selectedListSticker, setSelectedListSticker] =
     useState(selectedStickerId);
 
   return (
     <>
-      <Button onPress={onOpen}>
+      <Button
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
         {selectedSticker ? (
           <StickerImage sticker={selectedSticker} />
         ) : (
           <p>?</p>
         )}
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Select sticker
-              </ModalHeader>
-              <ModalBody>
-                <Listbox
-                  isVirtualized
-                  virtualization={{
-                    maxListboxHeight: 400,
-                    itemHeight: 40,
-                  }}
-                  selectionMode="single"
-                  variant="flat"
-                  selectedKeys={
-                    selectedListSticker ? [selectedListSticker] : undefined
-                  }
-                  onSelectionChange={(keys) => {
-                    if (typeof keys !== 'string') {
-                      const keysArray = [...keys];
+      {isOpen && (
+        <ModalDialog
+          title="Виберіть стікер"
+          footer={
+            <Button
+              disabled={selectedListSticker === undefined}
+              color="primary"
+              onClick={() => {
+                if (selectedListSticker !== undefined) {
+                  onEmojiChanged?.(selectedListSticker);
+                }
 
-                      setSelectedListSticker(keysArray[0] as string);
-                    }
-                  }}
-                  items={stickers}
-                >
-                  {(sticker) => (
-                    <ListboxItem key={sticker.id}>
-                      <StickerImage sticker={sticker} />
-                    </ListboxItem>
-                  )}
-                </Listbox>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  isDisabled={selectedListSticker === undefined}
-                  color="primary"
-                  onPress={() => {
-                    if (selectedListSticker !== undefined) {
-                      onEmojiChanged?.(selectedListSticker);
-                    }
-
-                    onClose();
-                  }}
-                >
-                  Select
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+                setIsOpen(false);
+              }}
+            >
+              Select
+            </Button>
+          }
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        >
+          <ul className={styles.list}>
+            {stickers.map((sticker) => (
+              <li
+                key={sticker.id}
+                data-selected={sticker.id === selectedStickerId}
+                onClick={() => {
+                  setSelectedListSticker(sticker.id);
+                }}
+              >
+                <StickerImage sticker={sticker} />
+              </li>
+            ))}
+          </ul>
+        </ModalDialog>
+      )}
     </>
   );
 }

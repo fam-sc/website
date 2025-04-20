@@ -12,6 +12,22 @@ export default {
     const url = new URL(request.url);
     const key = url.pathname.slice(1);
 
+    if (key === 'list') {
+      if (!isAuthorized(request, env)) {
+        return nonAuthorized();
+      }
+
+      const prefix = url.searchParams.get('prefix');
+      if (prefix === null) {
+        return new Response('No prefix', { status: 400 });
+      }
+
+      const { objects } = await MEDIA_BUCKET.list({ prefix });
+      const result = objects.map((object) => object.key);
+
+      return new Response(JSON.stringify(result));
+    }
+
     switch (request.method) {
       case 'DELETE': {
         if (!isAuthorized(request, env)) {

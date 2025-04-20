@@ -8,6 +8,7 @@ import styles from './index.module.scss';
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
+import { createPortal } from 'react-dom';
 
 type ModalDialogProps = {
   title: string;
@@ -26,7 +27,7 @@ export function ModalDialog({
 }: ModalDialogProps) {
   useScrollbar(false);
 
-  return (
+  return createPortal(
     <div className={styles.root}>
       <div className={styles.dialog}>
         <div className={styles.header}>
@@ -43,6 +44,7 @@ export function ModalDialog({
 
         {footer && <div className={styles.footer}>{footer}</div>}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

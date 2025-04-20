@@ -9,6 +9,11 @@
   padding: 8px;
 }
 
+.changed-status {
+  font-family: monospace;
+  height: fit-content;
+}
+
 .action-button {
   @include size(40px);
 }

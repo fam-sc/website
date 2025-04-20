@@ -1,7 +1,10 @@
+'use client';
+
 import { FC } from 'react';
 
 import { NodeType } from '../BotFlowBoard/types';
 import { ButtonProps } from '../Button';
+import { Dropdown } from '../Dropdown';
 import { IconButton } from '../IconButton';
 
 import styles from './index.module.scss';
@@ -46,23 +49,18 @@ export function BotFlowBoardActions({
   onSave,
 }: BotFlowBoardActionsProps) {
   return (
-    <div className="flex flex-row justify-end items-center gap-3 p-2">
-      {isChanged && <p className="font-mono h-fit">Not saved</p>}
+    <div className={styles.root}>
+      {isChanged && <p className={styles['changed-status']}>Not saved</p>}
 
       <ActionButton icon={SaveIcon} onClick={onSave} />
 
-      <Dropdown>
-        <DropdownTrigger>
-          <ActionButton icon={PlusIcon} />
-        </DropdownTrigger>
-
-        <DropdownMenu onAction={(key) => onAdd?.(key as NodeType)}>
-          {Object.keys(nodeLabels).map((nodeType) => (
-            <DropdownItem key={nodeType}>
-              {nodeLabels[nodeType as NodeType]}
-            </DropdownItem>
-          ))}
-        </DropdownMenu>
+      <Dropdown
+        position="bottom"
+        items={Object.keys(nodeLabels).map((id) => ({ id: id as NodeType }))}
+        onAction={(key) => onAdd?.(key)}
+        renderItem={({ id }) => nodeLabels[id]}
+      >
+        <ActionButton icon={PlusIcon} />
       </Dropdown>
     </div>
   );

@@ -1,6 +1,13 @@
 'use server';
 
-import { getFileDownloadUrl, getForumTopicIconStickers } from '../telegram';
+import {
+  fetchMediaObject,
+  getMediaFileUrl,
+  listMediaFiles,
+  putMediaFile,
+  putMediaFileViaUrl,
+} from '../media';
+import { getFileDownloadUrlById, getForumTopicIconStickers } from '../telegram';
 import { Sticker } from '../telegram/types';
 
 import { BotRepository } from '@/botData/repo';
@@ -9,49 +16,42 @@ import {
   BotFlowWithOutMeta,
   PositionMap,
 } from '@/botFlow/types';
-import { getImageSize } from '@/image/size';
-import {
-  fileExistsInCache,
-  getFileLocalPath,
-  saveRemoteFile,
-} from '@/storage/file';
-import { getObject, saveObject } from '@/storage/object';
 
-const NODE_POSITIONS_KEY = 'node-positions';
+const NODE_POSITIONS_PATH = 'bot-flow/node-positions.json';
+const STICKER_PREFIX = 'bot-flow/tg-sticker';
 
-function getStickerId(value: Sticker): string {
-  return `tg-sticker-${value.file_unique_id}`;
+function getStickerPath(value: Sticker): string {
+  return `${STICKER_PREFIX}/${value.file_unique_id}`;
 }
 
 function getExternalUrl(value: Sticker): string {
-  return `/api/dynamic-asset?id=${getStickerId(value)}`;
+  return getMediaFileUrl(getStickerPath(value));
 }
 
 export async function getBotFlow(): Promise<BotFlowWithOutMeta> {
-  const stickers = await getForumTopicIconStickers();
+  const [stickers, mediaStickers] = await Promise.all([
+    getForumTopicIconStickers(),
+    listMediaFiles(STICKER_PREFIX),
+  ]);
 
   await Promise.all(
     stickers
-      .filter((sticker) => !fileExistsInCache(getStickerId(sticker)))
+      .filter((sticker) => !mediaStickers.includes(getStickerPath(sticker)))
       .map(async (sticker) => {
-        const url = await getFileDownloadUrl(sticker.thumbnail.file_id);
+        const url = await getFileDownloadUrlById(sticker.thumbnail.file_id);
 
-        await saveRemoteFile(getStickerId(sticker), url);
+        await putMediaFileViaUrl(getStickerPath(sticker), url);
       })
   );
 
-  const icons = await Promise.all(
-    stickers.map(async (value) => {
-      const filePath = getFileLocalPath(getStickerId(value));
-      const size = await getImageSize(filePath);
-
-      return {
-        id: value.custom_emoji_id as string,
-        source: getExternalUrl(value),
-        ...size,
-      };
-    })
-  );
+  const icons = stickers.map((value) => {
+    return {
+      id: value.custom_emoji_id as string,
+      source: getExternalUrl(value),
+      width: 512,
+      height: 512,
+    };
+  });
 
   const repo = BotRepository.createConnection();
   const [steps, options, receptables] = await Promise.all([
@@ -60,7 +60,7 @@ export async function getBotFlow(): Promise<BotFlowWithOutMeta> {
     repo.receptacles.getAll(),
   ]);
 
-  const positions = await getObject<PositionMap>(NODE_POSITIONS_KEY);
+  const positions = await fetchMediaObject<PositionMap>(NODE_POSITIONS_PATH);
 
   return {
     steps: steps.map((step) => ({
@@ -140,9 +140,12 @@ export async function saveBotFlow(value: BotFlowWithInMeta): Promise<void> {
 
   const { positions } = value.meta;
 
-  await saveObject(NODE_POSITIONS_KEY, {
-    step: mapKeys(positions.step, stepIdMap),
-    receptacle: mapKeys(positions.receptacle, receptacleIdMap),
-    option: mapKeys(positions.option, optionIdMap),
-  });
+  await putMediaFile(
+    NODE_POSITIONS_PATH,
+    JSON.stringify({
+      step: mapKeys(positions.step, stepIdMap),
+      receptacle: mapKeys(positions.receptacle, receptacleIdMap),
+      option: mapKeys(positions.option, optionIdMap),
+    })
+  );
 }

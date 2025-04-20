@@ -55,3 +55,9 @@ export function getFileDownloadUrl(file: File): string {
 
   return `https://api.telegram.org/file/bot${getApiKey()}/${file_path}`;
 }
+
+export async function getFileDownloadUrlById(id: string): Promise<string> {
+  const file = await getFile(id);
+
+  return getFileDownloadUrl(file);
+}
