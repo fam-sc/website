@@ -1,10 +1,9 @@
-import { Day, ScheduleTeacher } from '@/data/types/schedule';
-export type { Day } from '@/data/types/schedule';
+export type Day = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type Lesson = {
   type: 'lec' | 'prac' | 'lab';
   name: string;
-  teacher: ScheduleTeacher;
+  teacher: string;
   time: string;
   place: string;
 };
@@ -18,4 +17,9 @@ export type Schedule = {
   groupCampusId: string;
   firstWeek: DaySchedule[];
   secondWeek: DaySchedule[];
+};
+
+export type ScheduleTeacher = {
+  name: string;
+  link: string | null;
 };

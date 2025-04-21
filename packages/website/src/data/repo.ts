@@ -2,7 +2,11 @@ import { MongoClient } from 'mongodb';
 
 import { EventCollection } from './collections/events';
 import { GalleryImageCollection } from './collections/galleryImages';
+import { GroupCollection } from './collections/groups';
+import { ScheduleCollection } from './collections/schedule';
+import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
+import { UpdateTimeCollection } from './collections/updateTime';
 import { UsefulLinkCollection } from './collections/usefulLinks';
 import { UserCollection } from './collections/users';
 
@@ -33,6 +37,22 @@ export class Repository implements AsyncDisposable {
 
   sessions(): SessionCollection {
     return new SessionCollection(this.client);
+  }
+
+  schedule(): ScheduleCollection {
+    return new ScheduleCollection(this.client);
+  }
+
+  updateTime(): UpdateTimeCollection {
+    return new UpdateTimeCollection(this.client);
+  }
+
+  groups(): GroupCollection {
+    return new GroupCollection(this.client);
+  }
+
+  scheduleTeachers(): ScheduleTeacherCollection {
+    return new ScheduleTeacherCollection(this.client);
   }
 
   async [Symbol.asyncDispose](): Promise<void> {

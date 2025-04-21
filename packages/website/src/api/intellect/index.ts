@@ -15,7 +15,7 @@ async function apiRequest<T>(path: string, schema: Schema<T>): Promise<T> {
   return schema.parse(response.data);
 }
 
-export async function searchTeachersByName(
+export async function findTeacherByName(
   value: string
 ): Promise<Lecturer | undefined> {
   const [firstLecturer] = await apiRequest(

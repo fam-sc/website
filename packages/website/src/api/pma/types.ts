@@ -1,4 +1,5 @@
 export type Teacher = {
+  name: string;
   link: string;
 };
 
