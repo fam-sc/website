@@ -22,6 +22,5 @@ export type DaySchedule = {
 
 export type Schedule = {
   groupCampusId: string;
-  firstWeek: DaySchedule[];
-  secondWeek: DaySchedule[];
+  weeks: [DaySchedule[], DaySchedule[]];
 };

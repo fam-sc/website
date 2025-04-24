@@ -4,8 +4,10 @@ import { Typography } from '../Typography';
 import styles from './index.module.scss';
 
 import { Day, DaySchedule, timeBreakpoints } from '@/api/schedule/types';
+import { classNames } from '@/utils/classNames';
 
 export type ScheduleGridProps = {
+  className?: string;
   week: DaySchedule[];
   currentDay: Day;
   currentLesson: number;
@@ -54,10 +56,11 @@ export function ScheduleGrid({
   week,
   currentDay,
   currentLesson,
+  className,
 }: ScheduleGridProps) {
   return (
     <div
-      className={styles.root}
+      className={classNames(styles.root, className)}
       style={{
         '--row-count': getRowCount(week),
         '--column-count': getColumnCount(week),

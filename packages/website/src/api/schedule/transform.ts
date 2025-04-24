@@ -90,7 +90,7 @@ export async function dataScheduleToApiSchedule(
   repo: Repository
 ): Promise<ApiSchedule> {
   const teacherResolver = await createCachedTeacherResolver(repo);
-  const [firstWeek, secondWeek] = await Promise.all(
+  const weeks = await Promise.all(
     [value.firstWeek, value.secondWeek].map(async (week) => {
       return Promise.all(
         week.map((value) =>
@@ -100,5 +100,8 @@ export async function dataScheduleToApiSchedule(
     })
   );
 
-  return { groupCampusId: value.groupCampusId, firstWeek, secondWeek };
+  return {
+    groupCampusId: value.groupCampusId,
+    weeks: weeks as [ApiDaySchedule[], ApiDaySchedule[]],
+  };
 }

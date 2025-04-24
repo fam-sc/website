@@ -25,7 +25,7 @@ type ItemProps = {
 
 const items: ItemProps[] = [
   { title: 'Студрада ФПМ', href: '#' },
-  { title: 'Розклад', href: '#' },
+  { title: 'Розклад', href: '/schedule' },
   { title: 'Опитування', href: '#' },
 ];
 
@@ -33,7 +33,7 @@ function Navigation() {
   return (
     <ul className={styles.nav}>
       {items.map(({ title, href }) => (
-        <li key={href}>
+        <li key={`${href}-${title}`}>
           <Link linkVariant="clean" href={href}>
             {title}
           </Link>

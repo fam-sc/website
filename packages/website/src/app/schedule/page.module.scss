@@ -1,0 +1,14 @@
+@use '../../theme/utils' as *;
+
+.week-switch, .group-select {
+  @include mx(auto);
+}
+
+.group-select {
+  width: 15%;
+  margin: 1em auto;
+}
+
+.schedule-grid {
+  @include mx(1em);
+}

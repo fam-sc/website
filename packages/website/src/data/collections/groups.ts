@@ -20,4 +20,8 @@ export class GroupCollection extends EntityCollection<Group> {
       }))
     );
   }
+
+  findByCampusId(campusId: string) {
+    return this.collection().findOne({ campusId });
+  }
 }

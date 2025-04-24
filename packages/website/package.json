@@ -2,7 +2,7 @@
   "name": "@sc-fam/website",
   "packageManager": "yarn@4.8.1",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "build:no-emit": "tsc --noEmit",
     "start": "next start",

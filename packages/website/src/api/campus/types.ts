@@ -59,7 +59,7 @@ export const lessonSchedule = z.object({
 });
 
 export const currentTime = z.object({
-  currentWeek: z.number(),
+  currentWeek: z.union([z.literal(1), z.literal(2)]),
   currentDay: z.number(),
   currentLesson: z.number(),
 });
