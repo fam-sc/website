@@ -84,3 +84,8 @@ export type AuthSessionWithRole = {
   userId: string;
   role: UserRole;
 };
+
+export type Group = {
+  campusId: string;
+  name: string;
+};

@@ -1,5 +1,6 @@
 import { Attribute } from 'parse5/dist/common/token';
 import {
+  ChildNode,
   CommentNode,
   DocumentFragment,
   Element,
@@ -56,4 +57,13 @@ export function getAttributeNumberValue(
   const string = getAttributeValue(attributes, target);
 
   return string === undefined ? undefined : Number.parseInt(string);
+}
+
+export function findChildByNodeName(
+  parent: { childNodes: ChildNode[] } | undefined,
+  name: string
+) {
+  return parent?.childNodes.find((node) => node.nodeName === name) as
+    | Element
+    | undefined;
 }
