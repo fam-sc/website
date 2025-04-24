@@ -1,11 +1,17 @@
+import { Time } from '../campus/types';
+
 import { Day, ScheduleTeacher } from '@/data/types/schedule';
+
 export type { Day } from '@/data/types/schedule';
+
+export type { Time } from '../campus/types';
+export { timeBreakpoints } from '../campus/types';
 
 export type Lesson = {
   type: 'lec' | 'prac' | 'lab';
   name: string;
   teacher: ScheduleTeacher;
-  time: string;
+  time: Time;
   place: string;
 };
 

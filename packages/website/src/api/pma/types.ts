@@ -1,4 +1,4 @@
-type NameWithLink = {
+export type NameWithLink = {
   name: string;
   link: string;
 };

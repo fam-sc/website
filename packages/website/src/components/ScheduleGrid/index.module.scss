@@ -1,0 +1,35 @@
+@use 'sass:math';
+
+.root {
+  $column-count: var(--column-count);
+  $row-count: var(--row-count);
+
+  display: grid;
+
+  grid-template-columns: epeat($column-count, 1fr);
+  grid-template-rows: fit-content repeat($row-count, 1fr);
+
+  height: fit-content;
+}
+
+.tile {
+  $day: var(--day);
+  $time: calc(var(--time) + 1);
+
+  margin: .25em;
+
+  grid-column: $day/$day;
+  grid-row: $time/$time;
+}
+
+.day-marker {
+  $day: var(--day);
+
+  grid-column: $day/$day;
+  grid-row: 1/1;
+
+  text-align: center;
+  margin: .5em .5em;
+
+  font-weight: 700 !important;
+}

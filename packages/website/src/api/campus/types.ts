@@ -4,7 +4,17 @@ import { string, z } from 'zod';
 
 export const weekday = z.enum(['Пн', 'Вв', 'Ср', 'Чт', 'Пт', 'Сб']);
 
-export const time = z.string().regex(/^([12]|0?)[0-9]:[0-5][0-9]$/);
+export const timeBreakpoints = [
+  '8:30',
+  '10:25',
+  '12:20',
+  '14:15',
+  '16:10',
+  '18:30',
+  '20:20',
+] as const;
+
+export const time = z.enum(timeBreakpoints);
 
 export const group = z.object({
   id: z.string(),

@@ -79,7 +79,7 @@ async function dataScheduleWeekToApiScheduleWeek(
           return { teacher: { name: teacherName, link: null }, ...rest };
         }
 
-        return { teacher, ...rest };
+        return { teacher: { name: teacher.name, link: teacher.link }, ...rest };
       })
     ),
   };
