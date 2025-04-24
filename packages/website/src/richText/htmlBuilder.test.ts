@@ -3,6 +3,8 @@ import { expect, test } from 'vitest';
 import { richTextToHtml } from './htmlBuilder';
 import { RichTextString } from './types';
 
+import { getEnvChecked } from '@/utils/env';
+
 test.each<[RichTextString, string]>([
   ['123', '123'],
   [{ name: 'p' }, '<p/>'],
@@ -18,7 +20,7 @@ test.each<[RichTextString, string]>([
   ],
   [
     { name: '#image', filePath: '123', width: 100, height: 100 },
-    '<img src="https://media.sc-fam.workers.dev/123" width="100" height="100"/>',
+    `<img src="${getEnvChecked('MEDIA_URL')}/123" width="100" height="100"/>`,
   ],
 ])('richTextToHtml', (input, expected) => {
   const actual = richTextToHtml(input);

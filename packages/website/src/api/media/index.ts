@@ -1,7 +1,7 @@
 import { getEnvChecked } from '@/utils/env';
 
 export function getMediaFileUrl(path: string): string {
-  return `https://media.sc-fam.workers.dev/${path}`;
+  return `${getEnvChecked('MEDIA_URL')}/${path}`;
 }
 
 export function fetchMediaFile(path: string): Promise<Response> {

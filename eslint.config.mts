@@ -20,7 +20,7 @@ export default tseslint.config(
       'packages/website/next-env.d.ts',
       'packages/website/next.config.ts',
       'packages/website/storybook-static',
-      'packages/workers/worker-configuration.d.ts',
+      'packages/media-worker/worker-configuration.d.ts',
       'node_modules',
       'eslint.config.mts',
       'prettier.config.mjs',

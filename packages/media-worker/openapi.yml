@@ -4,7 +4,7 @@ info:
   version: '1.0'
 
 servers:
-  - url: https://media.sc-fam.workers.dev/
+  - url: https://media.sc-fam.org
 
 paths:
   /{filePath}:

@@ -1,5 +1,5 @@
 {
-  "name": "@sc-fam/workers",
+  "name": "@sc-fam/media-worker",
   "scripts": {
     "build": "tsc",
     "build:no-emit": "tsc --noEmit",

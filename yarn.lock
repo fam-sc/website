@@ -3078,6 +3078,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sc-fam/media-worker@workspace:packages/media-worker":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/media-worker@workspace:packages/media-worker"
+  dependencies:
+    typescript: "npm:5.8.3"
+    wrangler: "npm:4.9.1"
+  languageName: unknown
+  linkType: soft
+
 "@sc-fam/website@workspace:packages/website":
   version: 0.0.0-use.local
   resolution: "@sc-fam/website@workspace:packages/website"
@@ -3122,15 +3131,6 @@ __metadata:
     vitest: "npm:3.1.1"
     wrangler: "npm:4.10.0"
     zod: "npm:3.24.2"
-  languageName: unknown
-  linkType: soft
-
-"@sc-fam/workers@workspace:packages/workers":
-  version: 0.0.0-use.local
-  resolution: "@sc-fam/workers@workspace:packages/workers"
-  dependencies:
-    typescript: "npm:5.8.3"
-    wrangler: "npm:4.9.1"
   languageName: unknown
   linkType: soft
 
@@ -6324,6 +6324,13 @@ __metadata:
     no-case: "npm:^3.0.4"
     tslib: "npm:^2.0.3"
   checksum: 10c0/5b859ea65097a7ea870e2c91b5768b72ddf7fa947223fd29e167bcdff58fe731d941c48e47a38ec8aa8e43044c8fbd15cd8fa21689a526bc34b6548197cd5b05
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:16.5.0":
+  version: 16.5.0
+  resolution: "dotenv@npm:16.5.0"
+  checksum: 10c0/5bc94c919fbd955bf0ba44d33922a1e93d1078e64a1db5c30faeded1d996e7a83c55332cb8ea4fae5a9ca4d0be44cbceb95c5811e70f9f095298df09d1997dd9
   languageName: node
   linkType: hard
 
@@ -11109,6 +11116,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:9.23.0"
     "@vitejs/plugin-react": "npm:4.3.4"
+    dotenv: "npm:16.5.0"
     eslint: "npm:9.23.0"
     eslint-config-next: "npm:15.2.5"
     eslint-config-prettier: "npm:10.1.1"

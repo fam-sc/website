@@ -3,6 +3,10 @@ main = "src/index.ts"
 compatibility_date = "2022-07-12"
 minify = true
 
+routes = [
+  { pattern = "media.sc-fam.org", custom_domain = true }
+]
+
 [[r2_buckets]]
 binding = 'MEDIA_BUCKET'
 bucket_name = 'sc-fam-website'
