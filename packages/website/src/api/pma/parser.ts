@@ -1,18 +1,18 @@
 import { parse } from 'parse5';
 import { Document, Element } from 'parse5/dist/tree-adapters/default';
 
-import { Teacher, TeacherPageData, TeachersBlock } from './types';
+import { Block, BlockCollection, PageData } from './types';
 
-import { getAttributeValue, isTextNode } from '@/utils/html';
+import {
+  findChildByNodeName,
+  getAttributeValue,
+  isTextNode,
+} from '@/utils/html';
 
 function findBody(document: Document): Element | undefined {
-  const html = document.childNodes.find((node) => node.nodeName === 'html') as
-    | Element
-    | undefined;
+  const html = findChildByNodeName(document, 'html');
 
-  return html?.childNodes.find((node) => node.nodeName === 'body') as
-    | Element
-    | undefined;
+  return findChildByNodeName(html, 'body');
 }
 
 function getDataScriptContent(document: Document): string {
@@ -43,18 +43,26 @@ function getDataScriptContent(document: Document): string {
   throw new Error('Cannot find __NEXT_DATA__ script');
 }
 
-export function getPeopleFromTeachersPage(content: string): Teacher[] {
-  const page = parse(content);
+export function getNextData(pageContent: string): PageData {
+  const page = parse(pageContent);
   const dataScript = getDataScriptContent(page);
-  const data = JSON.parse(dataScript) as TeacherPageData;
 
-  const teachersBlock = data.props.pageProps.preparedBlocks.find(
-    (block): block is TeachersBlock => block.collection === 'teachers_blocks'
-  );
+  return JSON.parse(dataScript) as PageData;
+}
 
-  if (teachersBlock === undefined) {
-    throw new Error('Cannot find teachers block');
+export function findNextDataBlock<C extends BlockCollection>(
+  pageContent: string,
+  collection: C
+): Block<C> {
+  const data = getNextData(pageContent);
+
+  const result = data.props.pageProps.preparedBlocks.find(
+    (block) => block.collection === collection
+  ) as Block<C> | undefined;
+
+  if (result === undefined) {
+    throw new Error(`Cannot find ${collection} block`);
   }
 
-  return teachersBlock.props.people;
+  return result;
 }

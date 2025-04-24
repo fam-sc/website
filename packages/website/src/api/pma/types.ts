@@ -1,25 +1,29 @@
-export type Teacher = {
+type NameWithLink = {
   name: string;
   link: string;
 };
 
-export type TeachersBlock = {
+export type Teacher = NameWithLink;
+export type Discipline = NameWithLink;
+
+type NamedBlock<C extends string, Props> = {
   id: number;
-  collection: 'teachers_block';
-  props: {
-    people: Teacher[];
-  };
+  collection: C;
+  props: Props;
 };
 
-export type Block =
-  | {
-      id: number;
-      collection: string;
-      props: unknown;
-    }
-  | TeachersBlock;
+type BlockPropsMap = {
+  teachers_blocks: { people: Teacher[] };
+  discipline_list_blocks: { disciplines: Discipline[] };
+};
 
-export type TeacherPageData = {
+export type BlockCollection = keyof BlockPropsMap;
+
+export type Block<C extends string = string> = C extends BlockCollection
+  ? NamedBlock<C, BlockPropsMap[C]>
+  : NamedBlock<string, unknown>;
+
+export type PageData = {
   props: {
     pageProps: {
       preparedBlocks: Block[];
