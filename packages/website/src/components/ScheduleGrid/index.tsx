@@ -3,7 +3,13 @@ import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { Day, DaySchedule, timeBreakpoints } from '@/api/schedule/types';
+import {
+  Day,
+  DaySchedule,
+  Lesson,
+  Time,
+  timeBreakpoints,
+} from '@/api/schedule/types';
 import { classNames } from '@/utils/classNames';
 
 export type ScheduleGridProps = {
@@ -11,6 +17,11 @@ export type ScheduleGridProps = {
   week: DaySchedule[];
   currentDay: Day;
   currentLesson: number;
+};
+
+type LessonGroup = {
+  time: Time;
+  lessons: Lesson[];
 };
 
 const days = [
@@ -44,9 +55,29 @@ function getRowCount(week: DaySchedule[]): number {
   return result;
 }
 
-function DayMarker({ day }: { day: Day }) {
+function groupLessonsByTime(lessons: Lesson[]): LessonGroup[] {
+  const groupMap = new Map<string, LessonGroup>();
+
+  for (const lesson of lessons) {
+    let group = groupMap.get(lesson.time);
+    if (group === undefined) {
+      group = { time: lesson.time, lessons: [] };
+      groupMap.set(lesson.time, group);
+    }
+
+    group.lessons.push(lesson);
+  }
+
+  return [...groupMap.values()];
+}
+
+function DayMarker({ day, isEmpty }: { day: Day; isEmpty: boolean }) {
   return (
-    <Typography className={styles['day-marker']} style={{ '--day': day }}>
+    <Typography
+      className={styles['day-marker']}
+      style={{ '--day': day }}
+      data-is-empty={isEmpty}
+    >
       {days[day - 1]}
     </Typography>
   );
@@ -66,16 +97,14 @@ export function ScheduleGrid({
         '--column-count': getColumnCount(week),
       }}
     >
-      {week.map(({ day }) => (
-        <DayMarker key={day} day={day} />
-      ))}
-      {week.flatMap(({ day, lessons }) =>
-        lessons.map((lesson) => {
-          const timeBreakpoint = timeBreakpoints.indexOf(lesson.time) + 1;
+      {week.flatMap(({ day, lessons }) => [
+        <DayMarker key={day} day={day} isEmpty={lessons.length === 0} />,
+        ...groupLessonsByTime(lessons).map(({ time, lessons }) => {
+          const timeBreakpoint = timeBreakpoints.indexOf(time) + 1;
 
-          return (
+          const tiles = lessons.map((lesson, index) => (
             <ScheduleTile
-              key={`${day}-${lesson.time}`}
+              key={`${day}-${lesson.time}-${index}`}
               lesson={lesson}
               className={styles.tile}
               isNow={day === currentDay && timeBreakpoint === currentLesson}
@@ -84,9 +113,17 @@ export function ScheduleGrid({
                 '--time': timeBreakpoint,
               }}
             />
+          ));
+
+          return tiles.length === 1 ? (
+            tiles[0]
+          ) : (
+            <div className={styles['tile-group']} key={`${day}-${time}-group`}>
+              {tiles}
+            </div>
           );
-        })
-      )}
+        }),
+      ])}
     </div>
   );
 }

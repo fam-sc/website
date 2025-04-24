@@ -1,15 +1,28 @@
 @use 'sass:math';
+@use '../../theme/breakpoints' as *;
+
+@mixin desktop-view() {
+  @include breakpoint-up('md') {
+    @content;
+  }
+}
 
 .root {
   $column-count: var(--column-count);
   $row-count: var(--row-count);
 
-  display: grid;
-
-  grid-template-columns: epeat($column-count, 1fr);
-  grid-template-rows: fit-content repeat($row-count, 1fr);
-
   height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+
+  @include desktop-view() {
+    display: grid;
+
+    grid-template-columns: repeat($column-count, 1fr);
+    grid-template-rows: fit-content repeat($row-count, 1fr);
+  }
 }
 
 .tile {
@@ -32,4 +45,14 @@
   margin: .5em .5em;
 
   font-weight: 700 !important;
+
+  &[data-is-empty=true] {
+    display: none;
+  }
+
+  @include desktop-view() {
+    &[data-is-empty=true] {
+      display: block;
+    }
+  }
 }
