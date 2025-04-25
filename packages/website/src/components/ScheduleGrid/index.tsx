@@ -96,6 +96,40 @@ function TimeMarkers({ count }: { count: number }) {
   return result;
 }
 
+type TileGroupProps = {
+  day: Day;
+  time: Time;
+  isNow: boolean;
+  lessons: Lesson[];
+};
+
+function TileGroup({ day, time, isNow, lessons }: TileGroupProps) {
+  const timeBreakpoint = timeBreakpoints.indexOf(time) + 1;
+
+  const style = {
+    '--day': day,
+    '--time': timeBreakpoint,
+  };
+
+  const tiles = lessons.map((lesson, index) => (
+    <ScheduleTile
+      key={`${day}-${lesson.time}-${index}`}
+      lesson={lesson}
+      className={classNames(styles['base-tile'], styles.tile)}
+      isNow={isNow}
+      style={style}
+    />
+  ));
+
+  return tiles.length === 1 ? (
+    tiles[0]
+  ) : (
+    <div className={styles['base-tile']} style={style}>
+      {tiles}
+    </div>
+  );
+}
+
 export function ScheduleGrid({
   week,
   currentLesson,
@@ -108,31 +142,19 @@ export function ScheduleGrid({
       {week.flatMap(({ day, lessons }) => [
         <DayMarker key={day} day={day} isEmpty={lessons.length === 0} />,
         ...groupLessonsByTime(lessons).map(({ time, lessons }) => {
-          const timeBreakpoint = timeBreakpoints.indexOf(time) + 1;
           const isNow =
             currentLesson !== undefined &&
             day === currentLesson.day &&
             time === currentLesson.time;
 
-          const tiles = lessons.map((lesson, index) => (
-            <ScheduleTile
-              key={`${day}-${lesson.time}-${index}`}
-              lesson={lesson}
-              className={styles.tile}
+          return (
+            <TileGroup
+              key={`${day}-${time}`}
+              day={day}
+              time={time}
+              lessons={lessons}
               isNow={isNow}
-              style={{
-                '--day': day,
-                '--time': timeBreakpoint,
-              }}
             />
-          ));
-
-          return tiles.length === 1 ? (
-            tiles[0]
-          ) : (
-            <div className={styles['tile-group']} key={`${day}-${time}-group`}>
-              {tiles}
-            </div>
           );
         }),
       ])}

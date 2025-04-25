@@ -19,14 +19,16 @@
   }
 }
 
-.tile {
+.base-tile {
   $day: calc(var(--day) + 1);
   $time: calc(var(--time) + 1);
 
-  margin: .25em;
-
   grid-column: $day/$day;
   grid-row: $time/$time;
+}
+
+.tile {
+  margin: .25em;
 }
 
 .day-marker {
