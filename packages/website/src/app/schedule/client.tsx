@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { calculateCurrentLesson } from './date';
+import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
 
 import styles from './page.module.scss';
 
@@ -38,19 +39,35 @@ export function ClientComponent({
   const router = useRouter();
 
   const [selectedWeek, setSelectedWeek] = useState<Week>(initialWeek);
-  const [selectedGroup, setSelectedGroup] = useState(initialGroup);
+  const [selectedGroup, setSelectedGroup] = useState(initialGroup?.campusId);
 
   const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
+
+  useEffect(() => {
+    if (initialGroup === null) {
+      const savedGroup = retrieveSavedSelectedGroup();
+
+      if (savedGroup !== null) {
+        setSelectedGroup(savedGroup);
+      }
+    }
+  }, [initialGroup]);
 
   useEffect(() => {
     let url = '/schedule';
 
     if (selectedGroup) {
-      url += `?group=${shortenGuid(selectedGroup.campusId)}`;
+      url += `?group=${shortenGuid(selectedGroup)}`;
     }
 
     router.replace(url, { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGroup]);
+
+  useEffect(() => {
+    if (selectedGroup) {
+      saveSelectedGroup(selectedGroup);
+    }
   }, [selectedGroup]);
 
   useInterval(TIME_UPDATE_INTERVAL, () => {
@@ -77,16 +94,16 @@ export function ClientComponent({
 
       <ScheduleGroupSelect
         className={styles['group-select']}
-        selected={selectedGroup ?? undefined}
+        selectedId={selectedGroup}
         onSelected={(group) => {
-          setSelectedGroup(group);
+          setSelectedGroup(group.campusId);
         }}
       />
 
       <ScheduleGridLoader
         className={styles['schedule-grid']}
         week={selectedWeek}
-        groupId={selectedGroup?.campusId}
+        groupId={selectedGroup}
         currentLesson={currentLesson}
       />
     </>

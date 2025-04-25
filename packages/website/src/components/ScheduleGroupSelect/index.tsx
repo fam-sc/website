@@ -7,7 +7,7 @@ import { Group } from '@/data/types';
 
 export type ScheduleGroupSelectProps = {
   className?: string;
-  selected: Group | undefined;
+  selectedId: string | undefined;
   onSelected: (value: Group) => void;
 };
 
@@ -18,7 +18,7 @@ type KeyGroup = {
 
 export function ScheduleGroupSelect({
   className,
-  selected,
+  selectedId,
   onSelected,
 }: ScheduleGroupSelectProps) {
   const [items, setItems] = useState<KeyGroup[]>([]);
@@ -46,7 +46,7 @@ export function ScheduleGroupSelect({
       items={items}
       placeholder="Виберіть групу"
       disabled={isPending}
-      selectedItem={selected?.campusId}
+      selectedItem={selectedId}
       onItemSelected={(key) => {
         const group = items.find((group) => group.key === key);
 
