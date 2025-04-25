@@ -12,11 +12,12 @@ import {
 } from '@/api/schedule/types';
 import { classNames } from '@/utils/classNames';
 
+export type CurrentLesson = { day: Day; time: Time | undefined };
+
 export type ScheduleGridProps = {
   className?: string;
   week: DaySchedule[];
-  currentDay: Day;
-  currentLesson: number;
+  currentLesson: CurrentLesson | undefined;
 };
 
 type LessonGroup = {
@@ -32,28 +33,6 @@ const days = [
   "П'ятниця",
   'Субота',
 ] as const;
-
-function getColumnCount(week: DaySchedule[]): number {
-  let result = week.length;
-
-  for (let i = week.length - 1; i >= 0; i--) {
-    if (week[i].lessons.length === 0) {
-      result -= 1;
-    }
-  }
-
-  return result;
-}
-
-function getRowCount(week: DaySchedule[]): number {
-  let result = 0;
-
-  for (const { lessons } of week) {
-    result = Math.max(result, lessons.length);
-  }
-
-  return result;
-}
 
 function groupLessonsByTime(lessons: Lesson[]): LessonGroup[] {
   const groupMap = new Map<string, LessonGroup>();
@@ -85,29 +64,26 @@ function DayMarker({ day, isEmpty }: { day: Day; isEmpty: boolean }) {
 
 export function ScheduleGrid({
   week,
-  currentDay,
   currentLesson,
   className,
 }: ScheduleGridProps) {
   return (
-    <div
-      className={classNames(styles.root, className)}
-      style={{
-        '--row-count': getRowCount(week),
-        '--column-count': getColumnCount(week),
-      }}
-    >
+    <div className={classNames(styles.root, className)}>
       {week.flatMap(({ day, lessons }) => [
         <DayMarker key={day} day={day} isEmpty={lessons.length === 0} />,
         ...groupLessonsByTime(lessons).map(({ time, lessons }) => {
           const timeBreakpoint = timeBreakpoints.indexOf(time) + 1;
+          const isNow =
+            currentLesson !== undefined &&
+            day === currentLesson.day &&
+            time === currentLesson.time;
 
           const tiles = lessons.map((lesson, index) => (
             <ScheduleTile
               key={`${day}-${lesson.time}-${index}`}
               lesson={lesson}
               className={styles.tile}
-              isNow={day === currentDay && timeBreakpoint === currentLesson}
+              isNow={isNow}
               style={{
                 '--day': day,
                 '--time': timeBreakpoint,

@@ -10,8 +10,7 @@ type Story = StoryObj<typeof ScheduleGrid>;
 
 export const Primary: Story = {
   args: {
-    currentDay: 1,
-    currentLesson: 2,
+    currentLesson: { day: 1, time: '12:20' },
     week: [
       {
         day: 1,

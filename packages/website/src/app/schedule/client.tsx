@@ -3,14 +3,17 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { calculateCurrentLesson } from './date';
+
 import styles from './page.module.scss';
 
-import { getGroups, getSchedule } from '@/api/schedule/client';
-import { Schedule } from '@/api/schedule/types';
+import { getTrueCurrentTime } from '@/api/time';
 import { OptionSwitch } from '@/components/OptionSwitch';
-import { ScheduleGrid } from '@/components/ScheduleGrid';
-import { Select } from '@/components/Select';
+import { CurrentLesson } from '@/components/ScheduleGrid';
+import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';
+import { ScheduleGroupSelect } from '@/components/ScheduleGroupSelect';
 import { Group } from '@/data/types';
+import { useInterval } from '@/hooks/useInterval';
 
 type Week = 1 | 2;
 
@@ -19,10 +22,8 @@ type ClientComponentProps = {
   initialGroup: Group | null;
 };
 
-type KeyGroup = {
-  key: string;
-  title: string;
-};
+// 5 minutes
+const TIME_UPDATE_INTERVAL = 5 * 60 * 1000;
 
 const weekTextMap: Record<Week, string> = {
   [1]: 'Перший тиждень',
@@ -36,33 +37,9 @@ export function ClientComponent({
   const router = useRouter();
 
   const [selectedWeek, setSelectedWeek] = useState<Week>(initialWeek);
-  const [schedule, setSchedule] = useState<Schedule>();
-  const [groups, setGroups] = useState<KeyGroup[]>([]);
   const [selectedGroup, setSelectedGroup] = useState(initialGroup);
 
-  useEffect(() => {
-    if (selectedGroup !== null) {
-      getSchedule(selectedGroup.campusId)
-        .then((value) => {
-          setSchedule(value);
-        })
-        .catch((error: unknown) => {
-          console.error(error);
-        });
-    }
-  }, [selectedGroup]);
-
-  useEffect(() => {
-    getGroups()
-      .then((result) => {
-        setGroups(
-          result.map((group) => ({ key: group.campusId, title: group.name }))
-        );
-      })
-      .catch((error: unknown) => {
-        console.error(error);
-      });
-  }, []);
+  const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
 
   useEffect(() => {
     let url = '/schedule';
@@ -74,6 +51,16 @@ export function ClientComponent({
     router.replace(url, { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGroup]);
+
+  useInterval(TIME_UPDATE_INTERVAL, () => {
+    getTrueCurrentTime('Europe/Kyiv')
+      .then((date) => {
+        setCurrentLesson(calculateCurrentLesson(date));
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+      });
+  });
 
   return (
     <>
@@ -87,28 +74,20 @@ export function ClientComponent({
         }}
       />
 
-      <Select
+      <ScheduleGroupSelect
         className={styles['group-select']}
-        placeholder="Виберіть групу"
-        items={groups}
-        selectedItem={selectedGroup?.campusId}
-        onItemSelected={(key) => {
-          const group = groups.find((group) => group.key === key);
-
-          if (group !== undefined) {
-            setSelectedGroup({ campusId: group.key, name: group.title });
-          }
+        selected={selectedGroup ?? undefined}
+        onSelected={(group) => {
+          setSelectedGroup(group);
         }}
       />
 
-      {schedule === undefined ? undefined : (
-        <ScheduleGrid
-          className={styles['schedule-grid']}
-          week={schedule.weeks[selectedWeek - 1]}
-          currentDay={1}
-          currentLesson={1}
-        />
-      )}
+      <ScheduleGridLoader
+        className={styles['schedule-grid']}
+        week={selectedWeek}
+        groupId={selectedGroup?.campusId}
+        currentLesson={currentLesson}
+      />
     </>
   );
 }

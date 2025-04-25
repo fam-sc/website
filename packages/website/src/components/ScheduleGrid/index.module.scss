@@ -8,9 +8,6 @@
 }
 
 .root {
-  $column-count: var(--column-count);
-  $row-count: var(--row-count);
-
   height: fit-content;
 
   display: flex;
@@ -19,9 +16,6 @@
 
   @include desktop-view() {
     display: grid;
-
-    grid-template-columns: repeat($column-count, 1fr);
-    grid-template-rows: fit-content repeat($row-count, 1fr);
   }
 }
 
