@@ -1,7 +1,7 @@
 import { UpdateTimeType } from './types/meta';
 import { Repository } from './repo';
 
-export abstract class CachedExternalApi<T extends object, F = T> {
+export abstract class CachedExternalApi<T, F = T> {
   private collection: UpdateTimeType;
   private invalidateTime: number;
 
@@ -55,7 +55,7 @@ export abstract class CachedExternalApi<T extends object, F = T> {
     return value as unknown as T;
   }
 
-  static accessor<Args extends unknown[], T extends object, F>(
+  static accessor<Args extends unknown[], T, F>(
     implementation: new (...args: Args) => CachedExternalApi<T, F>
   ) {
     return (...args: Args) => {

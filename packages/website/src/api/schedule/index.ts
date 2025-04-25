@@ -45,7 +45,10 @@ class FacultyGroupsExternalApi extends CachedExternalApi<Group[]> {
   }
 }
 
-class FacultyGroupGetterExternalApi extends CachedExternalApi<Group, Group[]> {
+class FacultyGroupGetterExternalApi extends CachedExternalApi<
+  Group | null,
+  Group[]
+> {
   private groupId: string;
 
   constructor(groupId: string) {
@@ -64,6 +67,10 @@ class FacultyGroupGetterExternalApi extends CachedExternalApi<Group, Group[]> {
 
   protected async putToRepo(repo: Repository, value: Group[]): Promise<void> {
     await repo.groups().insertOrUpdateAll(value);
+  }
+
+  protected mapFetchResult(value: Group[]): Group | null {
+    return value.find((group) => group.campusId === this.groupId) ?? null;
   }
 }
 

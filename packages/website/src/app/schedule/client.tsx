@@ -14,6 +14,7 @@ import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';
 import { ScheduleGroupSelect } from '@/components/ScheduleGroupSelect';
 import { Group } from '@/data/types';
 import { useInterval } from '@/hooks/useInterval';
+import { shortenGuid } from '@/utils/guid';
 
 type Week = 1 | 2;
 
@@ -44,8 +45,8 @@ export function ClientComponent({
   useEffect(() => {
     let url = '/schedule';
 
-    if (selectedGroup !== null) {
-      url += `?group=${selectedGroup.campusId}`;
+    if (selectedGroup) {
+      url += `?group=${shortenGuid(selectedGroup.campusId)}`;
     }
 
     router.replace(url, { scroll: false });
