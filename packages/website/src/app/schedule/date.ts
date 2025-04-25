@@ -2,6 +2,8 @@ import { Time, timeBreakpoints } from '@/api/campus/types';
 import { CurrentLesson } from '@/components/ScheduleGrid';
 import { Day } from '@/data/types/schedule';
 
+const LESSON_MINUTES = 90;
+
 // Normalize Sunday-Saturday (0-6) weekday to Monday-Sunday (1-7)
 function normalizeWeekday(value: number): Day {
   return value === 0 ? 6 : ((value + 1) as Day);
@@ -20,13 +22,14 @@ function getBreakpointDayMinutes(time: Time): number {
 }
 
 function findNeasestBreakpoint(dayMinutes: number): Time | undefined {
-  if (dayMinutes < getBreakpointDayMinutes(timeBreakpoints[0])) {
-    return undefined;
-  }
+  for (const breakpoint of timeBreakpoints) {
+    const breakpointMinutes = getBreakpointDayMinutes(breakpoint);
 
-  for (let i = 1; i < timeBreakpoints.length; i++) {
-    if (getBreakpointDayMinutes(timeBreakpoints[i]) >= dayMinutes) {
-      return timeBreakpoints[i - 1];
+    if (
+      dayMinutes >= breakpointMinutes &&
+      dayMinutes <= breakpointMinutes + LESSON_MINUTES
+    ) {
+      return breakpoint;
     }
   }
 
