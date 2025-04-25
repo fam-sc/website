@@ -1,0 +1,47 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
+@mixin tablet-view() {
+  @include breakpoint-up('md') {
+    @content;
+  }
+}
+
+@mixin desktop-view() {
+  @include breakpoint-up('lg') {
+    @content;
+  }
+}
+
+.week-switch {
+  margin: 0 auto !important;
+  width: 80% !important;
+
+  @include tablet-view() {
+    width: 50% !important;
+  }
+ 
+  @include desktop-view() {
+    width: fit-content !important;
+  }
+}
+
+.group-select {
+  width: 80%;
+  margin: 1em auto;
+
+  @include tablet-view() {
+    width: 15%;
+  }
+
+  // @include desktop-view() {
+  //   width: 15%;
+  // }
+}
+
+.schedule-grid {
+  @include mx(1em);
+
+  min-height: 50dvh;
+  margin-bottom: 2em;
+}

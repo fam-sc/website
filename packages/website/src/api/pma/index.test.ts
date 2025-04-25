@@ -8,7 +8,9 @@ test('Find head of the faculty', async () => {
   const teachers = await getTeachers();
 
   const target = teachers.find(
-    (teacher) => teacher.link === '/teachers/tavrov-danilo-yuriyovich'
+    (teacher) =>
+      teacher.link ===
+      'https://pma.fpm.kpi.ua/teachers/tavrov-danilo-yuriyovich'
   );
 
   expect(target).not.toBeUndefined();

@@ -1,10 +1,12 @@
-export type Day = 1 | 2 | 3 | 4 | 5 | 6;
+import { Time } from '@/api/campus/types';
+
+export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export type Lesson = {
   type: 'lec' | 'prac' | 'lab';
   name: string;
   teacher: string;
-  time: string;
+  time: Time;
   place: string;
 };
 

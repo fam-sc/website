@@ -1,0 +1,69 @@
+@use 'sass:math';
+@use '../../theme/breakpoints' as *;
+
+@mixin desktop-view() {
+  @include breakpoint-up('lg') {
+    @content;
+  }
+}
+
+.root {
+  height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+
+  @include desktop-view() {
+    display: grid;
+  }
+}
+
+.base-tile {
+  $day: calc(var(--day) + 1);
+  $time: calc(var(--time) + 1);
+
+  grid-column: $day/$day;
+  grid-row: $time/$time;
+}
+
+.tile {
+  margin: .25em;
+}
+
+.day-marker {
+  $day: calc(var(--day) + 1);
+
+  grid-column: $day/$day;
+  grid-row: 1/1;
+
+  text-align: center;
+  margin: .5em .5em;
+
+  font-weight: 700 !important;
+
+  &[data-is-empty=true] {
+    display: none;
+  }
+
+  @include desktop-view() {
+    &[data-is-empty=true] {
+      display: block;
+    }
+  }
+}
+
+.time-marker {
+  display: none;
+
+  @include desktop-view() {
+    $index: calc(var(--index) + 2); 
+    
+    display: block;
+
+    grid-column: 1/1;
+    grid-row: $index;
+
+    margin-top: .5em;
+  }
+}

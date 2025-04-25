@@ -17,7 +17,23 @@ export class ScheduleTeacherCollection extends EntityCollection<ScheduleTeacher>
     );
   }
 
+  insertOrUpdateMany(items: ScheduleTeacher[]) {
+    return this.collection().bulkWrite(
+      items.map(({ name, link }) => ({
+        updateOne: {
+          filter: { name },
+          update: { $set: { name, link } },
+          upsert: true,
+        },
+      }))
+    );
+  }
+
   findByName(name: string) {
     return this.collection().findOne({ name });
+  }
+
+  findByNames(names: string[]) {
+    return this.collection().find({ name: { $in: names } });
   }
 }

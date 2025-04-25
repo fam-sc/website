@@ -1,0 +1,96 @@
+@use 'sass:list';
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
+$type-gradient-map: (
+  lec: (#db17be, #9215d1),
+  prac: (#ce5c0f, #ee750a),
+  lab: (#2abca8, #13927c),
+);
+
+.root {
+  background-color: var(--color-background-dark);
+  border-radius: .75em;
+
+  padding: 1em;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  box-shadow: 0 0 3px #000;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.type {
+  margin-bottom: 4px;
+  width: fit-content;
+
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(0.25turn, var(--start), var(--end));
+ 
+  @each $key, $value in $type-gradient-map {
+    &[data-type=#{$key}] {
+      --start: #{list.nth($value, 1)};
+      --end: #{list.nth($value, 2)};
+    }
+  }
+}
+
+.now-indicator {
+  margin-left: auto;
+
+  &::before {
+    $color: #f00;
+
+    content: ' ';
+    display: inline-block;
+
+    @include size(.75em);
+
+    margin-right: 4px;
+    
+    background-color: $color;
+    animation: glowing 1s linear 0s infinite alternate;
+
+    border-radius: 1em;
+
+    @keyframes glowing {
+      from {
+        box-shadow: 0 0 0 $color;
+      }
+
+      to {
+        box-shadow: 0 0 10px $color;
+      }
+    }
+  }
+}
+
+.name {
+  font-weight: 700 !important;
+  margin-bottom: 4px;
+}
+
+.time {
+  @include breakpoint-up('lg') {
+    display: none !important;
+  }
+}
+
+.icon-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .5em;
+
+  svg {
+    fill: var(--color-text-on-background);
+  }
+}

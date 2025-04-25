@@ -21,3 +21,12 @@ export function badRequest(explanation?: {
     }
   );
 }
+
+export function ok(value: object): NextResponse {
+  return new NextResponse(JSON.stringify(value), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
