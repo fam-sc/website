@@ -1,0 +1,57 @@
+@use '../../theme/breakpoints' as *;
+@use '../../theme/utils' as *;
+
+.root {
+  --columns: 2;
+
+  display: grid;
+  
+  grid-template-columns: repeat(var(--columns), 1fr);
+
+  column-gap: 1em;
+  row-gap: 1em;
+
+  &::before {
+    content: '';
+    width: 0;
+    padding-bottom: 100%;
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+  }
+
+  @include breakpoint-up('lg') {
+    --columns: 4;
+
+    column-gap: 6em;
+    row-gap: 2em;
+  }
+
+  > * {
+    display: block;
+
+    border: 2px solid var(--color-primary);
+    border-radius: 2em;
+
+    padding: 1em 1.5em;
+
+    &:first-child{
+      grid-row: 1 / 1;
+      grid-column: 1 / 1;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 1em;
+      font-weight: 700 !important;
+
+      height: 2em;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      
+      border-radius: 2em;
+    }
+  }
+}

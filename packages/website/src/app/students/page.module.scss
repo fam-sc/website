@@ -1,0 +1,15 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
+.useful-links-title {
+  text-align: center;
+  margin: .5em 0 .7em 0 !important;
+}
+
+.useful-links {
+  @include px(1em);
+
+  @include breakpoint-up('md') {
+    @include px(6em);
+  }
+}

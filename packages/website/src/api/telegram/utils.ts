@@ -6,8 +6,12 @@ export function isTelegramUrl(url: string): boolean {
 
 // Parses URL's of type "https://t.me/abc" to "@abc"
 export function urlToChatId(url: string): string {
+  return `@${urlToRawChatId(url)}`;
+}
+
+export function urlToRawChatId(url: string): string {
   if (isTelegramUrl(url)) {
-    return `@${url.slice(TME_PREFIX.length)}`;
+    return url.slice(TME_PREFIX.length);
   }
 
   throw new Error('Invalid format');

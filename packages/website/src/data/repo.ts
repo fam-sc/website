@@ -7,7 +7,6 @@ import { ScheduleCollection } from './collections/schedule';
 import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
 import { UpdateTimeCollection } from './collections/updateTime';
-import { UsefulLinkCollection } from './collections/usefulLinks';
 import { UserCollection } from './collections/users';
 
 import { getEnvChecked } from '@/utils/env';
@@ -29,10 +28,6 @@ export class Repository implements AsyncDisposable {
 
   galleryImages(): GalleryImageCollection {
     return new GalleryImageCollection(this.client);
-  }
-
-  usefulLinks(): UsefulLinkCollection {
-    return new UsefulLinkCollection(this.client);
   }
 
   sessions(): SessionCollection {
