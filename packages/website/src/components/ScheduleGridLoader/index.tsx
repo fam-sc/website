@@ -1,12 +1,11 @@
-import { useEffect, useState, useTransition } from 'react';
-
+/* eslint-disable unicorn/no-useless-undefined */
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';
 
 import styles from './index.module.scss';
 
 import { getSchedule } from '@/api/schedule/client';
-import { Schedule } from '@/api/schedule/types';
+import { useDataLoader } from '@/hooks/useDataLoader';
 import { classNames } from '@/utils/classNames';
 
 export type ScheduleGridLoaderProps = {
@@ -22,24 +21,11 @@ export function ScheduleGridLoader({
   week,
   currentLesson,
 }: ScheduleGridLoaderProps) {
-  const [isPending, startTransition] = useTransition();
-  const [schedule, setSchedule] = useState<Schedule>();
-
-  useEffect(() => {
-    if (groupId !== undefined) {
-      startTransition(async () => {
-        try {
-          const value = await getSchedule(groupId);
-
-          startTransition(() => {
-            setSchedule(value);
-          });
-        } catch (error: unknown) {
-          console.error(error);
-        }
-      });
-    }
-  }, [groupId]);
+  const [schedule, isPending] = useDataLoader(
+    () =>
+      groupId === undefined ? Promise.resolve(undefined) : getSchedule(groupId),
+    [groupId]
+  );
 
   return (
     <div className={classNames(styles.root, className)}>
