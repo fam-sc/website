@@ -111,9 +111,7 @@ export const getFacultyGroupById = CachedExternalApi.accessor(
 export async function getScheduleForGroup(
   groupId: string
 ): Promise<ApiSchedule> {
-  await using repo = await Repository.openConnection();
-
   const dataSchedule = await getDataSchedule(groupId);
 
-  return await dataScheduleToApiSchedule(dataSchedule, repo);
+  return await dataScheduleToApiSchedule(dataSchedule);
 }

@@ -5,13 +5,12 @@ import {
   Weekday,
 } from '../campus/types';
 
-import { createCachedTeacherResolver, TeacherResolver } from './teachers';
+import { resolveTeachers, TeacherMap } from './teachers';
 import {
   DaySchedule as ApiDaySchedule,
   Schedule as ApiSchedule,
 } from './types';
 
-import { Repository } from '@/data/repo';
 import {
   Day,
   DaySchedule as DataDaySchedule,
@@ -41,6 +40,23 @@ export function campusDayToWeekdayNumber(value: Weekday): Day {
   }
 }
 
+function getUniqueTeachersFromWeek(week: DataDaySchedule[], out: Set<string>) {
+  for (const { lessons } of week) {
+    for (const { teacher } of lessons) {
+      out.add(teacher);
+    }
+  }
+}
+
+function getUniqueTeachers(value: DataSchedule): Set<string> {
+  const result = new Set<string>();
+
+  getUniqueTeachersFromWeek(value.firstWeek, result);
+  getUniqueTeachersFromWeek(value.secondWeek, result);
+
+  return result;
+}
+
 export function campusDayScheduleToDaySchedule(
   schedule: CampusDaySchedule
 ): DataDaySchedule {
@@ -66,38 +82,29 @@ export function campusScheduleToDataSchedule(
   };
 }
 
-async function dataScheduleWeekToApiScheduleWeek(
+function dataScheduleWeekToApiScheduleWeek(
   value: DataDaySchedule,
-  resolver: TeacherResolver
-): Promise<ApiDaySchedule> {
+  teacherMap: TeacherMap
+): ApiDaySchedule {
   return {
     day: value.day,
-    lessons: await Promise.all(
-      value.lessons.map(async ({ teacher: teacherName, ...rest }) => {
-        const teacher = await resolver.get(teacherName);
-        if (teacher === undefined) {
-          return { teacher: { name: teacherName, link: null }, ...rest };
-        }
+    lessons: value.lessons.map(({ teacher: teacherName, ...rest }) => {
+      const teacher = teacherMap.get(teacherName);
+      if (teacher === undefined) {
+        throw new Error('Cannot find teacher by given name');
+      }
 
-        return { teacher: { name: teacher.name, link: teacher.link }, ...rest };
-      })
-    ),
+      return { teacher, ...rest };
+    }),
   };
 }
 
 export async function dataScheduleToApiSchedule(
-  value: DataSchedule,
-  repo: Repository
+  value: DataSchedule
 ): Promise<ApiSchedule> {
-  const teacherResolver = await createCachedTeacherResolver(repo);
-  const weeks = await Promise.all(
-    [value.firstWeek, value.secondWeek].map(async (week) => {
-      return Promise.all(
-        week.map((value) =>
-          dataScheduleWeekToApiScheduleWeek(value, teacherResolver)
-        )
-      );
-    })
+  const teachers = await resolveTeachers(getUniqueTeachers(value));
+  const weeks = [value.firstWeek, value.secondWeek].map((week) =>
+    week.map((value) => dataScheduleWeekToApiScheduleWeek(value, teachers))
   );
 
   return {

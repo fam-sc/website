@@ -1,6 +1,6 @@
 export type NameWithLink = {
   name: string;
-  link: string;
+  link: string | null;
 };
 
 export type Teacher = NameWithLink;
