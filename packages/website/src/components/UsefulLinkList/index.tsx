@@ -7,7 +7,7 @@ import styles from './index.module.scss';
 
 import { classNames } from '@/utils/classNames';
 
-type Item = {
+export type UsefulLinkListItem = {
   id: string;
   title: string;
   href: string;
@@ -16,7 +16,7 @@ type Item = {
 
 export type UsefulLinkListProps = {
   className?: string;
-  items: Item[];
+  items: UsefulLinkListItem[];
 };
 
 export function UsefulLinkList({ items, className }: UsefulLinkListProps) {

@@ -22,7 +22,7 @@ export class EntityCollection<T extends Document> {
   }
 
   getAll() {
-    return this.collection().find().stream();
+    return this.collection().find();
   }
 
   findById(id: InferIdType<T>): Promise<WithId<T> | null> {
