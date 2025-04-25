@@ -1,5 +1,6 @@
 @use 'sass:list';
 @use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
 
 $type-gradient-map: (
   lec: (#db17be, #9215d1),
@@ -75,6 +76,12 @@ $type-gradient-map: (
 .name {
   font-weight: 700 !important;
   margin-bottom: 4px;
+}
+
+.time {
+  @include breakpoint-up('lg') {
+    display: none !important;
+  }
 }
 
 .icon-row {

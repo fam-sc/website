@@ -20,7 +20,7 @@ export function shortenGuid(value: string): string {
   const dashIndex = value.indexOf('-');
 
   if (dashIndex === -1) {
-    throw new Error('Invalid GUID');
+    return value;
   }
 
   const rest = value.slice(dashIndex + 1);

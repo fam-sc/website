@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { ScheduleTile } from '../ScheduleTile';
 import { Typography } from '../Typography';
 
@@ -50,6 +52,20 @@ function groupLessonsByTime(lessons: Lesson[]): LessonGroup[] {
   return [...groupMap.values()];
 }
 
+function maxTimeBreakpointIndex(days: DaySchedule[]): number {
+  let maxTimeIndex = -1;
+
+  for (const { lessons } of days) {
+    for (const { time } of lessons) {
+      const timeIndex = timeBreakpoints.indexOf(time);
+
+      maxTimeIndex = Math.max(timeIndex, maxTimeIndex);
+    }
+  }
+
+  return maxTimeIndex;
+}
+
 function DayMarker({ day, isEmpty }: { day: Day; isEmpty: boolean }) {
   return (
     <Typography
@@ -62,6 +78,24 @@ function DayMarker({ day, isEmpty }: { day: Day; isEmpty: boolean }) {
   );
 }
 
+function TimeMarker({ index }: { index: number }) {
+  return (
+    <Typography className={styles['time-marker']} style={{ '--index': index }}>
+      {timeBreakpoints[index]}
+    </Typography>
+  );
+}
+
+function TimeMarkers({ count }: { count: number }) {
+  const result: ReactNode[] = [];
+
+  for (let i = 0; i <= count; i++) {
+    result.push(<TimeMarker index={i} />);
+  }
+
+  return result;
+}
+
 export function ScheduleGrid({
   week,
   currentLesson,
@@ -69,6 +103,8 @@ export function ScheduleGrid({
 }: ScheduleGridProps) {
   return (
     <div className={classNames(styles.root, className)}>
+      <TimeMarkers count={maxTimeBreakpointIndex(week)} />
+
       {week.flatMap(({ day, lessons }) => [
         <DayMarker key={day} day={day} isEmpty={lessons.length === 0} />,
         ...groupLessonsByTime(lessons).map(({ time, lessons }) => {

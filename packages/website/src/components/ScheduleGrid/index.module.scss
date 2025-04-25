@@ -2,7 +2,7 @@
 @use '../../theme/breakpoints' as *;
 
 @mixin desktop-view() {
-  @include breakpoint-up('md') {
+  @include breakpoint-up('lg') {
     @content;
   }
 }
@@ -20,7 +20,7 @@
 }
 
 .tile {
-  $day: var(--day);
+  $day: calc(var(--day) + 1);
   $time: calc(var(--time) + 1);
 
   margin: .25em;
@@ -30,7 +30,7 @@
 }
 
 .day-marker {
-  $day: var(--day);
+  $day: calc(var(--day) + 1);
 
   grid-column: $day/$day;
   grid-row: 1/1;
@@ -48,5 +48,20 @@
     &[data-is-empty=true] {
       display: block;
     }
+  }
+}
+
+.time-marker {
+  display: none;
+
+  @include desktop-view() {
+    $index: calc(var(--index) + 2); 
+    
+    display: block;
+
+    grid-column: 1/1;
+    grid-row: $index;
+
+    margin-top: .5em;
   }
 }
