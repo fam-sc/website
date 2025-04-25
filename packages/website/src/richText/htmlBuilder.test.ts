@@ -21,6 +21,8 @@ test.each<[RichTextString, string]>([
     `<img src="https://media.sc-fam.org/123" width="100" height="100"/>`,
   ],
 ])('richTextToHtml', (input, expected) => {
+  process.env.MEDIA_URL = 'https://media.sc-fam.org';
+
   const actual = richTextToHtml(input);
 
   expect(actual).toEqual(expected);
