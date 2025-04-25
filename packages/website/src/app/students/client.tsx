@@ -5,10 +5,7 @@ import { usefulLinks } from './usefulLinks';
 import styles from './page.module.scss';
 
 import { Typography } from '@/components/Typography';
-import {
-  UsefulLinkList,
-} from '@/components/UsefulLinkList';
-
+import { UsefulLinkList } from '@/components/UsefulLinkList';
 
 export function ClientComponent() {
   return (

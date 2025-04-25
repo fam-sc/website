@@ -24,7 +24,7 @@ type ItemProps = {
 };
 
 const items: ItemProps[] = [
-  { title: 'Студрада ФПМ', href: '#' },
+  { title: 'Студентство', href: '/students' },
   { title: 'Розклад', href: '/schedule' },
   { title: 'Опитування', href: '#' },
 ];
