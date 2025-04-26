@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Typography } from '../Typography';
 
-import styles from './index.module.scss';
-
 import { WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
+
+import styles from './index.module.scss';
 
 type ButtonVariant = 'flat' | 'solid' | 'outlined';
 type ButtonColor = 'primary';

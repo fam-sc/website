@@ -4,13 +4,13 @@
 import InvitationImage from '@public/images/logo-2.png';
 import Image from 'next/image';
 
-import styles from './page.module.scss';
-
 import { ColumnText } from '@/components/ColumnText';
 import { Swiper } from '@/components/Swiper';
 import { TextWithImage } from '@/components/TextWithImage';
 import { Typography } from '@/components/Typography';
 import { ImageInfo } from '@/image/info';
+
+import styles from './page.module.scss';
 
 export type ClientComponentProps = {
   swiperSlides: (ImageInfo & { id: string })[];

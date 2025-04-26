@@ -39,9 +39,10 @@
   height: 100%;
 
   transition: transform 0.4s ease-in;
-  z-index: 0;
 
   @include breakpoint-down('md') {
+    // JS may change the transform, but we reset it anyway
+    // on smaller screens.
     transform: none !important;
   }
 
@@ -53,9 +54,9 @@
 
   &[data-selected='true'] {
     transform: scale(math.div(1, $height));
-    z-index: 1 !important;
+    z-index: 1;
 
-    & > * {
+    > * {
       box-shadow: 0 0 1px #000;
     }
   }

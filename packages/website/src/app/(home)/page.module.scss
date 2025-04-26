@@ -16,7 +16,7 @@
 }
 
 .greeting {
-  margin: 2em 1.75em !important;
+  margin: 2em 1.75em;
   text-align: justify;
 
   @include desktop-view() {
@@ -27,7 +27,7 @@
 .greeting-header {
   display: block;
 
-  margin-bottom: 1em !important;
+  margin-bottom: 1em;
 }
 
 .invitation {

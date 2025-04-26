@@ -78,9 +78,10 @@ $type-gradient-map: (
   margin-bottom: 4px;
 }
 
-.time {
+// Increase specifity to override display.
+.root .time {
   @include breakpoint-up('lg') {
-    display: none !important;
+    display: none;
   }
 }
 

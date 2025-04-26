@@ -21,11 +21,13 @@ html,
 body {
   @include size(100%);
 
-  padding: 0;
-  margin: 0;
-
   background: var(--color-background);
   color: var(--color-text-on-background);
+}
+
+html * {
+  padding: 0;
+  margin: 0;
 }
 
 body {
