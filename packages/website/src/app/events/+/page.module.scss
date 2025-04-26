@@ -1,0 +1,16 @@
+@use '../../../theme/breakpoints' as *;
+@use '../../../theme/utils' as *;
+
+.image {
+  margin: 2em 4em;
+}
+
+.description {
+  margin: 2em 4em;
+}
+
+.save-edit-button {
+  align-self: center;
+
+  margin-bottom: 1em;
+}

@@ -51,14 +51,8 @@ export type PollRespondentAnswer = {
 
 export type Event = {
   title: string;
-  startDate: Date;
-  endDate: Date;
+  date: Date;
   description: RichTextString;
-  conclusion: EventConclusion | null;
-};
-
-export type EventConclusion = {
-  text: RichTextString;
 };
 
 export type GalleryImage = {

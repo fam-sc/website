@@ -53,6 +53,7 @@ export default tseslint.config(
       'unicorn/prevent-abbreviations': 'off',
       'unicorn/filename-case': 'off',
       'unicorn/no-null': 'off',
+      'unicorn/no-useless-undefined': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
     },
   },

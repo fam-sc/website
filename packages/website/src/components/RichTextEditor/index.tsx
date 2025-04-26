@@ -288,16 +288,19 @@ type RichTextEditorProps = {
    */
   text: string;
 
+  className?: string;
+
   onSaveText?: (text: string) => Promise<string>;
 };
 
 export function RichTextEditor(props: RichTextEditorProps) {
   const [isChanged, setIsChanged] = useState(false);
-  const [saveInProgress, setSaveInProgress] = useState(true);
+  const [saveInProgress, setSaveInProgress] = useState(false);
 
   const editor = useEditor({
     extensions,
     content: props.text,
+    immediatelyRender: false,
     onUpdate: () => {
       setIsChanged(true);
     },
@@ -308,7 +311,10 @@ export function RichTextEditor(props: RichTextEditorProps) {
   }, [editor, saveInProgress]);
 
   return (
-    <div className={styles.root} aria-disabled={saveInProgress}>
+    <div
+      className={classNames(styles.root, props.className)}
+      aria-disabled={saveInProgress}
+    >
       <EditorContext.Provider value={{ editor }}>
         <Menu
           isChanged={isChanged}
