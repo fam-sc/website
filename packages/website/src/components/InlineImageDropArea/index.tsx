@@ -12,21 +12,35 @@ import { CloseIcon } from '@/icons/CloseIcon';
 type DivProps = PropsMap['div'];
 
 export interface InlineImageDropAreaProps extends DivProps {
+  disabled?: boolean;
   imageSrc?: string;
   onFile: (file: File | undefined) => void;
 }
 
 export function InlineImageDropArea({
   className,
+  disabled,
   onFile,
   imageSrc,
   ...rest
 }: InlineImageDropAreaProps) {
   return (
-    <div className={classNames(styles.root, className)} {...rest}>
+    <div
+      className={classNames(styles.root, className)}
+      data-disabled={disabled}
+      {...rest}
+    >
       {imageSrc === undefined ? (
-        <BaseFileDropArea onFile={onFile} className={styles['drop-area']}>
-          <UploadFileButton buttonVariant="solid" onFile={onFile} />
+        <BaseFileDropArea
+          disabled={disabled}
+          onFile={onFile}
+          className={styles['drop-area']}
+        >
+          <UploadFileButton
+            disabled={disabled}
+            buttonVariant="solid"
+            onFile={onFile}
+          />
 
           <Typography>Або перетяніть його</Typography>
         </BaseFileDropArea>

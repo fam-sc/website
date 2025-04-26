@@ -18,7 +18,8 @@ async function putDeleteMediaFile(
     method,
     headers: { 'X-Auth-Key': auth },
     body,
-  });
+    duplex: 'half',
+  } as RequestInit);
 
   if (response.status !== 200) {
     throw new Error(response.statusText);

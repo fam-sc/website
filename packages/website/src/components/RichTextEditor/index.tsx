@@ -289,13 +289,14 @@ type RichTextEditorProps = {
   text: string;
 
   className?: string;
+  disabled?: boolean;
 
   onSaveText?: (text: string) => Promise<string>;
 };
 
 export function RichTextEditor(props: RichTextEditorProps) {
   const [isChanged, setIsChanged] = useState(false);
-  const [saveInProgress, setSaveInProgress] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const editor = useEditor({
     extensions,
@@ -307,13 +308,17 @@ export function RichTextEditor(props: RichTextEditorProps) {
   });
 
   useEffect(() => {
-    editor?.setEditable(!saveInProgress);
-  }, [editor, saveInProgress]);
+    editor?.setEditable(!disabled);
+  }, [editor, disabled]);
+
+  useEffect(() => {
+    setDisabled(props.disabled ?? false);
+  }, [props.disabled]);
 
   return (
     <div
       className={classNames(styles.root, props.className)}
-      aria-disabled={saveInProgress}
+      aria-disabled={disabled || props.disabled}
     >
       <EditorContext.Provider value={{ editor }}>
         <Menu
@@ -324,19 +329,19 @@ export function RichTextEditor(props: RichTextEditorProps) {
 
               // Disallow changing the text if we're updating it -
               // the update might return a different text (if we have an image in it).
-              setSaveInProgress(true);
+              setDisabled(true);
 
               props
                 .onSaveText?.(editor.getHTML())
                 .then((newText) => {
                   editor.commands.setContent(newText);
 
-                  setSaveInProgress(false);
+                  setDisabled(props.disabled ?? false);
                 })
                 .catch((error: unknown) => {
                   console.error(error);
 
-                  setSaveInProgress(false);
+                  setDisabled(props.disabled ?? false);
                 });
             }
           }}

@@ -17,7 +17,7 @@
     @include size(32px);
   }
   
-  &:hover .delete-image {
+  &:hover:not([data-disabled=true]) .delete-image {
     opacity: 1;
   }
 

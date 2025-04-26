@@ -39,3 +39,10 @@ export const Primary: Story = {
     style: { height: '400px' },
   },
 };
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    style: { height: '400px' },
+  },
+};

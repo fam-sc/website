@@ -8,34 +8,47 @@ import { useState } from 'react';
 type DivProps = PropsMap['div'];
 
 export interface BaseFileDropAreaProps extends DivProps, WithDataSpace<'over'> {
+  disabled?: boolean;
   onFile?: (file: File) => void;
 }
 
-export function BaseFileDropArea({ onFile, ...rest }: BaseFileDropAreaProps) {
+export function BaseFileDropArea({
+  onFile,
+  disabled,
+  ...rest
+}: BaseFileDropAreaProps) {
   const [isOver, setOver] = useState(false);
+
+  function changeIsOver(value: boolean) {
+    if (!disabled) {
+      setOver(value);
+    }
+  }
 
   return (
     <div
       {...rest}
       data-over={isOver}
       onDragEnter={() => {
-        setOver(true);
+        changeIsOver(true);
       }}
       onDragLeave={() => {
-        setOver(false);
+        changeIsOver(false);
       }}
       onDragOver={(e) => {
         e.preventDefault();
 
-        setOver(true);
+        changeIsOver(true);
       }}
       onDrop={(e) => {
-        e.preventDefault();
+        if (!disabled) {
+          e.preventDefault();
 
-        const { files } = e.dataTransfer;
+          const { files } = e.dataTransfer;
 
-        if (files.length > 0) {
-          onFile?.(files[0]);
+          if (files.length > 0) {
+            onFile?.(files[0]);
+          }
         }
       }}
     />

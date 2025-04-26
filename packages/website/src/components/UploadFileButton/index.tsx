@@ -9,12 +9,14 @@ type LabelProps = PropsMap['label'];
 export type UploadFileButtonProps = ButtonProps &
   LabelProps & {
     accept?: string;
+    disabled?: boolean;
     onFile?: (file: File) => void;
   };
 
 export function UploadFileButton({
   onFile,
   accept,
+  disabled,
   className,
   ...rest
 }: UploadFileButtonProps) {
@@ -22,6 +24,7 @@ export function UploadFileButton({
     <Button as="label" className={classNames(styles.root, className)} {...rest}>
       <input
         type="file"
+        disabled={disabled}
         accept={accept}
         onChange={(event) => {
           const { files } = event.target;
