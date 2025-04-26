@@ -18,12 +18,7 @@ export type HeaderProps = {
   userLogOn: boolean;
 };
 
-type ItemProps = {
-  title: string;
-  href: string;
-};
-
-const items: ItemProps[] = [
+const items: { title: string; href: string }[] = [
   { title: 'Студентство', href: '/students' },
   { title: 'Розклад', href: '/schedule' },
   { title: 'Опитування', href: '#' },
@@ -86,7 +81,16 @@ export function Header({ userLogOn }: HeaderProps) {
 
   return (
     <header className={styles.root}>
-      <div className={styles.content}>
+      <div
+        className={styles.content}
+        onClick={({ target }) => {
+          // Hide mobile menu if the user navigated to another page - the mobile menu
+          // is no longer relevant.
+          if (target instanceof HTMLElement && target.nodeName === 'a') {
+            setMobileMenuOpen(false);
+          }
+        }}
+      >
         <Link href="/" className={styles.logo}>
           <Image src={Logo} alt="Logo" />
         </Link>
