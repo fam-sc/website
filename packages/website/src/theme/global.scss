@@ -28,11 +28,6 @@ body {
 html * {
   padding: 0;
   margin: 0;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
 
   &::-webkit-scrollbar {
     width: 0.5em;
@@ -46,6 +41,11 @@ body {
     border-radius: 0.25em;
     background: var(--color-background-dark);
   }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
 
   > main {
     flex-grow: 1;
