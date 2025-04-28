@@ -7,10 +7,24 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const formData = await request.formData();
-  const image = formData.get('image');
+  const title = formData.get('title');
   const description = formData.get('description');
+  const rawDate = formData.get('date');
+  const image = formData.get('image');
 
-  if (!(image instanceof File && typeof description === 'string')) {
+  if (
+    !(
+      image instanceof File &&
+      typeof description === 'string' &&
+      typeof rawDate === 'string' &&
+      typeof title === 'string'
+    )
+  ) {
+    return badRequest();
+  }
+
+  const date = new Date(rawDate);
+  if (Number.isNaN(date.getTime())) {
     return badRequest();
   }
 
@@ -23,7 +37,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   await using repo = await Repository.openConnection();
   const id = await repo
     .events()
-    .insert({ date: new Date(), title: '', description: richTextDescription });
+    .insert({ date, title, description: richTextDescription });
 
   await putRawImage(`events/${id.insertedId}`, imageBuffer);
 

@@ -1,13 +1,29 @@
 @use '../../../theme/breakpoints' as *;
 @use '../../../theme/utils' as *;
 
+.root {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 4em;
+  gap: 2em;
+}
+
 .image {
-  margin: 2em 4em;
+  // margin: 2em 4em;
   height: 300px;
 }
 
 .description {
-  margin: 2em 4em;
+  // margin: 2em 4em;
+}
+
+.title {
+  width: 100%;
+  // margin: 0 4em;
+}
+
+.date {
+  width: fit-content;
 }
 
 .save-edit-button {

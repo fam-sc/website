@@ -2,6 +2,8 @@
 
 .root {
   position: relative;
+  display: flex;
+  flex-direction: column;
  
   .delete-image {
     opacity: 0;
@@ -38,6 +40,7 @@
   padding: 1em;
 
   height: 100%;
+  flex-grow: 0;
 
   transition: background-color .1s linear;
 
