@@ -11,6 +11,13 @@ export interface FooterProps {
   className?: string;
 }
 
+const items: { title: string; href: string }[] = [
+  { title: 'Головна', href: '/home' },
+  { title: 'Студентство', href: '/students' },
+  { title: 'Розклад', href: '/schedule' },
+  { title: 'Опитування', href: '#' },
+];
+
 export function Footer({ className }: FooterProps) {
   return (
     <footer className={classNames(styles.root, className)}>
@@ -21,26 +28,62 @@ export function Footer({ className }: FooterProps) {
       </div>
 
       <div className={styles.section}>
-        <Typography as="strong">Головна</Typography>
-        <Typography as="strong">Студентство</Typography>
-        <Typography as="strong">Розклад</Typography>
-        <Typography as="strong">Опитування</Typography>
-      </div>
+        {items.map(item => (
+          <Link key={item.href} href={item.href}>
+            <Typography>{item.title}</Typography>
+          </Link>
+        ))} </div>
 
       <div className={styles.section}>
         <Typography as="strong">Підтримка</Typography>
-        <Link href="#">Чат-бот</Link>
+        
+        <div className={styles.linkWithIcon}>
+        <Image 
+          src="/icons/bot.svg"
+          width={15} 
+          height={15}
+          alt="Bot" 
+        />
+        <Link href="https://t.me/fpm_sc_bot">Чат-бот</Link>
+      </div>
+
+      <div className={styles.linkWithIcon}>
+        <Image 
+          src="/icons/Logo.svg"
+          width={15} 
+          height={15}
+          alt="Bot" 
+        />
         <Link href="#">Про нас</Link>
+      </div>
+
+      <div className={styles.linkWithIcon}>
+        <Image 
+          src="/icons/Question.svg"
+          width={15} 
+          height={15}
+          alt="Bot" 
+        />
         <Link href="#">FAQ</Link>
       </div>
 
+      </div>
+
       <div className={styles.section}>
-        <Typography as="strong">Політика конфіденційності</Typography>
+      <Link href="#">
+      <Typography as="strong">Політика конфіденційності</Typography>
+      </Link>
+        
         <div className={styles.icons}>
-          <Link href="#">
-            <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
+        
+          <Link href="malito:sr.fam.kpi@gmail.com"  aria-label="Email">
+            <Image src="/icons/Mail.svg"
+             width={24} 
+             height={24}
+              alt="Mail" />
           </Link>
-          <Link href="#">
+
+          <Link href="https://www.instagram.com/fam_kpi/">
             <Image
               src="/icons/Instagram.svg"
               width={24}
@@ -48,7 +91,7 @@ export function Footer({ className }: FooterProps) {
               alt="Instagram"
             />
           </Link>
-          <Link href="#">
+          <Link href="https://t.me/primat_kpi">
             <Image
               src="/icons/Telegram.svg"
               width={24}
@@ -56,7 +99,7 @@ export function Footer({ className }: FooterProps) {
               alt="Telegram"
             />
           </Link>
-          <Link href="#">
+          <Link href="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
             <Image
               src="/icons/TikTok.svg"
               width={24}
