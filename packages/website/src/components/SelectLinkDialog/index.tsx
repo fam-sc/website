@@ -48,7 +48,7 @@ export function SelectLinkDialog(props: SelectLinkDialogProps) {
     >
       <TextInput
         value={link}
-        isError={!isValidLink}
+        error={isValidLink && 'Неправильний формат посилання'}
         onTextChanged={(newLink) => {
           setLink(newLink);
         }}

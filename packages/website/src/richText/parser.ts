@@ -27,7 +27,7 @@ type ImageInfo = {
   height: number;
 };
 
-interface Context {
+export interface ParserContext {
   parseImageToPath(dataUrl: string): Promise<ImageInfo>;
 }
 
@@ -35,7 +35,7 @@ type NodeOrFragment = ChildNode | DocumentFragment;
 
 type NodeTransformer<T extends NodeOrFragment = NodeOrFragment> = (
   element: T,
-  context: Context
+  context: ParserContext
 ) => Promise<RichTextNode | undefined>;
 
 type TransformerMap<K extends string = string> = {
@@ -58,7 +58,7 @@ function flattenRootNode(node: RichTextNode): RichTextNode {
 
 async function transformChildNodes(
   nodes: ChildNode[],
-  context: Context
+  context: ParserContext
 ): Promise<RichTextAtomNode[]> {
   const result = await Promise.all(
     nodes.flatMap((node) => transformNode(node, context))
@@ -72,7 +72,7 @@ async function transformChildNodes(
 
 function transformNode(
   node: NodeOrFragment,
-  context: Context
+  context: ParserContext
 ): Promise<RichTextNode | undefined> {
   const handler = handlerMap[node.nodeName] ?? defaultHandler;
 
@@ -134,7 +134,6 @@ const handlerMap = createHandlerMap({
   },
   '#text': (element) => Promise.resolve(element.value),
 
-  // eslint-disable-next-line unicorn/no-useless-undefined
   '#comment': () => Promise.resolve(undefined),
 });
 
@@ -153,7 +152,7 @@ const defaultHandler: NodeTransformer<Element> = async (element, context) => {
 
 export async function parseHtmlToRichText(
   input: string,
-  context: Context
+  context: ParserContext
 ): Promise<RichTextString> {
   const fragment = parseFragment(input);
   const result = await transformNode(fragment, context);

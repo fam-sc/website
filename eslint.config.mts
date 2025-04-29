@@ -1,7 +1,6 @@
 import react from 'eslint-plugin-react';
 import unicorn from 'eslint-plugin-unicorn';
 import prettier from 'eslint-plugin-prettier/recommended';
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
@@ -34,8 +33,7 @@ export default tseslint.config(
   {
     files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
     plugins: {
-      react,
-      'simple-import-sort': simpleImportSort,
+      react
     },
     languageOptions: {
       parserOptions: {
@@ -55,35 +53,8 @@ export default tseslint.config(
       'unicorn/prevent-abbreviations': 'off',
       'unicorn/filename-case': 'off',
       'unicorn/no-null': 'off',
+      'unicorn/no-useless-undefined': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
-    },
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx'],
-    rules: {
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: [
-            ['^\\u0000'],
-            ['^react', '^@?\\w'],
-            [
-              '^types(/.*|$)',
-              '^utils(/.*|$)',
-              '^api(/.*|$)',
-              '^hooks(/.*|$)',
-              '^theme(/.*|$)',
-              '^components(/.*|$)',
-            ],
-            ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
-            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-            ['^styles(/.*|$)', '^.+\\.?(scss)$'],
-            ['^(assets)(/.*|$)'],
-            ['^i18n(/.*|$)'],
-            ['^/./(assets)(/.*|$)'],
-          ],
-        },
-      ],
     },
   },
   ...compat.extends('next'),

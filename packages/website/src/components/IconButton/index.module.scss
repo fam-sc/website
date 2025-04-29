@@ -12,8 +12,6 @@ $roundings: (
 
   transition: background-color 0.1s linear;
 
-  padding: 0;
-  margin: 0;
   box-sizing: content-box;
 
   display: flex;
@@ -24,9 +22,16 @@ $roundings: (
   fill: var(--color-text-on-background);
 
   user-select: none;
+  cursor: pointer;
 
   &:hover {
-    background: var(--color-background-dark);
+    &[data-hover=background] {
+      background: var(--color-background-dark);
+    }
+
+    &[data-hover=fill] {
+      fill: var(--color-text-on-background-dark);
+    }
   }
 
   @each $key, $value in $roundings {

@@ -21,16 +21,13 @@ html,
 body {
   @include size(100%);
 
-  padding: 0;
-  margin: 0;
-
   background: var(--color-background);
   color: var(--color-text-on-background);
 }
 
-body {
-  display: flex;
-  flex-direction: column;
+html * {
+  padding: 0;
+  margin: 0;
 
   &::-webkit-scrollbar {
     width: 0.5em;
@@ -44,8 +41,16 @@ body {
     border-radius: 0.25em;
     background: var(--color-background-dark);
   }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
 
   > main {
     flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
   }
 }

@@ -1,9 +1,6 @@
 @use '../../theme/typography' as *;
 
 .root {
-  padding: 0;
-  margin: 0;
-
   font-family: var(--font-murs-gothic);
 
   @each $variant, $options in $variants {

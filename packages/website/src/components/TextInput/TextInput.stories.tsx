@@ -13,3 +13,15 @@ export const Primary: Story = {
     value: 'Text',
   },
 };
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
+
+export const Error: Story = {
+  args: {
+    error: 'Error',
+  },
+};

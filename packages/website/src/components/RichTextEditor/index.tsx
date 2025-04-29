@@ -288,49 +288,69 @@ type RichTextEditorProps = {
    */
   text: string;
 
+  className?: string;
+  disabled?: boolean;
+
+  onIsSavedChanged: (value: boolean) => void;
+
   onSaveText?: (text: string) => Promise<string>;
 };
 
-export function RichTextEditor(props: RichTextEditorProps) {
+export function RichTextEditor({
+  className,
+  text,
+  disabled: propsDisabled,
+  onIsSavedChanged,
+  onSaveText,
+}: RichTextEditorProps) {
   const [isChanged, setIsChanged] = useState(false);
-  const [saveInProgress, setSaveInProgress] = useState(true);
+  const [disabled, setDisabled] = useState(false);
 
   const editor = useEditor({
     extensions,
-    content: props.text,
+    content: text,
+    immediatelyRender: false,
     onUpdate: () => {
       setIsChanged(true);
+      onIsSavedChanged(true);
     },
   });
 
   useEffect(() => {
-    editor?.setEditable(!saveInProgress);
-  }, [editor, saveInProgress]);
+    editor?.setEditable(!disabled, false);
+  }, [editor, disabled]);
+
+  useEffect(() => {
+    setDisabled(propsDisabled ?? false);
+  }, [propsDisabled]);
 
   return (
-    <div className={styles.root} aria-disabled={saveInProgress}>
+    <div
+      className={classNames(styles.root, className)}
+      aria-disabled={disabled}
+    >
       <EditorContext.Provider value={{ editor }}>
         <Menu
           isChanged={isChanged}
           onSave={() => {
             if (editor !== null) {
               setIsChanged(false);
+              onIsSavedChanged(false);
 
               // Disallow changing the text if we're updating it -
               // the update might return a different text (if we have an image in it).
-              setSaveInProgress(true);
+              setDisabled(true);
 
-              props
-                .onSaveText?.(editor.getHTML())
+              onSaveText?.(editor.getHTML())
                 .then((newText) => {
-                  editor.commands.setContent(newText);
+                  editor.commands.setContent(newText, false);
 
-                  setSaveInProgress(false);
+                  setDisabled(propsDisabled ?? false);
                 })
                 .catch((error: unknown) => {
                   console.error(error);
 
-                  setSaveInProgress(false);
+                  setDisabled(propsDisabled ?? false);
                 });
             }
           }}

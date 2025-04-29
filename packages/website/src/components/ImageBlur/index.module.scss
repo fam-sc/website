@@ -1,0 +1,31 @@
+.root {
+  position: relative;
+
+  &, img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.main {
+  z-index: 1;
+
+  object-fit: contain;
+
+  position: relative;
+}
+
+.background {
+  z-index: 0;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  object-fit: cover;
+  filter: blur(50px);
+
+  // Blur can go out of the bounds. We don't want that.
+  // It's a hack to clip filter by element's bounds.
+  clip-path: inset(0 0 0 0);
+}

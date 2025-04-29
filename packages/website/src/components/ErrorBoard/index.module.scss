@@ -1,0 +1,20 @@
+.root {
+  padding: .75em;
+  background-color: var(--color-background-dark);
+  border-radius: .75em;
+
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+
+  li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style: none;
+
+    svg {
+      fill: var(--color-danger);
+    }
+  }
+}

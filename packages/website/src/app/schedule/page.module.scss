@@ -14,15 +14,15 @@
 }
 
 .week-switch {
-  margin: 0 auto !important;
-  width: 80% !important;
+  margin: 0 auto;
+  width: 80%;
 
   @include tablet-view() {
-    width: 50% !important;
+    width: 50%;
   }
  
   @include desktop-view() {
-    width: fit-content !important;
+    width: fit-content;
   }
 }
 
@@ -33,10 +33,6 @@
   @include tablet-view() {
     width: 15%;
   }
-
-  // @include desktop-view() {
-  //   width: 15%;
-  // }
 }
 
 .schedule-grid {

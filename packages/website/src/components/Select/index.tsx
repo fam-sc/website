@@ -2,14 +2,16 @@ import styles from './index.module.scss';
 
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+import { Typography } from '../Typography';
+import { MouseEvent, useState } from 'react';
 
-type HTMLSelectProps = PropsMap['select'];
+type DivProps = PropsMap['div'];
 
-export interface SelectProps<T extends string = string>
-  extends HTMLSelectProps {
+export interface SelectProps<T extends string = string> extends DivProps {
   items: { key: T; title: string }[];
   selectedItem?: T;
   placeholder: string;
+  disabled?: boolean;
 
   onItemSelected?: (value: T) => void;
 }
@@ -20,36 +22,57 @@ export function Select<T extends string>({
   placeholder,
   onItemSelected,
   className,
+  disabled,
   ...rest
 }: SelectProps<T>) {
-  return (
-    <select
-      {...rest}
-      value={selectedItem}
-      className={classNames(styles.root, className)}
-      onChange={(event) => {
-        const selectedIndex = event.target.selectedIndex - 1;
+  const [isOpen, setIsOpen] = useState(false);
+  const itemOnClick = (event: MouseEvent) => {
+    const key = (event.target as HTMLElement).dataset.key;
 
-        onItemSelected?.(items[selectedIndex].key);
+    if (key !== undefined) {
+      onItemSelected?.(key as T);
+      setIsOpen(false);
+    }
+  };
+
+  return (
+    <div
+      aria-disabled={disabled}
+      data-open={isOpen}
+      className={classNames(styles.root, className)}
+      onBlur={() => {
+        setTimeout(() => {
+          setIsOpen(false);
+        }, 100);
       }}
+      {...rest}
     >
-      <button>
-        <selectedcontent />
+      <button
+        disabled={disabled}
+        className={styles.header}
+        onClick={() => {
+          setIsOpen((state) => !state);
+        }}
+      >
+        <Typography>
+          {items.find((item) => item.key === selectedItem)?.title ??
+            placeholder}
+        </Typography>
 
         <svg viewBox="0 0 16 16">
           <path d="M0 4 H16 L8 12Z" />
         </svg>
       </button>
 
-      <option value="" hidden disabled>
-        {placeholder}
-      </option>
-
-      {items.map(({ key, title }) => (
-        <option key={key} value={key}>
-          {title}
-        </option>
-      ))}
-    </select>
+      {isOpen && (
+        <ul className={styles.items}>
+          {items.map(({ key, title }) => (
+            <Typography as="li" key={key} data-key={key} onClick={itemOnClick}>
+              {title}
+            </Typography>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

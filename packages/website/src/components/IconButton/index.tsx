@@ -9,13 +9,16 @@ type ButtonProps = JSX.IntrinsicElements['button'];
 
 export interface IconButtonProps
   extends ButtonProps,
-    WithDataSpace<'rounding'> {
+    WithDataSpace<'rounding' | 'hover'> {
   rounding?: 'none' | 'rounded' | 'circle';
+  hover?: 'background' | 'fill';
+
   children: ReactNode;
 }
 
 export function IconButton({
   rounding,
+  hover,
   className,
   children,
   ...rest
@@ -24,6 +27,7 @@ export function IconButton({
     <button
       className={classNames(styles.root, className)}
       data-rounding={rounding ?? 'rounded'}
+      data-hover={hover ?? 'background'}
       {...rest}
     >
       {children}

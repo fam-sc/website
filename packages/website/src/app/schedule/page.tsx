@@ -6,16 +6,13 @@ import { getCurrentTime } from '@/api/campus';
 import { getFacultyGroupById } from '@/api/schedule';
 import { normalizeGuid } from '@/utils/guid';
 import { pick } from '@/utils/pick';
+import { PageProps } from '@/types/next';
 
 export const metadata: Metadata = {
   title: 'Розклад',
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
+export default async function Page({ searchParams }: PageProps) {
   const { currentWeek } = await getCurrentTime();
 
   const { group: rawGroup } = await searchParams;
