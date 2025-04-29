@@ -1,4 +1,4 @@
-import { putRawImage } from '@/api/media/putRawImage';
+import { putMediaFile } from '@/api/media';
 import { badRequest } from '@/api/responses';
 import { Repository } from '@/data/repo';
 import { parseHtmlToRichText } from '@/richText/parser';
@@ -28,18 +28,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return badRequest();
   }
 
-  const imageBuffer = image.stream();
   const richTextDescription = await parseHtmlToRichText(
     description,
     creatMediaServerParseContext()
   );
 
   await using repo = await Repository.openConnection();
-  const id = await repo
+  const { insertedId } = await repo
     .events()
     .insert({ date, title, description: richTextDescription });
 
-  await putRawImage(`events/${id.insertedId}`, imageBuffer);
+  await putMediaFile(`events/${insertedId}`, image.stream());
 
   return new NextResponse();
 }

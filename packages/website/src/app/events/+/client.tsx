@@ -9,9 +9,10 @@ import { useRef, useState } from 'react';
 
 import styles from './page.module.scss';
 import { addEvent } from '@/api/events/client';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { TextInput } from '@/components/TextInput';
 import { DatePicker } from '@/components/DatePicker';
+import { ErrorBoard } from '@/components/ErrorBoard';
 
 export type ClientEvent = {
   id: string;
@@ -30,9 +31,10 @@ export function ClientComponent({ event }: ClientComponentProps) {
   );
   const imageFileRef = useRef<File>(undefined);
 
-  const [title, setTitle] = useState(event?.title);
-  const [date, setDate] = useState(event?.date);
-  const [description, setDescription] = useState(event?.description);
+  const [title, setTitle] = useState(event?.title ?? '');
+  const [date, setDate] = useState(event?.date ?? new Date());
+  const [description, setDescription] = useState(event?.description ?? '');
+  const [isDescriptionSaved, setIsDescriptionSaved] = useState(true);
 
   const [actionPending, setActionPending] = useState(false);
 
@@ -42,6 +44,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
     <div className={styles.root}>
       <TextInput
         disabled={actionPending}
+        error={title.length === 0 ? 'Пустий заголовок' : undefined}
         className={styles.title}
         placeholder="Заголовок"
         value={title}
@@ -83,26 +86,44 @@ export function ClientComponent({ event }: ClientComponentProps) {
       <RichTextEditor
         disabled={actionPending}
         className={styles.description}
-        text={description ?? ''}
+        text={description}
         onSaveText={(newText) => {
           setDescription(newText);
 
           return Promise.resolve(newText);
         }}
+        onIsSavedChanged={(value) => {
+          setIsDescriptionSaved(!value);
+        }}
+      />
+
+      <ErrorBoard
+        className={styles.errors}
+        items={[
+          title.length === 0 && 'Пустий заголовок',
+          description.length === 0 && 'Пустий опис',
+          !isDescriptionSaved && 'Не збережений опис',
+          image === undefined && 'Немає картинки',
+        ]}
       />
 
       <Button
         className={styles['save-edit-button']}
-        disabled={actionPending}
+        disabled={
+          actionPending ||
+          title.length === 0 ||
+          description.length === 0 ||
+          !isDescriptionSaved ||
+          image === undefined
+        }
         buttonVariant="solid"
         onClick={() => {
           const { current: image } = imageFileRef;
 
           if (
             image !== undefined &&
-            description !== undefined &&
-            title !== undefined &&
-            date !== undefined
+            description.length > 0 &&
+            title.length > 0
           ) {
             setActionPending(true);
 

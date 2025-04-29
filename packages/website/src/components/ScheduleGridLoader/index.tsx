@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-useless-undefined */
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';
 

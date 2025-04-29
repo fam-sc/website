@@ -4,11 +4,12 @@ import styles from './index.module.scss';
 
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+import { Typography } from '../Typography';
 
 type InputProps = PropsMap['input'];
 
 export interface TextInputProps extends InputProps {
-  isError?: boolean;
+  error?: string | false;
   endContent?: ReactNode;
   type?: 'text' | 'password';
 
@@ -17,29 +18,38 @@ export interface TextInputProps extends InputProps {
 
 export function TextInput({
   className,
-  isError,
+  error,
+  disabled,
   endContent,
   onChange,
   onTextChanged,
   ...rest
 }: TextInputProps) {
   return (
-    <div
-      data-state={isError ? 'error' : undefined}
-      className={classNames(styles.root, className)}
-    >
-      <input
-        type="text"
-        onChange={
-          onChange ??
-          ((event) => {
-            onTextChanged?.(event.target.value);
-          })
-        }
-        {...rest}
-      />
+    <div className={classNames(styles.root, className)}>
+      <div
+        className={styles.input}
+        data-state={error === undefined ? undefined : 'error'}
+        data-disabled={disabled}
+      >
+        <input
+          type="text"
+          disabled={disabled}
+          onChange={
+            onChange ??
+            ((event) => {
+              onTextChanged?.(event.target.value);
+            })
+          }
+          {...rest}
+        />
 
-      {endContent && <div className={styles['end-content']}>{endContent}</div>}
+        {endContent && (
+          <div className={styles['end-content']}>{endContent}</div>
+        )}
+      </div>
+
+      {error && <Typography className={styles.error}>{error}</Typography>}
     </div>
   );
 }
