@@ -1,20 +1,20 @@
-import { MongoClient } from 'mongodb';
+import { ClientSession, MongoClient } from 'mongodb';
 
 import { Schedule } from '../types/schedule';
 
 import { EntityCollection } from './base';
 
 export class ScheduleCollection extends EntityCollection<Schedule> {
-  constructor(client: MongoClient) {
-    super(client, 'schedule');
+  constructor(client: MongoClient, session?: ClientSession) {
+    super(client, session, 'schedule');
   }
 
   findByGroup(groupCampusId: string): Promise<Schedule | null> {
-    return this.collection().findOne({ groupCampusId });
+    return this.findOne({ groupCampusId });
   }
 
   upsert({ groupCampusId, firstWeek, secondWeek }: Schedule) {
-    return this.collection().updateOne(
+    return this.updateOne(
       { groupCampusId },
       { $set: { groupCampusId, firstWeek, secondWeek } },
       { upsert: true }

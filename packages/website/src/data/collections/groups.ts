@@ -1,16 +1,16 @@
-import { MongoClient } from 'mongodb';
+import { ClientSession, MongoClient } from 'mongodb';
 
 import { Group } from '../types';
 
 import { EntityCollection } from './base';
 
 export class GroupCollection extends EntityCollection<Group> {
-  constructor(client: MongoClient) {
-    super(client, 'groups');
+  constructor(client: MongoClient, session?: ClientSession) {
+    super(client, session, 'groups');
   }
 
   insertOrUpdateAll(groups: Group[]) {
-    return this.collection().bulkWrite(
+    return this.bulkWrite(
       groups.map(({ campusId, name }) => ({
         updateOne: {
           filter: { campusId },
@@ -22,6 +22,6 @@ export class GroupCollection extends EntityCollection<Group> {
   }
 
   findByCampusId(campusId: string) {
-    return this.collection().findOne({ campusId });
+    return this.findOne({ campusId });
   }
 }
