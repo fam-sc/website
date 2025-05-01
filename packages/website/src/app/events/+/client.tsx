@@ -13,6 +13,7 @@ import { addEvent, editEvent } from '@/api/events/client';
 import { TextInput } from '@/components/TextInput';
 import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
+import { useErrorAlert } from '@/components/ErrorAlert';
 
 export type ClientEvent = {
   id: string;
@@ -26,6 +27,8 @@ export type ClientComponentProps = {
 };
 
 export function ClientComponent({ event }: ClientComponentProps) {
+  const errorAlert = useErrorAlert();
+
   const [image, setImage] = useState(
     event && getMediaFileUrl(`events/${event.id}`)
   );
@@ -69,6 +72,8 @@ export function ClientComponent({ event }: ClientComponentProps) {
               })
               .catch((error: unknown) => {
                 console.error(error);
+
+                errorAlert.show('Сталася помилка');
               });
           }
         }}
@@ -122,26 +127,25 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
           setActionPending(true);
 
+          let promise: Promise<void> | undefined;
+
           if (event === undefined) {
             if (image !== undefined) {
-              addEvent({ title, date, image, description })
-                .then(() => {
-                  // router.push('/events');
-                })
-                .catch((error: unknown) => {
-                  console.error(error);
-
-                  setActionPending(false);
-                });
+              promise = addEvent({ title, date, image, description });
             }
           } else {
-            editEvent(event.id, { title, date, image, description })
+            promise = editEvent(event.id, { title, date, image, description });
+          }
+
+          if (promise) {
+            promise
               .then(() => {
                 // router.push('/events');
               })
               .catch((error: unknown) => {
                 console.error(error);
 
+                errorAlert.show('Сталася помилка при збережені даних');
                 setActionPending(false);
               });
           }

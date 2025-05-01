@@ -50,6 +50,7 @@ import { UnderlineIcon } from '@/icons/UnderlineIcon';
 import { classNames } from '@/utils/classNames';
 import { fileToDataUrl } from '@/utils/fileTransformations';
 import { mapObjectToArray } from '@/utils/mapObject';
+import { useErrorAlert } from '../ErrorAlert';
 
 const headerLevels = [1, 2, 3, 4, 5, 6] as const;
 
@@ -172,6 +173,7 @@ function LinkButton() {
 }
 
 function InsertImageButton() {
+  const errorAlert = useErrorAlert();
   const { editor } = useCurrentEditor();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -201,6 +203,8 @@ function InsertImageButton() {
               })
               .catch((error: unknown) => {
                 console.error(error);
+
+                errorAlert.show('Сталася помилка');
               });
           }}
         />

@@ -6,6 +6,7 @@ import '../theme/global.scss';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { backgroundColor } from '@/theme';
+import { ErrorAlertWrapper } from '@/components/ErrorAlert';
 
 // Cannot move options to a helper - it all must be a constant.
 const mursGothic = localFont({
@@ -65,10 +66,12 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="СР ФПМ" />
       </head>
       <body className={mursGothic.className}>
-        <Header userLogOn={false} />
-        <main>{children}</main>
+        <ErrorAlertWrapper>
+          <Header userLogOn={false} />
+          <main>{children}</main>
 
-        <Footer />
+          <Footer />
+        </ErrorAlertWrapper>
       </body>
     </html>
   );
