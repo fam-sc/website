@@ -8,7 +8,7 @@ import { fileToDataUrl } from '@/utils/fileTransformations';
 import { useRef, useState } from 'react';
 
 import styles from './page.module.scss';
-import { addEvent } from '@/api/events/client';
+import { addEvent, editEvent } from '@/api/events/client';
 // import { useRouter } from 'next/navigation';
 import { TextInput } from '@/components/TextInput';
 import { DatePicker } from '@/components/DatePicker';
@@ -120,14 +120,22 @@ export function ClientComponent({ event }: ClientComponentProps) {
         onClick={() => {
           const { current: image } = imageFileRef;
 
-          if (
-            image !== undefined &&
-            description.length > 0 &&
-            title.length > 0
-          ) {
-            setActionPending(true);
+          setActionPending(true);
 
-            addEvent({ title, date, image, description })
+          if (event === undefined) {
+            if (image !== undefined) {
+              addEvent({ title, date, image, description })
+                .then(() => {
+                  // router.push('/events');
+                })
+                .catch((error: unknown) => {
+                  console.error(error);
+
+                  setActionPending(false);
+                });
+            }
+          } else {
+            editEvent(event.id, { title, date, image, description })
               .then(() => {
                 // router.push('/events');
               })
