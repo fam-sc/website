@@ -1,16 +1,16 @@
-import sharp, { SharpInput } from 'sharp';
+import { Size } from './types';
+import { getSize as jpegGetSize, isJpeg } from './formats/jpeg';
+import { getSize as pngGetSize, isPng } from './formats/png';
+import { getSize as webpGetSize, isWebp } from './formats/webp';
 
-export interface Size {
-  width: number;
-  height: number;
-}
-
-export async function getImageSize(input: SharpInput): Promise<Size> {
-  const { width, height } = await sharp(input).metadata();
-
-  if (width === undefined || height === undefined) {
-    throw new Error('Width or height are undefined');
+export function getImageSize(input: Uint8Array): Size {
+  if (isJpeg(input)) {
+    return jpegGetSize(input);
+  } else if (isPng(input)) {
+    return pngGetSize(input);
+  } else if (isWebp(input)) {
+    return webpGetSize(input);
   }
 
-  return { width, height };
+  throw new Error('Unknown format');
 }

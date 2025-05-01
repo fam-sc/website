@@ -11,7 +11,7 @@ export function creatMediaServerParseContext(
     async parseImageToPath(dataUrl) {
       const dataContent = getDataUrlContent(dataUrl);
 
-      const { width, height } = await getImageSize(dataContent);
+      const size = getImageSize(dataContent);
 
       const filePath = await putMediaFileWithUnknownId(
         'rich-text-image',
@@ -19,7 +19,7 @@ export function creatMediaServerParseContext(
         transaction
       );
 
-      return { filePath, width, height };
+      return { filePath, ...size };
     },
   };
 }
