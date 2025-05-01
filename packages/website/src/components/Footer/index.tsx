@@ -28,59 +28,40 @@ export function Footer({ className }: FooterProps) {
       </div>
 
       <div className={styles.section}>
-        {items.map(item => (
+        {items.map((item) => (
           <Link key={item.href} href={item.href}>
             <Typography>{item.title}</Typography>
           </Link>
-        ))} </div>
+        ))}{' '}
+      </div>
 
       <div className={styles.section}>
         <Typography as="strong">Підтримка</Typography>
-        
+
         <div className={styles.linkWithIcon}>
-        <Image 
-          src="/icons/bot.svg"
-          width={15} 
-          height={15}
-          alt="Bot" 
-        />
-        <Link href="https://t.me/fpm_sc_bot">Чат-бот</Link>
-      </div>
+          <Image src="/icons/bot.svg" width={15} height={15} alt="Bot" />
+          <Link href="https://t.me/fpm_sc_bot">Чат-бот</Link>
+        </div>
 
-      <div className={styles.linkWithIcon}>
-        <Image 
-          src="/icons/Logo.svg"
-          width={15} 
-          height={15}
-          alt="Bot" 
-        />
-        <Link href="#">Про нас</Link>
-      </div>
+        <div className={styles.linkWithIcon}>
+          <Image src="/icons/Logo.svg" width={15} height={15} alt="Bot" />
+          <Link href="#">Про нас</Link>
+        </div>
 
-      <div className={styles.linkWithIcon}>
-        <Image 
-          src="/icons/Question.svg"
-          width={15} 
-          height={15}
-          alt="Bot" 
-        />
-        <Link href="#">FAQ</Link>
-      </div>
-
+        <div className={styles.linkWithIcon}>
+          <Image src="/icons/Question.svg" width={15} height={15} alt="Bot" />
+          <Link href="#">FAQ</Link>
+        </div>
       </div>
 
       <div className={styles.section}>
-      <Link href="#">
-      <Typography as="strong">Політика конфіденційності</Typography>
-      </Link>
-        
+        <Link href="#">
+          <Typography as="strong">Політика конфіденційності</Typography>
+        </Link>
+
         <div className={styles.icons}>
-        
-          <Link href="malito:sr.fam.kpi@gmail.com"  aria-label="Email">
-            <Image src="/icons/Mail.svg"
-             width={24} 
-             height={24}
-              alt="Mail" />
+          <Link href="malito:sr.fam.kpi@gmail.com" aria-label="Email">
+            <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
           </Link>
 
           <Link href="https://www.instagram.com/fam_kpi/">
