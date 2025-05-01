@@ -1,4 +1,4 @@
-import { putMediaFile } from '@/api/media';
+import { MediaTransaction } from '@/api/media/transaction';
 import { badRequest } from '@/api/responses';
 import { Repository } from '@/data/repo';
 import { parseHtmlToRichText } from '@/richText/parser';
@@ -28,17 +28,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return badRequest();
   }
 
+  // Use media and repo transactions here to ensure consistency if an error happens somewhere.
+  await using mediaTransaction = new MediaTransaction();
+
   const richTextDescription = await parseHtmlToRichText(
     description,
-    creatMediaServerParseContext()
+    creatMediaServerParseContext(mediaTransaction)
   );
 
   await using repo = await Repository.openConnection();
-  const { insertedId } = await repo
-    .events()
-    .insert({ date, title, description: richTextDescription });
 
-  await putMediaFile(`events/${insertedId}`, image.stream());
+  await repo.transaction(async (trepo) => {
+    const { insertedId } = await trepo
+      .events()
+      .insert({ date, title, description: richTextDescription });
+
+    mediaTransaction.put(`events/${insertedId}`, image.stream());
+  });
+
+  await mediaTransaction.commit();
 
   return new NextResponse();
 }

@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { ClientSession, MongoClient } from 'mongodb';
 
 import { EventCollection } from './collections/events';
 import { GalleryImageCollection } from './collections/galleryImages';
@@ -13,45 +13,44 @@ import { getEnvChecked } from '@/utils/env';
 
 export class Repository implements AsyncDisposable {
   private client: MongoClient;
+  private session: ClientSession | undefined;
 
-  constructor(client: MongoClient) {
+  constructor(client: MongoClient, session?: ClientSession) {
     this.client = client;
+    this.session = session;
   }
 
-  users(): UserCollection {
-    return new UserCollection(this.client);
-  }
+  users = this.collection(UserCollection);
+  events = this.collection(EventCollection);
+  galleryImages = this.collection(GalleryImageCollection);
+  sessions = this.collection(SessionCollection);
+  schedule = this.collection(ScheduleCollection);
+  updateTime = this.collection(UpdateTimeCollection);
+  groups = this.collection(GroupCollection);
+  scheduleTeachers = this.collection(ScheduleTeacherCollection);
 
-  events(): EventCollection {
-    return new EventCollection(this.client);
-  }
+  async transaction(block: (trepo: Repository) => Promise<void>) {
+    const session = this.client.startSession();
 
-  galleryImages(): GalleryImageCollection {
-    return new GalleryImageCollection(this.client);
-  }
-
-  sessions(): SessionCollection {
-    return new SessionCollection(this.client);
-  }
-
-  schedule(): ScheduleCollection {
-    return new ScheduleCollection(this.client);
-  }
-
-  updateTime(): UpdateTimeCollection {
-    return new UpdateTimeCollection(this.client);
-  }
-
-  groups(): GroupCollection {
-    return new GroupCollection(this.client);
-  }
-
-  scheduleTeachers(): ScheduleTeacherCollection {
-    return new ScheduleTeacherCollection(this.client);
+    try {
+      await session.withTransaction(() =>
+        block(new Repository(this.client, session))
+      );
+    } finally {
+      await session.endSession();
+    }
   }
 
   async [Symbol.asyncDispose](): Promise<void> {
     await this.client.close();
+  }
+
+  private collection<T>(
+    type: new (client: MongoClient, session: ClientSession | undefined) => T
+  ): (this: Repository) => T {
+    return () => {
+      return new type(this.client, this.session);
+    };
   }
 
   static async openConnection(): Promise<Repository> {
