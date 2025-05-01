@@ -12,7 +12,6 @@
     "storybook:deploy": "wrangler pages deploy --project-name=sc-fam-storybook storybook-static"
   },
   "dependencies": {
-    "@node-rs/argon2": "2.0.2",
     "@tiptap/core": "2.11.7",
     "@tiptap/extension-blockquote": "2.11.7",
     "@tiptap/extension-bold": "2.11.7",
