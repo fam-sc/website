@@ -39,13 +39,4 @@ describe('errors', () => {
 
     await expectBadRequest(response, 'Expected a file');
   });
-
-  test('invalid image', async () => {
-    const body = new ArrayBuffer(3);
-    const response = await POST(
-      createRequest('?section=rich-text-image', body)
-    );
-
-    await expectBadRequest(response, 'Invalid image');
-  });
 });

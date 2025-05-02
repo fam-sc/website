@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'node:crypto';
 
 import { putMediaFile } from '@/api/media';
-import { getFileType, isValidFileSection } from '@/api/media/fileTypes';
+import { isValidFileSection } from '@/api/media/fileTypes';
 import { badRequest } from '@/api/responses';
-import { isValidImage } from '@/image/validate';
 
 // 10 MB
 const FILE_LIMIT = 10 * 1024 * 1024;
@@ -21,14 +20,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return badRequest({ message: 'Too big file' });
   } else if (buffer.byteLength === 0) {
     return badRequest({ message: 'Expected a file' });
-  }
-
-  if (getFileType(section) === 'image') {
-    const status = await isValidImage(buffer);
-
-    if (!status) {
-      return badRequest({ message: 'Invalid image' });
-    }
   }
 
   const id = randomUUID();

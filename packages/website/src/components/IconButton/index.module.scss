@@ -25,11 +25,11 @@ $roundings: (
   cursor: pointer;
 
   &:hover {
-    &[data-hover=background] {
+    &[data-hover='background'] {
       background: var(--color-background-dark);
     }
 
-    &[data-hover=fill] {
+    &[data-hover='fill'] {
       fill: var(--color-text-on-background-dark);
     }
   }

@@ -10,7 +10,7 @@
   width: fit-content;
 
   &::before {
-    content: " ";
+    content: ' ';
     position: absolute;
     left: 0;
     top: 0;
@@ -21,12 +21,12 @@
 
     background: var(--color-background-dark);
     border-radius: 9999px;
-   
-    transition: clip-path .25s ease-out;
+
+    transition: clip-path 0.25s ease-out;
     clip-path: inset(0 50% 0 0 round $round-radius);
   }
 
-  &[data-selected="1"]::before {
+  &[data-selected='1']::before {
     clip-path: inset(0 0 0 50% round $round-radius);
   }
 

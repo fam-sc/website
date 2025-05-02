@@ -20,7 +20,7 @@
   @include tablet-view() {
     width: 50%;
   }
- 
+
   @include desktop-view() {
     width: fit-content;
   }

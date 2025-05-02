@@ -5,7 +5,7 @@
   --columns: 2;
 
   display: grid;
-  
+
   grid-template-columns: repeat(var(--columns), 1fr);
 
   column-gap: 1em;
@@ -34,7 +34,7 @@
 
     padding: 1em 1.5em;
 
-    &:first-child{
+    &:first-child {
       grid-row: 1 / 1;
       grid-column: 1 / 1;
     }
@@ -50,7 +50,7 @@
     img {
       width: 100%;
       height: auto;
-      
+
       border-radius: 2em;
     }
   }

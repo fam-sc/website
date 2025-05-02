@@ -3,14 +3,23 @@
 @use '../../theme/breakpoints' as *;
 
 $type-gradient-map: (
-  lec: (#db17be, #9215d1),
-  prac: (#ce5c0f, #ee750a),
-  lab: (#2abca8, #13927c),
+  lec: (
+    #db17be,
+    #9215d1,
+  ),
+  prac: (
+    #ce5c0f,
+    #ee750a,
+  ),
+  lab: (
+    #2abca8,
+    #13927c,
+  ),
 );
 
 .root {
   background-color: var(--color-background-dark);
-  border-radius: .75em;
+  border-radius: 0.75em;
 
   padding: 1em;
 
@@ -34,9 +43,9 @@ $type-gradient-map: (
   background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(0.25turn, var(--start), var(--end));
- 
+
   @each $key, $value in $type-gradient-map {
-    &[data-type=#{$key}] {
+    &[data-type='#{$key}'] {
       --start: #{list.nth($value, 1)};
       --end: #{list.nth($value, 2)};
     }
@@ -52,10 +61,10 @@ $type-gradient-map: (
     content: ' ';
     display: inline-block;
 
-    @include size(.75em);
+    @include size(0.75em);
 
     margin-right: 4px;
-    
+
     background-color: $color;
     animation: glowing 1s linear 0s infinite alternate;
 
@@ -89,7 +98,7 @@ $type-gradient-map: (
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: .5em;
+  gap: 0.5em;
 
   svg {
     fill: var(--color-text-on-background);
