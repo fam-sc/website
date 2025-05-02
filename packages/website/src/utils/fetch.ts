@@ -1,6 +1,6 @@
 export function getJsonOrError<T>(response: Response): Promise<T> {
   return response.ok
-    ? (response.json() as Promise<T>)
+    ? response.json()
     : Promise.reject(new Error(response.statusText));
 }
 

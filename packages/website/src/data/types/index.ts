@@ -13,7 +13,7 @@ export type User = {
   telnum: string | null;
   photoId: string | null;
   role: UserRole;
-  passwordHash: string;
+  passwordHash: Uint8Array;
 };
 
 export type Poll = {

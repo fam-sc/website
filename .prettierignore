@@ -1,2 +1,4 @@
 packages/workers/worker-configuration.d.ts
 packages/website/storybook-static
+packages/website/.open-next
+packages/website/cloudflare-env.d.ts

@@ -1,6 +1,6 @@
 @use '../../theme/typography' as *;
 
-.root {  
+.root {
   width: fit-content;
 }
 
@@ -34,17 +34,17 @@
 
   &:hover,
   &:focus-within {
-    &:not([data-disabled=true]) {
+    &:not([data-disabled='true']) {
       border-color: var(--border-color-hover);
     }
   }
 
   &[data-state='error'] {
     --border-color: var(--color-danger);
-    --border-color-hover:  var(--color-danger-dark); 
+    --border-color-hover: var(--color-danger-dark);
   }
 
-  &[data-disabled=true] {
+  &[data-disabled='true'] {
     border-color: var(--color-text-on-background-dark);
   }
 }

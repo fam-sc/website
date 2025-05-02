@@ -20,6 +20,9 @@ export default tseslint.config(
       'packages/website/next.config.ts',
       'packages/website/storybook-static',
       'packages/media-worker/worker-configuration.d.ts',
+      'packages/website/.open-next',
+      'packages/website/open-next.config.ts',
+      'packages/website/cloudflare-env.d.ts',
       'node_modules',
       'eslint.config.mts',
       'prettier.config.mjs',
@@ -33,7 +36,7 @@ export default tseslint.config(
   {
     files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
     plugins: {
-      react
+      react,
     },
     languageOptions: {
       parserOptions: {

@@ -26,9 +26,7 @@
       "@/*": ["./src/*"],
       "@public/*": ["./public/*"]
     },
-    "types": [
-      "./cloudflare-env.d.ts",
-    ],
+    "types": ["./cloudflare-env.d.ts"],
     "isolatedModules": true
   },
   "include": [

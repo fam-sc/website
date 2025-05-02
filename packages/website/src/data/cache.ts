@@ -6,7 +6,11 @@ export abstract class CachedExternalApi<T, F = T> {
   private invalidateTime: number;
   private specRepo: Repository | undefined;
 
-  constructor(collection: UpdateTimeType, invalidateTime: number, repo?: Repository) {
+  constructor(
+    collection: UpdateTimeType,
+    invalidateTime: number,
+    repo?: Repository
+  ) {
     this.collection = collection;
     this.invalidateTime = invalidateTime;
     this.specRepo = repo;

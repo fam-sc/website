@@ -81,7 +81,7 @@
       white-space: wrap;
       word-break: break-all;
 
-      padding: .5em;
+      padding: 0.5em;
 
       &:hover,
       &:focus {
@@ -90,7 +90,7 @@
     }
   }
 
-  &[data-open=true] {
+  &[data-open='true'] {
     .header svg {
       transform: rotateX(180deg);
     }

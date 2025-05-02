@@ -27,7 +27,7 @@ async function apiRequest<T>(
     throw new Error(`Response: ${response.statusText}`);
   }
 
-  const responseJs = (await response.json()) as TelegramResponse<T>;
+  const responseJs = await response.json<TelegramResponse<T>>();
   if (!responseJs.ok) {
     throw new Error(responseJs.description);
   }
