@@ -9,8 +9,8 @@ import { TextWithImage } from '@/components/TextWithImage';
 import { Typography } from '@/components/Typography';
 
 import SwiperImage1 from '@public/images/swiper/1.jpg';
-import SwiperImage2 from '@public/images/swiper/2.jpg';
-import SwiperImage3 from '@public/images/swiper/3.jpg';
+import SwiperImage2 from '@public/images/swiper/2.png';
+import SwiperImage3 from '@public/images/swiper/3.png';
 
 import styles from './page.module.scss';
 

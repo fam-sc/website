@@ -9,9 +9,11 @@
     "test": "vitest --run",
     "storybook:start": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "storybook:deploy": "wrangler pages deploy --project-name=sc-fam-storybook storybook-static"
+    "storybook:deploy": "wrangler pages deploy --project-name=sc-fam-storybook storybook-static",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "1.0.0-beta.4",
     "@tiptap/core": "2.11.7",
     "@tiptap/extension-blockquote": "2.11.7",
     "@tiptap/extension-bold": "2.11.7",

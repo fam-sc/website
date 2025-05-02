@@ -26,10 +26,14 @@
       "@/*": ["./src/*"],
       "@public/*": ["./public/*"]
     },
+    "types": [
+      "./cloudflare-env.d.ts",
+    ],
     "isolatedModules": true
   },
   "include": [
     "next-env.d.ts",
+    "./cloudflare-env.d.ts",
     "./src/**/*",
     "./.storybook/**/*",
     ".next/types/**/*.ts"
