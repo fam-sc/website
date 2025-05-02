@@ -77,8 +77,8 @@ class FacultyGroupGetterExternalApi extends CachedExternalApi<
 class ScheduleExternalApi extends CachedExternalApi<DataSchedule> {
   private groupId: string;
 
-  constructor(groupId: string) {
-    super('schedule', SCHEDULE_INVALIDATE_TIME);
+  constructor(groupId: string, repo?: Repository) {
+    super('schedule', SCHEDULE_INVALIDATE_TIME, repo);
 
     this.groupId = groupId;
   }
@@ -111,7 +111,8 @@ export const getFacultyGroupById = CachedExternalApi.accessor(
 export async function getScheduleForGroup(
   groupId: string
 ): Promise<ApiSchedule> {
-  const dataSchedule = await getDataSchedule(groupId);
+  await using repo = await Repository.openConnection();
+  const dataSchedule = await getDataSchedule(groupId, repo);
 
-  return await dataScheduleToApiSchedule(dataSchedule);
+  return await dataScheduleToApiSchedule(dataSchedule, repo);
 }

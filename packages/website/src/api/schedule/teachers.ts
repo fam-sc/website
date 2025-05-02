@@ -14,8 +14,8 @@ const INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;
 class TeachersExternalApi extends CachedExternalApi<TeacherMap> {
   private names: Set<string>;
 
-  constructor(names: Set<string>) {
-    super('schedule-teachers', INVALIDATE_TIME);
+  constructor(names: Set<string>, repo?: Repository) {
+    super('schedule-teachers', INVALIDATE_TIME, repo);
 
     this.names = names;
   }

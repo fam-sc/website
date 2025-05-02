@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/no-array-callback-reference */
+import { Repository } from '@/data/repo';
 import {
   DaySchedule as CampusDaySchedule,
   LessonSchedule,
@@ -100,9 +101,10 @@ function dataScheduleWeekToApiScheduleWeek(
 }
 
 export async function dataScheduleToApiSchedule(
-  value: DataSchedule
+  value: DataSchedule,
+  repo?: Repository
 ): Promise<ApiSchedule> {
-  const teachers = await resolveTeachers(getUniqueTeachers(value));
+  const teachers = await resolveTeachers(getUniqueTeachers(value), repo);
   const weeks = [value.firstWeek, value.secondWeek].map((week) =>
     week.map((value) => dataScheduleWeekToApiScheduleWeek(value, teachers))
   );
