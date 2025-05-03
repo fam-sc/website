@@ -13,7 +13,7 @@ import { addEvent, editEvent } from '@/api/events/client';
 import { TextInput } from '@/components/TextInput';
 import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
-import { useErrorAlert } from '@/components/ErrorAlert';
+import { useNotification } from '@/components/Notification';
 
 export type ClientEvent = {
   id: string;
@@ -27,7 +27,7 @@ export type ClientComponentProps = {
 };
 
 export function ClientComponent({ event }: ClientComponentProps) {
-  const errorAlert = useErrorAlert();
+  const errorAlert = useNotification();
 
   const [image, setImage] = useState(
     event && getMediaFileUrl(`events/${event.id}`)

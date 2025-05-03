@@ -37,6 +37,7 @@ export default async function Page({
         date: event.date,
         description: event.description,
       }}
+      canEdit
     />
   );
 }

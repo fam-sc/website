@@ -10,7 +10,7 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
 
 type ModalDialogProps = {
-  title: string;
+  title?: string;
   contentClassName?: string;
   footer?: ReactElement;
   onClose?: () => void;
@@ -30,7 +30,7 @@ export function ModalDialog({
     <div className={styles.root}>
       <div className={styles.dialog}>
         <div className={styles.header}>
-          <Typography>{title}</Typography>
+          {title === undefined ? undefined : <Typography>{title}</Typography>}
 
           <IconButton className={styles.close} onClick={onClose}>
             <CloseIcon />

@@ -1,13 +1,20 @@
 import { parseEditEventPayload } from '@/api/events/payloads';
+import { deleteMediaFile } from '@/api/media';
 import { MediaTransaction } from '@/api/media/transaction';
 import { Repository } from '@/data/repo';
 import { parseHtmlToRichText } from '@/richText/parser';
 import { creatMediaServerParseContext } from '@/richText/parserContext';
+import { BSONError } from 'bson';
+import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(
+type Params = {
+  params: Promise<{ id: string }>;
+};
+
+export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: Params
 ): Promise<NextResponse> {
   const { id } = await params;
 
@@ -39,6 +46,41 @@ export async function POST(
   });
 
   await mediaTransaction.commit();
+
+  return new NextResponse();
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: Params
+): Promise<NextResponse> {
+  const { id } = await params;
+  await using repo = await Repository.openConnection();
+
+  let objectId: ObjectId;
+
+  try {
+    objectId = new ObjectId(id);
+  } catch (error: unknown) {
+    if (BSONError.isBSONError(error)) {
+      // Return 200 - the client expects the event to be deleted, it's already deleted because it would never exist (invalid id format).
+      return new NextResponse();
+    }
+
+    console.error(error);
+    return new NextResponse(null, { status: 500 });
+  }
+
+  const event = await repo.events().findById(new ObjectId(id));
+  if (event === null) {
+    // Return 200 - the client expects the event to be deleted, it's already deleted.
+    return new NextResponse();
+  }
+
+  await Promise.all([
+    repo.events().delete(objectId),
+    deleteMediaFile(`events/${event._id}`),
+  ]);
 
   return new NextResponse();
 }

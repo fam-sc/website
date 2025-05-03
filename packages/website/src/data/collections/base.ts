@@ -12,6 +12,7 @@ import {
   FindOptions,
   InferIdType,
   MongoClient,
+  ObjectId,
   OptionalUnlessRequiredId,
   UpdateFilter,
   UpdateOptions,
@@ -51,6 +52,13 @@ export class EntityCollection<T extends Document> {
 
   count(): Promise<number> {
     return this.collection().countDocuments();
+  }
+
+  delete(id: ObjectId) {
+    return this.collection().deleteOne(
+      { _id: id } as Filter<T>,
+      this.options()
+    );
   }
 
   protected options() {

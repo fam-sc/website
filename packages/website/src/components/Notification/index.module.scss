@@ -12,10 +12,10 @@
     box-sizing: border-box;
 
     background-color: var(--color-background-dark);
-    border: 2px solid var(--color-danger);
+    border: 2px solid var(--color);
     box-shadow:
-      0 0 8px var(--color-danger),
-      0 0 2px var(--color-danger) inset;
+      0 0 var(--shadow-outer) var(--color),
+      0 0 var(--shadow-inner) var(--color) inset;
 
     border-radius: 1em;
 
@@ -23,6 +23,18 @@
     margin: 0.5em;
 
     animation: 0.2s ease-out 0s push;
+
+    &[data-type=error] {
+      --color: var(--color-danger);
+      --shadow-inner: 2px;
+      --shadow-outer: 8px;
+    }
+
+    &[data-type=plain] {
+      --color: var(--color-text-on-background-dark);
+      --shadow-inner: 1px;
+      --shadow-outer: 2px;
+    }
   }
 
   &[data-visible='false'] p {

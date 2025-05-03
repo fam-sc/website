@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 
 function setScrollbarEnabled(value: boolean) {

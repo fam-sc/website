@@ -1,4 +1,4 @@
-import { useErrorAlert } from '@/components/ErrorAlert';
+import { useNotification } from '@/components/Notification';
 import { useEffect, useMemo, useState } from 'react';
 
 export function useDataLoader<T>(
@@ -17,7 +17,7 @@ export function useDataLoader<T>(
   deps: unknown[] | undefined,
   initial?: T
 ): [T | undefined, boolean] {
-  const errorAlert = useErrorAlert();
+  const notification = useNotification();
   const [result, setResult] = useState<T | undefined>(initial);
   const [isPending, setPending] = useState(false);
 
@@ -31,7 +31,7 @@ export function useDataLoader<T>(
       .catch((error: unknown) => {
         setPending(false);
 
-        errorAlert.show('Сталася помилка при завантаженні даних');
+        notification.show('Сталася помилка при завантаженні даних', 'error');
         console.error(error);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
