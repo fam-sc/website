@@ -36,7 +36,10 @@ export function shortenRichText(
       }
 
       currentLength += elementLength;
-      result.push(element);
+
+      if (!(typeof element === 'object' && element.name === '#image')) {
+        result.push(element);
+      }
     }
 
     return result;
