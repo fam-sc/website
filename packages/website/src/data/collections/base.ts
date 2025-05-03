@@ -2,6 +2,7 @@
 /* eslint-disable unicorn/no-array-callback-reference */
 import {
   Abortable,
+  AggregateOptions,
   AnyBulkWriteOperation,
   BulkWriteOptions,
   ClientSession,
@@ -48,6 +49,10 @@ export class EntityCollection<T extends Document> {
     return this.collection().insertOne(value, this.options());
   }
 
+  count(): Promise<number> {
+    return this.collection().countDocuments();
+  }
+
   protected options() {
     return { session: this.session };
   }
@@ -82,6 +87,13 @@ export class EntityCollection<T extends Document> {
 
   protected find(filter: Filter<T>, options?: FindOptions & Abortable) {
     return this.collection().find(filter, {
+      ...options,
+      session: this.session,
+    });
+  }
+
+  protected aggregate(pipeline: Document[], options?: AggregateOptions) {
+    return this.collection().aggregate(pipeline, {
       ...options,
       session: this.session,
     });
