@@ -1,5 +1,5 @@
 import styles from './page.module.scss';
-import { PageNav } from '@/components/PageNav';
+import { Pagination } from '@/components/Pagination';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getMediaFileUrl } from '@/api/media';
@@ -63,12 +63,14 @@ export function ClientComponent({
         ))}
       </ul>
 
-      <PageNav
-        className={styles.pagination}
-        current={currentPage}
-        total={totalPages}
-        getLink={(page) => (page === 1 ? '/events' : `/events?page=${page}`)}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          className={styles.pagination}
+          current={currentPage}
+          total={totalPages}
+          getLink={(page) => (page === 1 ? '/events' : `/events?page=${page}`)}
+        />
+      )}
     </div>
   );
 }

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { PageNav } from '.';
+import { Pagination } from '.';
 
 export default {
-  component: PageNav,
-} satisfies Meta<typeof PageNav>;
+  component: Pagination,
+} satisfies Meta<typeof Pagination>;
 
-type Story = StoryObj<typeof PageNav>;
+type Story = StoryObj<typeof Pagination>;
 
 export const Primary: Story = {
   args: {
