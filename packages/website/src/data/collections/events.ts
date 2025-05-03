@@ -3,6 +3,7 @@ import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
 import { Event } from '../types';
 
 import { EntityCollection } from './base';
+import { pagination } from '../misc/pagination';
 
 export class EventCollection extends EntityCollection<Event> {
   constructor(client: MongoClient, session?: ClientSession) {
@@ -20,12 +21,7 @@ export class EventCollection extends EntityCollection<Event> {
           date: -1,
         },
       },
-      {
-        $facet: {
-          metadata: [{ $count: 'totalCount' }],
-          data: [{ $skip: index * size }, { $limit: size }],
-        },
-      },
+      pagination(index, size),
     ]).next();
 
     if (result === null) {

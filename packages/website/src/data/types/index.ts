@@ -56,10 +56,8 @@ export type Event = {
 };
 
 export type GalleryImage = {
-  remoteId: string;
   date: Date;
   eventId: string | null;
-  userId: string | null;
 };
 
 export type UsefulLink = {
