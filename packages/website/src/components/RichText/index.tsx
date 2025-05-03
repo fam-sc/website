@@ -12,8 +12,10 @@ import {
   RichTextNode,
   RichTextString,
 } from '@/richText/types';
+import { classNames } from '@/utils/classNames';
 
 export type RichTextProps = {
+  className?: string;
   text: RichTextString;
 };
 
@@ -59,10 +61,10 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
   return renderElementNode(node);
 }
 
-export function RichText(props: RichTextProps) {
+export function RichText({ className, text }: RichTextProps) {
   return (
-    <Typography as="div" className={styles.root}>
-      {renderNode(props.text)}
+    <Typography as="div" className={classNames(styles.root, className)}>
+      {renderNode(text)}
     </Typography>
   );
 }
