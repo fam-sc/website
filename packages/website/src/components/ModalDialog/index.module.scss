@@ -1,16 +1,5 @@
 @use '../../theme/utils' as *;
 
-.root {
-  position: fixed;
-  left: 0;
-  top: 0;
-  @include size(100%);
-
-  background-color: #00000049;
-
-  z-index: 99;
-}
-
 .dialog {
   position: fixed;
   left: 50%;

@@ -1,0 +1,75 @@
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+.content {
+  background-color: var(--color-background-dark);
+  width: 90%;
+  height: 80%;
+  border-radius: 1em;
+  box-shadow: 1px 1px 2px #000;
+
+  display: flex;
+  flex-direction: row;
+
+  animation: scale-intro .1s ease-in 0s;
+
+  img {
+    width: 60%;
+    height: 100%;
+
+    object-fit: contain;
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+
+    border-right: 2px solid var(--color-background);
+  }
+
+  @keyframes scale-intro {
+    from {
+      transform: scale(2);
+    }
+
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+.right-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  flex-grow: 1;
+
+  padding-left: 0.5em;
+}
+
+.delete {
+  align-self: end;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+}
+
+.text-with-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  svg {
+    fill: var(--color-text-on-background);
+    margin-right: 0.5em;
+  }
+}

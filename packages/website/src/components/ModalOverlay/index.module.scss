@@ -1,0 +1,18 @@
+@use '../../theme/utils' as *;
+
+.root {
+  position: fixed;
+  left: 0;
+  top: 0;
+  @include size(100%);
+
+  z-index: 99;
+
+  &[data-effect=tint] {
+    background-color: #00000049;
+  }
+
+  &[data-effect=blur] {
+    backdrop-filter: blur(4px);
+  }
+}

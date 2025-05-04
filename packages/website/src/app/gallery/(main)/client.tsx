@@ -6,15 +6,28 @@ import { fetchGalleryPage } from '@/api/gallery/client';
 import { getMediaFileUrl } from '@/api/media';
 import Link from 'next/link';
 import { UploadIcon } from '@/icons/UploadIcon';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { GalleryImageInfoDialog } from './dialog';
 
 export type ClientComponentProps = {
-  canUpload: boolean;
+  canModify: boolean;
+  selectedId: string | null;
 };
 
-export function ClientComponent({ canUpload }: ClientComponentProps) {
+export function ClientComponent({
+  canModify,
+  selectedId: initialSelectedId,
+}: ClientComponentProps) {
+  const [selectedId, setSelectedId] = useState<string | null>(
+    initialSelectedId
+  );
+
+  const router = useRouter();
+
   return (
     <div className={styles.content}>
-      {canUpload && (
+      {canModify && (
         <Link className={styles.upload} href="/gallery/upload">
           <UploadIcon />
           Завантажити фото
@@ -25,8 +38,21 @@ export function ClientComponent({ canUpload }: ClientComponentProps) {
         className={styles['image-scroll']}
         requestPage={(page) => fetchGalleryPage(page)}
         getImageSource={(id) => getMediaFileUrl(`gallery/${id}`)}
-        onImageClick={() => {}}
+        onImageClick={(id) => {
+          router.replace(`/gallery?id=${id}`);
+          setSelectedId(id);
+        }}
       />
+      {selectedId && (
+        <GalleryImageInfoDialog
+          id={selectedId}
+          canModify={canModify}
+          onClose={() => {
+            setSelectedId(null);
+            router.replace(`/gallery`);
+          }}
+        />
+      )}
     </div>
   );
 }

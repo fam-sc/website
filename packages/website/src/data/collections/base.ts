@@ -104,8 +104,11 @@ export class EntityCollection<T extends Document> {
     });
   }
 
-  protected aggregate(pipeline: Document[], options?: AggregateOptions) {
-    return this.collection().aggregate(pipeline, {
+  protected aggregate<T extends Document = Document>(
+    pipeline: Document[],
+    options?: AggregateOptions
+  ) {
+    return this.collection().aggregate<T>(pipeline, {
       ...options,
       session: this.session,
     });

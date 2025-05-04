@@ -23,16 +23,13 @@ export function LazyImageScroll<T>({
       requestPage={requestPage}
     >
       {(value, index) => (
-        <div key={`${value}-${index}`}>
-          <Image
-            src={getImageSource(value)}
-            alt=""
-            width={0}
-            height={0}
-            onClick={() => {
-              onImageClick(value);
-            }}
-          />
+        <div
+          key={`${value}-${index}`}
+          onClick={() => {
+            onImageClick(value);
+          }}
+        >
+          <Image src={getImageSource(value)} alt="" width={0} height={0} />
 
           <span />
         </div>
