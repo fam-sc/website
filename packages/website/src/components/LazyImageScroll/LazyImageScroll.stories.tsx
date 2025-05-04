@@ -12,9 +12,9 @@ export default {
       </NotificationWrapper>
     ),
   ],
-} satisfies Meta<typeof LazyImageScroll>;
+} satisfies Meta<typeof LazyImageScroll<string>>;
 
-type Story = StoryObj<typeof LazyImageScroll>;
+type Story = StoryObj<typeof LazyImageScroll<string>>;
 
 function repeat<T>(item: T, count: number): T[] {
   const result: T[] = [];
@@ -40,5 +40,6 @@ function requestPage(page: number) {
 export const Primary: Story = {
   args: {
     requestPage,
+    getImageSource: (value) => value,
   },
 };

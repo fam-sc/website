@@ -2,32 +2,35 @@ import Image from 'next/image';
 import { InfiniteScroll } from '../InfiniteScroll';
 import styles from './index.module.scss';
 
-export type LazyImageScrollProps = {
+export type LazyImageScrollProps<T> = {
   className?: string;
-  requestPage: (page: number) => Promise<string[]>;
-  onImageClick: (value: string) => void;
+  requestPage: (page: number) => Promise<T[]>;
+  getImageSource: (value: T) => string;
+
+  onImageClick: (value: T) => void;
 };
 
-export function LazyImageScroll({
+export function LazyImageScroll<T>({
   className,
   requestPage,
+  getImageSource,
   onImageClick,
-}: LazyImageScrollProps) {
+}: LazyImageScrollProps<T>) {
   return (
     <InfiniteScroll
       className={className}
       contentClassName={styles.content}
       requestPage={requestPage}
     >
-      {(src, index) => (
-        <div key={`${src}-${index}`}>
+      {(value, index) => (
+        <div key={`${value}-${index}`}>
           <Image
-            src={src}
+            src={getImageSource(value)}
             alt=""
             width={0}
             height={0}
             onClick={() => {
-              onImageClick(src);
+              onImageClick(value);
             }}
           />
 
