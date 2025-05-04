@@ -3,11 +3,8 @@ import { BaseFileDropArea } from '../BaseFileDropArea';
 import { classNames } from '@/utils/classNames';
 
 import styles from './index.module.scss';
-import { UploadFileButton } from '../UploadFileButton';
-import { Typography } from '../Typography';
 import { ImageBlur } from '../ImageBlur';
-import { IconButton } from '../IconButton';
-import { CloseIcon } from '@/icons/CloseIcon';
+import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
 
 type DivProps = PropsMap['div'];
 
@@ -24,6 +21,12 @@ export function InlineImageDropArea({
   imageSrc,
   ...rest
 }: InlineImageDropAreaProps) {
+  function selectSingleFile(files: FileList) {
+    if (files.length > 0) {
+      onFile(files[0]);
+    }
+  }
+
   return (
     <div
       className={classNames(styles.root, className)}
@@ -33,30 +36,17 @@ export function InlineImageDropArea({
       {imageSrc === undefined ? (
         <BaseFileDropArea
           disabled={disabled}
-          onFile={onFile}
+          onFiles={selectSingleFile}
           className={styles['drop-area']}
-        >
-          <UploadFileButton
-            disabled={disabled}
-            buttonVariant="solid"
-            onFile={onFile}
-          />
-
-          <Typography>Або перетяніть його</Typography>
-        </BaseFileDropArea>
+        />
       ) : (
-        <>
+        <DeleteButtonWrapper
+          onDelete={() => {
+            onFile(undefined);
+          }}
+        >
           <ImageBlur src={imageSrc} alt="" width={0} height={0} />
-          <IconButton
-            hover="fill"
-            className={styles['delete-image']}
-            onClick={() => {
-              onFile(undefined);
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </>
+        </DeleteButtonWrapper>
       )}
     </div>
   );

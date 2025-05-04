@@ -12,6 +12,12 @@ export class GalleryImageCollection extends EntityCollection<GalleryImage> {
   async getPage(index: number, size: number) {
     const result = await this.aggregate([
       {
+        $sort: {
+          date: -1,
+          order: 1,
+        },
+      },
+      {
         $facet: {
           data: [{ $skip: index * size }, { $limit: size }],
         },

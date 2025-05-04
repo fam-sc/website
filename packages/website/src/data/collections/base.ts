@@ -50,6 +50,10 @@ export class EntityCollection<T extends Document> {
     return this.collection().insertOne(value, this.options());
   }
 
+  insertMany(values: OptionalUnlessRequiredId<T>[]) {
+    return this.collection().insertMany(values, this.options());
+  }
+
   count(): Promise<number> {
     return this.collection().countDocuments();
   }

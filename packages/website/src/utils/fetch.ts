@@ -4,9 +4,11 @@ export function getJsonOrError<T>(response: Response): Promise<T> {
     : Promise.reject(new Error(response.statusText));
 }
 
-export function ensureOkResponse(response: Response) {
+export async function ensureOkResponse(response: Response) {
   if (!response.ok) {
-    throw new Error(response.statusText);
+    throw new Error(
+      `${response.statusText}: ${JSON.stringify(await response.json())}`
+    );
   }
 }
 
@@ -15,7 +17,7 @@ export async function checkedFetch(
   init?: RequestInit
 ): Promise<Response> {
   const response = await fetch(url, init);
-  ensureOkResponse(response);
+  await ensureOkResponse(response);
 
   return response;
 }

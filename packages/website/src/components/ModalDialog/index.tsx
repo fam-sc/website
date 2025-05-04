@@ -30,7 +30,9 @@ export function ModalDialog({
     <div className={styles.root}>
       <div className={styles.dialog}>
         <div className={styles.header}>
-          {title === undefined ? undefined : <Typography>{title}</Typography>}
+          {title === undefined ? undefined : (
+            <Typography variant="h5">{title}</Typography>
+          )}
 
           <IconButton className={styles.close} onClick={onClose}>
             <CloseIcon />

@@ -1,0 +1,23 @@
+@use '../../theme/utils' as *;
+
+.root {
+  position: relative;
+  
+  &:hover:not([data-disabled='true']) .delete-image {
+    opacity: 1;
+  }
+}
+
+.delete-image {
+  opacity: 0;
+  position: absolute;
+
+  right: 4px;
+  top: 4px;
+
+  z-index: 2;
+
+  transition: 0.3s linear;
+
+  @include size(32px);
+}

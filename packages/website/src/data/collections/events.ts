@@ -13,7 +13,7 @@ export class EventCollection extends EntityCollection<Event> {
   update(id: string, value: Event) {
     return this.updateOne({ _id: new ObjectId(id) }, { $set: value });
   }
-
+  
   async getPage(index: number, size: number) {
     const result = await this.aggregate([
       {

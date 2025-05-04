@@ -34,8 +34,7 @@ export function InfiniteScroll<T>({
   requestPage,
   children,
 }: InfiniteScrollProps<T>) {
-  const [maxPage, setMaxPage] = useState(1);
-  const maxPageRef = useRef(1);
+  const maxPageRef = useRef(0);
 
   const [hasMoreElements, setHasMoreElements] = useState(true);
   const [items, setItems] = useState<T[]>([]);
@@ -57,7 +56,7 @@ export function InfiniteScroll<T>({
               setItems((items) => [...items, ...page]);
             }
 
-            setMaxPage((value) => value + 1);
+            maxPageRef.current++;
           })
           .catch((error: unknown) => {
             console.error(error);
@@ -80,10 +79,6 @@ export function InfiniteScroll<T>({
       observer.disconnect();
     };
   }, [notification, requestPage]);
-
-  useEffect(() => {
-    maxPageRef.current = maxPage;
-  }, [maxPage]);
 
   return (
     <div className={classNames(styles.root, className)}>

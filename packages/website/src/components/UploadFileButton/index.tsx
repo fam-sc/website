@@ -10,14 +10,16 @@ export type UploadFileButtonProps = ButtonProps &
   LabelProps & {
     accept?: string;
     disabled?: boolean;
-    onFile?: (file: File) => void;
+    text?: string;
+    onFiles?: (files: FileList) => void;
   };
 
 export function UploadFileButton({
-  onFile,
+  onFiles,
   accept,
   disabled,
   className,
+  text,
   ...rest
 }: UploadFileButtonProps) {
   return (
@@ -29,12 +31,12 @@ export function UploadFileButton({
         onChange={(event) => {
           const { files } = event.target;
 
-          if (files !== null && files.length > 0) {
-            onFile?.(files[0]);
+          if (files !== null) {
+            onFiles?.(files);
           }
         }}
       />
-      Виберіть файл
+      {text ?? 'Виберіть файл'}
     </Button>
   );
 }

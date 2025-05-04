@@ -1,6 +1,13 @@
 import { objectToFormData } from '@/utils/formData';
 import { AddEventPayload, EditEventPayload } from './payloads';
-import { checkedFetch } from '@/utils/fetch';
+import { checkedFetch, fetchObject } from '@/utils/fetch';
+import { ShortEvent } from './types';
+
+export function fetchAllEventsShort(): Promise<ShortEvent[]> {
+  return fetchObject(`/api/events?type=short`, {
+    method: 'GET',
+  });
+}
 
 export async function addEvent(payload: AddEventPayload) {
   await checkedFetch(`/api/events`, {

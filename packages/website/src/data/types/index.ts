@@ -57,6 +57,7 @@ export type Event = {
 
 export type GalleryImage = {
   date: Date;
+  order: number;
   eventId: string | null;
 };
 
