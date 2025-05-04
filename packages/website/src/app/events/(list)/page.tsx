@@ -7,20 +7,9 @@ import { WithId } from 'mongodb';
 import { Event } from '@/data/types';
 import { formatDateTime } from '@/utils/date';
 import { shortenRichText } from '@/richText/short';
+import { parseInt } from '@/utils/parseInt';
 
 const ITEMS_PER_PAGE = 5;
-
-function parsePage(value: unknown): number | undefined {
-  if (typeof value === 'string') {
-    const result = Number.parseInt(value);
-
-    if (!Number.isNaN(result)) {
-      return result;
-    }
-  }
-
-  return undefined;
-}
 
 function toClientEvent(event: WithId<Event>): ClientEvent {
   return {
@@ -33,7 +22,7 @@ function toClientEvent(event: WithId<Event>): ClientEvent {
 
 export default async function Page({ searchParams }: PageProps) {
   const { page: rawPage } = await searchParams;
-  let page = parsePage(rawPage) ?? 1;
+  let page = parseInt(rawPage) ?? 1;
 
   await using repo = await Repository.openConnection();
   const { total: totalItems, items } = await repo
