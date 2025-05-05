@@ -24,6 +24,7 @@ export const Primary: Story = {
             place: '',
             time: '8:30',
             type: 'lec',
+            link: 'https://zoom.us/48743433437473843874388347384783',
           },
           {
             teacher: {
@@ -34,6 +35,7 @@ export const Primary: Story = {
             place: '',
             time: '10:25',
             type: 'lec',
+            link: 'https://zoom.us/48743433437473843874388347384783',
           },
           {
             teacher: {

@@ -1,0 +1,24 @@
+import { WithDataSpace } from '@/types/react';
+import { SvgProps } from '../types';
+
+import styles from './index.module.scss';
+import { classNames } from '@/utils/classNames';
+
+export interface UpDownIconProps extends SvgProps, WithDataSpace<'up'> {
+  isUp?: boolean;
+}
+
+export function UpDownIcon({ isUp, className, ...rest }: UpDownIconProps) {
+  return (
+    <svg
+      width="24px"
+      height="24px"
+      viewBox="0 -960 960 960"
+      className={classNames(styles.root, className)}
+      data-up={isUp}
+      {...rest}
+    >
+      <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />{' '}
+    </svg>
+  );
+}

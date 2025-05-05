@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+'use client';
 
 import { OptionalLink } from '../OptionalLink';
 import { Typography } from '../Typography';
@@ -10,6 +10,10 @@ import { PlaceIcon } from '@/icons/PlaceIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+import { useState } from 'react';
+import { IconButton } from '../IconButton';
+import { UpDownIcon } from '@/icons/UpDownIcon';
+import { Link } from '../Link';
 
 export type DivProps = PropsMap['div'];
 
@@ -24,29 +28,15 @@ const lessonTypeTextMap: Record<Lesson['type'], string> = {
   prac: 'Практика',
 };
 
-function IconRow({
-  icon,
-  className,
-  children,
-}: {
-  icon: ReactNode;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={classNames(styles['icon-row'], className)}>
-      {icon}
-      {children}
-    </div>
-  );
-}
-
 export function ScheduleTile({
   lesson,
   className,
   isNow,
   ...rest
 }: ScheduleTileProps) {
+  const canExpand = lesson.link !== undefined;
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className={classNames(styles.root, className)} {...rest}>
       <div className={styles.header}>
@@ -54,9 +44,19 @@ export function ScheduleTile({
           {lessonTypeTextMap[lesson.type]}
         </Typography>
 
-        {isNow ? (
+        {isNow && (
           <Typography className={styles['now-indicator']}>Зараз</Typography>
-        ) : null}
+        )}
+
+        {canExpand && (
+          <IconButton
+            onClick={() => {
+              setIsExpanded((state) => !state);
+            }}
+          >
+            <UpDownIcon isUp={isExpanded} />
+          </IconButton>
+        )}
       </div>
 
       <Typography className={styles.name}>{lesson.name}</Typography>
@@ -65,14 +65,22 @@ export function ScheduleTile({
       </OptionalLink>
 
       {lesson.place.length > 0 ? (
-        <IconRow icon={<PlaceIcon />}>
-          <Typography>{lesson.place}</Typography>
-        </IconRow>
+        <Typography hasIcon>
+          <PlaceIcon />
+          {lesson.place}
+        </Typography>
       ) : null}
 
-      <IconRow icon={<TimeIcon />} className={styles.time}>
-        <Typography>{lesson.time}</Typography>
-      </IconRow>
+      <Typography hasIcon className={styles.time}>
+        <TimeIcon />
+        {lesson.time}
+      </Typography>
+
+      {isExpanded && lesson.link && (
+        <div className={styles['link']}>
+          <Link href={lesson.link}>{lesson.link}</Link>
+        </div>
+      )}
     </div>
   );
 }

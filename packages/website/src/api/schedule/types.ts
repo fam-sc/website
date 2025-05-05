@@ -13,6 +13,7 @@ export type Lesson = {
   teacher: ScheduleTeacher;
   time: Time;
   place: string;
+  link?: string;
 };
 
 export type DaySchedule = {

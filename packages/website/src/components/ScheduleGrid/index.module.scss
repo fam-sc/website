@@ -15,7 +15,11 @@
   gap: 0.5em;
 
   @include desktop-view() {
+    $columns: 6;
+
     display: grid;
+
+    grid-template-columns: 1fr repeat($columns, minmax(0, math.div(100%, $columns)));
   }
 }
 
