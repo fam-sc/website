@@ -16,7 +16,7 @@ export type InfiniteScrollProps<T> = {
 };
 
 export type LoadMarkerProps = {
-  ref?: Ref<SVGElement>;
+  ref?: Ref<SVGSVGElement>;
 };
 
 function LoadMarker({ ref }: LoadMarkerProps) {
@@ -39,7 +39,7 @@ export function InfiniteScroll<T>({
   const [hasMoreElements, setHasMoreElements] = useState(true);
   const [items, setItems] = useState<T[]>([]);
 
-  const maxMarkerRef = useRef<SVGElement>(null);
+  const maxMarkerRef = useRef<SVGSVGElement>(null);
 
   const notification = useNotification();
 

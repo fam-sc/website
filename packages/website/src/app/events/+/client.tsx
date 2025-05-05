@@ -73,7 +73,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
               .catch((error: unknown) => {
                 console.error(error);
 
-                errorAlert.show('Сталася помилка');
+                errorAlert.show('Сталася помилка', 'error');
               });
           }
         }}
@@ -145,7 +145,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
               .catch((error: unknown) => {
                 console.error(error);
 
-                errorAlert.show('Сталася помилка при збережені даних');
+                errorAlert.show('Сталася помилка при збережені даних', 'error');
                 setActionPending(false);
               });
           }

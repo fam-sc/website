@@ -6,7 +6,7 @@ import { classNames } from '@/utils/classNames';
 
 export interface IndeterminateCircularProgressProps
   extends HTMLAttributes<SVGElement> {
-  ref?: Ref<SVGElement>;
+  ref?: Ref<SVGSVGElement>;
   className?: string;
 }
 
