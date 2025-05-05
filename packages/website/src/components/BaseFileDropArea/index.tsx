@@ -4,17 +4,27 @@
 
 import { PropsMap, WithDataSpace } from '@/types/react';
 import { useState } from 'react';
+import { Typography } from '../Typography';
+import { UploadFileButton } from '../UploadFileButton';
 
 type DivProps = PropsMap['div'];
 
 export interface BaseFileDropAreaProps extends DivProps, WithDataSpace<'over'> {
   disabled?: boolean;
-  onFile?: (file: File) => void;
+  accept?: string;
+
+  uploadText?: string;
+  dragText?: string;
+
+  onFiles?: (files: FileList) => void;
 }
 
 export function BaseFileDropArea({
-  onFile,
+  onFiles,
   disabled,
+  accept,
+  uploadText,
+  dragText,
   ...rest
 }: BaseFileDropAreaProps) {
   const [isOver, setOver] = useState(false);
@@ -44,13 +54,20 @@ export function BaseFileDropArea({
         if (!disabled) {
           e.preventDefault();
 
-          const { files } = e.dataTransfer;
-
-          if (files.length > 0) {
-            onFile?.(files[0]);
-          }
+          onFiles?.(e.dataTransfer.files);
+          setOver(false);
         }
       }}
-    />
+    >
+      <UploadFileButton
+        accept={accept}
+        onFiles={onFiles}
+        disabled={disabled}
+        buttonVariant="solid"
+        text={uploadText}
+      />
+
+      <Typography>{dragText ?? 'Або перетяніть його'}</Typography>
+    </div>
   );
 }

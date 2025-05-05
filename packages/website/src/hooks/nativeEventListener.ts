@@ -8,9 +8,10 @@
 export function addNativeEventListener<K extends keyof HTMLElementEventMap>(
   target: HTMLElement,
   key: K,
-  listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void
+  listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void,
+  options?: AddEventListenerOptions
 ): () => void {
-  target.addEventListener(key, listener);
+  target.addEventListener(key, listener, options);
 
   return () => {
     target.removeEventListener(key, listener);

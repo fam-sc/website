@@ -42,9 +42,11 @@ export function FileUploadDialog({
         <FileDropArea
           className={styles['file-drop']}
           accept={accept}
-          onFile={(file) => {
-            onSubmit?.(file);
-            setIsLoading(true);
+          onFiles={(files) => {
+            if (files.length > 0) {
+              onSubmit?.(files[0]);
+              setIsLoading(true);
+            }
           }}
         />
       )}

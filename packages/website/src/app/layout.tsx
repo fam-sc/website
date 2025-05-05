@@ -65,7 +65,7 @@ export default function RootLayout({
         />
         <meta name="apple-mobile-web-app-title" content="СР ФПМ" />
       </head>
-      <body className={mursGothic.className}>
+      <body className={mursGothic.variable}>
         <NotificationWrapper>
           <Header userLogOn={false} />
           <main>{children}</main>

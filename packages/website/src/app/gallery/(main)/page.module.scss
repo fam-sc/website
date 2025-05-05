@@ -1,0 +1,40 @@
+@use '../../../theme/utils' as *;
+@use '../../../theme/breakpoints' as *; 
+
+.content {
+  @include px(0.5em);
+
+  margin-bottom: 2em;
+
+  display: flex;
+  flex-direction: column;
+
+  @include breakpoint-up('md') {
+    @include px(2em);
+  }
+}
+
+.image-scroll {
+  width: 100%;
+}
+
+.upload {
+  color: var(--color-text-on-background);
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-bottom: 1em;
+
+  font-family: var(--font-murs-gothic);
+  font-weight: 700;
+
+  svg {
+    @include size(28px);
+
+    fill: var(--color-text-on-background);
+    transition: fill .1s linear;
+    margin-right: 4px;
+  }
+}

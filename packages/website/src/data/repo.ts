@@ -29,11 +29,11 @@ export class Repository implements AsyncDisposable {
   groups = this.collection(GroupCollection);
   scheduleTeachers = this.collection(ScheduleTeacherCollection);
 
-  async transaction(block: (trepo: Repository) => Promise<void>) {
+  async transaction<R>(block: (trepo: Repository) => Promise<R>): Promise<R> {
     const session = this.client.startSession();
 
     try {
-      await session.withTransaction(() =>
+      return await session.withTransaction(() =>
         block(new Repository(this.client, session))
       );
     } finally {

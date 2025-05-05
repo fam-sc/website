@@ -50,6 +50,10 @@ export class EntityCollection<T extends Document> {
     return this.collection().insertOne(value, this.options());
   }
 
+  insertMany(values: OptionalUnlessRequiredId<T>[]) {
+    return this.collection().insertMany(values, this.options());
+  }
+
   count(): Promise<number> {
     return this.collection().countDocuments();
   }
@@ -100,8 +104,11 @@ export class EntityCollection<T extends Document> {
     });
   }
 
-  protected aggregate(pipeline: Document[], options?: AggregateOptions) {
-    return this.collection().aggregate(pipeline, {
+  protected aggregate<T extends Document = Document>(
+    pipeline: Document[],
+    options?: AggregateOptions
+  ) {
+    return this.collection().aggregate<T>(pipeline, {
       ...options,
       session: this.session,
     });

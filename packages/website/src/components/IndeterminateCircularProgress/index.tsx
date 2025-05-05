@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, Ref } from 'react';
 
 import styles from './index.module.scss';
 
@@ -6,6 +6,7 @@ import { classNames } from '@/utils/classNames';
 
 export interface IndeterminateCircularProgressProps
   extends HTMLAttributes<SVGElement> {
+  ref?: Ref<SVGSVGElement>;
   className?: string;
 }
 
@@ -16,10 +17,12 @@ const VIEWBOX = `0 0 ${SIZE} ${SIZE}`;
 
 export function IndeterminateCircularProgress({
   className,
+  ref,
   ...rest
 }: IndeterminateCircularProgressProps) {
   return (
     <svg
+      ref={ref}
       className={classNames(styles.root, className)}
       viewBox={VIEWBOX}
       {...rest}

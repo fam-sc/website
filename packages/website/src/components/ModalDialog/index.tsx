@@ -8,6 +8,7 @@ import styles from './index.module.scss';
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
+import { ModalOverlay } from '../ModalOverlay';
 
 type ModalDialogProps = {
   title?: string;
@@ -27,10 +28,12 @@ export function ModalDialog({
   useScrollbar(false);
 
   return (
-    <div className={styles.root}>
+    <ModalOverlay className={styles.overlay}>
       <div className={styles.dialog}>
         <div className={styles.header}>
-          {title === undefined ? undefined : <Typography>{title}</Typography>}
+          {title === undefined ? undefined : (
+            <Typography variant="h5">{title}</Typography>
+          )}
 
           <IconButton className={styles.close} onClick={onClose}>
             <CloseIcon />
@@ -43,6 +46,6 @@ export function ModalDialog({
 
         {footer && <div className={styles.footer}>{footer}</div>}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
