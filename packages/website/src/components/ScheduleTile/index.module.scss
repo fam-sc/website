@@ -107,5 +107,10 @@ $type-gradient-map: (
     box-shadow: 0 0 2px #000;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px #000;
+    }
   }
 }

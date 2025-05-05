@@ -14,12 +14,16 @@ import { useState } from 'react';
 import { IconButton } from '../IconButton';
 import { UpDownIcon } from '@/icons/UpDownIcon';
 import { Link } from '../Link';
+import { LinkIcon } from '@/icons/LinkIcon';
 
 export type DivProps = PropsMap['div'];
 
 export interface ScheduleTileProps extends DivProps {
   lesson: Lesson;
+  isEditable?: boolean;
   isNow?: boolean;
+
+  onLinkChanged?: (text: string) => void;
 }
 
 const lessonTypeTextMap: Record<Lesson['type'], string> = {
@@ -32,6 +36,8 @@ export function ScheduleTile({
   lesson,
   className,
   isNow,
+  isEditable,
+  onLinkChanged,
   ...rest
 }: ScheduleTileProps) {
   const canExpand = lesson.link !== undefined;
@@ -57,6 +63,17 @@ export function ScheduleTile({
             <UpDownIcon isUp={isExpanded} />
           </IconButton>
         )}
+
+        {isEditable && !canExpand && (
+          <IconButton
+            onClick={() => {
+              onLinkChanged?.('');
+              setIsExpanded(true);
+            }}
+          >
+            <LinkIcon />
+          </IconButton>
+        )}
       </div>
 
       <Typography className={styles.name}>{lesson.name}</Typography>
@@ -76,9 +93,19 @@ export function ScheduleTile({
         {lesson.time}
       </Typography>
 
-      {isExpanded && lesson.link && (
+      {isExpanded && lesson.link !== undefined && (
         <div className={styles['link']}>
-          <Link href={lesson.link}>{lesson.link}</Link>
+          <Link
+            href={lesson.link}
+            contentEditable={isEditable}
+            onChange={(event) => {
+              const { text } = event.target as HTMLAnchorElement;
+
+              onLinkChanged?.(text);
+            }}
+          >
+            {lesson.link}
+          </Link>
         </div>
       )}
     </div>
