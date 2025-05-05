@@ -1,12 +1,17 @@
 @use '../../../theme/utils' as *;
+@use '../../../theme/breakpoints' as *; 
 
 .content {
-  @include px(2em);
+  @include px(0.5em);
 
   margin-bottom: 2em;
 
   display: flex;
   flex-direction: column;
+
+  @include breakpoint-up('md') {
+    @include px(2em);
+  }
 }
 
 .image-scroll {

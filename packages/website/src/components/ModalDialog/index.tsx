@@ -28,7 +28,7 @@ export function ModalDialog({
   useScrollbar(false);
 
   return (
-    <ModalOverlay>
+    <ModalOverlay className={styles.overlay}>
       <div className={styles.dialog}>
         <div className={styles.header}>
           {title === undefined ? undefined : (

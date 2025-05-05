@@ -1,28 +1,46 @@
 @use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
 
-.dialog {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+@mixin desktop-view() {
+  @include breakpoint-up('md') {
+    @content;
+  }
+}
 
-  padding: 16px;
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
 
+.dialog {  
   background-color: var(--color-background);
   box-shadow: 0 0 4px #000;
 
-  border-radius: 10px;
+  width: 100%;
+  height: calc(100% - 16px);
 
-  min-width: 50%;
-  min-height: 50%;
-
-  max-width: 90%;
-  max-height: 90%;
-
+  padding: 8px;
+ 
   display: flex;
   flex-direction: column;
 
   z-index: 100;
+
+  @include desktop-view() {
+    padding: 16px;
+
+    min-width: 50%;
+    min-height: 50%;
+  
+    max-width: 90%;
+    max-height: 90%;
+    
+    width: auto;
+    height: auto;
+  
+    border-radius: 10px;
+  }
 }
 
 .header {
