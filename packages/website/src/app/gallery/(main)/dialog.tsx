@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react';
 
 import styles from './dialog.module.scss';
 import Image from 'next/image';
+import { InlineQuestion } from '@/components/InlineQuestion';
 
 export type GalleryImageInfoDialogProps = {
   id: string;
@@ -45,16 +46,12 @@ export function GalleryImageInfoDialog({
   }, [id, notification, onClose]);
 
   return (
-    <ModalOverlay effect="blur" className={styles['dialog-modal-overlay']}>
-      <IconButton
-        className={styles['dialog-close']}
-        hover="fill"
-        onClick={onClose}
-      >
+    <ModalOverlay effect="blur" className={styles['modal-overlay']}>
+      <IconButton className={styles.close} hover="fill" onClick={onClose}>
         <CloseIcon />
       </IconButton>
 
-      <div className={styles['dialog-container']}>
+      <div className={styles.content}>
         <Image
           src={getMediaFileUrl(`gallery/${id}`)}
           alt=""
@@ -62,26 +59,31 @@ export function GalleryImageInfoDialog({
           height={0}
         />
 
-        <div className={styles['dialog-right-side']}>
+        <div className={styles['right-side']}>
           {canModify && (
-            <IconButton
-              hover="fill"
-              className={styles['dialog-delete']}
-              onClick={() => {
-                deleteGalleryImage(id)
-                  .then(() => {
-                    notification.show('Фото видалене', 'plain');
-                    onClose();
-                  })
-                  .catch((error: unknown) => {
-                    console.error(error);
+            <InlineQuestion
+              className={styles.delete}
+              position="right"
+              questionText="Ви справді хочете видалити фото?"
+              onAction={(type) => {
+                if (type === 'yes') {
+                  deleteGalleryImage(id)
+                    .then(() => {
+                      notification.show('Фото видалене', 'plain');
+                      onClose();
+                    })
+                    .catch((error: unknown) => {
+                      console.error(error);
 
-                    notification.show('Сталася помилка', 'error');
-                  });
+                      notification.show('Сталася помилка', 'error');
+                    });
+                }
               }}
             >
-              <DeleteIcon />
-            </IconButton>
+              <IconButton hover="fill">
+                <DeleteIcon />
+              </IconButton>
+            </InlineQuestion>
           )}
 
           {value && (

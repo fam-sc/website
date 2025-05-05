@@ -6,5 +6,5 @@ export function parseInt(value: unknown): number | undefined {
     }
   }
 
-  return undefined; 
+  return undefined;
 }
