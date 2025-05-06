@@ -1,0 +1,10 @@
+{
+  "name": "@sc-fam/mail-test",
+  "packageManager": "yarn@4.8.1",
+  "scripts": {
+    "dev": "vite dev"
+  },
+  "devDependencies": {
+    "vite": "6.3.5"
+  }
+}
