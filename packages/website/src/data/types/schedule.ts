@@ -8,6 +8,7 @@ export type Lesson = {
   teacher: string;
   time: Time;
   place: string;
+  link: string | null;
 };
 
 export type DaySchedule = {

@@ -4,19 +4,19 @@ import { useEffect, useMemo, useState } from 'react';
 export function useDataLoader<T>(
   loader: () => Promise<T>,
   deps?: unknown[]
-): [T | undefined, boolean];
+): [T | undefined, boolean, (value: T) => void];
 
 export function useDataLoader<T>(
   loader: () => Promise<T>,
   deps: unknown[],
   initial: T
-): [T, boolean];
+): [T, boolean, (value: T) => void];
 
 export function useDataLoader<T>(
   loader: () => Promise<T>,
   deps: unknown[] | undefined,
   initial?: T
-): [T | undefined, boolean] {
+): [T | undefined, boolean, (value: T) => void] {
   const notification = useNotification();
   const [result, setResult] = useState<T | undefined>(initial);
   const [isPending, setPending] = useState(false);
@@ -37,5 +37,8 @@ export function useDataLoader<T>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
-  return useMemo(() => [result, isPending], [result, isPending]);
+  return useMemo(
+    () => [result, isPending, setResult],
+    [result, isPending, setResult]
+  );
 }

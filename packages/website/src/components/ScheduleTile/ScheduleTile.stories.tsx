@@ -1,12 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ScheduleTile } from '.';
+import { ScheduleTile, ScheduleTileProps } from '.';
+import { useState } from 'react';
+
+function Component({ lesson: initialLesson, ...rest }: ScheduleTileProps) {
+  const [lesson, setLesson] = useState(initialLesson);
+
+  return (
+    <ScheduleTile
+      lesson={lesson}
+      onLinkChanged={(link) => {
+        setLesson((lesson) => ({ ...lesson, link }));
+      }}
+      {...rest}
+    />
+  );
+}
 
 export default {
-  component: ScheduleTile,
-} satisfies Meta<typeof ScheduleTile>;
+  component: Component,
+} satisfies Meta<typeof Component>;
 
-type Story = StoryObj<typeof ScheduleTile>;
+type Story = StoryObj<typeof Component>;
 
 export const Primary: Story = {
   args: {
@@ -23,7 +38,7 @@ export const Primary: Story = {
   },
 };
 
-export const PrimaryNow: Story = {
+export const Now: Story = {
   args: {
     lesson: {
       name: 'Front-end розробка',
@@ -39,7 +54,7 @@ export const PrimaryNow: Story = {
   },
 };
 
-export const PrimaryWithPlace: Story = {
+export const WithPlace: Story = {
   args: {
     lesson: {
       name: 'Front-end розробка',
@@ -51,5 +66,38 @@ export const PrimaryWithPlace: Story = {
       place: 'Десь',
       type: 'lab',
     },
+  },
+};
+
+export const Editable: Story = {
+  args: {
+    lesson: {
+      name: 'Front-end розробка',
+      teacher: {
+        name: 'Борисенко Павло Борисович',
+        link: 'https://pma.fpm.kpi.ua/uk/teachers/borisenko-pavlo-borisovich',
+      },
+      time: '8:30',
+      place: '',
+      type: 'lec',
+      link: 'https://zoom.us',
+    },
+    isEditable: true,
+  },
+};
+
+export const EditableNoLink: Story = {
+  args: {
+    lesson: {
+      name: 'Front-end розробка',
+      teacher: {
+        name: 'Борисенко Павло Борисович',
+        link: 'https://pma.fpm.kpi.ua/uk/teachers/borisenko-pavlo-borisovich',
+      },
+      time: '8:30',
+      place: '',
+      type: 'lec',
+    },
+    isEditable: true,
   },
 };

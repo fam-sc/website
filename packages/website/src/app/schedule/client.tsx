@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { calculateCurrentLesson } from './date';
@@ -16,10 +16,18 @@ import { ScheduleGroupSelect } from '@/components/ScheduleGroupSelect';
 import { Group } from '@/data/types';
 import { useInterval } from '@/hooks/useInterval';
 import { shortenGuid } from '@/utils/guid';
+import { EditIcon } from '@/icons/EditIcon';
+import { CheckIcon } from '@/icons/CheckIcon';
+import { Schedule } from '@/api/schedule/types';
+import { Button } from '@/components/Button';
+import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
+import { updateScheduleLinks } from '@/api/schedule/client';
+import { useNotification } from '@/components/Notification';
 
 type Week = 1 | 2;
 
 type ClientComponentProps = {
+  canModify: boolean;
   initialWeek: Week;
   initialGroup: Group | null;
 };
@@ -33,6 +41,7 @@ const weekTextMap: Record<Week, string> = {
 };
 
 export function ClientComponent({
+  canModify,
   initialWeek,
   initialGroup,
 }: ClientComponentProps) {
@@ -40,8 +49,13 @@ export function ClientComponent({
 
   const [selectedWeek, setSelectedWeek] = useState<Week>(initialWeek);
   const [selectedGroup, setSelectedGroup] = useState(initialGroup?.campusId);
+  const [isScheduleEditable, setScheduleEditable] = useState(false);
 
   const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
+
+  const editedScheduleRef = useRef<Schedule | undefined>(undefined);
+
+  const notification = useNotification();
 
   useEffect(() => {
     if (initialGroup === null) {
@@ -82,7 +96,38 @@ export function ClientComponent({
 
   return (
     <>
+      {canModify && (
+        <Button
+          hasIcon
+          className={styles.edit}
+          onClick={() => {
+            const schedule = editedScheduleRef.current;
+
+            if (isScheduleEditable) {
+              if (schedule !== undefined && selectedGroup !== undefined) {
+                const payload = scheduleToUpdateLinksPayload(schedule);
+                updateScheduleLinks(selectedGroup, payload)
+                  .then(() => {
+                    setScheduleEditable(false);
+                  })
+                  .catch((error: unknown) => {
+                    console.error(error);
+
+                    notification.show('Не вдалось оновити розклад', 'error');
+                  });
+              }
+            } else {
+              setScheduleEditable(true);
+            }
+          }}
+        >
+          {isScheduleEditable ? <CheckIcon /> : <EditIcon />}
+          {isScheduleEditable ? 'Зберегти' : 'Змінити'}
+        </Button>
+      )}
+
       <OptionSwitch
+        disabled={isScheduleEditable}
         className={styles['week-switch']}
         options={[1, 2]}
         renderOption={(option) => weekTextMap[option]}
@@ -93,6 +138,7 @@ export function ClientComponent({
       />
 
       <ScheduleGroupSelect
+        disabled={isScheduleEditable}
         className={styles['group-select']}
         selectedId={selectedGroup}
         onSelected={(group) => {
@@ -105,6 +151,10 @@ export function ClientComponent({
         week={selectedWeek}
         groupId={selectedGroup}
         currentLesson={currentLesson}
+        isEditable={isScheduleEditable}
+        onScheduleChanged={(newSchedule) => {
+          editedScheduleRef.current = newSchedule;
+        }}
       />
     </>
   );

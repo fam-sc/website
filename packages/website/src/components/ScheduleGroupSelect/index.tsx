@@ -7,11 +7,13 @@ import { shortenGuid } from '@/utils/guid';
 
 export type ScheduleGroupSelectProps = {
   className?: string;
+  disabled?: boolean;
   selectedId: string | undefined;
   onSelected: (value: Group) => void;
 };
 
 export function ScheduleGroupSelect({
+  disabled,
   className,
   selectedId,
   onSelected,
@@ -23,7 +25,7 @@ export function ScheduleGroupSelect({
       className={className}
       items={items.map((item) => ({ key: item.campusId, title: item.name }))}
       placeholder="Виберіть групу"
-      disabled={isPending}
+      disabled={isPending || disabled}
       selectedItem={
         selectedId === undefined ? undefined : shortenGuid(selectedId)
       }

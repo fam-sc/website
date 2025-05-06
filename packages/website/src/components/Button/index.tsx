@@ -12,6 +12,7 @@ type ButtonVariant = 'flat' | 'solid' | 'outlined';
 type ButtonColor = 'primary';
 
 export interface ButtonProps extends WithDataSpace<'button-variant' | 'color'> {
+  hasIcon?: boolean;
   className?: string;
   buttonVariant?: ButtonVariant;
   color?: ButtonColor;

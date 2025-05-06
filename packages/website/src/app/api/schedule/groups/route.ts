@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { ok } from '@/api/responses';
-import { getFacultyGroups } from '@/api/schedule';
+import { getFacultyGroups } from '@/api/schedule/groups';
 import { shortenGuid } from '@/utils/guid';
 
 export async function GET(): Promise<NextResponse> {

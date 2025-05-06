@@ -1,6 +1,8 @@
 @use 'sass:list';
 @use '../../theme/utils' as *;
 @use '../../theme/breakpoints' as *;
+@use '../../theme/typography' as *;
+
 
 $type-gradient-map: (
   lec: (
@@ -38,7 +40,7 @@ $type-gradient-map: (
 
 .type {
   margin-bottom: 4px;
-  width: fit-content;
+  flex-grow: 1;
 
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -94,13 +96,37 @@ $type-gradient-map: (
   }
 }
 
-.icon-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5em;
+.link {
+  width: 100%;
 
-  svg {
-    fill: var(--color-text-on-background);
+  a, input {
+    display: block;
+    background: linear-gradient(0.25turn, #432f67, #2e1f4b);
+    border-radius: 0.5em;
+    padding: 0.5em;
+
+    box-shadow: 0 0 2px #000;
+    overflow: hidden;
+  }
+
+  input {
+    border: none;
+    box-sizing: border-box;
+    max-width: 100%;
+    
+    @include variant-full-body('body');
+
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-underline-position: from-font; 
+  
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px #000;
+    }
+  }
+
+  a {
+    text-overflow: ellipsis;
   }
 }

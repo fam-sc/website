@@ -20,6 +20,9 @@ export type ScheduleGridProps = {
   className?: string;
   week: DaySchedule[];
   currentLesson: CurrentLesson | undefined;
+
+  isEditable?: boolean;
+  onScheduleChanged?: (value: DaySchedule[], target: Lesson) => void;
 };
 
 type LessonGroup = {
@@ -100,10 +103,20 @@ type TileGroupProps = {
   day: Day;
   time: Time;
   isNow: boolean;
+  isEditable?: boolean;
   lessons: Lesson[];
+
+  onLessonChanged: (value: Lesson) => void;
 };
 
-function TileGroup({ day, time, isNow, lessons }: TileGroupProps) {
+function TileGroup({
+  day,
+  time,
+  isNow,
+  lessons,
+  isEditable,
+  onLessonChanged,
+}: TileGroupProps) {
   const timeBreakpoint = timeBreakpoints.indexOf(time) + 1;
 
   const style = {
@@ -117,6 +130,10 @@ function TileGroup({ day, time, isNow, lessons }: TileGroupProps) {
       lesson={lesson}
       className={classNames(styles['base-tile'], styles.tile)}
       isNow={isNow}
+      isEditable={isEditable}
+      onLinkChanged={(link) => {
+        onLessonChanged({ ...lesson, link });
+      }}
       style={style}
     />
   ));
@@ -133,15 +150,17 @@ function TileGroup({ day, time, isNow, lessons }: TileGroupProps) {
 export function ScheduleGrid({
   week,
   currentLesson,
+  isEditable,
+  onScheduleChanged,
   className,
 }: ScheduleGridProps) {
   return (
     <div className={classNames(styles.root, className)}>
       <TimeMarkers count={maxTimeBreakpointIndex(week)} />
 
-      {week.flatMap(({ day, lessons }) => [
-        <DayMarker key={day} day={day} isEmpty={lessons.length === 0} />,
-        ...groupLessonsByTime(lessons).map(({ time, lessons }) => {
+      {week.flatMap(({ day, lessons: dayLessons }, weekIndex) => [
+        <DayMarker key={day} day={day} isEmpty={dayLessons.length === 0} />,
+        ...groupLessonsByTime(dayLessons).map(({ time, lessons }) => {
           const isNow =
             currentLesson !== undefined &&
             day === currentLesson.day &&
@@ -154,6 +173,27 @@ export function ScheduleGrid({
               time={time}
               lessons={lessons}
               isNow={isNow}
+              isEditable={isEditable}
+              onLessonChanged={(lesson) => {
+                const replaceIndex = dayLessons.findIndex(
+                  (value) =>
+                    value.type === lesson.type &&
+                    value.name === lesson.name &&
+                    value.teacher === lesson.teacher &&
+                    value.time === lesson.time
+                );
+
+                const newDayLessons = [...dayLessons];
+                newDayLessons.splice(replaceIndex, 1, lesson);
+
+                const newWeek = [...week];
+                newWeek.splice(weekIndex, 1, {
+                  day,
+                  lessons: newDayLessons,
+                });
+
+                onScheduleChanged?.(newWeek, lesson);
+              }}
             />
           );
         }),

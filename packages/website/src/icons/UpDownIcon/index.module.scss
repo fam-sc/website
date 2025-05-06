@@ -1,0 +1,7 @@
+.root {
+  transition: transform .1s ease;
+
+  &[data-up=true] {
+    transform: rotateX(180deg);
+  } 
+}

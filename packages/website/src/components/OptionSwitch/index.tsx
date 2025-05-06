@@ -15,6 +15,8 @@ export interface OptionSwitchProps<Opts extends OptionArray> extends ListProps {
   selected?: Opts[0 | 1];
   renderOption: (option: Opts[0 | 1]) => ReactNode;
   onOptionSelected?: (value: Opts[0 | 1]) => void;
+
+  disabled?: boolean;
 }
 
 export function OptionSwitch<const Opts extends OptionArray>({
@@ -23,6 +25,7 @@ export function OptionSwitch<const Opts extends OptionArray>({
   onOptionSelected,
   renderOption,
   className,
+  disabled,
   ...rest
 }: OptionSwitchProps<Opts>) {
   const selectedIndex =
@@ -30,9 +33,12 @@ export function OptionSwitch<const Opts extends OptionArray>({
 
   return (
     <ul
+      role="switch"
+      aria-checked={selectedIndex === 0}
+      aria-disabled={disabled}
       className={classNames(styles.root, className)}
-      {...rest}
       data-selected={selectedIndex}
+      {...rest}
     >
       {options.map((option, index) => (
         <Typography
