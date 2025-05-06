@@ -20,4 +20,25 @@ export class ScheduleCollection extends EntityCollection<Schedule> {
       { upsert: true }
     );
   }
+
+  update({ groupCampusId, firstWeek, secondWeek }: Schedule) {
+    return this.updateOne(
+      { groupCampusId },
+      { $set: { firstWeek, secondWeek } }
+    );
+  }
+
+  updateLinks(
+    groupId: string,
+    links: { type: string; name: string; teacher: string; link: string }[]
+  ) {
+    return this.bulkWrite(
+      links.map(({ type, name, teacher, link }) => ({
+        updateMany: {
+          filter: { type, name, teacher },
+          update: { $set: { link } },
+        },
+      }))
+    );
+  }
 }

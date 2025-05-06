@@ -67,6 +67,7 @@ export function campusDayScheduleToDaySchedule(
       name,
       place,
       time,
+      link: null,
       type: tag,
       teacher: teacherName,
     })),
@@ -89,13 +90,13 @@ function dataScheduleWeekToApiScheduleWeek(
 ): ApiDaySchedule {
   return {
     day: value.day,
-    lessons: value.lessons.map(({ teacher: teacherName, ...rest }) => {
+    lessons: value.lessons.map(({ teacher: teacherName, link, ...rest }) => {
       const teacher = teacherMap.get(teacherName);
       if (teacher === undefined) {
         throw new Error('Cannot find teacher by given name');
       }
 
-      return { teacher, ...rest };
+      return { teacher, link: link ?? undefined, ...rest };
     }),
   };
 }

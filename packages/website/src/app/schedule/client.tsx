@@ -20,6 +20,9 @@ import { EditIcon } from '@/icons/EditIcon';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { Schedule } from '@/api/schedule/types';
 import { Button } from '@/components/Button';
+import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
+import { updateScheduleLinks } from '@/api/schedule/client';
+import { useNotification } from '@/components/Notification';
 
 type Week = 1 | 2;
 
@@ -51,6 +54,8 @@ export function ClientComponent({
   const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
 
   const editedScheduleRef = useRef<Schedule | undefined>(undefined);
+
+  const notification = useNotification();
 
   useEffect(() => {
     if (initialGroup === null) {
@@ -96,8 +101,21 @@ export function ClientComponent({
           hasIcon
           className={styles.edit}
           onClick={() => {
+            const schedule = editedScheduleRef.current;
+
             if (isScheduleEditable) {
-              setScheduleEditable(false);
+              if (schedule !== undefined && selectedGroup !== undefined) {
+                const payload = scheduleToUpdateLinksPayload(schedule);
+                updateScheduleLinks(selectedGroup, payload)
+                  .then(() => {
+                    setScheduleEditable(false);
+                  })
+                  .catch((error: unknown) => {
+                    console.error(error);
+
+                    notification.show('Не вдалось оновити розклад', 'error');
+                  });
+              }
             } else {
               setScheduleEditable(true);
             }
