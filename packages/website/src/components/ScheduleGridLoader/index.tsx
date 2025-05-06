@@ -7,6 +7,7 @@ import styles from './index.module.scss';
 import { getSchedule } from '@/api/schedule/client';
 import { useDataLoader } from '@/hooks/useDataLoader';
 import { classNames } from '@/utils/classNames';
+import { broadcastUpdatedLesson } from '@/utils/schedule/broadcast';
 
 export type ScheduleGridLoaderProps = {
   className?: string;
@@ -46,11 +47,16 @@ export function ScheduleGridLoader({
           week={schedule.weeks[week - 1]}
           currentLesson={currentLesson}
           isEditable={isEditable}
-          onScheduleChanged={(newWeek) => {
+          onScheduleChanged={(newWeek, target) => {
             const newWeeks = [...schedule.weeks] as Schedule['weeks'];
             newWeeks[week - 1] = newWeek;
 
-            const newSchedule = { ...schedule, weeks: newWeeks };
+            const newSchedule = broadcastUpdatedLesson(
+              { ...schedule, weeks: newWeeks },
+              target
+            );
+
+            console.log(newSchedule);
 
             setSchedule(newSchedule);
             onScheduleChanged?.(newSchedule);

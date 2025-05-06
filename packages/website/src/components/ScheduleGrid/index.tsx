@@ -22,7 +22,7 @@ export type ScheduleGridProps = {
   currentLesson: CurrentLesson | undefined;
 
   isEditable?: boolean;
-  onScheduleChanged?: (value: DaySchedule[]) => void;
+  onScheduleChanged?: (value: DaySchedule[], target: Lesson) => void;
 };
 
 type LessonGroup = {
@@ -192,7 +192,7 @@ export function ScheduleGrid({
                   lessons: newDayLessons,
                 });
 
-                onScheduleChanged?.(newWeek);
+                onScheduleChanged?.(newWeek, lesson);
               }}
             />
           );

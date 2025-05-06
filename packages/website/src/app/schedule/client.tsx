@@ -16,7 +16,6 @@ import { ScheduleGroupSelect } from '@/components/ScheduleGroupSelect';
 import { Group } from '@/data/types';
 import { useInterval } from '@/hooks/useInterval';
 import { shortenGuid } from '@/utils/guid';
-import { IconButton } from '@/components/IconButton';
 import { EditIcon } from '@/icons/EditIcon';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { Schedule } from '@/api/schedule/types';
@@ -93,7 +92,9 @@ export function ClientComponent({
   return (
     <>
       {canModify && (
-        <Button hasIcon className={styles.edit}
+        <Button
+          hasIcon
+          className={styles.edit}
           onClick={() => {
             if (isScheduleEditable) {
               setScheduleEditable(false);
