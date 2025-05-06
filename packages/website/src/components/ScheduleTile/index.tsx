@@ -95,17 +95,19 @@ export function ScheduleTile({
 
       {isExpanded && lesson.link !== undefined && (
         <div className={styles['link']}>
-          <Link
-            href={lesson.link}
-            contentEditable={isEditable}
-            onChange={(event) => {
-              const { text } = event.target as HTMLAnchorElement;
+          {isEditable ? (
+            <input
+              type="text"
+              value={lesson.link}
+              onInput={(event) => {
+                const { value } = event.target as HTMLInputElement;
 
-              onLinkChanged?.(text);
-            }}
-          >
-            {lesson.link}
-          </Link>
+                onLinkChanged?.(value);
+              }}
+            />
+          ) : (
+            <Link href={lesson.link}>{lesson.link}</Link>
+          )}
         </div>
       )}
     </div>

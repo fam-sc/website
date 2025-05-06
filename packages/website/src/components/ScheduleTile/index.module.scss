@@ -1,6 +1,8 @@
 @use 'sass:list';
 @use '../../theme/utils' as *;
 @use '../../theme/breakpoints' as *;
+@use '../../theme/typography' as *;
+
 
 $type-gradient-map: (
   lec: (
@@ -97,20 +99,34 @@ $type-gradient-map: (
 .link {
   width: 100%;
 
-  a {
+  a, input {
     display: block;
-    
     background: linear-gradient(0.25turn, #432f67, #2e1f4b);
     border-radius: 0.5em;
     padding: 0.5em;
 
     box-shadow: 0 0 2px #000;
     overflow: hidden;
-    text-overflow: ellipsis;
+  }
 
+  input {
+    border: none;
+    box-sizing: border-box;
+    max-width: 100%;
+    
+    @include variant-full-body('body');
+
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-underline-position: from-font; 
+  
     &:focus {
       outline: none;
       box-shadow: 0 0 5px #000;
     }
+  }
+
+  a {
+    text-overflow: ellipsis;
   }
 }

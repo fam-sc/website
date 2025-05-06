@@ -41,4 +41,8 @@
     box-sizing: border-box;
     text-align: center;
   }
+
+  &[aria-disabled=true] li {
+    pointer-events: none;
+  }
 }

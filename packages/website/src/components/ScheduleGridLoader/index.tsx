@@ -1,3 +1,4 @@
+import { Schedule } from '@/api/schedule/types';
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';
 
@@ -12,6 +13,8 @@ export type ScheduleGridLoaderProps = {
   week: 1 | 2;
   groupId: string | undefined;
   currentLesson: CurrentLesson | undefined;
+  isEditable?: boolean;
+  onScheduleChanged?: (value: Schedule) => void;
 };
 
 export function ScheduleGridLoader({
@@ -19,8 +22,10 @@ export function ScheduleGridLoader({
   groupId,
   week,
   currentLesson,
+  isEditable,
+  onScheduleChanged,
 }: ScheduleGridLoaderProps) {
-  const [schedule, isPending] = useDataLoader(
+  const [schedule, isPending, setSchedule] = useDataLoader(
     () =>
       groupId === undefined ? Promise.resolve(undefined) : getSchedule(groupId),
     [groupId]
@@ -40,6 +45,16 @@ export function ScheduleGridLoader({
         <ScheduleGrid
           week={schedule.weeks[week - 1]}
           currentLesson={currentLesson}
+          isEditable={isEditable}
+          onScheduleChanged={(newWeek) => {
+            const newWeeks = [...schedule.weeks] as Schedule['weeks'];
+            newWeeks[week - 1] = newWeek;
+
+            const newSchedule = { ...schedule, weeks: newWeeks };
+
+            setSchedule(newSchedule);
+            onScheduleChanged?.(newSchedule);
+          }}
         />
       )}
     </div>

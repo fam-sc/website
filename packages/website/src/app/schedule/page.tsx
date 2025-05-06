@@ -24,6 +24,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <ClientComponent
+      canModify
       initialGroup={group ? pick(group, ['campusId', 'name']) : null}
       initialWeek={currentWeek}
     />
