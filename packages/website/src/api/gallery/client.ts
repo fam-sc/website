@@ -1,4 +1,4 @@
-import { checkedFetch, fetchObject } from '@/utils/fetch';
+import { checkedFetch, fetchObject } from '@shared/fetch';
 import { UploadGalleryImagesPayload } from './payloads';
 import { GalleryImageWithEvent } from './types';
 

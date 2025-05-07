@@ -1,6 +1,6 @@
 import { objectToFormData } from '@/utils/formData';
 import { AddEventPayload, EditEventPayload } from './payloads';
-import { checkedFetch, fetchObject } from '@/utils/fetch';
+import { checkedFetch, fetchObject } from '@shared/fetch';
 import { ShortEvent } from './types';
 
 export function fetchAllEventsShort(): Promise<ShortEvent[]> {

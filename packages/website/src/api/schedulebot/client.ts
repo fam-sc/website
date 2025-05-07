@@ -1,4 +1,4 @@
-import { checkedFetch } from '@/utils/fetch';
+import { checkedFetch } from '@shared/fetch';
 
 type Payload = {
   userId: string;
