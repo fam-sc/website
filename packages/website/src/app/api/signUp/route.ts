@@ -36,6 +36,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         academicGroup,
         telnum,
         photoId: null,
+        telegramUserId: null,
         role: 'student',
         passwordHash,
       });

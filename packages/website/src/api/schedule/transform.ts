@@ -4,7 +4,7 @@ import {
   DaySchedule as CampusDaySchedule,
   LessonSchedule,
   Weekday,
-} from '../campus/types';
+} from '@shared/api/campus/types';
 
 import { resolveTeachers, TeacherMap } from './teachers';
 import {

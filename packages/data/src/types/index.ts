@@ -14,6 +14,7 @@ export type User = {
   photoId: string | null;
   role: UserRole;
   passwordHash: Uint8Array;
+  telegramUserId: number | null;
 };
 
 export type Poll = {

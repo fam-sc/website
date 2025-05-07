@@ -1,4 +1,4 @@
-import { getLessons } from '../campus';
+import { getLessons } from '@shared/api/campus';
 
 import {
   campusScheduleToDataSchedule,

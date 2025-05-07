@@ -5,7 +5,7 @@ import { Schema, z } from 'zod';
 
 import { ApiResponse, Lecturer, lecturer } from './types';
 
-import { fetchObject } from '@/utils/fetch';
+import { fetchObject } from '@shared/fetch';
 
 async function apiRequest<T>(path: string, schema: Schema<T>): Promise<T> {
   const response = await fetchObject<ApiResponse<T>>(

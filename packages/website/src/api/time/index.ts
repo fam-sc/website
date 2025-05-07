@@ -1,4 +1,4 @@
-import { fetchObject } from '@/utils/fetch';
+import { fetchObject } from '@shared/fetch';
 
 type ResponseContent = {
   dateTime: string;

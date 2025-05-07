@@ -1,4 +1,4 @@
-import { getGroups } from '../campus';
+import { getGroups } from '@shared/api/campus';
 
 import { CachedExternalApi } from '@data/cache';
 import { Repository } from '@data/repo';

@@ -1,0 +1,26 @@
+name = "schedule-bot"
+main = "src/index.ts"
+compatibility_date = "2025-02-14"
+compatibility_flags = ["nodejs_compat"]
+minify = true
+
+routes = [
+  { pattern = "schedule-bot.sc-fam.org", custom_domain = true }
+]
+
+[triggers]
+# Note that this time is UTC. Europe/Kyiv is currently +3,
+# so we need to subtract 3 hours
+crons = [
+  "30 5 * * *",
+  "25 7 * * *",
+  "20 9 * * *",
+  "15 12 * * *",
+  "10 14 * * *",
+  "30 16 * * *",
+  "20 18 * * *"
+]
+
+[observability]
+enabled = true
+head_sampling_rate = 1
