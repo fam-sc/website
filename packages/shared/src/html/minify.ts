@@ -1,12 +1,7 @@
 // Simple attempt at minifying HTML
 
 import { parse } from 'parse5';
-import {
-  Element,
-  Node,
-  Template,
-  TextNode,
-} from 'parse5/dist/tree-adapters/default';
+import { Element, Node, Template, TextNode } from './types';
 
 function minifyInlineCss(text: string): string {
   let result = text

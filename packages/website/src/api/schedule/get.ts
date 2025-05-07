@@ -6,9 +6,9 @@ import {
 } from './transform';
 import { Schedule as ApiSchedule } from './types';
 
-import { CachedExternalApi } from '@/data/cache';
-import { Repository } from '@/data/repo';
-import { Schedule as DataSchedule } from '@/data/types/schedule';
+import { CachedExternalApi } from '@data/cache';
+import { Repository } from '@data/repo';
+import { Schedule as DataSchedule } from '@data/types/schedule';
 
 // 7 days
 const SCHEDULE_INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;

@@ -1,4 +1,4 @@
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 import { BSONError } from 'bson';
 import { ObjectId } from 'mongodb';
 import { ClientComponent } from './client';

@@ -13,7 +13,7 @@ import { OptionSwitch } from '@/components/OptionSwitch';
 import { CurrentLesson } from '@/components/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';
 import { ScheduleGroupSelect } from '@/components/ScheduleGroupSelect';
-import { Group } from '@/data/types';
+import { Group } from '@data/types';
 import { useInterval } from '@/hooks/useInterval';
 import { shortenGuid } from '@/utils/guid';
 import { EditIcon } from '@/icons/EditIcon';

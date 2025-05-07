@@ -1,7 +1,7 @@
 import { Select } from '../Select';
 
 import { getGroups } from '@/api/schedule/client';
-import { Group } from '@/data/types';
+import { Group } from '@data/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
 import { shortenGuid } from '@/utils/guid';
 

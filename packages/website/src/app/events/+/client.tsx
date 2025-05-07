@@ -1,6 +1,6 @@
 'use client';
 
-import { getMediaFileUrl } from '@/api/media';
+import { getMediaFileUrl } from '@shared/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { RichTextEditor } from '@/components/RichTextEditor';

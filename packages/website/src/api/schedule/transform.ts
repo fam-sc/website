@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-array-callback-reference */
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 import {
   DaySchedule as CampusDaySchedule,
   LessonSchedule,
@@ -16,7 +16,7 @@ import {
   Day,
   DaySchedule as DataDaySchedule,
   Schedule as DataSchedule,
-} from '@/data/types/schedule';
+} from '@data/types/schedule';
 
 export function campusDayToWeekdayNumber(value: Weekday): Day {
   switch (value) {

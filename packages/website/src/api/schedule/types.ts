@@ -1,8 +1,8 @@
 import { Time } from '../campus/types';
 
-import { Day, ScheduleTeacher } from '@/data/types/schedule';
+import { Day, ScheduleTeacher } from '@data/types/schedule';
 
-export type { Day } from '@/data/types/schedule';
+export type { Day } from '@data/types/schedule';
 
 export type { Time } from '../campus/types';
 export { timeBreakpoints } from '../campus/types';

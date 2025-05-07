@@ -3,7 +3,7 @@
 import { LazyImageScroll } from '@/components/LazyImageScroll';
 import styles from './page.module.scss';
 import { fetchGalleryPage } from '@/api/gallery/client';
-import { getMediaFileUrl } from '@/api/media';
+import { getMediaFileUrl } from '@shared/media';
 import Link from 'next/link';
 import { UploadIcon } from '@/icons/UploadIcon';
 import { useState } from 'react';

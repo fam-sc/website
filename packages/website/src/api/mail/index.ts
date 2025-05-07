@@ -1,4 +1,4 @@
-import { getEnvChecked } from '@/utils/env';
+import { getEnvChecked } from '@shared/env';
 
 type ResendBody = {
   from: string;

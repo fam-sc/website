@@ -1,4 +1,4 @@
-import { shortenByWord } from '@/utils/shortenByWord';
+import { shortenByWord } from '../shortenByWord';
 import { RichTextAtomNode, RichTextString } from './types';
 import { richTextCharacterLength } from './length';
 

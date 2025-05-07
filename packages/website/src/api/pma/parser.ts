@@ -7,7 +7,7 @@ import {
   findChildByNodeName,
   getAttributeValue,
   isTextNode,
-} from '@/utils/html';
+} from '@shared/html';
 
 function findBody(document: Document): Element | undefined {
   const html = findChildByNodeName(document, 'html');

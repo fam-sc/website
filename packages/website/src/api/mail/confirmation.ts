@@ -1,4 +1,4 @@
-import { minifyHTML } from '@/utils/html/minify';
+import { minifyHTML } from '@shared/html/minify';
 import { sendMail } from '.';
 
 function text(activationLink: string): string {

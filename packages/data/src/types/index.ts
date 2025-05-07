@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-import { RichTextString } from '@/richText/types';
+import { RichTextString } from '@shared/richText/types';
 
 export type UserRole = 'student' | 'group-head' | 'admin';
 

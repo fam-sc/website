@@ -1,6 +1,6 @@
 import { ChatFullInfo, File } from './types';
 
-import { getEnvChecked } from '@/utils/env';
+import { getEnvChecked } from '@shared/env';
 
 type TelegramResponse<T> =
   | {

@@ -1,9 +1,5 @@
 import { parseFragment, serializeOuter } from 'parse5';
-import type {
-  ChildNode,
-  DocumentFragment,
-  Element,
-} from 'parse5/dist/tree-adapters/default';
+import type { ChildNode, DocumentFragment, Element } from '../html/types';
 
 import { transformArrayAttributesToRichText } from './attributes';
 import { createRichTextNode } from './factory';
@@ -18,8 +14,8 @@ import {
   getAttributeNumberValue,
   getAttributeValue,
   HtmlNodeWithName,
-} from '@/utils/html';
-import { normalizeToRelative } from '@/utils/url';
+} from '../html';
+import { normalizeToRelative } from '../url';
 
 type ImageInfo = {
   filePath: string;

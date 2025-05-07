@@ -1,4 +1,4 @@
-import { ParserContext } from './parser';
+import { ParserContext } from '@shared/richText/parser';
 import { getDataUrlContent } from '@/utils/dataUrl';
 import { getImageSize } from '@/image/size';
 import { MediaTransaction } from '@/api/media/transaction';

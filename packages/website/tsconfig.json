@@ -24,7 +24,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@public/*": ["./public/*"]
+      "@public/*": ["./public/*"],
+      "@data/*": ["../data/src/*"],
+      "@shared/*": ["../shared/src/*"]
     },
     "types": ["./cloudflare-env.d.ts"],
     "isolatedModules": true

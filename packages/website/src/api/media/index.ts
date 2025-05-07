@@ -1,13 +1,5 @@
-import { getEnvChecked } from '@/utils/env';
-
-export function getMediaFileUrl(path: string): string {
-  const url = process.env.NEXT_PUBLIC_MEDIA_URL;
-  if (url === undefined) {
-    throw new Error('No NEXT_PUBLIC_MEDIA_URL in env');
-  }
-
-  return `${url}/${path}`;
-}
+import { getEnvChecked } from '@shared/env';
+import { getMediaFileUrl } from '@shared/media';
 
 export function fetchMediaFile(path: string): Promise<Response> {
   return fetch(getMediaFileUrl(path), { method: 'GET' });

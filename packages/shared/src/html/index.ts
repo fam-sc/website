@@ -1,5 +1,5 @@
-import { Attribute } from 'parse5/dist/common/token';
 import {
+  Attribute,
   ChildNode,
   CommentNode,
   DocumentFragment,
@@ -7,7 +7,7 @@ import {
   Node,
   Template,
   TextNode,
-} from 'parse5/dist/tree-adapters/default';
+} from './types';
 
 type SpecialNodeMap = {
   '#text': TextNode;

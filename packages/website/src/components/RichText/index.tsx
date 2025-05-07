@@ -6,12 +6,12 @@ import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { getMediaFileUrl } from '@/api/media';
+import { getMediaFileUrl } from '@shared/media';
 import {
   RichTextElementNode,
   RichTextNode,
   RichTextString,
-} from '@/richText/types';
+} from '@shared/richText/types';
 import { classNames } from '@/utils/classNames';
 
 export type RichTextProps = {

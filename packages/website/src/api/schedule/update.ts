@@ -1,4 +1,4 @@
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 
 // Key is lesson ID (type-name-teacher.name), value is new link.
 export type UpdateScheduleLinksPayload = Record<

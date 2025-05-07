@@ -1,6 +1,6 @@
 import { Schedule } from './types';
 
-import { Group } from '@/data/types';
+import { Group } from '@data/types';
 import { checkedFetch, fetchObject } from '@/utils/fetch';
 import { UpdateScheduleLinksPayload } from './update';
 

@@ -1,9 +1,9 @@
 import { parseAddEventPayload } from '@/api/events/payloads';
 import { MediaTransaction } from '@/api/media/transaction';
 import { badRequest, ok } from '@/api/responses';
-import { Repository } from '@/data/repo';
-import { parseHtmlToRichText } from '@/richText/parser';
-import { creatMediaServerParseContext } from '@/richText/parserContext';
+import { Repository } from '@data/repo';
+import { parseHtmlToRichText } from '@shared/richText/parser';
+import { creatMediaServerParseContext } from '@/api/media/richText';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 

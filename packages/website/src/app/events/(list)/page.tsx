@@ -1,12 +1,12 @@
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 import { PageProps } from '@/types/next';
 import { coerce } from '@/utils/math';
 import { ClientComponent, ClientEvent } from './client';
 import { redirect, RedirectType } from 'next/navigation';
 import { WithId } from 'mongodb';
-import { Event } from '@/data/types';
+import { Event } from '@data/types';
 import { formatDateTime } from '@/utils/date';
-import { shortenRichText } from '@/richText/short';
+import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@/utils/parseInt';
 
 const ITEMS_PER_PAGE = 5;

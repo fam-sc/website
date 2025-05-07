@@ -4,7 +4,7 @@ import { badRequest, unauthrorized } from '@/api/responses';
 import { verifyPassword } from '@/auth/password';
 import { newSessionId, setSessionId } from '@/auth/session';
 import { SignInDataSchema } from '@/auth/types';
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {

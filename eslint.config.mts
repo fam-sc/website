@@ -23,6 +23,7 @@ export default tseslint.config(
       'packages/website/.open-next',
       'packages/website/open-next.config.ts',
       'packages/website/cloudflare-env.d.ts',
+      'packages/mail-test/vite.config.ts',
       'node_modules',
       'eslint.config.mts',
       'prettier.config.mjs',

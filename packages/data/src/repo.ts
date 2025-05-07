@@ -9,7 +9,7 @@ import { SessionCollection } from './collections/sessions';
 import { UpdateTimeCollection } from './collections/updateTime';
 import { UserCollection } from './collections/users';
 
-import { getEnvChecked } from '@/utils/env';
+import { getEnvChecked } from '@shared/env';
 
 export class Repository implements AsyncDisposable {
   private client: MongoClient;

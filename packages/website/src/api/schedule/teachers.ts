@@ -2,8 +2,8 @@ import { findTeacherByName } from '../intellect';
 import { getTeachers } from '../pma';
 import { Teacher } from '../pma/types';
 
-import { CachedExternalApi } from '@/data/cache';
-import { Repository } from '@/data/repo';
+import { CachedExternalApi } from '@data/cache';
+import { Repository } from '@data/repo';
 import { convertToKeyMap } from '@/utils/keyMap';
 
 export type TeacherMap = Map<string, Teacher>;

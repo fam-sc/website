@@ -2,9 +2,9 @@ import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getMediaFileUrl } from '@/api/media';
+import { getMediaFileUrl } from '@shared/media';
 import { Typography } from '@/components/Typography';
-import { RichTextString } from '@/richText/types';
+import { RichTextString } from '@shared/richText/types';
 import { EventIcon } from '@/icons/EventIcon';
 import { RichText } from '@/components/RichText';
 

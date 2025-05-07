@@ -1,7 +1,7 @@
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 import { ClientComponent, ClientEvent } from './client';
 import { ObjectId } from 'mongodb';
-import { richTextToHtml } from '@/richText/htmlBuilder';
+import { richTextToHtml } from '@shared/richText/htmlBuilder';
 import { PageProps } from '@/types/next';
 import { redirect } from 'next/navigation';
 

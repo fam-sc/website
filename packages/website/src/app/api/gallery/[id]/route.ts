@@ -1,7 +1,7 @@
 import { GalleryImageWithEvent } from '@/api/gallery/types';
 import { deleteMediaFile } from '@/api/media';
 import { notFound, ok } from '@/api/responses';
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 import { formatDateTime } from '@/utils/date';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';

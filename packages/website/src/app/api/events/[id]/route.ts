@@ -1,9 +1,9 @@
 import { parseEditEventPayload } from '@/api/events/payloads';
 import { deleteMediaFile } from '@/api/media';
 import { MediaTransaction } from '@/api/media/transaction';
-import { Repository } from '@/data/repo';
-import { parseHtmlToRichText } from '@/richText/parser';
-import { creatMediaServerParseContext } from '@/richText/parserContext';
+import { Repository } from '@data/repo';
+import { parseHtmlToRichText } from '@shared/richText/parser';
+import { creatMediaServerParseContext } from '@/api/media/richText';
 import { BSONError } from 'bson';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Attribute } from 'parse5/dist/common/token';
+import { Attribute } from '../html/types';
 
-import { parseInlineStyle } from '@/utils/inlineStyleParser';
+import { parseInlineStyle } from '../inlineStyleParser';
 
 type HtmlAttributeToReactMap = {
   [K in string]: keyof React.AllHTMLAttributes<HTMLElement> | undefined;

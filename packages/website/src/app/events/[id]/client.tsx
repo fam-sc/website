@@ -1,9 +1,9 @@
 'use client';
 
-import { Event } from '@/data/types';
+import { Event } from '@data/types';
 import styles from './page.module.scss';
 import { Typography } from '@/components/Typography';
-import { getMediaFileUrl } from '@/api/media';
+import { getMediaFileUrl } from '@shared/media';
 import Image from 'next/image';
 import { RichText } from '@/components/RichText';
 import Link from 'next/link';

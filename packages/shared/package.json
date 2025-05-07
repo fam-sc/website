@@ -1,0 +1,13 @@
+{
+  "name": "@sc-fam/shared",
+  "packageManager": "yarn@4.8.1",
+  "scripts": {
+    "build:no-emit": "tsc --noEmit"
+  },
+  "dependencies": {
+    "parse5": "7.2.1"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
+  }
+}

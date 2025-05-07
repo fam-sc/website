@@ -4554,6 +4554,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sc-fam/data@workspace:packages/data":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/data@workspace:packages/data"
+  dependencies:
+    mongodb: "npm:6.15.0"
+    typescript: "npm:5.8.3"
+  languageName: unknown
+  linkType: soft
+
 "@sc-fam/mail-test@workspace:packages/mail-test":
   version: 0.0.0-use.local
   resolution: "@sc-fam/mail-test@workspace:packages/mail-test"
@@ -4568,6 +4577,15 @@ __metadata:
   dependencies:
     typescript: "npm:5.8.3"
     wrangler: "npm:4.9.1"
+  languageName: unknown
+  linkType: soft
+
+"@sc-fam/shared@workspace:packages/shared":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/shared@workspace:packages/shared"
+  dependencies:
+    parse5: "npm:7.2.1"
+    typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
 

@@ -1,6 +1,6 @@
 import { MediaTransaction } from '@/api/media/transaction';
 import { badRequest, ok } from '@/api/responses';
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 import { BSONError } from 'bson';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';

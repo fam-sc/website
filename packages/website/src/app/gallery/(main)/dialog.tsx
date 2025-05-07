@@ -2,7 +2,7 @@
 
 import { fetchGalleryImage, deleteGalleryImage } from '@/api/gallery/client';
 import { GalleryImageWithEvent } from '@/api/gallery/types';
-import { getMediaFileUrl } from '@/api/media';
+import { getMediaFileUrl } from '@shared/media';
 import { IconButton } from '@/components/IconButton';
 import { ModalOverlay } from '@/components/ModalOverlay';
 import { useNotification } from '@/components/Notification';

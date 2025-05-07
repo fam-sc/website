@@ -1,8 +1,8 @@
 import { getGroups } from '../campus';
 
-import { CachedExternalApi } from '@/data/cache';
-import { Repository } from '@/data/repo';
-import { Group } from '@/data/types';
+import { CachedExternalApi } from '@data/cache';
+import { Repository } from '@data/repo';
+import { Group } from '@data/types';
 
 // 7 days
 const GROUP_INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;

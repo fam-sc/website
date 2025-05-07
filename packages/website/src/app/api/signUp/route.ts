@@ -6,7 +6,7 @@ import { badRequest } from '@/api/responses';
 import { hashPassword } from '@/auth/password';
 import { newSessionId, setSessionId } from '@/auth/session';
 import { SignUpDataSchema } from '@/auth/types';
-import { Repository } from '@/data/repo';
+import { Repository } from '@data/repo';
 import { isDuplicateKeyError } from '@/utils/errors/mongo';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

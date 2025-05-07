@@ -2,8 +2,8 @@ import { cookies } from 'next/headers';
 
 import { parseSessionIdString, SESSION_ID_COOKIE } from '.';
 
-import { Repository } from '@/data/repo';
-import { UserRole } from '@/data/types';
+import { Repository } from '@data/repo';
+import { UserRole } from '@data/types';
 
 export async function getCurrentUserRole(): Promise<UserRole | null> {
   const cookiesSet = await cookies();
