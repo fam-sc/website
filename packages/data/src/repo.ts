@@ -53,9 +53,10 @@ export class Repository implements AsyncDisposable {
     };
   }
 
-  static async openConnection(): Promise<Repository> {
-    const connectionString = getEnvChecked('MONGO_CONNECTION_STRING');
-    const client = new MongoClient(connectionString);
+  static async openConnection(connectionString?: string): Promise<Repository> {
+    const client = new MongoClient(
+      connectionString ?? getEnvChecked('MONGO_CONNECTION_STRING')
+    );
     await client.connect();
 
     return new Repository(client);

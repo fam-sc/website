@@ -59,6 +59,8 @@ export default tseslint.config(
       'unicorn/no-null': 'off',
       'unicorn/no-useless-undefined': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
+      'import/no-anonymous-default-export': 'off',
+      'unicorn/prefer-top-level-await': 'off',
     },
   },
   ...compat.extends('next'),
