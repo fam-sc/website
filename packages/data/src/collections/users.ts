@@ -20,4 +20,8 @@ export class UserCollection extends EntityCollection<User> {
   findByTelegramUserId(id: number) {
     return this.findOne({ telegramUserId: id });
   }
+
+  findAllUsersWithLinkedTelegram() {
+    return this.find({ telegramUserId: { $not: { $eq: null } } });
+  }
 }

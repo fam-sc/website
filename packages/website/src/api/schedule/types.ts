@@ -1,11 +1,11 @@
-import { Time } from '../campus/types';
+import { Time } from '@shared/api/campus/types';
 
 import { Day, ScheduleTeacher } from '@data/types/schedule';
 
 export type { Day } from '@data/types/schedule';
 
-export type { Time } from '../campus/types';
-export { timeBreakpoints } from '../campus/types';
+export type { Time } from '@shared/api/campus/types';
+export { timeBreakpoints } from '@shared/api/campus/types';
 
 export type Lesson = {
   type: 'lec' | 'prac' | 'lab';

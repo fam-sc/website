@@ -2,6 +2,7 @@ import { verifyAuthorizationHash } from '../../auth';
 import { Repository } from '@data/repo';
 import { ObjectId } from 'mongodb';
 import { badRequest } from '../../responses';
+import { BotController } from '@/controller';
 
 export async function POST(request: Request, env: Env): Promise<Response> {
   const { searchParams } = new URL(request.url);
@@ -47,7 +48,11 @@ export async function POST(request: Request, env: Env): Promise<Response> {
   await using repo = await Repository.openConnection(
     env.MONGO_CONNECTION_STRING
   );
+
   await repo.users().updateTelegramUserId(objectUserId, telegramIdNumber);
+
+  const controller = new BotController(env);
+  await controller.handleAuth(telegramIdNumber);
 
   return new Response();
 }

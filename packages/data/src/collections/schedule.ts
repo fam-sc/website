@@ -35,10 +35,14 @@ export class ScheduleCollection extends EntityCollection<Schedule> {
     return this.bulkWrite(
       links.map(({ type, name, teacher, link }) => ({
         updateMany: {
-          filter: { type, name, teacher },
+          filter: { groupCampusId: groupId, type, name, teacher },
           update: { $set: { link } },
         },
       }))
     );
+  }
+
+  findSchedulesWithGroupIds(ids: string[]) {
+    return this.find({ groupCampusId: { $in: ids } });
   }
 }

@@ -1,5 +1,7 @@
+import { parseCronTimeToLocal } from './cron';
 import auth from './routes/auth';
 import update from './routes/update';
+import { handleOnTime } from './scheduleHandler';
 
 type RouteHandler = (request: Request, env: Env) => Promise<Response>;
 
@@ -28,5 +30,10 @@ export default {
     }
 
     return new Response('Not Found', { status: 404 });
+  },
+  async scheduled(controller, env) {
+    const time = parseCronTimeToLocal(controller.cron);
+
+    await handleOnTime(time, env);
   },
 } satisfies ExportedHandler<Env>;

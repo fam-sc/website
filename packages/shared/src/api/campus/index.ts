@@ -9,7 +9,7 @@ import {
   lessonSchedule,
 } from './types';
 
-import { fetchObject } from '@/utils/fetch';
+import { fetchObject } from '../../fetch';
 
 async function apiRequest<T>(path: string, schema: z.Schema<T>): Promise<T> {
   const result = await fetchObject(`https://api.campus.kpi.ua${path}`);

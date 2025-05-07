@@ -1,6 +1,7 @@
 import { Repository } from '@data/repo';
 import { TelegramBot } from './telegram';
 import { Message, Update } from './telegram/types';
+import { Lesson } from '@data/types/schedule';
 
 export class BotController {
   private bot: TelegramBot;
@@ -36,5 +37,24 @@ export class BotController {
     if (update.message !== undefined) {
       await this.handleMessage(update.message);
     }
+  }
+
+  async handleAuth(userId: number) {
+    await this.bot.sendMessage(
+      userId,
+      `Ви успішно прив'язали цей телеграм аккаунт до облікового запису SC FAM\n\nТепер ви будете отримувати сповіщення про початок пар`
+    );
+  }
+
+  async handleTimeTrigger(userId: number, lessons: Lesson[]) {
+    let message = lessons.length === 1 ? 'Почалася пара' : 'Почалися пари';
+    message += ':\n\n';
+    message += lessons
+      .map((lesson) => {
+        return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
+      })
+      .join('\n');
+
+    await this.bot.sendMessage(userId, message);
   }
 }
