@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { AnswerMap, PollQuestionList, PollQuestionListProps } from '.';
+import { PollQuestionList, PollQuestionListProps } from '.';
 import { useState } from 'react';
+import { QuestionAnswer } from '../PollQuestion/types';
 
 function Component(props: PollQuestionListProps) {
-  const [answers, setAnswers] = useState<AnswerMap>({});
+  const [answers, setAnswers] = useState<(QuestionAnswer | undefined)[]>([]);
 
   return (
     <PollQuestionList
@@ -30,17 +31,14 @@ export const Primary: Story = {
   args: {
     items: [
       {
-        key: '1',
         title: 'Question 1',
         descriptor: { type: 'text' },
       },
       {
-        key: '2',
         title: 'Question 2',
         descriptor: { type: 'checkbox', choices: items },
       },
       {
-        key: '3',
         title: 'Question 3',
         descriptor: { type: 'radio', choices: items },
       },

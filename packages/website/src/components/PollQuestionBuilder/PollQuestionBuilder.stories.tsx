@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import {
-  PollQuestionBuilder,
-  PollQuestionBuilderProps,
-  QuestionBuildItem,
-} from '.';
+import { PollQuestionBuilder, PollQuestionBuilderProps } from '.';
 import { useState } from 'react';
+import { QuestionBuildItem } from './item';
 
 function Component(props: PollQuestionBuilderProps) {
   const [value, setValue] = useState<QuestionBuildItem>({ title: '' });
