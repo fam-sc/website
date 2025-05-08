@@ -1,10 +1,9 @@
-import { OptionBase, OptionBaseProps } from '../OptionBase';
-
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
 
-export function Checkbox({
+import styles from './index.module.scss';
+import { OptionBase, OptionBaseProps } from '../OptionBase';
+
+export function RadioButton({
   className,
   ...rest
 }: Omit<OptionBaseProps, 'type'>) {
@@ -12,7 +11,7 @@ export function Checkbox({
     <OptionBase
       className={classNames(styles.root, className)}
       {...rest}
-      type="checkbox"
+      type="radio"
     />
   );
 }
