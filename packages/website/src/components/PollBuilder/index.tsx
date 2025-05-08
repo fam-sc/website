@@ -1,34 +1,22 @@
 import { classNames } from '@/utils/classNames';
-import { PollQuestionBuilder, QuestionBuildItem } from '../PollQuestionBuilder';
+import { PollQuestionBuilder } from '../PollQuestionBuilder';
 
 import styles from './index.module.scss';
 import { IconButton } from '../IconButton';
 import { PlusIcon } from '@/icons/PlusIcon';
+import { isValidItem, QuestionBuildItem } from '../PollQuestionBuilder/item';
 
 export type PollBuilderProps = {
   className?: string;
+  disabled?: boolean;
+
   items: QuestionBuildItem[];
   onItemsChanged: (items: QuestionBuildItem[]) => void;
 };
 
-function isValidItem({ title, descriptor }: QuestionBuildItem): boolean {
-  if (title.length === 0 || descriptor === undefined) {
-    return false;
-  }
-
-  switch (descriptor.type) {
-    case 'checkbox':
-    case 'radio': {
-      return descriptor.choices.length > 0;
-    }
-    default: {
-      return true;
-    }
-  }
-}
-
 export function PollBuilder({
   className,
+  disabled,
   items,
   onItemsChanged,
 }: PollBuilderProps) {
@@ -39,6 +27,7 @@ export function PollBuilder({
           <li key={i}>
             <PollQuestionBuilder
               value={item}
+              disabled={disabled}
               isError={!isValidItem(item)}
               onValueChanged={(value) => {
                 const copy = [...items];
@@ -52,6 +41,7 @@ export function PollBuilder({
       </ul>
 
       <IconButton
+        disabled={disabled}
         className={styles.add}
         onClick={() => {
           onItemsChanged([...items, { title: '' }]);

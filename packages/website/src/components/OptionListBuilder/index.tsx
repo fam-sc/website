@@ -8,11 +8,16 @@ import { Typography } from '../Typography';
 import { classNames } from '@/utils/classNames';
 
 export type OptionListBuilderProps = {
+  className?: string;
+  disabled?: boolean;
+
   items: string[];
   onItemsChanged?: (items: string[]) => void;
 };
 
 export function OptionListBuilder({
+  className,
+  disabled,
   items,
   onItemsChanged,
 }: OptionListBuilderProps) {
@@ -27,12 +32,13 @@ export function OptionListBuilder({
   }, [items]);
 
   return (
-    <Typography as="ol" className={styles.root}>
+    <Typography as="ol" className={classNames(styles.root, className)}>
       {items.map((item, i) => (
         <li key={i}>
           <div>
             <TextInput
               ref={i === items.length - 1 ? lastInputRef : undefined}
+              disabled={disabled}
               className={styles.input}
               variant="underline"
               value={item}
@@ -46,6 +52,7 @@ export function OptionListBuilder({
 
             <IconButton
               className={styles.remove}
+              disabled={disabled}
               hover="fill"
               onClick={() => {
                 const copy = [...items];
@@ -64,6 +71,7 @@ export function OptionListBuilder({
         <div>
           <TextInput
             className={classNames(styles.input, styles['input-add'])}
+            disabled={disabled}
             variant="underline"
             placeholder="Додати елемент"
             onFocus={() => {

@@ -10,6 +10,7 @@ import { UpdateTimeCollection } from './collections/updateTime';
 import { UserCollection } from './collections/users';
 
 import { getEnvChecked } from '@shared/env';
+import { PollCollection } from './collections/polls';
 
 export class Repository implements AsyncDisposable {
   private client: MongoClient;
@@ -25,9 +26,10 @@ export class Repository implements AsyncDisposable {
   galleryImages = this.collection(GalleryImageCollection);
   sessions = this.collection(SessionCollection);
   schedule = this.collection(ScheduleCollection);
+  scheduleTeachers = this.collection(ScheduleTeacherCollection);
   updateTime = this.collection(UpdateTimeCollection);
   groups = this.collection(GroupCollection);
-  scheduleTeachers = this.collection(ScheduleTeacherCollection);
+  polls = this.collection(PollCollection);
 
   async transaction<R>(block: (trepo: Repository) => Promise<R>): Promise<R> {
     const session = this.client.startSession();

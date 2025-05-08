@@ -6,20 +6,20 @@ import { TextInput } from '../TextInput';
 import { Select } from '../Select';
 import { FC } from 'react';
 import { OptionListBuilder } from '../OptionListBuilder';
-
-export type QuestionBuildItem = {
-  title: string;
-  descriptor?: QuestionDescriptor;
-};
+import { QuestionBuildItem } from './item';
 
 export type PollQuestionBuilderProps = {
   className?: string;
+  disabled?: boolean;
+
   isError?: boolean;
   value: QuestionBuildItem;
   onValueChanged: (value: QuestionBuildItem) => void;
 };
 
 type ContentTypeProps<T extends QuestionType> = {
+  disabled?: boolean;
+
   descriptor: QuestionDescriptor<T>;
   onDescriptorChanged: (value: QuestionDescriptor<T>) => void;
 };
@@ -37,9 +37,10 @@ const questionTypeTitles: Record<QuestionType, string> = {
 
 function optionListBuilderWrapper<T extends 'checkbox' | 'radio'>(type: T) {
   // eslint-disable-next-line react/display-name
-  return ({ descriptor, onDescriptorChanged }: ContentTypeProps<T>) => {
+  return ({ disabled, descriptor, onDescriptorChanged }: ContentTypeProps<T>) => {
     return (
       <OptionListBuilder
+        disabled={disabled}
         items={descriptor.choices.map(({ title }) => title)}
         onItemsChanged={(items) => {
           onDescriptorChanged({
@@ -72,6 +73,7 @@ const contentComponentMap: ContentComponentMap = {
 
 export function PollQuestionBuilder({
   className,
+  disabled,
   isError,
   value,
   onValueChanged,
@@ -90,6 +92,7 @@ export function PollQuestionBuilder({
           className={styles['title']}
           value={value.title}
           placeholder="Питання"
+          disabled={disabled}
           onTextChanged={(title) => {
             onValueChanged({ ...value, title });
           }}
@@ -99,6 +102,7 @@ export function PollQuestionBuilder({
           className={styles['type-select']}
           placeholder="Виберіть тип"
           selectedItem={value.descriptor?.type}
+          disabled={disabled}
           items={questionTypes.map((type) => ({
             key: type,
             title: questionTypeTitles[type],
@@ -111,6 +115,7 @@ export function PollQuestionBuilder({
 
       {Content && value.descriptor ? (
         <Content
+          disabled={disabled}
           descriptor={value.descriptor}
           onDescriptorChanged={(descriptor) => {
             onValueChanged({ ...value, descriptor });

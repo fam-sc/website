@@ -19,19 +19,21 @@ export type User = {
 
 export type Poll = {
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   title: string;
   questions: PollQuestion[];
 };
 
 export type PollQuestion = {
-  text: string;
-} & ({ type: 'options'; options: PollQuestionOption } | { type: 'input' });
+  type: 'checkbox' | 'radio' | 'text';
+  title: string;
+  options?: PollQuestionOption[];
+};
 
 export type PollType = PollQuestion['type'];
 
 export type PollQuestionOption = {
-  text: string;
+  title: string;
 };
 
 export type PollRespondent = {
