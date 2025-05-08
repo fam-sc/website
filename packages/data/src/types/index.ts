@@ -22,6 +22,7 @@ export type Poll = {
   endDate: Date | null;
   title: string;
   questions: PollQuestion[];
+  respondents: PollRespondent[];
 };
 
 export type PollQuestion = {
@@ -37,19 +38,19 @@ export type PollQuestionOption = {
 };
 
 export type PollRespondent = {
-  userId: string;
-  startDate: Date;
-  endDate: Date;
+  date: Date;
   answers: PollRespondentAnswer[];
 };
 
 export type PollRespondentAnswer = {
-  questionId: string;
   // if question's type is input
   text?: string;
 
-  // if questions's type is options.
-  optionId: string;
+  // if question's type is radio.
+  selectedIndex?: number;
+
+  // if question's type is checkbox.
+  selectedIndices?: number[];
 };
 
 export type Event = {

@@ -11,7 +11,7 @@ import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
 import { addPoll } from '@/api/polls/client';
 import { TextInput } from '@/components/TextInput';
-import { AddPollPayload } from '@/api/polls/payloads';
+import { AddPollPayload } from '@/api/polls/types';
 
 export function ClientComponent() {
   const [title, setTitle] = useState('');

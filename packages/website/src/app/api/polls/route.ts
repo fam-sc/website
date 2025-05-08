@@ -1,4 +1,4 @@
-import { addPollPayload } from '@/api/polls/payloads';
+import { addPollPayload } from '@/api/polls/types';
 import { badRequest } from '@/api/responses';
 import { Repository } from '@data/repo';
 import { NextRequest, NextResponse } from 'next/server';
@@ -10,9 +10,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const payload = addPollPayload.parse(rawPayload);
 
     await using repo = await Repository.openConnection();
-    await repo
-      .polls()
-      .insert({ startDate: new Date(), endDate: null, ...payload });
+    await repo.polls().insert({
+      startDate: new Date(),
+      endDate: null,
+      respondents: [],
+      ...payload,
+    });
 
     return new NextResponse();
   } catch (error) {

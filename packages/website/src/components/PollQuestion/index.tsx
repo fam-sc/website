@@ -14,6 +14,8 @@ import { RadioButton } from '../RadioButton';
 export * from './types';
 
 export interface PollQuestionProps<T extends QuestionType> {
+  disabled?: boolean;
+
   title: string;
   descriptor: QuestionDescriptor<T>;
   answer: QuestionAnswer<T> | undefined;
@@ -34,6 +36,8 @@ function OptionGroup({ choices, children }: OptionGroupProps) {
 }
 
 type ContentTypeProps<T extends QuestionType = QuestionType> = {
+  disabled?: boolean;
+
   descriptor: QuestionDescriptor<T>;
   answer: QuestionAnswer<T> | undefined;
   onAnswerChanged: (value: QuestionAnswer<T>) => void;
@@ -43,9 +47,14 @@ type ContentComponentMap = {
   [T in QuestionType]: FC<ContentTypeProps<T>>;
 };
 
-function TextContent({ answer, onAnswerChanged }: ContentTypeProps<'text'>) {
+function TextContent({
+  disabled,
+  answer,
+  onAnswerChanged,
+}: ContentTypeProps<'text'>) {
   return (
     <TextArea
+      disabled={disabled}
       value={answer?.text}
       onTextChanged={(text) => {
         onAnswerChanged({ text });
@@ -55,6 +64,7 @@ function TextContent({ answer, onAnswerChanged }: ContentTypeProps<'text'>) {
 }
 
 function CheckboxContent({
+  disabled,
   descriptor,
   answer,
   onAnswerChanged,
@@ -66,6 +76,7 @@ function CheckboxContent({
       {(id, title) => (
         <Checkbox
           key={id}
+          disabled={disabled}
           checked={selectedIds.includes(id)}
           onCheckedChanged={(state) => {
             onAnswerChanged({
@@ -83,6 +94,7 @@ function CheckboxContent({
 }
 
 function RadioContent({
+  disabled,
   descriptor,
   answer,
   onAnswerChanged,
@@ -92,6 +104,7 @@ function RadioContent({
       {(id, title) => (
         <RadioButton
           key={id}
+          disabled={disabled}
           checked={answer?.selectedId === id}
           onCheckedChanged={(state) => {
             if (state) {
@@ -113,6 +126,7 @@ const contentComponentMap: ContentComponentMap = {
 };
 
 export function PollQuestion<T extends QuestionType>({
+  disabled,
   title,
   descriptor,
   answer,
@@ -129,6 +143,7 @@ export function PollQuestion<T extends QuestionType>({
       </Typography>
 
       <Content
+        disabled={disabled}
         descriptor={descriptor}
         answer={answer}
         onAnswerChanged={onAnswerChanged}

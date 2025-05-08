@@ -3,6 +3,7 @@ import { BSONError } from 'bson';
 import { ObjectId } from 'mongodb';
 import { ClientComponent } from './client';
 import { notFound } from 'next/navigation';
+import { PageProps } from '@/types/next';
 
 async function getEvent(id: string) {
   try {
@@ -18,11 +19,7 @@ async function getEvent(id: string) {
   }
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Page({ params }: PageProps<{ id: string }>) {
   const { id } = await params;
   const event = await getEvent(id);
   if (event === null) {
