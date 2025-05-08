@@ -4,8 +4,6 @@ import { MediaTransaction } from '@/api/media/transaction';
 import { Repository } from '@data/repo';
 import { parseHtmlToRichText } from '@shared/richText/parser';
 import { creatMediaServerParseContext } from '@/api/media/richText';
-import { BSONError } from 'bson';
-import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
 type Params = {
@@ -51,36 +49,16 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: Params
 ): Promise<NextResponse> {
   const { id } = await params;
   await using repo = await Repository.openConnection();
 
-  let objectId: ObjectId;
-
-  try {
-    objectId = new ObjectId(id);
-  } catch (error: unknown) {
-    if (BSONError.isBSONError(error)) {
-      // Return 200 - the client expects the event to be deleted, it's already deleted because it would never exist (invalid id format).
-      return new NextResponse();
-    }
-
-    console.error(error);
-    return new NextResponse(null, { status: 500 });
+  const result = await repo.events().delete(id);
+  if (result.deletedCount !== 0) {
+    await deleteMediaFile(`events/${id}`);
   }
-
-  const event = await repo.events().findById(new ObjectId(id));
-  if (event === null) {
-    // Return 200 - the client expects the event to be deleted, it's already deleted.
-    return new NextResponse();
-  }
-
-  await Promise.all([
-    repo.events().delete(objectId),
-    deleteMediaFile(`events/${event._id}`),
-  ]);
 
   return new NextResponse();
 }

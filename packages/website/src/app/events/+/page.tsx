@@ -1,6 +1,5 @@
 import { Repository } from '@data/repo';
 import { ClientComponent, ClientEvent } from './client';
-import { ObjectId } from 'mongodb';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
 import { PageProps } from '@/types/next';
 import { redirect } from 'next/navigation';
@@ -8,7 +7,7 @@ import { redirect } from 'next/navigation';
 async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   try {
     await using repo = await Repository.openConnection();
-    const editEvent = await repo.events().findById(new ObjectId(id));
+    const editEvent = await repo.events().findById(id);
 
     return editEvent
       ? {

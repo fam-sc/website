@@ -7,17 +7,22 @@ import {
   BulkWriteOptions,
   ClientSession,
   Collection,
+  DeleteResult,
   Document,
   Filter,
   FindOptions,
-  InferIdType,
   MongoClient,
   ObjectId,
   OptionalUnlessRequiredId,
   UpdateFilter,
   UpdateOptions,
+  UpdateResult,
   WithId,
 } from 'mongodb';
+
+export function resolveObjectId(value: string | ObjectId): ObjectId {
+  return typeof value === 'string' ? new ObjectId(value) : value;
+}
 
 export class EntityCollection<T extends Document> {
   private client: MongoClient;
@@ -42,8 +47,19 @@ export class EntityCollection<T extends Document> {
     return this.collection().find({}, this.options());
   }
 
-  findById(id: InferIdType<T>): Promise<WithId<T> | null> {
-    return this.collection().findOne({ _id: id } as Filter<T>, this.options());
+  findById(id: string | ObjectId): Promise<WithId<T> | null> {
+    let objectId: ObjectId;
+
+    try {
+      objectId = resolveObjectId(id);
+    } catch {
+      return Promise.resolve(null);
+    }
+
+    return this.collection().findOne(
+      { _id: objectId } as Filter<T>,
+      this.options()
+    );
   }
 
   insert(value: OptionalUnlessRequiredId<T>) {
@@ -58,9 +74,17 @@ export class EntityCollection<T extends Document> {
     return this.collection().countDocuments();
   }
 
-  delete(id: ObjectId) {
+  delete(id: string | ObjectId): Promise<DeleteResult> {
+    let objectId: ObjectId;
+
+    try {
+      objectId = resolveObjectId(id);
+    } catch {
+      return Promise.resolve({ acknowledged: true, deletedCount: 0 });
+    }
+
     return this.collection().deleteOne(
-      { _id: id } as Filter<T>,
+      { _id: objectId } as Filter<T>,
       this.options()
     );
   }
@@ -95,6 +119,27 @@ export class EntityCollection<T extends Document> {
       ...options,
       session: this.session,
     });
+  }
+
+  protected updateById(
+    id: string | ObjectId,
+    update: UpdateFilter<T> | Document[],
+    options?: UpdateOptions
+  ): Promise<UpdateResult> {
+    let objectId: ObjectId;
+    try {
+      objectId = new ObjectId(id);
+    } catch {
+      return Promise.resolve({
+        acknowledged: true,
+        matchedCount: 0,
+        modifiedCount: 0,
+        upsertedCount: 0,
+        upsertedId: null,
+      });
+    }
+
+    return this.updateOne({ _id: objectId } as Filter<T>, update, options);
   }
 
   protected find(filter: Filter<T>, options?: FindOptions & Abortable) {

@@ -9,7 +9,7 @@ export class PollCollection extends EntityCollection<Poll> {
     super(client, session, 'polls');
   }
 
-  addRespondent(id: ObjectId, respondent: PollRespondent) {
-    return this.updateOne({ _id: id }, { $push: { respondents: respondent } });
+  addRespondent(id: string | ObjectId, respondent: PollRespondent) {
+    return this.updateById(id, { $push: { respondents: respondent } });
   }
 }

@@ -46,15 +46,8 @@ export async function DELETE(
 ): Promise<NextResponse> {
   const { id } = await params;
 
-  let objectId: ObjectId;
-  try {
-    objectId = new ObjectId(id);
-  } catch {
-    return new NextResponse();
-  }
-
   await using repo = await Repository.openConnection();
-  const result = await repo.galleryImages().delete(objectId);
+  const result = await repo.galleryImages().delete(id);
 
   if (result.deletedCount > 0) {
     // Unability to delete image from R2 should not an obstacle for deleting an image.

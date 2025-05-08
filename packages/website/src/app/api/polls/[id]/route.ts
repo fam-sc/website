@@ -1,7 +1,6 @@
 import { submitPollPayload } from '@/api/polls/types';
 import { badRequest, notFound } from '@/api/responses';
 import { Repository } from '@data/repo';
-import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
@@ -14,17 +13,10 @@ export async function POST(request: NextRequest, { params }: RequestParams) {
     const rawPayload = await request.json();
     const payload = submitPollPayload.parse(rawPayload);
 
-    let objectId: ObjectId;
-    try {
-      objectId = new ObjectId(id);
-    } catch {
-      return notFound();
-    }
-
     await using repo = await Repository.openConnection();
     const result = await repo
       .polls()
-      .addRespondent(objectId, { date: new Date(), answers: payload.answers });
+      .addRespondent(id, { date: new Date(), answers: payload.answers });
 
     if (result.modifiedCount === 0) {
       return notFound();

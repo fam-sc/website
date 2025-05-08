@@ -1,4 +1,4 @@
-import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
+import { ClientSession, MongoClient, UpdateResult, WithId } from 'mongodb';
 
 import { Event } from '../types';
 
@@ -10,8 +10,8 @@ export class EventCollection extends EntityCollection<Event> {
     super(client, session, 'events');
   }
 
-  update(id: string, value: Event) {
-    return this.updateOne({ _id: new ObjectId(id) }, { $set: value });
+  update(id: string, value: Event): Promise<UpdateResult> {
+    return this.updateById(id, { $set: value });
   }
 
   async getPage(index: number, size: number) {
