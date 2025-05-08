@@ -24,13 +24,13 @@
 
     animation: 0.2s ease-out 0s push;
 
-    &[data-type=error] {
+    &[data-type='error'] {
       --color: var(--color-danger);
       --shadow-inner: 2px;
       --shadow-outer: 8px;
     }
 
-    &[data-type=plain] {
+    &[data-type='plain'] {
       --color: var(--color-text-on-background-dark);
       --shadow-inner: 1px;
       --shadow-outer: 2px;

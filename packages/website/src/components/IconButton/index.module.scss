@@ -24,7 +24,11 @@ $roundings: (
   user-select: none;
   cursor: pointer;
 
-  &:hover {
+  &:disabled {
+    cursor: auto;
+  }
+
+  &:hover:not(:disabled) {
     &[data-hover='background'] {
       background: var(--color-background-dark);
     }

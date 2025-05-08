@@ -9,9 +9,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
-    "types": [
-      "./worker-configuration.d.ts",
-    ],
+    "types": ["./worker-configuration.d.ts"]
   },
   "include": ["./src", "./worker-configuration.d.ts"],
   "exclude": ["./node_modules"]

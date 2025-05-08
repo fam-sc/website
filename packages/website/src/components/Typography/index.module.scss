@@ -3,7 +3,7 @@
 .root {
   font-family: var(--font-murs-gothic);
 
-  &[data-has-icon=true] {
+  &[data-has-icon='true'] {
     display: flex;
     flex-direction: row;
     align-items: center;

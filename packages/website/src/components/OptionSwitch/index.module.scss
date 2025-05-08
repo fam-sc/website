@@ -42,7 +42,7 @@
     text-align: center;
   }
 
-  &[aria-disabled=true] li {
+  &[aria-disabled='true'] li {
     pointer-events: none;
   }
 }
