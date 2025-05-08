@@ -1,4 +1,4 @@
-export type Choice = { id: string; title: string };
+export type Choice = { id: string | number; title: string };
 
 type TypeMap = {
   text: {
@@ -13,25 +13,26 @@ type TypeMap = {
       choices: Choice[];
     };
     answer: {
-      selectedId: string;
+      selectedId: string | number;
     };
   };
   checkbox: {
     descriptor: {
-      options: Choice[];
+      choices: Choice[];
     };
     answer: {
-      selectedIds: string[];
+      selectedIds: (string | number)[];
     };
   };
 };
 
 export type QuestionType = keyof TypeMap;
 
-export type QuestionDescriptor<T extends QuestionType = QuestionType> =
-  TypeMap[T]['descriptor'] & {
-    type: T;
+export type QuestionDescriptor<T extends QuestionType = QuestionType> = {
+  [K in T]: TypeMap[K]['descriptor'] & {
+    type: K;
   };
+}[T];
 
 export type QuestionAnswer<T extends QuestionType = QuestionType> =
   TypeMap[T]['answer'];

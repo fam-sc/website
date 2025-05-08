@@ -22,7 +22,7 @@ export interface PollQuestionProps<T extends QuestionType> {
 
 type OptionGroupProps = {
   choices: Choice[];
-  children: (id: string, title: string) => ReactNode;
+  children: (id: string | number, title: string) => ReactNode;
 };
 
 function OptionGroup({ choices, children }: OptionGroupProps) {
@@ -62,7 +62,7 @@ function CheckboxContent({
   const selectedIds = answer?.selectedIds ?? [];
 
   return (
-    <OptionGroup choices={descriptor.options}>
+    <OptionGroup choices={descriptor.choices}>
       {(id, title) => (
         <Checkbox
           key={id}

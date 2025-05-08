@@ -1,0 +1,22 @@
+@use '../../theme/utils' as *;
+
+.root, .items {
+  display: flex;
+  flex-direction: column;
+}
+
+.root {
+  align-items: center;
+}
+
+.items {
+  gap: 1em;
+  list-style: none;
+  width: 100%;
+}
+
+.add {
+  margin-top: 2em;
+
+  @include size(2.5em);
+}

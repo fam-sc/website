@@ -4,7 +4,7 @@ import { PollQuestion, PollQuestionProps } from '.';
 import { useState } from 'react';
 
 function Component(props: PollQuestionProps<'radio'>) {
-  const [choice, setChoice] = useState<string>('');
+  const [choice, setChoice] = useState<string | number>('');
 
   return (
     <PollQuestion

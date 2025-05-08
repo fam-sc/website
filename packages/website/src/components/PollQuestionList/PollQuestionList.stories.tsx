@@ -37,7 +37,7 @@ export const Primary: Story = {
       {
         key: '2',
         title: 'Question 2',
-        descriptor: { type: 'checkbox', options: items },
+        descriptor: { type: 'checkbox', choices: items },
       },
       {
         key: '3',

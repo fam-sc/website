@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Ref } from 'react';
 
 import styles from './index.module.scss';
 
@@ -12,6 +12,8 @@ export interface TextInputProps extends InputProps {
   error?: string | false;
   endContent?: ReactNode;
   type?: 'text' | 'password';
+  variant?: 'bordered' | 'underline';
+  ref?: Ref<HTMLInputElement>;
 
   onTextChanged?: (text: string) => void;
 }
@@ -20,7 +22,9 @@ export function TextInput({
   className,
   error,
   disabled,
+  variant,
   endContent,
+  ref,
   onChange,
   onTextChanged,
   ...rest
@@ -29,11 +33,14 @@ export function TextInput({
     <div className={classNames(styles.root, className)}>
       <div
         className={styles.input}
+        data-variant={variant ?? 'bordered'}
         data-state={error === undefined ? undefined : 'error'}
         data-disabled={disabled}
       >
-        <input
+        <Typography
+          as="input"
           type="text"
+          ref={ref}
           disabled={disabled}
           onChange={
             onChange ??

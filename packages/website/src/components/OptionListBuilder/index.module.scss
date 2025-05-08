@@ -1,0 +1,27 @@
+$remove-margin: 2em;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  list-style-position: inside;
+
+  li > div {
+    margin-left: 4px;
+  
+    display: inline-flex;
+    width: calc(100% - 2em);
+  }
+}
+
+.input {
+  flex-grow: 1;
+}
+
+.input-add {
+  margin-right: calc(24px + $remove-margin);
+}
+
+.remove {
+  margin-left: $remove-margin;
+}
