@@ -2,7 +2,7 @@
 
 .root {
   position: relative;
-  
+
   &:hover:not([data-disabled='true']) .delete-image {
     opacity: 1;
   }

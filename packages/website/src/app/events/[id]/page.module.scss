@@ -1,4 +1,4 @@
-@use "../../../theme/breakpoints" as *;
+@use '../../../theme/breakpoints' as *;
 
 @mixin desktop-view() {
   @include breakpoint-up('md') {
@@ -12,7 +12,7 @@
 
   gap: 1.5em;
   padding: 1em 1em;
-  
+
   @include desktop-view() {
     gap: 1em;
 
@@ -27,14 +27,15 @@
   object-fit: contain;
 }
 
-.header, .modify-buttons {
+.header,
+.modify-buttons {
   display: flex;
   align-items: center;
 }
 
 .modify-buttons {
   margin-left: auto;
-  gap: .5em;
+  gap: 0.5em;
 }
 
 .modify-button {
@@ -45,7 +46,7 @@
   fill: var(--color-text-on-background);
   cursor: pointer;
 
-  transition: fill .1s linear;
+  transition: fill 0.1s linear;
 
   &:hover {
     fill: var(--color-text-on-background-dark);

@@ -37,7 +37,11 @@ const questionTypeTitles: Record<QuestionType, string> = {
 
 function optionListBuilderWrapper<T extends 'checkbox' | 'radio'>(type: T) {
   // eslint-disable-next-line react/display-name
-  return ({ disabled, descriptor, onDescriptorChanged }: ContentTypeProps<T>) => {
+  return ({
+    disabled,
+    descriptor,
+    onDescriptorChanged,
+  }: ContentTypeProps<T>) => {
     return (
       <OptionListBuilder
         disabled={disabled}

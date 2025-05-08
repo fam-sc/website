@@ -8,11 +8,11 @@
 
   z-index: 99;
 
-  &[data-effect=tint] {
+  &[data-effect='tint'] {
     background-color: #00000049;
   }
 
-  &[data-effect=blur] {
+  &[data-effect='blur'] {
     backdrop-filter: blur(4px);
   }
 }

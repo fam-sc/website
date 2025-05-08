@@ -1,5 +1,5 @@
-import { ClientComponent } from "./client";
+import { ClientComponent } from './client';
 
 export default function Page() {
   return <ClientComponent />;
-} 
+}

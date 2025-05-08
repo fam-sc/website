@@ -17,16 +17,28 @@ export function ClientComponent() {
   const [title, setTitle] = useState('');
   const [items, setItems] = useState<QuestionBuildItem[]>([]);
   const [isActionPending, setIsActionPending] = useState(false);
-  
+
   const notification = useNotification();
 
-  const isPollValid = items.length > 0 && items.every((item) => isValidItem(item));
+  const isPollValid =
+    items.length > 0 && items.every((item) => isValidItem(item));
 
   return (
     <div className={styles.content}>
-      <TextInput disabled={isActionPending} className={styles.title} placeholder="Заголовок" value={title} onTextChanged={setTitle} />
+      <TextInput
+        disabled={isActionPending}
+        className={styles.title}
+        placeholder="Заголовок"
+        value={title}
+        onTextChanged={setTitle}
+      />
 
-      <PollBuilder disabled={isActionPending} className={styles['poll-builder']} items={items} onItemsChanged={setItems} />
+      <PollBuilder
+        disabled={isActionPending}
+        className={styles['poll-builder']}
+        items={items}
+        onItemsChanged={setItems}
+      />
 
       <Button
         buttonVariant="solid"
@@ -37,16 +49,18 @@ export function ClientComponent() {
 
           const questions = items.map((item) => ({
             title: item.title,
-            ...item.descriptor
+            ...item.descriptor,
           })) as AddPollPayload['questions'];
 
-          addPoll({ title, questions }).then(() => {
-            notification.show('Опитування додано успішно', 'plain');
-          }).catch(() => { 
-            setIsActionPending(false);
+          addPoll({ title, questions })
+            .then(() => {
+              notification.show('Опитування додано успішно', 'plain');
+            })
+            .catch(() => {
+              setIsActionPending(false);
 
-            notification.show('Сталася помилка', 'error');
-          })
+              notification.show('Сталася помилка', 'error');
+            });
         }}
       >
         Додати

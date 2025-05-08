@@ -5,9 +5,9 @@
 
   padding: 1em 1.5em;
 
-  transition: box-shadow .1s linear;
+  transition: box-shadow 0.1s linear;
 
-  &[data-error=true] {
+  &[data-error='true'] {
     box-shadow: 0 0 8px var(--color-danger);
   }
 }

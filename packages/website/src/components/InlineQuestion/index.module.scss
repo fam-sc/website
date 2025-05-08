@@ -13,11 +13,11 @@
   box-shadow: 1px 1px 2px #000;
   margin-top: 2px;
 
-  &[data-position=left] {
+  &[data-position='left'] {
     left: 0;
   }
 
-  &[data-position=right] {
+  &[data-position='right'] {
     right: 0;
   }
 }

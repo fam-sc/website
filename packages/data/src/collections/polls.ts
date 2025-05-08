@@ -1,6 +1,6 @@
 import { ClientSession, MongoClient } from 'mongodb';
 
-import { Group, Poll } from '../types';
+import { Poll } from '../types';
 
 import { EntityCollection } from './base';
 

@@ -1,5 +1,5 @@
 @use '../../../theme/utils' as *;
-@use '../../../theme/breakpoints' as *; 
+@use '../../../theme/breakpoints' as *;
 
 .content {
   @include px(0.5em);
@@ -34,7 +34,7 @@
     @include size(28px);
 
     fill: var(--color-text-on-background);
-    transition: fill .1s linear;
+    transition: fill 0.1s linear;
     margin-right: 4px;
   }
 }

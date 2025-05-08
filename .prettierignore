@@ -1,4 +1,6 @@
 packages/workers/worker-configuration.d.ts
+packages/schedule-bot/worker-configuration.d.ts
+packages/telegram-auth-test/worker-configuration.d.ts
 packages/website/storybook-static
 packages/website/.open-next
 packages/website/cloudflare-env.d.ts

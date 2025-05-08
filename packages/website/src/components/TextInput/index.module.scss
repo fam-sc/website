@@ -12,12 +12,12 @@
   display: flex;
   flex-direction: row;
 
-  &[data-variant=bordered] {
+  &[data-variant='bordered'] {
     border: $border-decl;
     border-radius: 0.5em;
   }
 
-  &[data-variant=underline] {
+  &[data-variant='underline'] {
     border-bottom: $border-decl;
   }
 

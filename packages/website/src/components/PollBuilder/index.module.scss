@@ -1,6 +1,7 @@
 @use '../../theme/utils' as *;
 
-.root, .items {
+.root,
+.items {
   display: flex;
   flex-direction: column;
 }

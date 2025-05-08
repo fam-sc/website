@@ -22,7 +22,7 @@
 
   width: 100%;
   max-height: 70dvh;
- 
+
   padding-right: 4px;
 
   li {
@@ -32,9 +32,10 @@
 
     border-radius: 0.5em;
 
-    transition: background-color .1s linear;
+    transition: background-color 0.1s linear;
 
-    &:hover, &[data-selected=true] {
+    &:hover,
+    &[data-selected='true'] {
       background-color: var(--color-background-dark);
     }
   }
