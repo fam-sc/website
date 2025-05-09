@@ -5,7 +5,7 @@
     "dev": "yarn workspace @sc-fam/website dev",
     "build": "yarn workspace @sc-fam/website build",
     "start": "yarn workspace @sc-fam/website start",
-    "lint": "eslint && yarn workspaces foreach --all run build:no-emit",
+    "lint": "eslint --cache --cache-location .eslintcache && yarn workspaces foreach --all run build:no-emit",
     "lint:fix": "eslint --fix . && prettier --write \"**/*.{js,mjs,jsx,ts,mts,tsx,json,css,scss,md}\"",
     "test": "vitest --run"
   },
