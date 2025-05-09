@@ -1,6 +1,6 @@
-import { ClientSession, MongoClient, ObjectId } from 'mongodb';
+import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
 
-import { Poll, PollRespondent } from '../types';
+import { Poll, PollRespondent, ShortPoll } from '../types/poll';
 
 import { EntityCollection } from './base';
 
@@ -9,7 +9,15 @@ export class PollCollection extends EntityCollection<Poll> {
     super(client, session, 'polls');
   }
 
+  findShortPoll(id: string) {
+    return this.findById<WithId<ShortPoll>>(id, { projection: { title: 1, startDate: 1, endDate: 1 } });
+  }
+ 
   addRespondent(id: string | ObjectId, respondent: PollRespondent) {
     return this.updateById(id, { $push: { respondents: respondent } });
+  }
+
+  closePoll(id: string | ObjectId) {
+    return this.updateById(id, { $set: { endDate: new Date() } });
   }
 }

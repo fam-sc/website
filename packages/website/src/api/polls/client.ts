@@ -14,3 +14,9 @@ export function submitPoll(id: string, payload: SubmitPollPayload) {
     body: JSON.stringify(payload),
   });
 }
+
+export function closePoll(id: string) {
+  return checkedFetch(`/api/polls/${id}/close`, {
+    method: 'POST'
+  });
+}

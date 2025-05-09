@@ -13,5 +13,5 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
     notFound();
   }
 
-  return <ClientComponent poll={{ ...poll, id }} />;
+  return <ClientComponent poll={{ id, title: poll.title, questions: poll.questions }} />;
 }
