@@ -7,6 +7,7 @@ import { Select } from '../Select';
 import { FC } from 'react';
 import { OptionListBuilder } from '../OptionListBuilder';
 import { QuestionBuildItem } from './item';
+import { Checkbox } from '../Checkbox';
 
 export type PollQuestionBuilderProps = {
   className?: string;
@@ -28,14 +29,16 @@ type ContentComponentMap = {
   [T in QuestionType]: FC<ContentTypeProps<T>>;
 };
 
-const questionTypes: QuestionType[] = ['text', 'radio', 'checkbox'];
 const questionTypeTitles: Record<QuestionType, string> = {
   text: 'Текст',
-  checkbox: 'Вибір (багато варіантів)',
+  checkbox: 'Прапорець',
+  multicheckbox: 'Вибір (багато варіантів)',
   radio: 'Вибір (один варіант)',
 };
 
-function optionListBuilderWrapper<T extends 'checkbox' | 'radio'>(type: T) {
+const questionTypes = Object.keys(questionTypeTitles) as QuestionType[];
+
+function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(type: T) {
   // eslint-disable-next-line react/display-name
   return ({
     disabled,
@@ -57,21 +60,34 @@ function optionListBuilderWrapper<T extends 'checkbox' | 'radio'>(type: T) {
   };
 }
 
+function CheckboxContent({ descriptor, onDescriptorChanged, disabled }: ContentTypeProps<'checkbox'>) {
+  return (
+    <Checkbox disabled={disabled} checked={descriptor.requiredTrue} onCheckedChanged={(state) => {
+      onDescriptorChanged({ type: 'checkbox', requiredTrue: state });
+    }}>
+      Обов'язково має бути включеним
+    </Checkbox>
+  )
+}
+
 function getEmptyDescriptor(type: QuestionType): QuestionDescriptor {
   switch (type) {
     case 'text': {
       return { type };
     }
-    case 'checkbox':
+    case 'multicheckbox':
     case 'radio': {
       return { type, choices: [] };
     }
+    case 'checkbox':
+      return { type, requiredTrue: false };
   }
 }
 
 const contentComponentMap: ContentComponentMap = {
   text: () => null,
-  checkbox: optionListBuilderWrapper('checkbox'),
+  checkbox: CheckboxContent,
+  multicheckbox: optionListBuilderWrapper('multicheckbox'),
   radio: optionListBuilderWrapper('radio'),
 };
 

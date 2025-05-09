@@ -13,15 +13,23 @@ type TypeMap = {
       choices: Choice[];
     };
     answer: {
-      selectedId: string | number;
+      selectedIndex: number | undefined;
     };
   };
-  checkbox: {
+  multicheckbox: {
     descriptor: {
       choices: Choice[];
     };
     answer: {
-      selectedIds: (string | number)[];
+      selectedIndices: number[];
+    };
+  };
+  checkbox: {
+    descriptor: {
+      requiredTrue: boolean;
+    };
+    answer: {
+      status: boolean;
     };
   };
 };

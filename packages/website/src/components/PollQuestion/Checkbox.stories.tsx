@@ -3,22 +3,19 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PollQuestion, PollQuestionProps } from '.';
 import { useState } from 'react';
 
-function Component(props: PollQuestionProps<'checkbox'>) {
-  const [choice, setChoice] = useState<(string | number)[]>([]);
+function Component(props: PollQuestionProps<'radio'>) {
+  const [status, setStatus] = useState(false);
 
   return (
     <PollQuestion
       {...props}
       descriptor={{
         type: 'checkbox',
-        choices: [1, 2, 3].map((i) => ({
-          id: i.toString(),
-          title: `Choice ${i}`,
-        })),
+        requiredTrue: false,
       }}
-      answer={{ selectedIds: choice }}
-      onAnswerChanged={({ selectedIds }) => {
-        setChoice(selectedIds);
+      answer={{ status }}
+      onAnswerChanged={({ status }) => {
+        setStatus(status);
       }}
     />
   );

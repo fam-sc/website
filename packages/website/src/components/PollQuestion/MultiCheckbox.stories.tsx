@@ -3,22 +3,22 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PollQuestion, PollQuestionProps } from '.';
 import { useState } from 'react';
 
-function Component(props: PollQuestionProps<'radio'>) {
-  const [selectedIndex, setSelectedIndex] = useState<number>();
+function Component(props: PollQuestionProps<'multicheckbox'>) {
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
 
   return (
     <PollQuestion
       {...props}
       descriptor={{
-        type: 'radio',
+        type: 'multicheckbox',
         choices: [1, 2, 3].map((i) => ({
           id: i.toString(),
           title: `Choice ${i}`,
         })),
       }}
-      answer={{ selectedIndex }}
-      onAnswerChanged={({ selectedIndex }) => {
-        setSelectedIndex(selectedIndex);
+      answer={{ selectedIndices }}
+      onAnswerChanged={({ selectedIndices }) => {
+        setSelectedIndices(selectedIndices);
       }}
     />
   );

@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
 export const question = z.object({
-  type: z.enum(['text', 'checkbox', 'radio']),
+  type: z.enum(['text', 'checkbox', 'multicheckbox', 'radio']),
   title: z.string().min(1),
+  requiredTrue: z.boolean().optional(),
   options: z
     .array(
       z.object({
@@ -14,6 +15,7 @@ export const question = z.object({
 
 export const answer = z.object({
   text: z.string().min(1).optional(),
+  status: z.boolean().optional(),
   selectedIndex: z.number().optional(),
   selectedIndices: z.array(z.number()).optional(),
 });

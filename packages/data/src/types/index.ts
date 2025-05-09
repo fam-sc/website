@@ -46,10 +46,13 @@ export type PollRespondentAnswer = {
   // if question's type is input
   text?: string;
 
+  // if question's type is checbox.
+  requiredTrue?: boolean;
+
   // if question's type is radio.
   selectedIndex?: number;
 
-  // if question's type is checkbox.
+  // if question's type is multicheckbox.
   selectedIndices?: number[];
 };
 
