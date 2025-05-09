@@ -9,11 +9,14 @@ import { useRef, useState } from 'react';
 
 import styles from './page.module.scss';
 import { addEvent, editEvent } from '@/api/events/client';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { TextInput } from '@/components/TextInput';
 import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
 import { useNotification } from '@/components/Notification';
+import { Event } from '@data/types';
+import { OptionSwitch } from '@/components/OptionSwitch';
+import { Labeled } from '@/components/Labeled';
 
 export type ClientEvent = {
   id: string;
@@ -36,12 +39,13 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
   const [title, setTitle] = useState(event?.title ?? '');
   const [date, setDate] = useState(event?.date ?? new Date());
+  const [status, setStatus] = useState<Event['status']>('pending');
   const [description, setDescription] = useState(event?.description ?? '');
   const [isDescriptionSaved, setIsDescriptionSaved] = useState(true);
 
   const [actionPending, setActionPending] = useState(false);
 
-  // const router = useRouter();
+  const router = useRouter();
 
   return (
     <div className={styles.root}>
@@ -51,56 +55,69 @@ export function ClientComponent({ event }: ClientComponentProps) {
         className={styles.title}
         placeholder="Заголовок"
         value={title}
-        onTextChanged={(text) => {
-          setTitle(text);
-        }}
+        onTextChanged={setTitle}
       />
 
-      <InlineImageDropArea
-        disabled={actionPending}
-        className={styles.image}
-        imageSrc={image}
-        onFile={(file) => {
-          imageFileRef.current = file;
+      <Labeled title="Картинка">
+        <InlineImageDropArea
+          disabled={actionPending}
+          className={styles.image}
+          imageSrc={image}
+          onFile={(file) => {
+            imageFileRef.current = file;
 
-          if (file === undefined) {
-            setImage(undefined);
-          } else {
-            fileToDataUrl(file)
-              .then((url) => {
-                setImage(url);
-              })
-              .catch((error: unknown) => {
-                console.error(error);
+            if (file === undefined) {
+              setImage(undefined);
+            } else {
+              fileToDataUrl(file)
+                .then((url) => {
+                  setImage(url);
+                })
+                .catch((error: unknown) => {
+                  console.error(error);
 
-                errorAlert.show('Сталася помилка', 'error');
-              });
+                  errorAlert.show('Сталася помилка', 'error');
+                });
+            }
+          }}
+        />
+      </Labeled>
+
+      <Labeled title="Дата">
+        <DatePicker
+          disabled={actionPending}
+          className={styles.date}
+          value={date}
+          onValueChanged={setDate}
+        />
+      </Labeled>
+
+      <Labeled title="Статус">
+        <OptionSwitch
+          options={['pending', 'ended']}
+          selected={status}
+          renderOption={(status) =>
+            status === 'pending' ? 'Очікується' : 'Закінчилась'
           }
-        }}
-      />
+          onOptionSelected={setStatus}
+        />
+      </Labeled>
 
-      <DatePicker
-        disabled={actionPending}
-        className={styles.date}
-        value={date}
-        onValueChanged={(value) => {
-          setDate(value);
-        }}
-      />
+      <Labeled title="Опис">
+        <RichTextEditor
+          disabled={actionPending}
+          className={styles.description}
+          text={description}
+          onSaveText={(newText) => {
+            setDescription(newText);
 
-      <RichTextEditor
-        disabled={actionPending}
-        className={styles.description}
-        text={description}
-        onSaveText={(newText) => {
-          setDescription(newText);
-
-          return Promise.resolve(newText);
-        }}
-        onIsSavedChanged={(value) => {
-          setIsDescriptionSaved(!value);
-        }}
-      />
+            return Promise.resolve(newText);
+          }}
+          onIsSavedChanged={(value) => {
+            setIsDescriptionSaved(!value);
+          }}
+        />
+      </Labeled>
 
       <ErrorBoard
         className={styles.errors}
@@ -131,16 +148,22 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
           if (event === undefined) {
             if (image !== undefined) {
-              promise = addEvent({ title, date, image, description });
+              promise = addEvent({ title, date, image, description, status });
             }
           } else {
-            promise = editEvent(event.id, { title, date, image, description });
+            promise = editEvent(event.id, {
+              title,
+              date,
+              image,
+              description,
+              status,
+            });
           }
 
           if (promise) {
             promise
               .then(() => {
-                // router.push('/events');
+                router.push('/events');
               })
               .catch((error: unknown) => {
                 console.error(error);

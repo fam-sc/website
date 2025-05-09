@@ -17,7 +17,8 @@ export async function PUT(
   const { id } = await params;
 
   const formData = await request.formData();
-  const { title, description, date, image } = parseEditEventPayload(formData);
+  const { title, description, date, image, status } =
+    parseEditEventPayload(formData);
 
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
   await using mediaTransaction = new MediaTransaction();
@@ -32,7 +33,7 @@ export async function PUT(
   await repo.transaction(async (trepo) => {
     const result = await trepo
       .events()
-      .update(id, { date, title, description: richTextDescription });
+      .update(id, { date, title, status, description: richTextDescription });
 
     if (result.matchedCount === 0) {
       throw new Error("Specified event doesn't exist");

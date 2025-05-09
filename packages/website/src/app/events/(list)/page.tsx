@@ -14,6 +14,7 @@ const ITEMS_PER_PAGE = 5;
 function toClientEvent(event: WithId<Event>): ClientEvent {
   return {
     id: event._id.toString(),
+    status: event.status,
     title: event.title,
     date: formatDateTime(event.date),
     description: shortenRichText(event.description, 200),

@@ -55,6 +55,7 @@ export type PollRespondentAnswer = {
 
 export type Event = {
   title: string;
+  status: 'pending' | 'ended';
   date: Date;
   description: RichTextString;
 };
