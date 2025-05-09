@@ -20,8 +20,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const result = await repo
     .events()
     .getAll()
-    .project({ title: 1 })
-    .map(({ _id, title }) => ({ id: (_id as ObjectId).toString(), title }))
+    .project<{ _id: ObjectId; title: string }>({ title: 1 })
+    .map(({ _id, title }) => ({ id: _id.toString(), title }))
     .toArray();
 
   return ok(result);
@@ -29,7 +29,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const formData = await request.formData();
-  const { title, description, date, image } = parseAddEventPayload(formData);
+  const { title, description, date, image, status } =
+    parseAddEventPayload(formData);
 
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
   await using mediaTransaction = new MediaTransaction();
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   await repo.transaction(async (trepo) => {
     const { insertedId } = await trepo
       .events()
-      .insert({ date, title, description: richTextDescription });
+      .insert({ date, status, title, description: richTextDescription });
 
     mediaTransaction.put(`events/${insertedId}`, image.stream());
   });

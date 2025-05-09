@@ -7,9 +7,12 @@ import { Typography } from '@/components/Typography';
 import { RichTextString } from '@shared/richText/types';
 import { EventIcon } from '@/icons/EventIcon';
 import { RichText } from '@/components/RichText';
+import { EventStatusMarker } from '@/components/EventStatusMarker';
+import { Event } from '@data/types';
 
 export type ClientEvent = {
   id: string;
+  status: Event['status'];
   title: string;
   date: string;
   description: RichTextString;
@@ -35,14 +38,21 @@ function Item({ value }: { value: ClientEvent }) {
         <Typography className={styles['item-title']} variant="h5">
           {value.title}
         </Typography>
+
         <RichText
           className={styles['item-description']}
           text={value.description}
         />
+
         <Typography className={styles['item-date']}>
           <EventIcon />
           {value.date}
         </Typography>
+
+        <EventStatusMarker
+          className={styles['item-status']}
+          status={value.status}
+        />
       </div>
     </Link>
   );

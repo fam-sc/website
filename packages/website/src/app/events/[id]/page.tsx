@@ -16,10 +16,8 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
   return (
     <ClientComponent
       event={{
+        ...event,
         id: event._id.toString(),
-        title: event.title,
-        date: event.date,
-        description: event.description,
       }}
       canEdit
     />

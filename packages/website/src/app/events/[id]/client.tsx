@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { deleteEvent } from '@/api/events/client';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '@/components/Notification';
+import { EventStatusMarker } from '@/components/EventStatusMarker';
 
 export type ClientComponentProps = {
   event: Event & { id: string };
@@ -52,6 +53,8 @@ function DeleteEventDialog({ onClose, onDelete }: DeleteEventDialogProps) {
 }
 
 export function ClientComponent({ event, canEdit }: ClientComponentProps) {
+  console.log(event);
+
   const [isDeleteDialogShown, setDeleteDialogShown] = useState(false);
   const router = useRouter();
   const notification = useNotification();
@@ -81,6 +84,8 @@ export function ClientComponent({ event, canEdit }: ClientComponentProps) {
           </div>
         )}
       </div>
+
+      <EventStatusMarker className={styles.status} status={event.status} />
 
       <Image
         className={styles.image}
