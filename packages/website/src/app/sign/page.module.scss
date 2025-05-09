@@ -1,0 +1,41 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
+@mixin desktop-view() {
+  @include breakpoint-up('md') {
+    @content;
+  }
+}
+
+
+
+.container {
+    height: 100vh;
+    background-color: #030248;
+    color: white;
+  }
+  
+  .authWrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .leftSide,
+  .rightSide {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .divider {
+    background-color: yellow;
+    width: 2px;
+    height: 400px;
+  }
+  
+
+  

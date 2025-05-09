@@ -1,0 +1,95 @@
+.formContainer {
+  width: 100%;
+  max-width: 400px;
+  padding: 50px;
+  border-radius: 12px;
+}
+
+.formTitle {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 16px;
+    font-weight: normal;
+  }
+}
+
+.inputField {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 150%;
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+
+  label {
+    font-size: 16px;
+  }
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.passwordWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6b6b6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.submitButton {
+  margin-top: 12px;
+  height: 40px;
+  background-color: #ffeb3b; 
+  border: none;
+  border-radius: 2px;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #fdd835;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
