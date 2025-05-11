@@ -4,27 +4,11 @@
 .root {
   --columns: 2;
 
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 
-  grid-template-columns: repeat(var(--columns), 1fr);
-
-  column-gap: 1em;
-  row-gap: 1em;
-
-  &::before {
-    content: '';
-    width: 0;
-    padding-bottom: 100%;
-    grid-row: 1 / 1;
-    grid-column: 1 / 1;
-  }
-
-  @include breakpoint-up('lg') {
-    --columns: 4;
-
-    column-gap: 6em;
-    row-gap: 2em;
-  }
+  gap: 1em;
 
   > * {
     display: block;
@@ -33,10 +17,12 @@
     border-radius: 2em;
 
     padding: 1em 1.5em;
+    aspect-ratio: 1;
 
-    &:first-child {
-      grid-row: 1 / 1;
-      grid-column: 1 / 1;
+    width: 30%;
+
+    @include breakpoint-up('lg') {
+      width: 25%;
     }
 
     p {
