@@ -7,6 +7,9 @@ import { closePoll } from '@/api/polls/client';
 import { useNotification } from '@/components/Notification';
 import { useState } from 'react';
 import { Prefixed } from '@/components/Prefixed';
+import { Tabs } from '@/components/Tabs';
+import { Tab } from '@/components/Tab';
+import { ResultsTab } from './tabs/results';
 
 export type PollInfo = {
   id: string;
@@ -22,32 +25,43 @@ export type ClientComponentProps = {
 export function ClientComponent({ poll }: ClientComponentProps) {
   const [isPollClosed, setPollClosed] = useState(poll.endDate !== null);
   const notification = useNotification();
-  
+
   return (
     <div className={styles.content}>
       <div className={styles.header}>
         <Typography variant="h5">{poll.title}</Typography>
-      
-        {!isPollClosed && <Button className={styles.close} onClick={() => {
-          closePoll(poll.id).then(() => {
-            setPollClosed(true);
 
-            notification.show('Опитування закрито', 'plain');
-          }).catch((error: unknown) => {
-            console.error(error);
+        {!isPollClosed && (
+          <Button
+            className={styles.close}
+            onClick={() => {
+              closePoll(poll.id)
+                .then(() => {
+                  setPollClosed(true);
 
-            notification.show('Сталася помилка', 'error');
-          })
-        }}>Закрити опитування</Button>}
+                  notification.show('Опитування закрито', 'plain');
+                })
+                .catch((error: unknown) => {
+                  console.error(error);
+
+                  notification.show('Сталася помилка', 'error');
+                });
+            }}
+          >
+            Закрити опитування
+          </Button>
+        )}
       </div>
 
-      <Prefixed value="Дата початку">
-        {poll.startDate}
-      </Prefixed>
+      <Prefixed value="Дата початку">{poll.startDate}</Prefixed>
 
-      <Prefixed value="Дата закінчення">
-        {poll.endDate}
-      </Prefixed>
+      <Prefixed value="Дата закінчення">{poll.endDate}</Prefixed>
+
+      <Tabs>
+        <Tab tabId="results" title="Результати">
+          <ResultsTab pollId={poll.id} />
+        </Tab>
+      </Tabs>
     </div>
-  )
+  );
 }

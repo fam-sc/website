@@ -13,5 +13,10 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
     notFound();
   }
 
-  return <ClientComponent poll={{ id, title: poll.title, questions: poll.questions }} />;
+  return (
+    <ClientComponent
+      canViewInfo
+      poll={{ id, title: poll.title, questions: poll.questions }}
+    />
+  );
 }

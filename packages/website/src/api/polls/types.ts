@@ -1,17 +1,19 @@
 import { z } from 'zod';
 
-export const question = z.object({
-  type: z.enum(['text', 'checkbox', 'multicheckbox', 'radio']),
-  title: z.string().min(1),
-  requiredTrue: z.boolean().optional(),
-  options: z
-    .array(
-      z.object({
-        title: z.string().min(1),
-      })
-    )
-    .optional(),
-});
+const title = z.string().min(1);
+
+const options = z.array(
+  z.object({
+    title: z.string().min(1),
+  })
+);
+
+export const question = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('text'), title }),
+  z.object({ type: z.literal('radio'), title, options }),
+  z.object({ type: z.literal('multicheckbox'), title, options }),
+  z.object({ type: z.literal('checkbox'), title, requiredTrue: z.boolean() }),
+]);
 
 export const answer = z.object({
   text: z.string().min(1).optional(),
@@ -35,3 +37,8 @@ export type Question = z.infer<typeof question>;
 export type Poll = z.infer<typeof poll>;
 export type AddPollPayload = z.infer<typeof addPollPayload>;
 export type SubmitPollPayload = z.infer<typeof submitPollPayload>;
+
+export type PollResultsTable = {
+  questions: string[];
+  data: string[][];
+};

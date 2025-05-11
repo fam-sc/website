@@ -1,17 +1,33 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export type TabProps = {
+  id?: string;
   className?: string;
+  isSelected?: boolean;
+  labelledBy?: string;
+
   tabId: string;
   title: string;
-  isSelected?: boolean;
+
   children?: ReactNode;
 };
 
-export function Tab({ className, isSelected, children }: TabProps) {
+export function Tab({
+  id,
+  className,
+  isSelected,
+  labelledBy,
+  children,
+}: TabProps) {
   return (
-    <div className={className} role="tabpanel" aria-selected={isSelected}>
+    <div
+      id={id}
+      className={className}
+      role="tabpanel"
+      aria-hidden={!isSelected}
+      aria-labelledby={labelledBy}
+    >
       {children}
     </div>
-  )
+  );
 }

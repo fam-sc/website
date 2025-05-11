@@ -10,7 +10,11 @@ export class PollCollection extends EntityCollection<Poll> {
   }
 
   findShortPoll(id: string) {
-    return this.findById<WithId<ShortPoll>>(id, { projection: { title: 1, startDate: 1, endDate: 1 } });
+    return this.findById<ShortPoll>(id, { projection: { title: 1, startDate: 1, endDate: 1 } });
+  }
+
+  findPollWithQuestionsAndAnswers(id: string) {
+    return this.findById<Pick<Poll, 'questions' | 'respondents'>>(id, { projection: { questions: 1, respondents: 1 } });
   }
  
   addRespondent(id: string | ObjectId, respondent: PollRespondent) {

@@ -22,6 +22,8 @@ export function useDataLoader<T>(
   const [isPending, setPending] = useState(false);
 
   useEffect(() => {
+    setPending(true);
+
     loader()
       .then((result) => {
         setPending(false);

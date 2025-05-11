@@ -4,10 +4,11 @@ import { Typography, TypographyProps } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { PropsOf, WithDataSpace } from '@/types/react';
+import { WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+import { ComponentProps } from 'react';
 
-type AnchorProps = PropsOf<typeof NextLink>;
+type AnchorProps = ComponentProps<typeof NextLink>;
 
 export interface LinkProps
   extends TypographyProps,

@@ -4,3 +4,7 @@ export type PageProps<T = unknown> = {
     [key: string]: string | string[] | undefined;
   }>;
 };
+
+export type IdRequestProps = {
+  params: Promise<{ id: string }>;
+};

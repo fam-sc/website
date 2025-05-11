@@ -5,19 +5,29 @@ import styles from './page.module.scss';
 import { PollQuestionList } from '@/components/PollQuestionList';
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/Button';
-import { QuestionAnswer, QuestionDescriptor, QuestionType } from '@/components/PollQuestion';
+import {
+  QuestionAnswer,
+  QuestionDescriptor,
+  QuestionType,
+} from '@/components/PollQuestion';
 import { submitPoll } from '@/api/polls/client';
 import { useNotification } from '@/components/Notification';
 import { useRouter } from 'next/navigation';
 import { Typography } from '@/components/Typography';
+import { InfoIcon } from '@/icons/InfoIcon';
+import { IconLinkButton } from '@/components/IconLinkButton';
 
 type PollWithId = Poll & { id: string };
 
 export type ClientComponentProps = {
+  canViewInfo: boolean;
   poll: PollWithId;
 };
 
-function isAnswerValid<T extends QuestionType>(answer: QuestionAnswer<T>, descriptor: QuestionDescriptor<T>) {
+function isAnswerValid<T extends QuestionType>(
+  answer: QuestionAnswer<T>,
+  descriptor: QuestionDescriptor<T>
+) {
   if ('text' in answer) {
     return answer.text.length > 0;
   }
@@ -30,10 +40,12 @@ function isAnswerValid<T extends QuestionType>(answer: QuestionAnswer<T>, descri
     return answer.selectedIndices.length > 0;
   }
 
-  if ('status' in answer && descriptor.type === 'checkbox') {
-    if ((descriptor as QuestionDescriptor<'checkbox'>).requiredTrue) {
-      return answer.status;
-    }
+  if (
+    'status' in answer &&
+    descriptor.type === 'checkbox' &&
+    (descriptor as QuestionDescriptor<'checkbox'>).requiredTrue
+  ) {
+    return answer.status;
   }
 
   return true;
@@ -41,18 +53,22 @@ function isAnswerValid<T extends QuestionType>(answer: QuestionAnswer<T>, descri
 
 function getEmptyAnswer(type: QuestionType): QuestionAnswer {
   switch (type) {
-    case 'text':
+    case 'text': {
       return { text: '' };
-    case 'multicheckbox':
+    }
+    case 'multicheckbox': {
       return { selectedIndices: [] };
-    case 'radio':
+    }
+    case 'radio': {
       return { selectedIndex: undefined };
-    case 'checkbox':
+    }
+    case 'checkbox': {
       return { status: false };
+    }
   }
 }
 
-export function ClientComponent({ poll }: ClientComponentProps) {
+export function ClientComponent({ canViewInfo, poll }: ClientComponentProps) {
   const [isActionPending, setIsActionPending] = useState(false);
   const [answers, setAnswers] = useState<QuestionAnswer[]>(() => {
     return poll.questions.map(({ type }) => getEmptyAnswer(type));
@@ -62,23 +78,39 @@ export function ClientComponent({ poll }: ClientComponentProps) {
   const router = useRouter();
 
   const pollItems = useMemo(() => {
-    return poll.questions.map(({ type, title, options, requiredTrue }) => ({
-      title,
+    return poll.questions.map((question) => ({
+      title: question.title,
       descriptor: {
-        type,
-        requiredTrue: requiredTrue ?? false,
-        choices: options?.map(({ title }, j) => ({ id: j, title })) ?? [],
+        type: question.type,
+        requiredTrue:
+          question.type === 'checkbox' ? question.requiredTrue : false,
+        choices:
+          question.type === 'multicheckbox' || question.type === 'radio'
+            ? question.options.map(({ title }, j) => ({ id: j, title }))
+            : [],
       },
     }));
   }, [poll]);
 
-  const isAnswersValid =
-    answers.length === poll.questions.length &&
-    answers.every((answer, i) => answer !== undefined && isAnswerValid(answer, pollItems[i].descriptor));
+  const isAnswersValid = answers.every((answer, i) =>
+    isAnswerValid(answer, pollItems[i].descriptor)
+  );
 
   return (
     <div className={styles.content}>
-      <Typography variant="h5">{poll.title}</Typography>
+      <div className={styles.header}>
+        <Typography variant="h5">{poll.title}</Typography>
+
+        {canViewInfo && (
+          <IconLinkButton
+            className={styles.info}
+            hover="fill"
+            href={`/polls/${poll.id}/info`}
+          >
+            <InfoIcon />
+          </IconLinkButton>
+        )}
+      </div>
 
       <PollQuestionList
         disabled={isActionPending}
