@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { QuestionAnswer } from '../PollQuestion/types';
 
 function Component(props: PollQuestionListProps) {
-  const [answers, setAnswers] = useState<(QuestionAnswer | undefined)[]>([]);
+  const [answers, setAnswers] = useState<QuestionAnswer[]>([]);
 
   return (
     <PollQuestionList
@@ -36,7 +36,7 @@ export const Primary: Story = {
       },
       {
         title: 'Question 2',
-        descriptor: { type: 'checkbox', choices: items },
+        descriptor: { type: 'multicheckbox', choices: items },
       },
       {
         title: 'Question 3',

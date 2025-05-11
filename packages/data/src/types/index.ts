@@ -17,42 +17,6 @@ export type User = {
   telegramUserId: number | null;
 };
 
-export type Poll = {
-  startDate: Date;
-  endDate: Date | null;
-  title: string;
-  questions: PollQuestion[];
-  respondents: PollRespondent[];
-};
-
-export type PollQuestion = {
-  type: 'checkbox' | 'radio' | 'text';
-  title: string;
-  options?: PollQuestionOption[];
-};
-
-export type PollType = PollQuestion['type'];
-
-export type PollQuestionOption = {
-  title: string;
-};
-
-export type PollRespondent = {
-  date: Date;
-  answers: PollRespondentAnswer[];
-};
-
-export type PollRespondentAnswer = {
-  // if question's type is input
-  text?: string;
-
-  // if question's type is radio.
-  selectedIndex?: number;
-
-  // if question's type is checkbox.
-  selectedIndices?: number[];
-};
-
 export type Event = {
   title: string;
   status: 'pending' | 'ended';

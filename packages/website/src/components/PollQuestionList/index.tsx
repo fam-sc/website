@@ -16,8 +16,8 @@ export type PollQuestionListProps = {
   disabled?: boolean;
 
   items: QuestionItem[];
-  answers: (QuestionAnswer | undefined)[];
-  onAnswersChanged: (value: (QuestionAnswer | undefined)[]) => void;
+  answers: QuestionAnswer[];
+  onAnswersChanged: (value: QuestionAnswer[]) => void;
 };
 
 export function PollQuestionList({

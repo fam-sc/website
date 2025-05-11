@@ -24,13 +24,13 @@ export interface PollQuestionProps<T extends QuestionType> {
 
 type OptionGroupProps = {
   choices: Choice[];
-  children: (id: string | number, title: string) => ReactNode;
+  children: (id: string | number, index: number, title: string) => ReactNode;
 };
 
 function OptionGroup({ choices, children }: OptionGroupProps) {
   return (
     <div className={styles['option-group']}>
-      {choices.map(({ id, title }) => children(id, title))}
+      {choices.map(({ id, title }, index) => children(id, index, title))}
     </div>
   );
 }
@@ -43,9 +43,12 @@ type ContentTypeProps<T extends QuestionType = QuestionType> = {
   onAnswerChanged: (value: QuestionAnswer<T>) => void;
 };
 
-type ContentComponentMap = {
-  [T in QuestionType]: FC<ContentTypeProps<T>>;
-};
+type ContentComponentMap = Omit<
+  {
+    [T in QuestionType]: FC<ContentTypeProps<T>>;
+  },
+  'checkbox'
+>;
 
 function TextContent({
   disabled,
@@ -63,26 +66,26 @@ function TextContent({
   );
 }
 
-function CheckboxContent({
+function MultiCheckboxContent({
   disabled,
   descriptor,
   answer,
   onAnswerChanged,
-}: ContentTypeProps<'checkbox'>) {
-  const selectedIds = answer?.selectedIds ?? [];
+}: ContentTypeProps<'multicheckbox'>) {
+  const selectedIndices = answer?.selectedIndices ?? [];
 
   return (
     <OptionGroup choices={descriptor.choices}>
-      {(id, title) => (
+      {(id, index, title) => (
         <Checkbox
           key={id}
           disabled={disabled}
-          checked={selectedIds.includes(id)}
+          checked={selectedIndices.includes(index)}
           onCheckedChanged={(state) => {
             onAnswerChanged({
-              selectedIds: state
-                ? [...selectedIds, id]
-                : selectedIds.filter((value) => value !== id),
+              selectedIndices: state
+                ? [...selectedIndices, index]
+                : selectedIndices.filter((value) => value !== index),
             });
           }}
         >
@@ -101,14 +104,14 @@ function RadioContent({
 }: ContentTypeProps<'radio'>) {
   return (
     <OptionGroup choices={descriptor.choices}>
-      {(id, title) => (
+      {(id, index, title) => (
         <RadioButton
           key={id}
           disabled={disabled}
-          checked={answer?.selectedId === id}
+          checked={answer?.selectedIndex === index}
           onCheckedChanged={(state) => {
             if (state) {
-              onAnswerChanged({ selectedId: id });
+              onAnswerChanged({ selectedIndex: index });
             }
           }}
         >
@@ -119,9 +122,34 @@ function RadioContent({
   );
 }
 
+type CheckboxQuestionProps = {
+  title: string;
+  answer: QuestionAnswer<'checkbox'>;
+  onAnswerChanged: (value: QuestionAnswer<'checkbox'>) => void;
+};
+
+function CheckboxQuestion({
+  title,
+  answer,
+  onAnswerChanged,
+}: CheckboxQuestionProps) {
+  return (
+    <div className={styles.root}>
+      <Checkbox
+        checked={answer.status}
+        onCheckedChanged={(status) => {
+          onAnswerChanged({ status });
+        }}
+      >
+        {title}
+      </Checkbox>
+    </div>
+  );
+}
+
 const contentComponentMap: ContentComponentMap = {
   text: TextContent,
-  checkbox: CheckboxContent,
+  multicheckbox: MultiCheckboxContent,
   radio: RadioContent,
 };
 
@@ -132,7 +160,19 @@ export function PollQuestion<T extends QuestionType>({
   answer,
   onAnswerChanged,
 }: PollQuestionProps<T>) {
-  const Content = contentComponentMap[descriptor.type] as FC<
+  const type = descriptor.type;
+
+  if (type === 'checkbox') {
+    return (
+      <CheckboxQuestion
+        title={title}
+        answer={answer as QuestionAnswer<'checkbox'>}
+        onAnswerChanged={onAnswerChanged}
+      />
+    );
+  }
+
+  const Content = (contentComponentMap as Record<T, unknown>)[type] as FC<
     ContentTypeProps<T>
   >;
 
