@@ -1,0 +1,32 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  padding: 1em 0;
+
+  text-decoration: none;
+
+  * {
+    color: var(--color-text-on-background);
+  }
+
+  img {
+    width: 20%;
+    height: auto;
+    max-height: 250px;
+
+    margin-right: 1em;
+
+    object-fit: contain;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.status {
+  margin-top: 1em;
+  width: fit-content;
+}

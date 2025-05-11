@@ -4,63 +4,6 @@
   flex-direction: column;
 }
 
-.list {
-  list-style: none;
-
-  li {
-    padding: 1em 0;
-    border-bottom: 1px solid var(--color-text-on-background);
-
-    a {
-      display: flex;
-      flex-direction: row;
-    }
-
-    img {
-      width: 20%;
-      height: auto;
-      max-height: 250px;
-
-      margin-right: 1em;
-
-      object-fit: contain;
-    }
-
-    &:last-child {
-      border: none;
-    }
-  }
-
-  a {
-    text-decoration: none;
-
-    * {
-      color: var(--color-text-on-background);
-    }
-  }
-}
-
-.item-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-}
-
-.item-date {
-  display: flex;
-  align-items: center;
-
-  svg {
-    fill: var(--color-text-on-background);
-    margin-right: 0.5em;
-  }
-}
-
-.item-status {
-  margin-top: 1em;
-  width: fit-content;
-}
-
 .pagination {
   align-self: center;
 }
