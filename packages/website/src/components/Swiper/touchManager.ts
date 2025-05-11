@@ -18,36 +18,14 @@ type FullTouchEvent = {
 type FullTouchEventHandler = (event: FullTouchEvent) => void;
 
 type TouchManagerOptions = {
-  onDown: FullTouchEventHandler;
-  onMove: FullTouchEventHandler;
-  onUp: FullTouchEventHandler;
-  onUpAlways: () => void;
-};
-
-type EventListener<
-  K extends keyof HTMLElementEventMap = keyof HTMLElementEventMap,
-> = (event: HTMLElementEventMap[K]) => void;
-
-type ListenerMap = {
-  [K in keyof HTMLElementEventMap]?: EventListener<K>;
+  onDown?: FullTouchEventHandler;
+  onMove?: FullTouchEventHandler;
+  onUp?: FullTouchEventHandler;
+  onUpAlways?: () => void;
 };
 
 // Angle for a swipe to be valid. Other angles will be rejected
 const VALID_SWIPE_ANGLE = Math.PI / 4;
-
-function forEachListener(
-  map: ListenerMap,
-  block: (name: keyof HTMLElementEventMap, listener: EventListener) => void
-) {
-  for (const key in map) {
-    const name = key as keyof typeof map;
-    const listener = map[name];
-
-    if (listener !== undefined) {
-      block(name, listener as EventListener);
-    }
-  }
-}
 
 function touchBuffer(n: number) {
   const array: TouchInfo[] = [];
@@ -114,7 +92,7 @@ export function createTouchManager({
 
       touches.reset(clientX, clientY, time);
 
-      onDown(createTouchEvent());
+      onDown?.(createTouchEvent());
 
       connectedElement?.setPointerCapture(pointerId);
       downPointerId = pointerId;
@@ -137,7 +115,7 @@ export function createTouchManager({
         const time = performance.now();
         touches.push(clientX, clientY, time);
 
-        onMove(createTouchEvent());
+        onMove?.(createTouchEvent());
 
         return true;
       }
@@ -149,38 +127,34 @@ export function createTouchManager({
   const onGenericUp = ({ pointerId }: PointerEvent) => {
     if (downPointerId === pointerId) {
       if (isSwipe) {
-        onUp(createTouchEvent());
+        onUp?.(createTouchEvent());
       }
 
       isDown = false;
       isSwipe = false;
     }
 
-    onUpAlways();
-  };
-
-  const listeners: ListenerMap = {
-    pointerdown: onGenericDown,
-    pointermove: onGenericMove,
-    pointerup: onGenericUp,
-    pointercancel: onGenericUp,
+    onUpAlways?.();
   };
 
   return {
     connect(element) {
       connectedElement = element;
 
-      forEachListener(listeners, (name, listener) => {
-        element.addEventListener(name, listener, { passive: true });
-      });
+      const options = { passive: true };
+      element.addEventListener('pointerdown', onGenericDown, options);
+      element.addEventListener('pointermove', onGenericMove, options);
+      element.addEventListener('pointerup', onGenericUp, options);
+      element.addEventListener('pointercancel', onGenericUp, options);
     },
     disconnect() {
       const element = connectedElement;
 
       if (element !== undefined) {
-        forEachListener(listeners, (name, listener) => {
-          element.removeEventListener(name, listener);
-        });
+        element.removeEventListener('pointerdown', onGenericDown);
+        element.removeEventListener('pointermove', onGenericMove);
+        element.removeEventListener('pointerup', onGenericUp);
+        element.removeEventListener('pointercancel', onGenericUp);
       }
     },
   };
