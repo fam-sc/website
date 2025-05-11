@@ -18,6 +18,7 @@ function toClientEvent(event: WithId<Event>): ClientEvent {
     title: event.title,
     date: formatDateTime(event.date),
     description: shortenRichText(event.description, 200),
+    image: event.image,
   };
 }
 

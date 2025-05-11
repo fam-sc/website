@@ -22,18 +22,14 @@ export type Event = {
   status: 'pending' | 'ended';
   date: Date;
   description: RichTextString;
+  image?: ImageInfo;
 };
 
 export type GalleryImage = {
   date: Date;
   order: number;
   eventId: string | null;
-};
-
-export type UsefulLink = {
-  href: string;
-  title: string;
-  imageId: string | null;
+  image?: ImageInfo;
 };
 
 export type AuthSession = {
@@ -50,4 +46,9 @@ export type AuthSessionWithRole = {
 export type Group = {
   campusId: string;
   name: string;
+};
+
+export type ImageInfo = {
+  width: number;
+  height: number;
 };

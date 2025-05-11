@@ -42,13 +42,13 @@ function pageRequester(n: number) {
 export const LongPages: Story = {
   args: {
     requestPage: pageRequester(40),
-    getImageSource: (value) => value,
+    getImageInfo: (value) => value,
   },
 };
 
 export const SmallPages: Story = {
   args: {
     requestPage: pageRequester(1),
-    getImageSource: (value) => value,
+    getImageInfo: (value) => value,
   },
 };

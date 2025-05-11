@@ -6,3 +6,9 @@ export type GalleryImageWithEvent = {
     title: string;
   } | null;
 };
+
+export type GalleryImageWithSize = {
+  id: string;
+  width?: number;
+  height?: number;
+};
