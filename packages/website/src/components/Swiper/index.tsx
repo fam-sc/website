@@ -6,6 +6,7 @@ import styles from './index.module.scss';
 
 import { classNames } from '@/utils/classNames';
 import { SwiperManager } from './manager';
+import { SwiperIndicator } from '../SwiperIndicator';
 
 export type SwiperProps<T extends { id: Key }> = {
   className?: string;
@@ -51,23 +52,24 @@ export function Swiper<T extends { id: Key }>({
             key={slide.id}
             className={styles['slide-wrapper']}
             data-selected={Math.floor(slides.length / 2) === index}
+            onClick={() => {
+              managerRef.current?.setSelectedSlide(index);
+            }}
+            tabIndex={0}
           >
             {renderSlide(slide)}
           </div>
         ))}
       </div>
 
-      <div className={styles.indicator} ref={indicatorRef}>
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            data-selected={Math.floor(slides.length / 2) === index}
-            onClick={() => {
-              managerRef.current?.setSelectedSlide(index);
-            }}
-          />
-        ))}
-      </div>
+      <SwiperIndicator
+        ref={indicatorRef}
+        current={Math.floor(slides.length / 2)}
+        count={slides.length}
+        onElementClick={(index) => {
+          managerRef.current?.setSelectedSlide(index);
+        }}
+      />
     </div>
   );
 }
