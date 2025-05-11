@@ -172,7 +172,7 @@ export function PollQuestion<T extends QuestionType>({
     );
   }
 
-  const Content = contentComponentMap[type] as unknown as FC<
+  const Content = (contentComponentMap as Record<T, unknown>)[type] as FC<
     ContentTypeProps<T>
   >;
 
