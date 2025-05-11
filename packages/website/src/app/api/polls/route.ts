@@ -14,7 +14,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       startDate: new Date(),
       endDate: null,
       respondents: [],
-      ...payload
+      ...payload,
     });
 
     return new NextResponse();

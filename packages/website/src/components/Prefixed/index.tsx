@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Typography } from "../Typography";
+import { ReactNode } from 'react';
+import { Typography } from '../Typography';
 
 export type PrefixedProps = {
   className?: string;
@@ -13,5 +13,5 @@ export function Prefixed({ className, value, children }: PrefixedProps) {
       <Typography as="span" weight="bold">{`${value}: `}</Typography>
       {children}
     </Typography>
-  )
+  );
 }

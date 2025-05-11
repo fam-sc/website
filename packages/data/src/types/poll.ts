@@ -8,14 +8,17 @@ export type Poll = {
 
 export type ShortPoll = Pick<Poll, 'title' | 'startDate' | 'endDate'>;
 
-export type PollQuestion = { title: string } & 
- ( { type: 'text' } | {
-    type: 'multicheckbox' | 'radio';
-    options: PollQuestionOption[];
-  } | {
-    type: 'checkbox';
-    requiredTrue: boolean;
-  })
+export type PollQuestion = { title: string } & (
+  | { type: 'text' }
+  | {
+      type: 'multicheckbox' | 'radio';
+      options: PollQuestionOption[];
+    }
+  | {
+      type: 'checkbox';
+      requiredTrue: boolean;
+    }
+);
 
 export type PollType = PollQuestion['type'];
 

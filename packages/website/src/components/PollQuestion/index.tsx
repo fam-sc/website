@@ -43,9 +43,12 @@ type ContentTypeProps<T extends QuestionType = QuestionType> = {
   onAnswerChanged: (value: QuestionAnswer<T>) => void;
 };
 
-type ContentComponentMap = Omit<{
-  [T in QuestionType]: FC<ContentTypeProps<T>>;
-}, 'checkbox'>;
+type ContentComponentMap = Omit<
+  {
+    [T in QuestionType]: FC<ContentTypeProps<T>>;
+  },
+  'checkbox'
+>;
 
 function TextContent({
   disabled,
@@ -132,9 +135,14 @@ function CheckboxQuestion({
 }: CheckboxQuestionProps) {
   return (
     <div className={styles.root}>
-      <Checkbox checked={answer.status} onCheckedChanged={(status) => {
-        onAnswerChanged({ status });
-      }}>{title}</Checkbox>
+      <Checkbox
+        checked={answer.status}
+        onCheckedChanged={(status) => {
+          onAnswerChanged({ status });
+        }}
+      >
+        {title}
+      </Checkbox>
     </div>
   );
 }
@@ -155,10 +163,18 @@ export function PollQuestion<T extends QuestionType>({
   const type = descriptor.type;
 
   if (type === 'checkbox') {
-   return <CheckboxQuestion title={title} answer={answer as QuestionAnswer<'checkbox'>} onAnswerChanged={onAnswerChanged} />;  
+    return (
+      <CheckboxQuestion
+        title={title}
+        answer={answer as QuestionAnswer<'checkbox'>}
+        onAnswerChanged={onAnswerChanged}
+      />
+    );
   }
 
-  const Content = contentComponentMap[type as keyof ContentComponentMap] as unknown as FC<ContentTypeProps<T>>;
+  const Content = contentComponentMap[type] as unknown as FC<
+    ContentTypeProps<T>
+  >;
 
   return (
     <fieldset className={styles.root}>

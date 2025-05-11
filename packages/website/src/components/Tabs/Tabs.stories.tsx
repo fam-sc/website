@@ -7,19 +7,19 @@ import { Typography } from '../Typography';
 function Component() {
   return (
     <Tabs>
-      <Tab tabId='tab1' title="Tab 1">
+      <Tab tabId="tab1" title="Tab 1">
         <Typography>Tab 1 content</Typography>
       </Tab>
 
-      <Tab tabId='tab2' title="Tab 2">
+      <Tab tabId="tab2" title="Tab 2">
         <Typography>Tab 2 content</Typography>
       </Tab>
 
-      <Tab tabId='tab3' title="Tab 3">
+      <Tab tabId="tab3" title="Tab 3">
         <Typography>Tab 3 content</Typography>
       </Tab>
     </Tabs>
-  )
+  );
 }
 
 export default {

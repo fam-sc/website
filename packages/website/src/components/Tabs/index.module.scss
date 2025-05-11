@@ -4,7 +4,7 @@
 
   margin-bottom: 0.5em;
 
-  button[aria-selected=true] {
+  button[aria-selected='true'] {
     background: var(--color-background-dark);
   }
 }

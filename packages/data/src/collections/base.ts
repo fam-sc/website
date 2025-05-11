@@ -47,7 +47,10 @@ export class EntityCollection<T extends Document> {
     return this.collection().find({}, this.options());
   }
 
-  findById<R = T>(id: string | ObjectId, options?: FindOptions<T>): Promise<WithId<R> | null> {
+  findById<R = T>(
+    id: string | ObjectId,
+    options?: FindOptions<T>
+  ): Promise<WithId<R> | null> {
     let objectId: ObjectId;
 
     try {

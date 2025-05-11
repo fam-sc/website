@@ -38,7 +38,9 @@ const questionTypeTitles: Record<QuestionType, string> = {
 
 const questionTypes = Object.keys(questionTypeTitles) as QuestionType[];
 
-function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(type: T) {
+function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(
+  type: T
+) {
   // eslint-disable-next-line react/display-name
   return ({
     disabled,
@@ -60,14 +62,22 @@ function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(type: T) 
   };
 }
 
-function CheckboxContent({ descriptor, onDescriptorChanged, disabled }: ContentTypeProps<'checkbox'>) {
+function CheckboxContent({
+  descriptor,
+  onDescriptorChanged,
+  disabled,
+}: ContentTypeProps<'checkbox'>) {
   return (
-    <Checkbox disabled={disabled} checked={descriptor.requiredTrue} onCheckedChanged={(state) => {
-      onDescriptorChanged({ type: 'checkbox', requiredTrue: state });
-    }}>
-      Обов'язково має бути включеним
+    <Checkbox
+      disabled={disabled}
+      checked={descriptor.requiredTrue}
+      onCheckedChanged={(state) => {
+        onDescriptorChanged({ type: 'checkbox', requiredTrue: state });
+      }}
+    >
+      {`Обов'язково має бути включеним`}
     </Checkbox>
-  )
+  );
 }
 
 function getEmptyDescriptor(type: QuestionType): QuestionDescriptor {
@@ -79,8 +89,9 @@ function getEmptyDescriptor(type: QuestionType): QuestionDescriptor {
     case 'radio': {
       return { type, choices: [] };
     }
-    case 'checkbox':
+    case 'checkbox': {
       return { type, requiredTrue: false };
+    }
   }
 }
 

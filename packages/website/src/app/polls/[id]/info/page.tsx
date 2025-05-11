@@ -1,8 +1,8 @@
-import { PageProps } from "@/types/next";
-import { ClientComponent } from "./client";
-import { Repository } from "@data/repo";
-import { notFound } from "next/navigation";
-import { formatDateTime } from "@/utils/date";
+import { PageProps } from '@/types/next';
+import { ClientComponent } from './client';
+import { Repository } from '@data/repo';
+import { notFound } from 'next/navigation';
+import { formatDateTime } from '@/utils/date';
 
 export default async function Page({ params }: PageProps<{ id: string }>) {
   const { id } = await params;
@@ -14,13 +14,13 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
   }
 
   return (
-    <ClientComponent 
-      poll={{ 
-        id, 
+    <ClientComponent
+      poll={{
+        id,
         title: poll.title,
         startDate: formatDateTime(poll.startDate),
         endDate: poll.endDate ? formatDateTime(poll.endDate) : null,
       }}
     />
   );
-} 
+}
