@@ -2,6 +2,7 @@ import { Repository } from '@data/repo';
 import { ClientComponent } from './client';
 import { notFound } from 'next/navigation';
 import { PageProps } from '@/types/next';
+import { omitProperty } from '@/utils/object/omit';
 
 export default async function Page({ params }: PageProps<{ id: string }>) {
   const { id } = await params;
@@ -16,7 +17,7 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
   return (
     <ClientComponent
       event={{
-        ...event,
+        ...omitProperty(event, '_id'),
         id: event._id.toString(),
       }}
       canEdit

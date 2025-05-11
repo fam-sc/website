@@ -1,9 +1,17 @@
+@use '../../../theme/breakpoints' as *;
+
 .root {
-  padding: 1em 3em;
+  padding: 0em 2em;
   display: flex;
   flex-direction: column;
+
+  @include breakpoint-up('md') {
+    padding: 1em 3em;
+  }
 }
 
 .pagination {
   align-self: center;
+
+  margin-bottom: 1em;
 }

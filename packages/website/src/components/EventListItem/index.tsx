@@ -29,20 +29,18 @@ export function EventListItem({
     <Link className={styles.root} href={`/events/${id}`}>
       <Image src={imageSrc} alt="" width={0} height={0} />
 
-      <div className={styles['info']}>
-        <Typography className={styles['title']} variant="h5">
-          {title}
-        </Typography>
+      <Typography className={styles.title} variant="h5">
+        {title}
+      </Typography>
 
-        <RichText className={styles['description']} text={description} />
+      <RichText className={styles.description} text={description} />
 
-        <Typography hasIcon className={styles['date']}>
-          <EventIcon />
-          {date}
-        </Typography>
+      <Typography hasIcon className={styles.date}>
+        <EventIcon />
+        {date}
+      </Typography>
 
-        <EventStatusMarker className={styles['status']} status={status} />
-      </div>
+      <EventStatusMarker className={styles.status} status={status} />
     </Link>
   );
 }
