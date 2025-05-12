@@ -1,4 +1,4 @@
-import { ClientSession, MongoClient } from 'mongodb';
+import { ClientSession, MongoClient, ObjectId } from 'mongodb';
 
 import { AuthSession, UserRole } from '../types';
 
@@ -9,8 +9,12 @@ export class SessionCollection extends EntityCollection<AuthSession> {
     super(client, session, 'sessions');
   }
 
-  async getUserRole(sessionId: bigint): Promise<UserRole | null> {
-    const result = await this.aggregate<{ user: [{ role: UserRole }] }>([
+  async getUserWithRole(
+    sessionId: bigint
+  ): Promise<{ id: ObjectId; role: UserRole } | null> {
+    const result = await this.aggregate<{
+      user: [{ _id: ObjectId; role: UserRole }];
+    }>([
       // Find session by id
       { $match: { sessionId } },
       // Join user by userId, save it as 'user'
@@ -24,10 +28,12 @@ export class SessionCollection extends EntityCollection<AuthSession> {
       },
       // Select only role from user
       {
-        $project: { user: { role: 1 } },
+        $project: { user: { _id: 1, role: 1 } },
       },
     ]).next();
 
-    return result?.user[0].role ?? null;
+    const user = result?.user[0];
+
+    return user === undefined ? null : { id: user._id, role: user.role };
   }
 }

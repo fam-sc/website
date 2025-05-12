@@ -8,6 +8,7 @@ import { newSessionId, setSessionId } from '@/auth/session';
 import { SignUpDataSchema } from '@/auth/types';
 import { Repository } from '@data/repo';
 import { isDuplicateKeyError } from '@/utils/errors/mongo';
+import { UserRole } from '@data/types';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         telnum,
         photoId: null,
         telegramUserId: null,
-        role: 'student',
+        role: UserRole.STUDENT,
         passwordHash,
       });
 

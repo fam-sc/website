@@ -2,7 +2,11 @@ import { ObjectId } from 'mongodb';
 
 import { RichTextString } from '@shared/richText/types';
 
-export type UserRole = 'student' | 'group-head' | 'admin';
+export enum UserRole {
+  STUDENT = 0,
+  GROUP_HEAD = 1,
+  ADMIN = 2,
+}
 
 export type User = {
   firstName: string;
