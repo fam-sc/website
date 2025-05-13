@@ -30,3 +30,11 @@ export function putMediaFile(path: string, body: BodyInit): Promise<void> {
 export function deleteMediaFile(path: string): Promise<void> {
   return putDeleteMediaFile(path, 'DELETE');
 }
+
+export async function mediaFileExists(path: string): Promise<boolean> {
+  const response = await fetch(getMediaFileUrl(path), {
+    method: 'HEAD',
+  });
+
+  return response.ok;
+}

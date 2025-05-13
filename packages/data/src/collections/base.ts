@@ -99,8 +99,8 @@ export class EntityCollection<T extends Document> {
     return { session: this.session };
   }
 
-  protected findOne(filter: Filter<T>, options?: FindOptions<T>) {
-    return this.collection().findOne(filter, {
+  protected findOne<R = T>(filter: Filter<T>, options?: FindOptions<T>) {
+    return this.collection().findOne<R>(filter, {
       ...options,
       session: this.session,
     });

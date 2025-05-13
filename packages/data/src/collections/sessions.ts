@@ -9,6 +9,15 @@ export class SessionCollection extends EntityCollection<AuthSession> {
     super(client, session, 'sessions');
   }
 
+  async getUserIdBySessionId(sessionId: bigint): Promise<string | null> {
+    const result = await this.findOne<{ userId: ObjectId }>(
+      { sessionId },
+      { projection: { userId: 1 } }
+    );
+
+    return result?.userId.toString() ?? null;
+  }
+
   async getUserWithRole(
     sessionId: bigint
   ): Promise<{ id: ObjectId; role: UserRole } | null> {

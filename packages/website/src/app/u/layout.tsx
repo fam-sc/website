@@ -2,9 +2,10 @@ import { getCurrentUserInfo } from '@/auth/session/next';
 import { redirect, RedirectType } from 'next/navigation';
 
 import styles from './layout.module.scss';
-import Image from 'next/image';
 import { TabInfo } from './types';
 import { UserLayoutNavigation } from './nav';
+import { UserAvatar } from './avatar';
+import { mediaFileExists } from '@/api/media';
 
 const tabs: TabInfo[] = [{ href: '/u/info', title: 'Загальне' }];
 
@@ -18,19 +19,16 @@ export default async function Layout({
     redirect('/', RedirectType.replace);
   }
 
+  const avatarExists = await mediaFileExists(`user/${userInfo.id}`);
+
   return (
     <div className={styles.root}>
       <div className={styles.navSide}>
-        <div className={styles.avatar}>
-          <Image
-            src={
-              'https://i.imgur.com/OEuYkKXl.png' /* getMediaFileUrl(`user/${userInfo.id}`) */
-            }
-            alt="Фотографія користувача"
-            width={0}
-            height={0}
-          />
-        </div>
+        <UserAvatar
+          className={styles.avatar}
+          userId={userInfo.id}
+          hasAvatar={avatarExists}
+        />
 
         <UserLayoutNavigation tabs={tabs} />
       </div>
