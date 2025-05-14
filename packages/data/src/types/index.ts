@@ -1,25 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 import { RichTextString } from '@shared/richText/types';
-
-export enum UserRole {
-  STUDENT = 0,
-  GROUP_HEAD = 1,
-  ADMIN = 2,
-}
-
-export type User = {
-  firstName: string;
-  lastName: string;
-  parentName: string | null;
-  academicGroup: string;
-  email: string;
-  telnum: string | null;
-  photoId: string | null;
-  role: UserRole;
-  passwordHash: Uint8Array;
-  telegramUserId: number | null;
-};
+import { UserRole } from './user';
 
 export type Event = {
   title: string;

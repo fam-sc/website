@@ -6,8 +6,12 @@ import { TabInfo } from './types';
 import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
 import { mediaFileExists } from '@/api/media';
+import { UserRole } from '@data/types/user';
 
-const tabs: TabInfo[] = [{ href: '/u/info', title: 'Загальне' }];
+const tabs: TabInfo[] = [
+  { href: '/u/info', title: 'Загальне' },
+  { href: '/u/approve', title: 'Підтвердження', minRole: UserRole.GROUP_HEAD },
+];
 
 export default async function Layout({
   children,
@@ -21,6 +25,10 @@ export default async function Layout({
 
   const avatarExists = await mediaFileExists(`user/${userInfo.id}`);
 
+  const tabsForRole = tabs.filter(
+    ({ minRole }) => minRole === undefined || userInfo.role >= minRole
+  );
+
   return (
     <div className={styles.root}>
       <div className={styles.navSide}>
@@ -30,7 +38,7 @@ export default async function Layout({
           hasAvatar={avatarExists}
         />
 
-        <UserLayoutNavigation tabs={tabs} />
+        <UserLayoutNavigation tabs={tabsForRole} />
       </div>
 
       <div className={styles.tabContent}>{children}</div>

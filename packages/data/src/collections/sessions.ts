@@ -1,6 +1,13 @@
-import { ClientSession, MongoClient, ObjectId } from 'mongodb';
+import {
+  ClientSession,
+  Document,
+  MongoClient,
+  ObjectId,
+  WithId,
+} from 'mongodb';
 
-import { AuthSession, UserRole } from '../types';
+import { AuthSession } from '../types';
+import { UserRole, UserWithRole } from '../types/user';
 
 import { EntityCollection } from './base';
 
@@ -18,11 +25,12 @@ export class SessionCollection extends EntityCollection<AuthSession> {
     return result?.userId.toString() ?? null;
   }
 
-  async getUserWithRole(
-    sessionId: bigint
-  ): Promise<{ id: ObjectId; role: UserRole } | null> {
+  private async getUserBase<T>(
+    sessionId: bigint,
+    projection: Document
+  ): Promise<WithId<T> | undefined> {
     const result = await this.aggregate<{
-      user: [{ _id: ObjectId; role: UserRole }];
+      user: [WithId<T>];
     }>([
       // Find session by id
       { $match: { sessionId } },
@@ -35,14 +43,42 @@ export class SessionCollection extends EntityCollection<AuthSession> {
           as: 'user',
         },
       },
-      // Select only role from user
       {
-        $project: { user: { _id: 1, role: 1 } },
+        $project: projection,
       },
     ]).next();
 
-    const user = result?.user[0];
+    return result?.user[0];
+  }
 
-    return user === undefined ? null : { id: user._id, role: user.role };
+  async getUserWithRole(sessionId: bigint): Promise<UserWithRole | null> {
+    const user = await this.getUserBase<{ role: UserRole }>(sessionId, {
+      'user._id': 1,
+      'user.role': 1,
+    });
+
+    return user === undefined
+      ? null
+      : { id: user._id.toString(), role: user.role };
+  }
+
+  async getUserWithRoleAndGroup(
+    sessionId: bigint
+  ): Promise<(UserWithRole & { academicGroup: string }) | null> {
+    const user = await this.getUserBase<
+      UserWithRole & { academicGroup: string }
+    >(sessionId, {
+      'user._id': 1,
+      'user.role': 1,
+      'user.academicGroup': 1,
+    });
+
+    return user === undefined
+      ? null
+      : {
+          id: user._id.toString(),
+          role: user.role,
+          academicGroup: user.academicGroup,
+        };
   }
 }

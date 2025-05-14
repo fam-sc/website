@@ -66,7 +66,7 @@ export default {
         const object = await MEDIA_BUCKET.head(key);
 
         if (object === null) {
-          return new Response('Object ');
+          return notFound();
         }
 
         return new Response(null, {

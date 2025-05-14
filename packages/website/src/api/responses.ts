@@ -8,6 +8,7 @@ function helper(message: string, status: number): () => NextResponse {
 
 export const notFound = helper('Not Found', 404);
 export const unauthrorized = helper('Unauthorized', 401);
+export const internalServerError = helper('Internal Server Error', 500);
 
 export function badRequest(explanation?: {
   message: string;
