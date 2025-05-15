@@ -91,8 +91,8 @@ export function ClientComponent({ event, canEdit }: ClientComponentProps) {
         className={styles.image}
         src={getMediaFileUrl(`events/${event.id}`)}
         alt=""
-        width={0}
-        height={0}
+        width={event.image?.width ?? 0}
+        height={event.image?.height ?? 0}
       />
 
       <RichText text={event.description} />

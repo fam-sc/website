@@ -3,9 +3,14 @@ import { cookies } from 'next/headers';
 import { parseSessionIdString, SESSION_ID_COOKIE } from '.';
 
 import { Repository } from '@data/repo';
-import { UserRole } from '@data/types';
+import { UserRole } from '@data/types/user';
 
-export async function getCurrentUserRole(): Promise<UserRole | null> {
+type UserInfo = {
+  id: string;
+  role: UserRole;
+};
+
+export async function getCurrentUserInfo(): Promise<UserInfo | null> {
   const cookiesSet = await cookies();
   const sessionId = parseSessionIdString(
     cookiesSet.get(SESSION_ID_COOKIE)?.value
@@ -16,5 +21,7 @@ export async function getCurrentUserRole(): Promise<UserRole | null> {
 
   await using repo = await Repository.openConnection();
 
-  return await repo.sessions().getUserRole(sessionId);
+  const result = await repo.sessions().getUserWithRole(sessionId);
+
+  return result ? { id: result.id.toString(), role: result.role } : null;
 }

@@ -5,21 +5,23 @@ import { Typography } from '@/components/Typography';
 import { EventIcon } from '@/icons/EventIcon';
 import { RichText } from '@/components/RichText';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
-import { Event } from '@data/types';
+import { Event, ImageInfo } from '@data/types';
 import { RichTextString } from '@shared/richText/types';
 
 export type EventListItemProps = {
   id: string;
-  imageSrc: string;
   status: Event['status'];
   title: string;
   date: string;
   description: RichTextString;
+  image: ImageInfo & {
+    src: string;
+  };
 };
 
 export function EventListItem({
   id,
-  imageSrc,
+  image,
   status,
   title,
   date,
@@ -27,7 +29,7 @@ export function EventListItem({
 }: EventListItemProps) {
   return (
     <Link className={styles.root} href={`/events/${id}`}>
-      <Image src={imageSrc} alt="" width={0} height={0} />
+      <Image src={image.src} alt="" width={image.width} height={image.height} />
 
       <Typography className={styles.title} variant="h5">
         {title}

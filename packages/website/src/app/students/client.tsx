@@ -29,11 +29,16 @@ export function ClientComponent({ latestEvents }: ClientComponentProps) {
       </Typography>
 
       <List className={styles.events}>
-        {latestEvents.map((event) => (
-          <li key={event.id}>
+        {latestEvents.map(({ id, image, ...rest }) => (
+          <li key={id}>
             <EventListItem
-              {...event}
-              imageSrc={getMediaFileUrl(`events/${event.id}`)}
+              {...rest}
+              id={id}
+              image={{
+                src: getMediaFileUrl(`events/${id}`),
+                width: image?.width ?? 0,
+                height: image?.height ?? 0,
+              }}
             />
           </li>
         ))}

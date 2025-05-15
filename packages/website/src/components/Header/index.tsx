@@ -13,10 +13,8 @@ import styles from './index.module.scss';
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { MenuIcon } from '@/icons/MenuIcon';
-
-export type HeaderProps = {
-  userLogOn: boolean;
-};
+import { useAuthInfo } from '@/auth/context';
+import { getMediaFileUrl } from '@shared/media';
 
 const items: { title: string; href: string }[] = [
   { title: 'Студентство', href: '/students' },
@@ -52,29 +50,40 @@ function Buttons() {
   );
 }
 
-function Avatar() {
+type AvatarProps = {
+  userId: string;
+};
+
+function Avatar({ userId }: AvatarProps) {
   return (
-    <Image
-      className={styles.avatar}
-      src="https://i.imgur.com/xxCgHWM.png"
-      alt=""
-      width={512}
-      height={512}
-    />
+    <Link className={styles.avatar} href="/u/info">
+      <Image
+        src={getMediaFileUrl(`user/${userId}`)}
+        alt=""
+        width={0}
+        height={0}
+      />
+    </Link>
   );
 }
 
-function MobileMenu({ userLogOn }: HeaderProps) {
+function AvatarOrButtons() {
+  const { user } = useAuthInfo();
+
+  return user === null ? <Buttons /> : <Avatar userId={user.id} />;
+}
+
+function MobileMenu() {
   return (
     <div className={styles['mobile-menu']}>
       <Navigation />
 
-      {userLogOn ? <Avatar /> : <Buttons />}
+      <AvatarOrButtons />
     </div>
   );
 }
 
-export function Header({ userLogOn }: HeaderProps) {
+export function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useScrollbar(!isMobileMenuOpen);
@@ -96,7 +105,7 @@ export function Header({ userLogOn }: HeaderProps) {
         </Link>
 
         <Navigation />
-        {userLogOn ? <Avatar /> : <Buttons />}
+        <AvatarOrButtons />
 
         <IconButton
           className={styles['menu-button']}
@@ -107,7 +116,7 @@ export function Header({ userLogOn }: HeaderProps) {
           {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
         </IconButton>
 
-        {isMobileMenuOpen && <MobileMenu userLogOn={userLogOn} />}
+        {isMobileMenuOpen && <MobileMenu />}
       </div>
     </header>
   );

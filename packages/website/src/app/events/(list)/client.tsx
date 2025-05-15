@@ -2,7 +2,7 @@ import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
 import { getMediaFileUrl } from '@shared/media';
 import { RichTextString } from '@shared/richText/types';
-import { Event } from '@data/types';
+import { Event, ImageInfo } from '@data/types';
 import { EventListItem } from '@/components/EventListItem';
 import { List } from '@/components/List';
 
@@ -12,6 +12,7 @@ export type ClientEvent = {
   title: string;
   date: string;
   description: RichTextString;
+  image?: ImageInfo;
 };
 
 export type ClientComponentProps = {
@@ -28,11 +29,16 @@ export function ClientComponent({
   return (
     <div className={styles.root}>
       <List>
-        {items.map((item) => (
-          <li key={item.id}>
+        {items.map(({ id, image, ...rest }) => (
+          <li key={id}>
             <EventListItem
-              {...item}
-              imageSrc={getMediaFileUrl(`events/${item.id}`)}
+              {...rest}
+              id={id}
+              image={{
+                src: getMediaFileUrl(`events/${id}`),
+                width: image?.width ?? 0,
+                height: image?.height ?? 0,
+              }}
             />
           </li>
         ))}

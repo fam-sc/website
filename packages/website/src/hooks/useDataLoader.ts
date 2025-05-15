@@ -1,22 +1,24 @@
 import { useNotification } from '@/components/Notification';
-import { useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+
+type ResultArray<T> = [T, boolean, Dispatch<SetStateAction<T>>];
 
 export function useDataLoader<T>(
   loader: () => Promise<T>,
   deps?: unknown[]
-): [T | undefined, boolean, (value: T) => void];
+): ResultArray<T | undefined>;
 
 export function useDataLoader<T>(
   loader: () => Promise<T>,
   deps: unknown[],
   initial: T
-): [T, boolean, (value: T) => void];
+): ResultArray<T>;
 
 export function useDataLoader<T>(
   loader: () => Promise<T>,
   deps: unknown[] | undefined,
   initial?: T
-): [T | undefined, boolean, (value: T) => void] {
+): [T | undefined, boolean, Dispatch<SetStateAction<T | undefined>>] {
   const notification = useNotification();
   const [result, setResult] = useState<T | undefined>(initial);
   const [isPending, setPending] = useState(false);

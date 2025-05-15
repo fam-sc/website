@@ -5,6 +5,7 @@ import { Repository } from '@data/repo';
 import { parseHtmlToRichText } from '@shared/richText/parser';
 import { creatMediaServerParseContext } from '@/api/media/richText';
 import { NextRequest, NextResponse } from 'next/server';
+import { getImageSize } from '@/image/size';
 
 type Params = {
   params: Promise<{ id: string }>;
@@ -20,6 +21,9 @@ export async function PUT(
   const { title, description, date, image, status } =
     parseEditEventPayload(formData);
 
+  const imageBuffer = await image?.bytes();
+  const imageSize = imageBuffer ? getImageSize(imageBuffer) : undefined;
+
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
   await using mediaTransaction = new MediaTransaction();
 
@@ -31,9 +35,13 @@ export async function PUT(
   await using repo = await Repository.openConnection();
 
   await repo.transaction(async (trepo) => {
-    const result = await trepo
-      .events()
-      .update(id, { date, title, status, description: richTextDescription });
+    const result = await trepo.events().update(id, {
+      date,
+      title,
+      status,
+      description: richTextDescription,
+      image: imageSize,
+    });
 
     if (result.matchedCount === 0) {
       throw new Error("Specified event doesn't exist");
