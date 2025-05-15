@@ -9,7 +9,7 @@
   width: 20%;
   padding: 1em;
 
-  nav ul { 
+  nav ul {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -19,7 +19,7 @@
     a {
       display: block;
 
-      &[data-current=true] {
+      &[data-current='true'] {
         background: var(--color-background-dark);
       }
     }
@@ -43,5 +43,4 @@
 .tabContent {
   flex-grow: 1;
   padding: 1em;
-
 }

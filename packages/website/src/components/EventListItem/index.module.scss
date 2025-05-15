@@ -13,9 +13,9 @@
   text-decoration: none;
 
   grid-template-columns: 1fr;
-  grid-template-rows: fit-content(2em) fit-content(250px) 1fr fit-content(
-      1em
-    ) fit-content(1em);
+  grid-template-rows:
+    fit-content(2em) fit-content(250px) 1fr fit-content(1em)
+    fit-content(1em);
 
   row-gap: 1em;
 

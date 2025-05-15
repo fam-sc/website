@@ -10,9 +10,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  redirects: () => Promise.resolve([
-    { source: '/u', destination: '/u/info', permanent: true }
-  ]),
+  redirects: () =>
+    Promise.resolve([
+      { source: '/u', destination: '/u/info', permanent: true },
+    ]),
   serverExternalPackages: ['knex'],
 };
 

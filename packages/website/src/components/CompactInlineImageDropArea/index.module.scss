@@ -13,7 +13,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  
+
     border: 2px dashed var(--color-text-on-background);
 
     padding: 1em;
@@ -21,18 +21,19 @@
     height: 100%;
 
     box-sizing: border-box;
-    
+
     gap: 1em;
-  
+
     flex-grow: 0;
     z-index: 1;
   }
 
-  img, .dropArea {
+  img,
+  .dropArea {
     border-radius: 0.75em;
   }
 
-  &[data-has-image=true] {
+  &[data-has-image='true'] {
     .dropArea {
       position: absolute;
       top: 0;
@@ -42,13 +43,12 @@
       visibility: collapse;
       opacity: 0;
 
-      transition: opacity .1s ease;
+      transition: opacity 0.1s ease;
     }
 
-    &:hover .dropArea { 
+    &:hover .dropArea {
       opacity: 1;
       visibility: visible;
     }
   }
 }
-

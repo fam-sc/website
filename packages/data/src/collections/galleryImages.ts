@@ -61,4 +61,12 @@ export class GalleryImageCollection extends EntityCollection<GalleryImage> {
       height: image?.height,
     }));
   }
+
+  async getImageSize(id: string): Promise<ImageInfo | null> {
+    const result = await this.findById<{ image: ImageInfo }>(id, {
+      projection: { image: 1 },
+    });
+
+    return result?.image ?? null;
+  }
 }

@@ -66,14 +66,15 @@
 .avatar {
   display: none;
   border: 2px solid var(--color-text-on-background);
-  
+
   transition: border 0.1s linear;
 
   @include size(40px);
 
   margin-right: 1em;
 
-  &, img {
+  &,
+  img {
     border-radius: 100%;
   }
 
