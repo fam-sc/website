@@ -33,7 +33,7 @@ export async function getTeachers(): Promise<Teacher[]> {
 
 export async function getDisciplines(): Promise<Discipline[]> {
   const pageContent = await fetchPage(
-    `${SITE_URL}//uk/studentam/navchalni-distsiplini`
+    `${SITE_URL}/uk/studentam/navchalni-distsiplini`
   );
   const disciplineListBlock = findNextDataBlock(
     pageContent,

@@ -66,13 +66,20 @@
 .avatar {
   display: none;
   border: 2px solid var(--color-text-on-background);
-  border-radius: 100%;
-
-  @include size(50px);
-
+  
   transition: border 0.1s linear;
 
+  @include size(40px);
+
   margin-right: 1em;
+
+  &, img {
+    border-radius: 100%;
+  }
+
+  img {
+    @include size(100%);
+  }
 
   &:hover {
     border-color: var(--color-text-on-background-dark);
@@ -132,6 +139,7 @@
   .avatar {
     display: block;
     align-self: center;
+    margin-right: 0;
 
     @include size(5em);
   }
