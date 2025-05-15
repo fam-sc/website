@@ -1,26 +1,18 @@
 'use client';
 
-import {
-  ReactNode,
-  Ref,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, Ref, useEffect, useLayoutEffect, useRef } from 'react';
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
-import { useNotification } from '../Notification';
 
 import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
 
-export type InfiniteScrollProps<T> = {
+export type InfiniteScrollProps = {
   className?: string;
-  contentClassName?: string;
+  hasMoreElements?: boolean;
 
-  requestPage: (page: number) => Promise<T[]>;
-  children: (value: T, index: number) => ReactNode;
+  onRequesNextPage: () => void;
+
+  children: ReactNode;
 };
 
 export type LoadMarkerProps = {
@@ -36,53 +28,20 @@ function LoadMarker({ ref }: LoadMarkerProps) {
   );
 }
 
-export function InfiniteScroll<T>({
+export function InfiniteScroll({
   className,
-  contentClassName,
-  requestPage,
+  hasMoreElements = true,
+  onRequesNextPage,
   children,
-}: InfiniteScrollProps<T>) {
-  const maxPageRef = useRef(0);
-  const requestInProgressRef = useRef(false);
-
-  const [hasMoreElements, setHasMoreElements] = useState(true);
-  const [items, setItems] = useState<T[]>([]);
-
+}: InfiniteScrollProps) {
   const maxMarkerRef = useRef<SVGSVGElement>(null);
-
-  const notification = useNotification();
-
-  const requestNextPage = useCallback(() => {
-    if (!requestInProgressRef.current) {
-      requestInProgressRef.current = true;
-
-      requestPage(maxPageRef.current + 1)
-        .then((page) => {
-          if (page.length === 0) {
-            setHasMoreElements(false);
-          } else {
-            setItems((items) => [...items, ...page]);
-          }
-
-          maxPageRef.current++;
-          requestInProgressRef.current = false;
-        })
-        .catch((error: unknown) => {
-          console.error(error);
-
-          notification.show('Не вийшло завантажити сторінку', 'error');
-          requestInProgressRef.current = false;
-        });
-    }
-  }, [notification, requestPage]);
 
   useEffect(() => {
     const { current: maxMarker } = maxMarkerRef;
 
     const observer = new IntersectionObserver(
       () => {
-        console.log('observe');
-        requestNextPage();
+        onRequesNextPage();
       },
       {
         root: null,
@@ -98,7 +57,7 @@ export function InfiniteScroll<T>({
     return () => {
       observer.disconnect();
     };
-  }, [requestNextPage]);
+  }, [onRequesNextPage]);
 
   useLayoutEffect(() => {
     const { current: maxMarker } = maxMarkerRef;
@@ -107,16 +66,14 @@ export function InfiniteScroll<T>({
       const bounds = maxMarker.getBoundingClientRect();
 
       if (bounds.top <= window.innerHeight) {
-        requestNextPage();
+        onRequesNextPage();
       }
     }
-  }, [items, requestNextPage]);
+  }, [onRequesNextPage]);
 
   return (
     <div className={classNames(styles.root, className)}>
-      <div className={contentClassName}>
-        {items.map((item, i) => children(item, i))}
-      </div>
+      {children}
 
       {hasMoreElements && <LoadMarker ref={maxMarkerRef} />}
     </div>

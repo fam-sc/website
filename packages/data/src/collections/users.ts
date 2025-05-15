@@ -59,4 +59,43 @@ export class UserCollection extends EntityCollection<User> {
 
     return result?.academicGroup ?? null;
   }
+
+  async getPage(index: number, size: number) {
+    const result = await this.aggregate<{
+      data: WithId<Omit<ShortUser, 'id'>>[];
+    }>([
+      {
+        $match: {
+          role: { $ne: UserRole.ADMIN },
+        },
+      },
+      {
+        $facet: {
+          data: [{ $skip: index * size }, { $limit: size }],
+        },
+      },
+      {
+        $project: {
+          data: {
+            _id: 1,
+            firstName: 1,
+            lastName: 1,
+            parentName: 1,
+            academicGroup: 1,
+            email: 1,
+            role: 1,
+          },
+        },
+      },
+    ]).next();
+
+    if (result === null) {
+      return [];
+    }
+
+    return result.data.map(({ _id, ...rest }) => ({
+      id: _id.toString(),
+      ...rest,
+    }));
+  }
 }

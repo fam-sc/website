@@ -13,7 +13,8 @@ export async function POST(
   const newRoleRaw = searchParams.get('value');
   const newRole = newRoleRaw ? Number.parseInt(newRoleRaw) : null;
 
-  if (!isUserRole(newRole)) {
+  // Noone can elevate user to admin.
+  if (!isUserRole(newRole) || newRole === UserRole.ADMIN) {
     return badRequest();
   }
 
@@ -52,11 +53,11 @@ export async function POST(
     }
   }
 
-  const { modifiedCount } = await repo
+  const { matchedCount } = await repo
     .users()
     .updateRole(approveUserId, newRole);
 
-  if (modifiedCount === 0) {
+  if (matchedCount === 0) {
     return notFound();
   }
 
