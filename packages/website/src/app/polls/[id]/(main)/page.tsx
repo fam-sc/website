@@ -15,7 +15,6 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
 
   return (
     <ClientComponent
-      canViewInfo
       poll={{ id, title: poll.title, questions: poll.questions }}
     />
   );

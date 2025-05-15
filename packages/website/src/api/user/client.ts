@@ -3,14 +3,14 @@ import { checkedFetch, fetchObject } from '@shared/fetch';
 import { UserInfo, UserInfoWithRole } from './types';
 
 export function uploadUserAvatar(body: BodyInit) {
-  return checkedFetch(`/api/user/avatar`, {
+  return checkedFetch(`/api/users/avatar`, {
     method: 'POST',
     body,
   });
 }
 
 export function changeUserRole(userId: string, role: UserRole) {
-  return checkedFetch(`/api/user/${userId}/role?value=${role}`, {
+  return checkedFetch(`/api/users/${userId}/role?value=${role}`, {
     method: 'POST',
   });
 }
@@ -19,13 +19,13 @@ export function approveUser(userId: string) {
 }
 
 export function disapproveUser(userId: string) {
-  return checkedFetch(`/api/user/${userId}/disapprove`, {
+  return checkedFetch(`/api/users/${userId}/disapprove`, {
     method: 'POST',
   });
 }
 
 export function getUsersForApprove(): Promise<UserInfo[]> {
-  return fetchObject(`/api/user/approveList`);
+  return fetchObject(`/api/users/approveList`);
 }
 
 export function getAllUsers(page: number): Promise<UserInfoWithRole[]> {

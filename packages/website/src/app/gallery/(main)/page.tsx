@@ -17,5 +17,5 @@ export default async function Page({ searchParams }: PageProps) {
   const image =
     typeof rawId === 'string' ? await getGalleryImageWithSize(rawId) : null;
 
-  return <ClientComponent canModify selected={image} />;
+  return <ClientComponent selected={image} />;
 }

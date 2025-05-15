@@ -8,8 +8,16 @@ import { usePageFetcher } from '@/hooks/usePageFetcher';
 import { startTransition, useOptimistic } from 'react';
 
 import styles from './page.module.scss';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
+import { redirect } from 'next/navigation';
 
 export function ClientComponent() {
+  const { user } = useAuthInfo();
+  if (user === null || user.role < UserRole.ADMIN) {
+    redirect('/');
+  }
+
   const notification = useNotification();
   const { items, setItems, hasMoreItems, onRequestNextPage } = usePageFetcher(
     getAllUsers,

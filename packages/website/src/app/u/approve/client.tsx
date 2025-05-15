@@ -16,8 +16,16 @@ import {
 import { useCallback, useMemo } from 'react';
 import { getMediaFileUrl } from '@shared/media';
 import { Typography } from '@/components/Typography';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
+import { redirect } from 'next/navigation';
 
 export function ClientComponent() {
+  const { user } = useAuthInfo();
+  if (user === null || user.role < UserRole.ADMIN) {
+    redirect('/');
+  }
+
   const [users, isPending, setUsers] = useDataLoader(getUsersForApprove, []);
   const approveItems = useMemo((): UserApproveItemType[] | undefined => {
     return users?.map(({ id, email, name, group, hasAvatar }) => ({

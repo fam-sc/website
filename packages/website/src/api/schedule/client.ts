@@ -2,7 +2,7 @@ import { Schedule } from './types';
 
 import { Group } from '@data/types';
 import { checkedFetch, fetchObject } from '@shared/fetch';
-import { UpdateScheduleLinksPayload } from './update';
+import { UpdateScheduleLinksPayload } from './types';
 
 export function getGroups(): Promise<Group[]> {
   return fetchObject('/api/schedule/groups');

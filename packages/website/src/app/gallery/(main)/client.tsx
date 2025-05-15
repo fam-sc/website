@@ -10,14 +10,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { GalleryImageInfoDialog } from './dialog';
 import { GalleryImageWithSize } from '@/api/gallery/types';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
 
 export type ClientComponentProps = {
-  canModify: boolean;
   selected: GalleryImageWithSize | null;
 };
 
 export function ClientComponent({
-  canModify,
   selected: initialSelected,
 }: ClientComponentProps) {
   const [selectedId, setSelectedId] = useState<GalleryImageWithSize | null>(
@@ -25,6 +25,9 @@ export function ClientComponent({
   );
 
   const router = useRouter();
+
+  const { user } = useAuthInfo();
+  const canModify = user !== null && user.role >= UserRole.ADMIN;
 
   return (
     <div className={styles.content}>

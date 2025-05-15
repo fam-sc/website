@@ -1,28 +1,26 @@
+import { authRoute } from '@/api/authRoute';
 import { addPollPayload } from '@/api/polls/types';
 import { badRequest } from '@/api/responses';
-import { Repository } from '@data/repo';
+import { UserRole } from '@data/types/user';
 import { NextRequest, NextResponse } from 'next/server';
-import { ZodError } from 'zod';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  try {
-    const rawPayload = await request.json();
-    const payload = addPollPayload.parse(rawPayload);
+  const rawPayload = await request.json();
+  const payloadResult = addPollPayload.safeParse(rawPayload);
+  if (payloadResult.error) {
+    console.error(payloadResult.error);
 
-    await using repo = await Repository.openConnection();
+    return badRequest();
+  }
+
+  return authRoute(request, UserRole.ADMIN, async (repo) => {
     await repo.polls().insert({
       startDate: new Date(),
       endDate: null,
       respondents: [],
-      ...payload,
+      ...payloadResult.data,
     });
 
     return new NextResponse();
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return badRequest();
-    }
-
-    throw error;
-  }
+  });
 }

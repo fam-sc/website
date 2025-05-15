@@ -20,7 +20,6 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
         ...omitProperty(event, '_id'),
         id: event._id.toString(),
       }}
-      canEdit
     />
   );
 }

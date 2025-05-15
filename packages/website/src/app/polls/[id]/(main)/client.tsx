@@ -16,11 +16,12 @@ import { useRouter } from 'next/navigation';
 import { Typography } from '@/components/Typography';
 import { InfoIcon } from '@/icons/InfoIcon';
 import { IconLinkButton } from '@/components/IconLinkButton';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
 
 type PollWithId = Poll & { id: string };
 
 export type ClientComponentProps = {
-  canViewInfo: boolean;
   poll: PollWithId;
 };
 
@@ -68,7 +69,7 @@ function getEmptyAnswer(type: QuestionType): QuestionAnswer {
   }
 }
 
-export function ClientComponent({ canViewInfo, poll }: ClientComponentProps) {
+export function ClientComponent({ poll }: ClientComponentProps) {
   const [isActionPending, setIsActionPending] = useState(false);
   const [answers, setAnswers] = useState<QuestionAnswer[]>(() => {
     return poll.questions.map(({ type }) => getEmptyAnswer(type));
@@ -76,6 +77,9 @@ export function ClientComponent({ canViewInfo, poll }: ClientComponentProps) {
 
   const notification = useNotification();
   const router = useRouter();
+
+  const { user } = useAuthInfo();
+  const canViewInfo = user !== null && user.role >= UserRole.ADMIN;
 
   const pollItems = useMemo(() => {
     return poll.questions.map((question) => ({

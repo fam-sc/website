@@ -10,6 +10,8 @@ import { Prefixed } from '@/components/Prefixed';
 import { Tabs } from '@/components/Tabs';
 import { Tab } from '@/components/Tab';
 import { ResultsTab } from './tabs/results';
+import { useCheckUserRole } from '@/hooks/useCheckUserRole';
+import { UserRole } from '@data/types/user';
 
 export type PollInfo = {
   id: string;
@@ -23,6 +25,8 @@ export type ClientComponentProps = {
 };
 
 export function ClientComponent({ poll }: ClientComponentProps) {
+  useCheckUserRole(UserRole.ADMIN);
+
   const [isPollClosed, setPollClosed] = useState(poll.endDate !== null);
   const notification = useNotification();
 

@@ -7,6 +7,8 @@ import { creatMediaServerParseContext } from '@/api/media/richText';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import { getImageSize } from '@/image/size';
+import { authRoute } from '@/api/authRoute';
+import { UserRole } from '@data/types/user';
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const url = new URL(request.url);
@@ -44,21 +46,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const imageBuffer = await image.bytes();
   const imageSize = getImageSize(imageBuffer);
 
-  await using repo = await Repository.openConnection();
+  return await authRoute(request, UserRole.ADMIN, async (repo) => {
+    return await repo.transaction(async (trepo) => {
+      const { insertedId } = await trepo.events().insert({
+        date,
+        status,
+        title,
+        description: richTextDescription,
+        image: imageSize,
+      });
 
-  await repo.transaction(async (trepo) => {
-    const { insertedId } = await trepo.events().insert({
-      date,
-      status,
-      title,
-      description: richTextDescription,
-      image: imageSize,
+      mediaTransaction.put(`events/${insertedId}`, imageBuffer);
+
+      await mediaTransaction.commit();
+
+      return new NextResponse();
     });
-
-    mediaTransaction.put(`events/${insertedId}`, imageBuffer);
   });
-
-  await mediaTransaction.commit();
-
-  return new NextResponse();
 }

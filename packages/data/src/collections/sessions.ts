@@ -81,4 +81,13 @@ export class SessionCollection extends EntityCollection<AuthSession> {
           academicGroup: user.academicGroup,
         };
   }
+
+  async sessionExists(sessionId: bigint): Promise<boolean> {
+    const result = await this.findOne(
+      { sessionId },
+      { projection: { _id: 1 } }
+    );
+
+    return result !== null;
+  }
 }

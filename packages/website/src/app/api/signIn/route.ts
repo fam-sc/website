@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { badRequest, unauthrorized } from '@/api/responses';
 import { verifyPassword } from '@/auth/password';
-import { newSessionId, setSessionId } from '@/auth/session';
+import { getSessionIdNumber, newSessionId, setSessionId } from '@/auth/session';
 import { SignInDataSchema } from '@/auth/types';
 import { Repository } from '@data/repo';
 
@@ -18,6 +18,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const { email, password } = signInResult.data;
 
   await using repo = await Repository.openConnection();
+
+  const currentSessionId = getSessionIdNumber(request);
+  const currentSessionValid =
+    currentSessionId !== undefined &&
+    (await repo.sessions().sessionExists(currentSessionId));
+
+  if (currentSessionValid) {
+    return badRequest({
+      message: 'Cannot create new session when you already have one',
+    });
+  }
 
   const user = await repo.users().getUserByEmail(email);
   if (user === null) {

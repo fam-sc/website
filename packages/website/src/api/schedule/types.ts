@@ -25,3 +25,5 @@ export type Schedule = {
   groupCampusId: string;
   weeks: [DaySchedule[], DaySchedule[]];
 };
+
+export type UpdateScheduleLinksPayload = Record<string, string | null>;

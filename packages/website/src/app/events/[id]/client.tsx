@@ -17,10 +17,11 @@ import { deleteEvent } from '@/api/events/client';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '@/components/Notification';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
 
 export type ClientComponentProps = {
   event: Event & { id: string };
-  canEdit: boolean;
 };
 
 type DeleteEventDialogProps = {
@@ -52,12 +53,13 @@ function DeleteEventDialog({ onClose, onDelete }: DeleteEventDialogProps) {
   );
 }
 
-export function ClientComponent({ event, canEdit }: ClientComponentProps) {
-  console.log(event);
-
+export function ClientComponent({ event }: ClientComponentProps) {
   const [isDeleteDialogShown, setDeleteDialogShown] = useState(false);
   const router = useRouter();
   const notification = useNotification();
+
+  const { user } = useAuthInfo();
+  const canEdit = user !== null && user.role >= UserRole.ADMIN;
 
   return (
     <div className={styles.root}>

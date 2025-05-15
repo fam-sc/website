@@ -3,11 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { badRequest, notFound, ok } from '@/api/responses';
 import { getScheduleForGroup } from '@/api/schedule/get';
 import { normalizeGuid } from '@/utils/guid';
-import {
-  ScheduleNotFoundError,
-  updateScheduleLinks,
-  UpdateScheduleLinksPayload,
-} from '@/api/schedule/update';
+import { authRoute } from '@/api/authRoute';
+import { UserRole } from '@data/types/user';
+import { UpdateScheduleLinksPayload } from '@/api/schedule/types';
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
@@ -24,7 +22,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 function isValidPayload(
   payload: unknown
-): payload is UpdateScheduleLinksPayload {
+): payload is Partial<UpdateScheduleLinksPayload> {
   if (typeof payload === 'object') {
     for (const value of Object.values(payload as object)) {
       if (typeof value !== 'string' && value !== null) {
@@ -57,15 +55,28 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
     return badRequest({ message: 'Invalid payload' });
   }
 
-  try {
-    await updateScheduleLinks(group, payload);
-  } catch (error: unknown) {
-    if (error instanceof ScheduleNotFoundError) {
-      return notFound();
-    }
+  return authRoute(request, UserRole.GROUP_HEAD, async (repo) => {
+    return await repo.transaction(async (trepo) => {
+      const schedule = await trepo.schedule().findByGroup(group);
 
-    throw error;
-  }
+      if (schedule === null) {
+        return notFound();
+      }
 
-  return new NextResponse();
+      for (const week of [schedule.firstWeek, schedule.secondWeek]) {
+        for (const { lessons } of week) {
+          for (const lesson of lessons) {
+            const id = `${lesson.type}-${lesson.name}-${lesson.teacher}`;
+            const newLink = payload[id];
+
+            if (newLink !== undefined) {
+              lesson.link = newLink;
+            }
+          }
+        }
+      }
+
+      return new NextResponse();
+    });
+  });
 }

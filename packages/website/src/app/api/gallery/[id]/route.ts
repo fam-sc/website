@@ -5,6 +5,8 @@ import { Repository } from '@data/repo';
 import { formatDateTime } from '@/utils/date';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
+import { authRoute } from '@/api/authRoute';
+import { UserRole } from '@data/types/user';
 
 type Params = {
   params: Promise<{ id: string }>;
@@ -41,20 +43,21 @@ export async function GET(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: Params
 ): Promise<NextResponse> {
   const { id } = await params;
 
-  await using repo = await Repository.openConnection();
-  const result = await repo.galleryImages().delete(id);
+  return authRoute(request, UserRole.ADMIN, async (repo) => {
+    const result = await repo.galleryImages().delete(id);
 
-  if (result.deletedCount > 0) {
-    // Unability to delete image from R2 should not an obstacle for deleting an image.
-    deleteMediaFile(`gallery/${id}`).catch((error: unknown) => {
-      console.error(error);
-    });
-  }
+    if (result.deletedCount > 0) {
+      // Unability to delete image from R2 should not an obstacle for deleting an image.
+      deleteMediaFile(`gallery/${id}`).catch((error: unknown) => {
+        console.error(error);
+      });
+    }
 
-  return new NextResponse();
+    return new NextResponse();
+  });
 }
