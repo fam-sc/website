@@ -2,31 +2,28 @@
 
 import { fetchPollResultsTable } from '@/api/polls/client';
 import { useDataLoader } from '@/hooks/useDataLoader';
-import styles from './index.module.scss';
-import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { Table } from '@/components/Table';
+import { DataLoadingContainer } from '@/components/DataLoadingContainer';
+
+import styles from './index.module.scss';
 
 export type ResultsTabProps = {
   pollId: string;
 };
 
 export function ResultsTab({ pollId }: ResultsTabProps) {
-  const [table, isPending] = useDataLoader(
+  const [table, onRetry] = useDataLoader(
     () => fetchPollResultsTable(pollId),
     [pollId]
   );
 
   return (
-    <div className={styles.root}>
-      {isPending ? (
-        <IndeterminateCircularProgress className={styles.progress} />
-      ) : (
+    <DataLoadingContainer value={table} onRetry={onRetry}>
+      {(table) => (
         <div className={styles.content}>
-          {table && (
-            <Table numbered columns={table.questions} data={table.data} />
-          )}
+          <Table numbered columns={table.questions} data={table.data} />
         </div>
       )}
-    </div>
+    </DataLoadingContainer>
   );
 }
