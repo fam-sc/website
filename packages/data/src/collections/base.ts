@@ -139,7 +139,7 @@ export class EntityCollection<T extends Document> {
   ): Promise<UpdateResult> {
     let objectId: ObjectId;
     try {
-      objectId = new ObjectId(id);
+      objectId = resolveObjectId(id);
     } catch {
       return Promise.resolve({
         acknowledged: true,
@@ -150,7 +150,10 @@ export class EntityCollection<T extends Document> {
       });
     }
 
-    return this.updateOne({ _id: objectId } as Filter<T>, update, options);
+    return this.updateOne({ _id: objectId } as Filter<T>, update, {
+      ...options,
+      session: this.session,
+    });
   }
 
   protected find(filter: Filter<T>, options?: FindOptions & Abortable) {

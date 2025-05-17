@@ -1,15 +1,17 @@
-import {
-  ClientSession,
-  Document,
-  MongoClient,
-  ObjectId,
-  WithId,
-} from 'mongodb';
+import { Binary, ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
 
 import { AuthSession } from '../types';
-import { UserPersonalInfo, UserRole, UserWithRole } from '../types/user';
+import {
+  User,
+  UserPersonalInfo,
+  UserRole,
+  UserWithPassword,
+  UserWithRole,
+} from '../types/user';
 
 import { EntityCollection } from './base';
+
+type UserProjection = Partial<Record<`user.${keyof User | '_id'}`, -1 | 0 | 1>>;
 
 export class SessionCollection extends EntityCollection<AuthSession> {
   constructor(client: MongoClient, session?: ClientSession) {
@@ -35,10 +37,10 @@ export class SessionCollection extends EntityCollection<AuthSession> {
 
   private async getUserBase<T>(
     sessionId: bigint,
-    projection: Document
-  ): Promise<WithId<T> | undefined> {
+    projection: UserProjection
+  ): Promise<T | null> {
     const result = await this.aggregate<{
-      user: [WithId<T>];
+      user: [T];
     }>([
       // Find session by id
       { $match: { sessionId } },
@@ -56,38 +58,36 @@ export class SessionCollection extends EntityCollection<AuthSession> {
       },
     ]).next();
 
-    return result?.user[0];
+    return result?.user[0] ?? null;
   }
 
   async getUserWithRole(sessionId: bigint): Promise<UserWithRole | null> {
-    const user = await this.getUserBase<{ role: UserRole }>(sessionId, {
+    const user = await this.getUserBase<WithId<{ role: UserRole }>>(sessionId, {
       'user._id': 1,
       'user.role': 1,
     });
 
-    return user === undefined
-      ? null
-      : { id: user._id.toString(), role: user.role };
+    return user && { id: user._id.toString(), role: user.role };
   }
 
   async getUserWithRoleAndGroup(
     sessionId: bigint
   ): Promise<(UserWithRole & { academicGroup: string }) | null> {
     const user = await this.getUserBase<
-      UserWithRole & { academicGroup: string }
+      WithId<UserWithRole & { academicGroup: string }>
     >(sessionId, {
       'user._id': 1,
       'user.role': 1,
       'user.academicGroup': 1,
     });
 
-    return user === undefined
-      ? null
-      : {
-          id: user._id.toString(),
-          role: user.role,
-          academicGroup: user.academicGroup,
-        };
+    return (
+      user && {
+        id: user._id.toString(),
+        role: user.role,
+        academicGroup: user.academicGroup,
+      }
+    );
   }
 
   async sessionExists(sessionId: bigint): Promise<boolean> {
@@ -115,5 +115,19 @@ export class SessionCollection extends EntityCollection<AuthSession> {
           parentName: user.parentName,
         }
       : null;
+  }
+
+  async getUserWithPassword(
+    sessionId: bigint
+  ): Promise<UserWithPassword | null> {
+    const user = await this.getUserBase<WithId<{ passwordHash: Binary }>>(
+      sessionId,
+      {
+        'user._id': 1,
+        'user.passwordHash': 1,
+      }
+    );
+
+    return user && { id: user._id, passwordHash: user.passwordHash };
   }
 }

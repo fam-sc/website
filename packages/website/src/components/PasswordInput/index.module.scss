@@ -1,3 +1,9 @@
+.root input {
+  &::-ms-reveal, &::-ms-clear {
+    display: none;
+  }
+}
+
 .show-password-button {
   padding: 6px;
 }

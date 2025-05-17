@@ -19,3 +19,10 @@ export const userPersonalInfo = z.object({
   lastName: z.string().min(1),
   parentName: z.string().min(1).or(z.null()),
 });
+
+export const changePasswordPayload = z.object({
+  oldPassword: z.string(),
+  newPassword: z.string(),
+});
+
+export type ChangePasswordPayload = z.infer<typeof changePasswordPayload>;

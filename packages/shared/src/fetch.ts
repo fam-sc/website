@@ -17,7 +17,7 @@ export async function ensureOkResponse(response: Response) {
   }
 }
 
-function encodeInitBodyToJson(
+export function encodeInitBodyToJson(
   init: ExtendedRequestInit | undefined
 ): RequestInit | undefined {
   if (init) {

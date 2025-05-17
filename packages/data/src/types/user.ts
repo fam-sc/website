@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-import { Binary } from 'mongodb';
+import { Binary, ObjectId } from 'mongodb';
 
 export enum UserRole {
   STUDENT_NON_APPROVED = -1,
@@ -37,6 +37,11 @@ export interface UserPersonalInfo {
   firstName: string;
   lastName: string;
   parentName: string | null;
+}
+
+export interface UserWithPassword {
+  id: ObjectId;
+  passwordHash: Binary;
 }
 
 export function isUserRole(role: unknown): role is UserRole {

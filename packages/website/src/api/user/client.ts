@@ -1,16 +1,16 @@
 import { UserPersonalInfo, UserRole } from '@data/types/user';
-import { checkedFetch, fetchObject } from '@shared/fetch';
-import { UserInfo, UserInfoWithRole } from './types';
+import { ChangePasswordPayload, UserInfo, UserInfoWithRole } from './types';
+import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function uploadUserAvatar(body: BodyInit) {
-  return checkedFetch(`/api/users/avatar`, {
+  return apiCheckedFetch(`/api/users/avatar`, {
     method: 'POST',
     body,
   });
 }
 
 export function changeUserRole(userId: string, role: UserRole) {
-  return checkedFetch(`/api/users/${userId}/role?value=${role}`, {
+  return apiCheckedFetch(`/api/users/${userId}/role?value=${role}`, {
     method: 'POST',
   });
 }
@@ -19,29 +19,37 @@ export function approveUser(userId: string) {
 }
 
 export function disapproveUser(userId: string) {
-  return checkedFetch(`/api/users/${userId}/disapprove`, {
+  return apiCheckedFetch(`/api/users/${userId}/disapprove`, {
     method: 'POST',
   });
 }
 
 export function getUsersForApprove(): Promise<UserInfo[]> {
-  return fetchObject(`/api/users/approveList`);
+  return apiFetchObject(`/api/users/approveList`);
 }
 
 export function getAllUsers(page: number): Promise<UserInfoWithRole[]> {
-  return fetchObject(`/api/users?page=${page}`);
+  return apiFetchObject(`/api/users?page=${page}`);
 }
 
 export function updateUserPersonalInfo(info: UserPersonalInfo) {
-  return checkedFetch(`/api/users/personal`, {
+  return apiCheckedFetch(`/api/users/personal`, {
     method: 'PUT',
     body: info,
     json: true,
   });
 }
 
+export function changePassword(payload: ChangePasswordPayload) {
+  return apiCheckedFetch(`/api/users/password`, {
+    method: 'PUT',
+    body: payload,
+    json: true,
+  });
+}
+
 export function logOut() {
-  return checkedFetch(`/api/users/logOut`, {
+  return apiCheckedFetch(`/api/users/logOut`, {
     method: 'POST',
   });
 }

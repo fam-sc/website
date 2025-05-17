@@ -1,4 +1,4 @@
-import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
+import { Binary, ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
 
 import { ShortUser, User, UserPersonalInfo, UserRole } from '../types/user';
 
@@ -48,6 +48,10 @@ export class UserCollection extends EntityCollection<User> {
 
   updateRole(id: string, role: UserRole) {
     return this.updateById(id, { $set: { role } });
+  }
+
+  updatePassword(id: string | ObjectId, passwordHash: Binary) {
+    return this.updateById(id, { $set: { passwordHash } });
   }
 
   async getUserAcademicGroup(id: string): Promise<string | null> {

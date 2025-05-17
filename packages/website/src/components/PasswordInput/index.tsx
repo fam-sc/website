@@ -6,18 +6,24 @@ import { TextInput, TextInputProps } from '../TextInput';
 import styles from './index.module.scss';
 
 import { SeePasswordIcon } from '@/icons/SeePasswordIcon';
+import { classNames } from '@/utils/classNames';
 
 interface PasswordInputProps
   extends Omit<TextInputProps, 'endContent' | 'type'> {
-  autocomplete?: 'current-password' | 'new-password';
+  autoComplete?: 'current-password' | 'new-password';
 }
 
-export function PasswordInput(props: PasswordInputProps) {
+export function PasswordInput({
+  className,
+  onTextChanged,
+  ...rest
+}: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <TextInput
-      {...props}
+      {...rest}
+      className={classNames(className, styles.root)}
       type={showPassword ? 'text' : 'password'}
       endContent={
         <IconButton
@@ -32,7 +38,7 @@ export function PasswordInput(props: PasswordInputProps) {
       }
       onTextChanged={(text) => {
         setShowPassword(false);
-        props.onTextChanged?.(text);
+        onTextChanged?.(text);
       }}
     />
   );
