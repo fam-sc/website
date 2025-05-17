@@ -7,6 +7,7 @@ import {
   BulkWriteOptions,
   ClientSession,
   Collection,
+  DeleteOptions,
   DeleteResult,
   Document,
   Filter,
@@ -89,10 +90,14 @@ export class EntityCollection<T extends Document> {
       return Promise.resolve({ acknowledged: true, deletedCount: 0 });
     }
 
-    return this.collection().deleteOne(
-      { _id: objectId } as Filter<T>,
-      this.options()
-    );
+    return this.deleteOne({ _id: objectId } as Filter<T>);
+  }
+
+  deleteOne(filter: Filter<T>, options?: DeleteOptions) {
+    return this.collection().deleteOne(filter, {
+      session: this.session,
+      ...options,
+    });
   }
 
   protected options() {

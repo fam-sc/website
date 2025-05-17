@@ -20,6 +20,10 @@ export class SessionCollection extends EntityCollection<AuthSession> {
     return this.findOne({ sessionId });
   }
 
+  async deleteBySessionId(sessionId: bigint) {
+    return this.deleteOne({ sessionId });
+  }
+
   async getUserIdBySessionId(sessionId: bigint): Promise<string | null> {
     const result = await this.findOne<{ userId: ObjectId }>(
       { sessionId },

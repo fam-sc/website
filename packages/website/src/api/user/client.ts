@@ -39,3 +39,9 @@ export function updateUserPersonalInfo(info: UserPersonalInfo) {
     json: true,
   });
 }
+
+export function logOut() {
+  return checkedFetch(`/api/users/logOut`, {
+    method: 'POST',
+  });
+}
