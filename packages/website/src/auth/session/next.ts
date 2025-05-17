@@ -10,18 +10,19 @@ type UserInfo = {
   role: UserRole;
 };
 
-export async function getCurrentUserInfo(): Promise<UserInfo | null> {
+export async function getCurrentSessionId(): Promise<bigint | undefined> {
   const cookiesSet = await cookies();
-  const sessionId = parseSessionIdString(
-    cookiesSet.get(SESSION_ID_COOKIE)?.value
-  );
+
+  return parseSessionIdString(cookiesSet.get(SESSION_ID_COOKIE)?.value);
+}
+
+export async function getCurrentUserInfo(): Promise<UserInfo | null> {
+  const sessionId = await getCurrentSessionId();
   if (sessionId === undefined) {
     return null;
   }
 
   await using repo = await Repository.openConnection();
 
-  const result = await repo.sessions().getUserWithRole(sessionId);
-
-  return result ? { id: result.id.toString(), role: result.role } : null;
+  return await repo.sessions().getUserWithRole(sessionId);
 }

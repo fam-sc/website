@@ -18,6 +18,7 @@ export async function updateScheduleLinks(
 ) {
   await checkedFetch(`/api/schedule?group=${groupId}&type=link`, {
     method: 'PATCH',
-    body: JSON.stringify(payload),
+    body: payload,
+    json: true,
   });
 }

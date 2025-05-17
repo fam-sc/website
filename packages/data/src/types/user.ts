@@ -33,6 +33,12 @@ export interface ShortUser extends UserWithRole {
   email: string;
 }
 
+export interface UserPersonalInfo {
+  firstName: string;
+  lastName: string;
+  parentName: string | null;
+}
+
 export function isUserRole(role: unknown): role is UserRole {
   return (
     typeof role === 'number' &&

@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserPersonalInfo, UserRole } from '@data/types/user';
 import { checkedFetch, fetchObject } from '@shared/fetch';
 import { UserInfo, UserInfoWithRole } from './types';
 
@@ -30,4 +30,12 @@ export function getUsersForApprove(): Promise<UserInfo[]> {
 
 export function getAllUsers(page: number): Promise<UserInfoWithRole[]> {
   return fetchObject(`/api/users?page=${page}`);
+}
+
+export function updateUserPersonalInfo(info: UserPersonalInfo) {
+  return checkedFetch(`/api/users/personal`, {
+    method: 'PUT',
+    body: info,
+    json: true,
+  });
 }

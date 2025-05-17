@@ -1,4 +1,5 @@
 import { UserRole } from '@data/types/user';
+import { z } from 'zod';
 
 export interface UserInfo {
   id: string;
@@ -12,3 +13,9 @@ export interface UserInfo {
 export interface UserInfoWithRole extends UserInfo {
   role: UserRole;
 }
+
+export const userPersonalInfo = z.object({
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
+  parentName: z.string().min(1).or(z.null()),
+});

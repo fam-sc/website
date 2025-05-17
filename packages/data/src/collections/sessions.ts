@@ -7,13 +7,17 @@ import {
 } from 'mongodb';
 
 import { AuthSession } from '../types';
-import { UserRole, UserWithRole } from '../types/user';
+import { UserPersonalInfo, UserRole, UserWithRole } from '../types/user';
 
 import { EntityCollection } from './base';
 
 export class SessionCollection extends EntityCollection<AuthSession> {
   constructor(client: MongoClient, session?: ClientSession) {
     super(client, session, 'sessions');
+  }
+
+  async findBySessionId(sessionId: bigint) {
+    return this.findOne({ sessionId });
   }
 
   async getUserIdBySessionId(sessionId: bigint): Promise<string | null> {
@@ -89,5 +93,23 @@ export class SessionCollection extends EntityCollection<AuthSession> {
     );
 
     return result !== null;
+  }
+
+  async getUserPersonalInfo(
+    sessionId: bigint
+  ): Promise<UserPersonalInfo | null> {
+    const user = await this.getUserBase<UserPersonalInfo>(sessionId, {
+      'user.firstName': 1,
+      'user.lastName': 1,
+      'user.parentName': 1,
+    });
+
+    return user
+      ? {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          parentName: user.parentName,
+        }
+      : null;
   }
 }

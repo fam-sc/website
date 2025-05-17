@@ -30,7 +30,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     });
   }
 
-  const user = await repo.users().getUserByEmail(email);
+  const user = await repo.users().findUserByEmail(email);
   if (user === null) {
     return unauthrorized();
   }

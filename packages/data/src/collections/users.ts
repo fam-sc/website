@@ -1,6 +1,6 @@
 import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
 
-import { ShortUser, User, UserRole } from '../types/user';
+import { ShortUser, User, UserPersonalInfo, UserRole } from '../types/user';
 
 import { EntityCollection } from './base';
 
@@ -11,7 +11,7 @@ export class UserCollection extends EntityCollection<User> {
     super(client, session, 'users');
   }
 
-  getUserByEmail(email: string): Promise<WithId<User> | null> {
+  findUserByEmail(email: string): Promise<WithId<User> | null> {
     return this.findOne({ email });
   }
 
@@ -97,5 +97,20 @@ export class UserCollection extends EntityCollection<User> {
       id: _id.toString(),
       ...rest,
     }));
+  }
+
+  async getPersonalInfo(
+    id: string | ObjectId
+  ): Promise<UserPersonalInfo | null> {
+    return this.findById(id, {
+      projection: { firstName: 1, lastName: 1, parentName: 1 },
+    });
+  }
+
+  async updatePersonalInfo(
+    id: string | ObjectId,
+    { firstName, lastName, parentName }: UserPersonalInfo
+  ) {
+    return this.updateById(id, { $set: { firstName, lastName, parentName } });
   }
 }
