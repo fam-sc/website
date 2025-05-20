@@ -5,6 +5,7 @@ import { Teacher } from '../pma/types';
 import { CachedExternalApi } from '@data/cache';
 import { Repository } from '@data/repo';
 import { convertToKeyMap } from '@/utils/keyMap';
+import { getIntellectProfileUrl } from '../intellect/url';
 
 export type TeacherMap = Map<string, Teacher>;
 
@@ -45,7 +46,10 @@ class TeachersExternalApi extends CachedExternalApi<TeacherMap> {
           return { name, link: null };
         }
 
-        return { name, link: intellectTeacher.profile };
+        return {
+          name,
+          link: getIntellectProfileUrl(intellectTeacher.userIdentifier),
+        };
       })
     );
 

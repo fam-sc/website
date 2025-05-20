@@ -7,5 +7,5 @@ import { findTeacherByName } from '.';
 test('Find head of the faculty', async () => {
   const teacher = await findTeacherByName('Тавров Данило Юрійович');
 
-  expect(teacher?.profile).toEqual('https://intellect.kpi.ua/profile/tdy3');
+  expect(teacher?.userIdentifier).toEqual('tdy3');
 });
