@@ -63,8 +63,8 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
         return notFound();
       }
 
-      for (const week of [schedule.firstWeek, schedule.secondWeek]) {
-        for (const { lessons } of week) {
+      for (const week of schedule.weeks) {
+        for (const { lessons } of week.days) {
           for (const lesson of lessons) {
             const id = `${lesson.type}-${lesson.name}-${lesson.teacher}`;
             const newLink = payload[id];

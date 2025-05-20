@@ -1,6 +1,6 @@
 import { ClientSession, MongoClient } from 'mongodb';
 
-import { Schedule } from '../types/schedule';
+import { Schedule, ScheduleWithTeachers } from '../types/schedule';
 
 import { EntityCollection } from './base';
 
@@ -13,19 +13,35 @@ export class ScheduleCollection extends EntityCollection<Schedule> {
     return this.findOne({ groupCampusId });
   }
 
-  upsert({ groupCampusId, firstWeek, secondWeek }: Schedule) {
+  findByGroupWithTeachers(
+    groupCampusId: string
+  ): Promise<ScheduleWithTeachers | null> {
+    return this.aggregate<ScheduleWithTeachers>([
+      { $match: { groupCampusId } },
+      {
+        $lookup: {
+          from: 'schedule_teachers',
+          foreignField: 'name',
+          localField: 'weeks.days.lessons.teacher',
+          as: 'teachers',
+        },
+      },
+      {
+        $project: { 'teachers._id': 0 },
+      },
+    ]).next();
+  }
+
+  upsert({ groupCampusId, weeks }: Schedule) {
     return this.updateOne(
       { groupCampusId },
-      { $set: { groupCampusId, firstWeek, secondWeek } },
+      { $set: { groupCampusId, weeks } },
       { upsert: true }
     );
   }
 
-  update({ groupCampusId, firstWeek, secondWeek }: Schedule) {
-    return this.updateOne(
-      { groupCampusId },
-      { $set: { firstWeek, secondWeek } }
-    );
+  update({ groupCampusId, weeks }: Schedule) {
+    return this.updateOne({ groupCampusId }, { $set: { weeks } });
   }
 
   updateLinks(

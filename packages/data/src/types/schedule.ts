@@ -16,13 +16,20 @@ export type DaySchedule = {
   lessons: Lesson[];
 };
 
+export type ScheduleWeek = {
+  days: DaySchedule[];
+};
+
 export type Schedule = {
   groupCampusId: string;
-  firstWeek: DaySchedule[];
-  secondWeek: DaySchedule[];
+  weeks: [ScheduleWeek, ScheduleWeek];
 };
 
 export type ScheduleTeacher = {
   name: string;
   link: string | null;
 };
+
+export interface ScheduleWithTeachers extends Schedule {
+  teachers: ScheduleTeacher[];
+}

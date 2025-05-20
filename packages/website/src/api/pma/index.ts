@@ -17,11 +17,11 @@ async function fetchPage(url: string): Promise<string> {
   throw new Error(response.statusText);
 }
 
-function mapNameWithLink<T extends NameWithLink>(items: T[]): T[] {
-  return items.map(({ link, ...rest }) => ({
+function mapNameWithLink(items: NameWithLink[]): NameWithLink[] {
+  return items.map(({ name, link }) => ({
+    name,
     link: `${SITE_URL}${link}`,
-    ...rest,
-  })) as T[];
+  }));
 }
 
 export async function getTeachers(): Promise<Teacher[]> {
