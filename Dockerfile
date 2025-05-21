@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock .yarnrc.yml ./
-RUN corepack enable && yarn install --immutable
+RUN corepack enable && yarn install
 
 
 # Rebuild the source code only when needed
