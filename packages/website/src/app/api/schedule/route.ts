@@ -76,6 +76,8 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
         }
       }
 
+      await trepo.schedule().update(schedule);
+
       return new NextResponse();
     });
   });

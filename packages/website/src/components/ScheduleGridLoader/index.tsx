@@ -6,6 +6,8 @@ import { useDataLoader } from '@/hooks/useDataLoader';
 import { broadcastUpdatedLesson } from '@/utils/schedule/broadcast';
 import { DataLoadingContainer } from '../DataLoadingContainer';
 
+import styles from './index.module.scss';
+
 export type ScheduleGridLoaderProps = {
   className?: string;
   week: 1 | 2;
@@ -38,6 +40,7 @@ export function ScheduleGridLoader({
       {(schedule) =>
         schedule && (
           <ScheduleGrid
+            className={styles.schedule}
             week={schedule.weeks[week - 1]}
             currentLesson={currentLesson}
             isEditable={isEditable}
