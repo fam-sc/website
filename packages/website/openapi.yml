@@ -4,19 +4,113 @@ info:
   version: '1.0'
 
 paths:
-  "/usefulLinkImage/{id}":
+  "events":
     get:
-      summary: Get image of the useful link
-      tags: ["Useful link"]
+      summary: Gets short information about all events
+      tags: ["Events"]
+      responses:
+        "200":
+          description: OK
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: ID of an event
+                    title:
+                      type: string
+                      description: Title of an event
+    post:
+      summary: Adds new event
+      description: The request must be authorized.
+      tags: ["Events"]
+      requestBody:
+        required: true
+        content:
+          "multipart/form-data":
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  required: true
+                  description: Title of the event
+                description:
+                  type: string
+                  description: Description of the event
+                date:
+                  type: string
+                  description: Date of the event formatted in RFC 7231
+                status:
+                  type: string
+                  enum: ["pending", "ended"]
+                  description: Status of the event
+                  
+                image:
+                  type: string
+                  format: binary
+                  description: Image of the event.
+    
+
+  "events/{id}":
+    put:
+      summary: Updates the event
+      description: The request must be authorized.
+      tags: ["Events"]
       parameters:
         - in: path
           name: id
           schema:
             type: string
+          description: ID of the event to change
           required: true
-          description: ID of the useful link to get image of
-      responses:
-        "200":
-          description: OK
-        "404":
-          description: The link was not found
+      requestBody:
+        required: true
+        content:
+          "multipart/form-data":
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  required: true
+                  description: New title of the event
+                description:
+                  type: string
+                  description: New description of the event
+                date:
+                  type: string
+                  description: New date of the event formatted in RFC 7231
+                status:
+                  type: string
+                  enum: ["pending", "ended"]
+                  description: New status of the event
+                  
+                image:
+                  type: string
+                  format: binary
+                  required: false
+                  description: New image of the event. Can be unspecified if the image is not changed.
+    delete:
+      summary: Deletes the event              
+      description: The request must be authorized.
+      tags: ["Events"]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: ID of the event to delete
+          required: true
+
+components:
+  headers:
+    content-disposition:
+      description: a description of this header
+      required: true
+      schema:
+        type: string
