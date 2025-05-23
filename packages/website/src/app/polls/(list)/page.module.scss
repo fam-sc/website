@@ -1,0 +1,16 @@
+.root {
+  display: flex;
+  flex-direction: column;
+
+  padding: 1em 5em;
+  flex-grow: 1;
+}
+
+.list {
+  flex-grow: 1;
+}
+
+.pagination {
+  margin-top: 1.5em;
+  align-self: center;
+}

@@ -1,0 +1,25 @@
+@use '../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--color-background-dark);
+  padding: 1em 1.5em;
+  border-radius: 1em;
+  box-shadow: 1px 1px 1px #000;
+}
+
+.linkButton {
+  display: block;
+
+  align-self: center;
+  text-align: center;
+
+  margin-top: 1em;
+  width: 80%;
+
+  @include breakpoint-exact('md') {
+    width: 70%;
+  }
+}

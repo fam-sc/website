@@ -15,17 +15,12 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { MenuIcon } from '@/icons/MenuIcon';
 import { useAuthInfo } from '@/auth/context';
 import { getMediaFileUrl } from '@shared/media';
-
-const items: { title: string; href: string }[] = [
-  { title: 'Студентство', href: '/students' },
-  { title: 'Розклад', href: '/schedule' },
-  { title: 'Опитування', href: '#' },
-];
+import { navigationMainRoutes } from '@/constants/navigation';
 
 function Navigation() {
   return (
     <ul className={styles.nav}>
-      {items.map(({ title, href }) => (
+      {navigationMainRoutes.map(({ title, href }) => (
         <li key={`${href}-${title}`}>
           <Link linkVariant="clean" href={href}>
             {title}
