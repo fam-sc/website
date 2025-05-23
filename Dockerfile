@@ -20,10 +20,9 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/packages/website/public ./public
-
 COPY --from=builder --chown=nextjs:nodejs /app/packages/website/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/packages/website/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/packages/website/.next/static ./packages/website/.next/static
+COPY --from=builder /app/packages/website/public ./packages/website/public
 
 USER nextjs
 
@@ -31,4 +30,4 @@ EXPOSE 3000
 ENV PORT=3000
 
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD ["node", "./packages/website/server.js"]
