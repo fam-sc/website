@@ -1,8 +1,9 @@
-import { ClientSession, MongoClient, ObjectId } from 'mongodb';
+import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
 
 import { Poll, PollRespondent, ShortPoll } from '../types/poll';
 
 import { EntityCollection } from './base';
+import { pagination } from '../misc/pagination';
 
 export class PollCollection extends EntityCollection<Poll> {
   constructor(client: MongoClient, session?: ClientSession) {
@@ -27,5 +28,25 @@ export class PollCollection extends EntityCollection<Poll> {
 
   closePoll(id: string | ObjectId) {
     return this.updateById(id, { $set: { endDate: new Date() } });
+  }
+
+  async getPage(index: number, size: number) {
+    const result = await this.aggregate([
+      {
+        $sort: {
+          date: -1,
+        },
+      },
+      pagination(index, size),
+    ]).next();
+
+    if (result === null) {
+      return { total: 0, items: [] };
+    }
+
+    return {
+      total: result.metadata[0].totalCount as number,
+      items: result.data as WithId<Poll>[],
+    };
   }
 }
