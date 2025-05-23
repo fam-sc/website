@@ -1,14 +1,9 @@
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+.yarn
+**/.next
+**/node_modules
+**/tsconfig.tsbuildinfo
+**/dist
+**/.wrangler
+**/.eslintcache
 
-node_modules
-.next
-tsconfig.tsbuildinfo
-.env.local
-dist
-.wrangler
-.eslintcache
+.git
