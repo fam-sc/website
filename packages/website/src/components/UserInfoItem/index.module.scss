@@ -13,20 +13,6 @@
 .avatar {
   width: 2.5em;
   height: 2.5em;
-  object-fit: cover;
-
-  border-radius: 100%;
-
-  img,
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  svg {
-    fill: var(--color-text-on-background);
-    stroke: var(--color-text-on-background);
-  }
 }
 
 .info {

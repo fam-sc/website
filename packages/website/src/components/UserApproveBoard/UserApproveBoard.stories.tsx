@@ -8,13 +8,13 @@ export default {
 
 type Story = StoryObj<typeof UserApproveBoard>;
 
-function item(index: number): UserApproveItemType {
+function item(index: number, hasAvatar: boolean = true): UserApproveItemType {
   return {
     id: index.toString(),
     name: `Name ${index}`,
     group: 'КМ-23',
     email: `someemail${index}@gmail.com`,
-    avatarSrc: 'https://i.imgur.com/gbt7JG7.jpg',
+    avatarSrc: hasAvatar ? 'https://i.imgur.com/gbt7JG7.jpg' : undefined,
   };
 }
 
@@ -26,6 +26,6 @@ export const Primary: Story = {
 
 export const ManyItems: Story = {
   args: {
-    items: [item(1), item(2), item(3)],
+    items: [item(1), item(2), item(3), item(4, false)],
   },
 };

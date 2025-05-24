@@ -6,7 +6,7 @@ import {
   UserPersonalInfo,
   UserRole,
   UserWithPassword,
-  UserWithRole,
+  UserWithRoleAndAvatar,
 } from '../types/user';
 
 import { EntityCollection } from './base';
@@ -61,23 +61,35 @@ export class SessionCollection extends EntityCollection<AuthSession> {
     return result?.user[0] ?? null;
   }
 
-  async getUserWithRole(sessionId: bigint): Promise<UserWithRole | null> {
-    const user = await this.getUserBase<WithId<{ role: UserRole }>>(sessionId, {
+  async getUserWithRole(
+    sessionId: bigint
+  ): Promise<UserWithRoleAndAvatar | null> {
+    const user = await this.getUserBase<
+      WithId<{ role: UserRole; hasAvatar?: boolean }>
+    >(sessionId, {
       'user._id': 1,
       'user.role': 1,
+      'user.hasAvatar': 1,
     });
 
-    return user && { id: user._id.toString(), role: user.role };
+    return (
+      user && {
+        id: user._id.toString(),
+        role: user.role,
+        hasAvatar: user.hasAvatar ?? false,
+      }
+    );
   }
 
   async getUserWithRoleAndGroup(
     sessionId: bigint
-  ): Promise<(UserWithRole & { academicGroup: string }) | null> {
+  ): Promise<(UserWithRoleAndAvatar & { academicGroup: string }) | null> {
     const user = await this.getUserBase<
-      WithId<UserWithRole & { academicGroup: string }>
+      WithId<UserWithRoleAndAvatar & { academicGroup: string }>
     >(sessionId, {
       'user._id': 1,
       'user.role': 1,
+      'user.hasAvatar': 1,
       'user.academicGroup': 1,
     });
 
@@ -85,6 +97,7 @@ export class SessionCollection extends EntityCollection<AuthSession> {
       user && {
         id: user._id.toString(),
         role: user.role,
+        hasAvatar: user.hasAvatar,
         academicGroup: user.academicGroup,
       }
     );

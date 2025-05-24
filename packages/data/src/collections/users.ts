@@ -41,6 +41,7 @@ export class UserCollection extends EntityCollection<User> {
         parentName: 1,
         email: 1,
         role: 1,
+        hasAvatar: 1,
       })
       .map(({ _id, ...rest }) => ({ ...rest, id: _id.toString() }))
       .toArray();
@@ -52,6 +53,10 @@ export class UserCollection extends EntityCollection<User> {
 
   updatePassword(id: string | ObjectId, passwordHash: Binary) {
     return this.updateById(id, { $set: { passwordHash } });
+  }
+
+  updateHasAvatar(id: string, hasAvatar: boolean) {
+    return this.updateById(id, { $set: { hasAvatar } });
   }
 
   async getUserAcademicGroup(id: string): Promise<string | null> {

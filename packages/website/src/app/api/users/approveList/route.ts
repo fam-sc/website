@@ -1,5 +1,4 @@
 import { ok, unauthrorized } from '@/api/responses';
-import { checkUsersHaveAvatar } from '@/api/user/avatar';
 import { UserInfo } from '@/api/user/types';
 import { getSessionIdNumber } from '@/auth/session';
 import { formPersonName } from '@/utils/person';
@@ -28,17 +27,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       role === UserRole.ADMIN ? undefined : academicGroup
     );
 
-  const usersHaveAvatar = await checkUsersHaveAvatar(users);
-
-  const result: UserInfo[] = users.map(
-    ({ id, firstName, lastName, parentName, email, academicGroup }, i) => ({
-      id,
-      name: formPersonName(firstName, lastName, parentName),
-      email,
-      group: academicGroup,
-      hasAvatar: usersHaveAvatar[i],
-    })
-  );
+  const result: UserInfo[] = users.map((item) => ({
+    id: item.id,
+    name: formPersonName(item.firstName, item.lastName, item.parentName),
+    email: item.email,
+    group: item.academicGroup,
+    hasAvatar: item.hasAvatar ?? false,
+  }));
 
   return ok(result);
 }

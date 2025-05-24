@@ -11,14 +11,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   await using repo = await Repository.openConnection();
-  const userId = await repo.sessions().getUserIdBySessionId(sessionId);
-  if (userId === null) {
-    return unauthrorized();
-  }
 
-  const image = await request.arrayBuffer();
+  return await repo.transaction(async (trepo) => {
+    const userId = await repo.sessions().getUserIdBySessionId(sessionId);
+    if (userId === null) {
+      return unauthrorized();
+    }
 
-  await putMediaFile(`user/${userId}`, image);
+    await trepo.users().updateHasAvatar(userId, true);
 
-  return new NextResponse();
+    const image = await request.arrayBuffer();
+    await putMediaFile(`user/${userId}`, image);
+
+    return new NextResponse();
+  });
 }

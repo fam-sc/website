@@ -1,10 +1,10 @@
 'use client';
 
-import { UserWithRole } from '@data/types/user';
+import { UserWithRoleAndAvatar } from '@data/types/user';
 import { createContext, ReactNode, useContext } from 'react';
 
 export type AuthContextInfo = {
-  user: UserWithRole | null;
+  user: UserWithRoleAndAvatar | null;
 };
 
 const AuthContext = createContext<AuthContextInfo | null>(null);

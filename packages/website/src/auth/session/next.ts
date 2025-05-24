@@ -8,6 +8,7 @@ import { UserRole } from '@data/types/user';
 type UserInfo = {
   id: string;
   role: UserRole;
+  hasAvatar: boolean;
 };
 
 export async function getCurrentSessionId(): Promise<bigint | undefined> {
@@ -23,6 +24,9 @@ export async function getCurrentUserInfo(): Promise<UserInfo | null> {
   }
 
   await using repo = await Repository.openConnection();
+  const result = await repo.sessions().getUserWithRole(sessionId);
 
-  return await repo.sessions().getUserWithRole(sessionId);
+  return result
+    ? { id: result.id, role: result.role, hasAvatar: result.hasAvatar ?? false }
+    : null;
 }

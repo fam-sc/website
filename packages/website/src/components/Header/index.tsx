@@ -16,6 +16,7 @@ import { MenuIcon } from '@/icons/MenuIcon';
 import { useAuthInfo } from '@/auth/context';
 import { getMediaFileUrl } from '@shared/media';
 import { navigationMainRoutes } from '@/constants/navigation';
+import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
 
 function Navigation() {
   return (
@@ -47,16 +48,14 @@ function Buttons() {
 
 type AvatarProps = {
   userId: string;
+  hasAvatar: boolean | undefined;
 };
 
-function Avatar({ userId }: AvatarProps) {
+function Avatar({ userId, hasAvatar }: AvatarProps) {
   return (
     <Link className={styles.avatar} href="/u/info">
-      <Image
-        src={getMediaFileUrl(`user/${userId}`)}
-        alt=""
-        width={0}
-        height={0}
+      <UserAvatarOrPlaceholder
+        src={hasAvatar ? getMediaFileUrl(`user/${userId}`) : undefined}
       />
     </Link>
   );
@@ -65,7 +64,11 @@ function Avatar({ userId }: AvatarProps) {
 function AvatarOrButtons() {
   const { user } = useAuthInfo();
 
-  return user === null ? <Buttons /> : <Avatar userId={user.id} />;
+  return user === null ? (
+    <Buttons />
+  ) : (
+    <Avatar userId={user.id} hasAvatar={user.hasAvatar} />
+  );
 }
 
 function MobileMenu() {

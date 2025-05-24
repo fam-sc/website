@@ -16,6 +16,7 @@ export type User = {
   email: string;
   telnum: string | null;
   role: UserRole;
+  hasAvatar?: boolean;
   passwordHash: Binary;
   telegramUserId: number | null;
 };
@@ -36,12 +37,13 @@ export type PendingUser = {
   token: Binary;
 };
 
-export interface UserWithRole {
+export interface UserWithRoleAndAvatar {
   id: string;
   role: UserRole;
+  hasAvatar?: boolean;
 }
 
-export interface ShortUser extends UserWithRole {
+export interface ShortUser extends UserWithRoleAndAvatar {
   firstName: string;
   lastName: string;
   parentName: string | null;

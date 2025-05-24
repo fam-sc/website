@@ -1,9 +1,8 @@
 import { Typography } from '../Typography';
-import Image from 'next/image';
 import { ReactNode } from 'react';
 
 import styles from './index.module.scss';
-import { UnknownUserAvatar } from '../UnknownUserAvatar';
+import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
 
 export type UserInfoItemProps = {
   avatarSrc?: string;
@@ -23,13 +22,11 @@ export function UserInfoItem({
 }: UserInfoItemProps) {
   return (
     <li className={styles.root}>
-      <div className={styles.avatar} aria-hidden>
-        {avatarSrc === undefined ? (
-          <UnknownUserAvatar />
-        ) : (
-          <Image src={avatarSrc} alt="" width={0} height={0} />
-        )}
-      </div>
+      <UserAvatarOrPlaceholder
+        aria-hidden
+        src={avatarSrc}
+        className={styles.avatar}
+      />
 
       <div className={styles.info}>
         <Typography>{name}</Typography>
