@@ -1,10 +1,8 @@
-name: Deploy worker
+name: Deploy media worker
 on:
   push:
-    branches:
-      - main
     paths:
-      - 'packages/workers/*'
+      - 'packages/media-worker/*'
   
 jobs:
   deploy-media-worker:
@@ -17,10 +15,10 @@ jobs:
           cache: 'npm'
       - run: corepack enable
       - name: Install dependencies
-        run: yarn workspaces focus @sc-fam/workers
+        run: yarn workspaces focus @sc-fam/media-worker
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
             apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
             accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-            workingDirectory: ./packages/workers
+            workingDirectory: ./packages/media-worker
