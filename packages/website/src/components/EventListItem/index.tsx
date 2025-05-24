@@ -38,7 +38,7 @@ export function EventListItem({
       <RichText className={styles.description} text={description} />
 
       <Typography hasIcon className={styles.date}>
-        <EventIcon />
+        <EventIcon aria-hidden />
         {date}
       </Typography>
 

@@ -66,7 +66,7 @@ export class SwiperManager {
       const selected = (nearestIndex === i).toString();
 
       slide.dataset.selected = selected;
-      indicatorButton.dataset.selected = selected;
+      indicatorButton.setAttribute('aria-selected', selected);
 
       switch (i) {
         case anchorIndex: {

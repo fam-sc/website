@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useId } from 'react';
 
 import { IconButton } from '../IconButton';
 import { Typography } from '../Typography';
@@ -25,17 +25,23 @@ export function ModalDialog({
   contentClassName,
   onClose,
 }: ModalDialogProps) {
+  const titleId = useId();
+
   useScrollbar(false);
 
   return (
     <ModalOverlay className={styles.overlay}>
-      <div className={styles.dialog}>
+      <div className={styles.dialog} role="dialog" aria-labelledby={titleId}>
         <div className={styles.header}>
           {title === undefined ? undefined : (
             <Typography variant="h5">{title}</Typography>
           )}
 
-          <IconButton className={styles.close} onClick={onClose}>
+          <IconButton
+            className={styles.close}
+            onClick={onClose}
+            title="Закрити діалог"
+          >
             <CloseIcon />
           </IconButton>
         </div>

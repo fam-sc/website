@@ -8,6 +8,7 @@
 
 .root {
   align-items: center;
+  gap: 2em;
 }
 
 .items {
@@ -17,7 +18,5 @@
 }
 
 .add {
-  margin-top: 2em;
-
   @include size(2.5em);
 }

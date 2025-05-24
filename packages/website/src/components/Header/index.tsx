@@ -98,7 +98,7 @@ export function Header() {
           }
         }}
       >
-        <Link href="/" className={styles.logo}>
+        <Link href="/" className={styles.logo} aria-hidden>
           <Image src={Logo} alt="Logo" />
         </Link>
 

@@ -32,6 +32,7 @@ export function UserApproveItem({ onAction, ...rest }: UserApproveItemProps) {
         <IconButton
           disabled={actionInProgress}
           hover="fill"
+          title="Видалити користувача"
           onClick={() => {
             doAction('disapprove');
           }}
@@ -42,6 +43,7 @@ export function UserApproveItem({ onAction, ...rest }: UserApproveItemProps) {
         <IconButton
           disabled={actionInProgress}
           hover="fill"
+          title="Підтвердити користувача"
           onClick={() => {
             doAction('approve');
           }}

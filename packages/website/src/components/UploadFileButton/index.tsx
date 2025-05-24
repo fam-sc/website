@@ -23,7 +23,12 @@ export function UploadFileButton({
   ...rest
 }: UploadFileButtonProps) {
   return (
-    <Button as="label" className={classNames(styles.root, className)} {...rest}>
+    <Button
+      as="label"
+      className={classNames(styles.root, className)}
+      role="button"
+      {...rest}
+    >
       <input
         type="file"
         disabled={disabled}

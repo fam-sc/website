@@ -24,7 +24,7 @@
       background: var(--color-text-on-background-dark);
     }
 
-    &[data-selected='true'] {
+    &[aria-selected='true'] {
       &,
       &:hover {
         background: var(--color-primary);

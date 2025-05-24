@@ -30,6 +30,7 @@ export type DropdownProps<T extends { id: Key }> = {
   position?: Position;
   children: ReactElement<{
     onClick: () => void;
+    'aria-haspopup'?: string;
     ref: RefObject<HTMLElement | null>;
   }>;
 };
@@ -63,6 +64,7 @@ export function Dropdown<T extends { id: Key }>({
     <div className={classNames(styles.root, className)} style={style}>
       {React.cloneElement(children, {
         ref: triggerRef,
+        'aria-haspopup': 'menu',
         onClick: () => {
           setOpen((state) => !state);
         },
@@ -77,6 +79,8 @@ export function Dropdown<T extends { id: Key }>({
           {items.map((item) => (
             <Typography
               as="li"
+              role="option"
+              tabindex="0"
               key={item.id}
               onClick={() => {
                 onAction?.(item.id);

@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { AriaAttributes, FC, ReactNode, useId } from 'react';
 import styles from './index.module.scss';
 import { Typography } from '../Typography';
 import { TextArea } from '../TextArea';
@@ -35,13 +35,14 @@ function OptionGroup({ choices, children }: OptionGroupProps) {
   );
 }
 
-type ContentTypeProps<T extends QuestionType = QuestionType> = {
+interface ContentTypeProps<T extends QuestionType = QuestionType>
+  extends AriaAttributes {
   disabled?: boolean;
 
   descriptor: QuestionDescriptor<T>;
   answer: QuestionAnswer<T> | undefined;
   onAnswerChanged: (value: QuestionAnswer<T>) => void;
-};
+}
 
 type ContentComponentMap = Omit<
   {
@@ -54,6 +55,9 @@ function TextContent({
   disabled,
   answer,
   onAnswerChanged,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  descriptor: _descriptor,
+  ...rest
 }: ContentTypeProps<'text'>) {
   return (
     <TextArea
@@ -62,6 +66,7 @@ function TextContent({
       onTextChanged={(text) => {
         onAnswerChanged({ text });
       }}
+      {...rest}
     />
   );
 }
@@ -71,11 +76,12 @@ function MultiCheckboxContent({
   descriptor,
   answer,
   onAnswerChanged,
+  ...rest
 }: ContentTypeProps<'multicheckbox'>) {
   const selectedIndices = answer?.selectedIndices ?? [];
 
   return (
-    <OptionGroup choices={descriptor.choices}>
+    <OptionGroup choices={descriptor.choices} {...rest}>
       {(id, index, title) => (
         <Checkbox
           key={id}
@@ -101,9 +107,10 @@ function RadioContent({
   descriptor,
   answer,
   onAnswerChanged,
+  ...rest
 }: ContentTypeProps<'radio'>) {
   return (
-    <OptionGroup choices={descriptor.choices}>
+    <OptionGroup choices={descriptor.choices} {...rest}>
       {(id, index, title) => (
         <RadioButton
           key={id}
@@ -122,19 +129,20 @@ function RadioContent({
   );
 }
 
-type CheckboxQuestionProps = {
+interface CheckboxQuestionProps extends AriaAttributes {
   title: string;
   answer: QuestionAnswer<'checkbox'>;
   onAnswerChanged: (value: QuestionAnswer<'checkbox'>) => void;
-};
+}
 
 function CheckboxQuestion({
   title,
   answer,
   onAnswerChanged,
+  ...rest
 }: CheckboxQuestionProps) {
   return (
-    <div className={styles.root}>
+    <div className={styles.root} {...rest}>
       <Checkbox
         checked={answer.status}
         onCheckedChanged={(status) => {
@@ -161,6 +169,7 @@ export function PollQuestion<T extends QuestionType>({
   onAnswerChanged,
 }: PollQuestionProps<T>) {
   const type = descriptor.type;
+  const titleId = useId();
 
   if (type === 'checkbox') {
     return (
@@ -178,7 +187,7 @@ export function PollQuestion<T extends QuestionType>({
 
   return (
     <fieldset className={styles.root}>
-      <Typography as="legend" variant="bodyLarge">
+      <Typography as="legend" variant="bodyLarge" id={titleId}>
         {title}
       </Typography>
 
@@ -187,6 +196,7 @@ export function PollQuestion<T extends QuestionType>({
         descriptor={descriptor}
         answer={answer}
         onAnswerChanged={onAnswerChanged}
+        aria-labelledby={titleId}
       />
     </fieldset>
   );

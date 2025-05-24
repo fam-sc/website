@@ -10,6 +10,7 @@ export type NotificationType = 'plain' | 'error';
 export type NotificationProps = {
   message: string;
   type: NotificationType;
+  isVisible: boolean;
 };
 
 export type NotificationWrapperProps = {
@@ -24,9 +25,9 @@ export const NotificationContext = createContext<
   NotificationManager | undefined
 >(undefined);
 
-export function Notification({ message, type, ...rest }: NotificationProps) {
+export function Notification({ message, type, isVisible }: NotificationProps) {
   return (
-    <div className={styles.root} {...rest}>
+    <div className={styles.root} data-visible={isVisible} role="alert">
       <Typography data-type={type}>{message}</Typography>
     </div>
   );
@@ -61,9 +62,7 @@ export function NotificationWrapper({ children }: NotificationWrapperProps) {
   return (
     <NotificationContext.Provider value={manager}>
       {children}
-      {notification && (
-        <Notification data-visible={isVisible} {...notification} />
-      )}
+      {notification && <Notification isVisible={isVisible} {...notification} />}
     </NotificationContext.Provider>
   );
 }

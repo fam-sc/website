@@ -30,3 +30,11 @@ export const Primary: Story = {
     renderOption: (option) => option,
   },
 };
+
+export const Disabled: Story = {
+  args: {
+    options: ['first', 'second'],
+    disabled: true,
+    renderOption: (option) => option,
+  },
+};

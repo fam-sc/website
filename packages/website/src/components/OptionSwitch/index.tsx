@@ -1,16 +1,18 @@
-import { ReactNode } from 'react';
+import { ReactNode, useId } from 'react';
 
 import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { PropsMap } from '@/types/react';
+import { PropsMap, WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 
 type OptionArray = readonly [string, string] | readonly [number, number];
 type ListProps = PropsMap['ul'];
 
-export interface OptionSwitchProps<Opts extends OptionArray> extends ListProps {
+export interface OptionSwitchProps<Opts extends OptionArray>
+  extends ListProps,
+    WithDataSpace<'selected'> {
   options: Opts;
   selected?: Opts[0 | 1];
   renderOption: (option: Opts[0 | 1]) => ReactNode;
@@ -31,11 +33,15 @@ export function OptionSwitch<const Opts extends OptionArray>({
   const selectedIndex =
     selected === undefined || options[0] === selected ? 0 : 1;
 
+  const globalId = useId();
+
   return (
     <ul
-      role="switch"
-      aria-checked={selectedIndex === 0}
+      role="listbox"
+      aria-orientation="horizontal"
+      aria-multiselectable="false"
       aria-disabled={disabled}
+      aria-activedescendant={`${globalId}-${selectedIndex}`}
       className={classNames(styles.root, className)}
       data-selected={selectedIndex}
       {...rest}
@@ -44,6 +50,9 @@ export function OptionSwitch<const Opts extends OptionArray>({
         <Typography
           as="li"
           key={option}
+          role="option"
+          id={`${globalId}-${index}`}
+          aria-selected={selectedIndex === index}
           onClick={() => {
             onOptionSelected?.(options[index]);
           }}

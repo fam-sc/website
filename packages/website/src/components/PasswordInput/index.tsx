@@ -31,6 +31,7 @@ export function PasswordInput({
             setShowPassword((state) => !state);
           }}
           className={styles['show-password-button']}
+          title={showPassword ? 'Приховати пароль' : 'Показати пароль'}
           rounding="circle"
         >
           <SeePasswordIcon active={showPassword} />

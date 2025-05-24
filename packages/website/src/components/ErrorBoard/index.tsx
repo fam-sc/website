@@ -17,10 +17,10 @@ export function ErrorBoard({ className, items }: ErrorBoardProps) {
   return (
     <ul className={classNames(styles.root, className)}>
       {notEmptyItems.map((item) => (
-        <Typography as="li" key={item}>
-          <ExclamationIcon />
-          {item}
-        </Typography>
+        <li key={item}>
+          <ExclamationIcon aria-hidden />
+          <Typography>{item}</Typography>
+        </li>
       ))}
     </ul>
   );

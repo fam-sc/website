@@ -17,7 +17,10 @@ export interface InlineQuestionProps extends DivProps {
   position?: Position;
   onAction?: (type: 'yes' | 'no') => void;
 
-  children: ReactElement<{ onClick: (event: MouseEvent) => void }>;
+  children: ReactElement<{
+    'aria-haspopup'?: string;
+    onClick: (event: MouseEvent) => void;
+  }>;
 }
 
 export function InlineQuestion({
@@ -41,6 +44,7 @@ export function InlineQuestion({
   return (
     <div className={classNames(styles.root, className)} {...rest}>
       {cloneElement(children, {
+        'aria-haspopup': 'dialog',
         onClick: (e) => {
           e.stopPropagation();
 
@@ -60,7 +64,7 @@ export function InlineQuestion({
         >
           <Typography>{questionText}</Typography>
 
-          <div className={styles.buttons}>
+          <div className={styles.buttons} aria-label="Відповіді">
             <Button
               onClick={() => {
                 onAction?.('no');

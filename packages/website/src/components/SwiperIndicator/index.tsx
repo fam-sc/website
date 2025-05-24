@@ -1,4 +1,4 @@
-import { ReactNode, Ref } from 'react';
+import { ReactNode, Ref, useId } from 'react';
 import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
 
@@ -19,13 +19,17 @@ export function SwiperIndicator({
   count,
   onElementClick,
 }: SwiperIndicatorProps) {
+  const globalId = useId();
   const elements: ReactNode[] = [];
 
   for (let i = 0; i < count; i++) {
     elements.push(
       <button
         key={i}
-        data-selected={current === i}
+        id={`${globalId}-${i}`}
+        role="option"
+        aria-selected={current === i}
+        title={`Слайд ${i + 1}`}
         onClick={() => {
           onElementClick(i);
         }}
@@ -34,7 +38,13 @@ export function SwiperIndicator({
   }
 
   return (
-    <div className={classNames(styles.root, className)} ref={ref} aria-hidden>
+    <div
+      className={classNames(styles.root, className)}
+      ref={ref}
+      role="listbox"
+      aria-multiselectable={false}
+      aria-activedescendant={`${globalId}-${current}`}
+    >
       {elements}
     </div>
   );

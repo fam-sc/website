@@ -45,6 +45,7 @@ export function Swiper<T extends { id: Key }>({
       <div
         className={styles.strip}
         ref={stripRef}
+        aria-roledescription="carousel"
         style={{ '--slide-count': slides.length }}
       >
         {slides.map((slide, index) => (
@@ -55,6 +56,8 @@ export function Swiper<T extends { id: Key }>({
             onClick={() => {
               managerRef.current?.setSelectedSlide(index);
             }}
+            role="group"
+            aria-roledescription="slide"
             tabIndex={0}
           >
             {renderSlide(slide)}
