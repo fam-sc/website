@@ -3,6 +3,7 @@
 .root {
   display: flex;
   flex-direction: column;
+  gap: 1em;
 
   background-color: var(--color-background-dark);
   padding: 1em 1.5em;
@@ -16,7 +17,6 @@
   align-self: center;
   text-align: center;
 
-  margin-top: 1em;
   width: 80%;
 
   @include breakpoint-exact('md') {

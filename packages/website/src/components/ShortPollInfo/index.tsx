@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 export type ShortPollInfoProps = {
   className?: string;
   title: string;
-  href: string;
+  href?: string;
 };
 
 export function ShortPollInfo({ className, title, href }: ShortPollInfoProps) {
@@ -14,13 +14,17 @@ export function ShortPollInfo({ className, title, href }: ShortPollInfoProps) {
     <div className={classNames(styles.root, className)}>
       <Typography variant="h6">{title}</Typography>
 
-      <LinkButton
-        className={styles.linkButton}
-        buttonVariant="outlined"
-        href={href}
-      >
-        Пройти опитування
-      </LinkButton>
+      {href !== undefined ? (
+        <LinkButton
+          className={styles.linkButton}
+          buttonVariant="outlined"
+          href={href}
+        >
+          Пройти опитування
+        </LinkButton>
+      ) : (
+        <Typography>Потрібно зареєструватися, щоб пройти опитування</Typography>
+      )}
     </div>
   );
 }

@@ -20,6 +20,7 @@ import {
   UpdateResult,
   WithId,
 } from 'mongodb';
+import { emptyDeleteResult, emptyUpdateResult } from '../misc/result';
 
 export function resolveObjectId(value: string | ObjectId): ObjectId {
   return typeof value === 'string' ? new ObjectId(value) : value;
@@ -87,7 +88,7 @@ export class EntityCollection<T extends Document> {
     try {
       objectId = resolveObjectId(id);
     } catch {
-      return Promise.resolve({ acknowledged: true, deletedCount: 0 });
+      return Promise.resolve(emptyDeleteResult());
     }
 
     return this.deleteOne({ _id: objectId } as Filter<T>);
@@ -136,18 +137,12 @@ export class EntityCollection<T extends Document> {
     id: string | ObjectId,
     update: UpdateFilter<T> | Document[],
     options?: UpdateOptions
-  ): Promise<UpdateResult> {
+  ): Promise<UpdateResult<T>> {
     let objectId: ObjectId;
     try {
       objectId = resolveObjectId(id);
     } catch {
-      return Promise.resolve({
-        acknowledged: true,
-        matchedCount: 0,
-        modifiedCount: 0,
-        upsertedCount: 0,
-        upsertedId: null,
-      });
+      return Promise.resolve(emptyUpdateResult());
     }
 
     return this.updateOne({ _id: objectId } as Filter<T>, update, {

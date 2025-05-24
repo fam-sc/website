@@ -1,28 +1,23 @@
 'use client';
 
+import { submitPoll } from '@/api/polls/client';
 import { Poll } from '@/api/polls/types';
-import styles from './page.module.scss';
-import { PollQuestionList } from '@/components/PollQuestionList';
-import { useMemo, useState } from 'react';
 import { Button } from '@/components/Button';
+import { useNotification } from '@/components/Notification';
 import {
   QuestionAnswer,
   QuestionDescriptor,
   QuestionType,
 } from '@/components/PollQuestion';
-import { submitPoll } from '@/api/polls/client';
-import { useNotification } from '@/components/Notification';
+import { PollQuestionList } from '@/components/PollQuestionList';
 import { useRouter } from 'next/navigation';
-import { Typography } from '@/components/Typography';
-import { InfoIcon } from '@/icons/InfoIcon';
-import { IconLinkButton } from '@/components/IconLinkButton';
-import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
+import { useState, useMemo, useCallback } from 'react';
 
-type PollWithId = Poll & { id: string };
+import styles from './PollWithSubmit.module.scss';
 
-export type ClientComponentProps = {
-  poll: PollWithId;
+export type PollWithSubmitProps = {
+  id: string;
+  questions: Poll['questions'];
 };
 
 function isAnswerValid<T extends QuestionType>(
@@ -69,20 +64,17 @@ function getEmptyAnswer(type: QuestionType): QuestionAnswer {
   }
 }
 
-export function ClientComponent({ poll }: ClientComponentProps) {
+export function PollWithSubmit({ id, questions }: PollWithSubmitProps) {
   const [isActionPending, setIsActionPending] = useState(false);
   const [answers, setAnswers] = useState<QuestionAnswer[]>(() => {
-    return poll.questions.map(({ type }) => getEmptyAnswer(type));
+    return questions.map(({ type }) => getEmptyAnswer(type));
   });
 
   const notification = useNotification();
   const router = useRouter();
 
-  const { user } = useAuthInfo();
-  const canViewInfo = user !== null && user.role >= UserRole.ADMIN;
-
   const pollItems = useMemo(() => {
-    return poll.questions.map((question) => ({
+    return questions.map((question) => ({
       title: question.title,
       descriptor: {
         type: question.type,
@@ -94,28 +86,30 @@ export function ClientComponent({ poll }: ClientComponentProps) {
             : [],
       },
     }));
-  }, [poll]);
+  }, [questions]);
 
   const isAnswersValid = answers.every((answer, i) =>
     isAnswerValid(answer, pollItems[i].descriptor)
   );
 
+  const onSubmitPoll = useCallback(() => {
+    setIsActionPending(true);
+
+    submitPoll(id, { answers })
+      .then(() => {
+        router.push('/polls');
+
+        notification.show('Ваш відповіді зараховані', 'plain');
+      })
+      .catch(() => {
+        setIsActionPending(false);
+
+        notification.show('Сталася помилка', 'error');
+      });
+  }, [answers, id, notification, router]);
+
   return (
     <div className={styles.content}>
-      <div className={styles.header}>
-        <Typography variant="h5">{poll.title}</Typography>
-
-        {canViewInfo && (
-          <IconLinkButton
-            className={styles.info}
-            hover="fill"
-            href={`/polls/${poll.id}/info`}
-          >
-            <InfoIcon />
-          </IconLinkButton>
-        )}
-      </div>
-
       <PollQuestionList
         disabled={isActionPending}
         items={pollItems}
@@ -127,21 +121,7 @@ export function ClientComponent({ poll }: ClientComponentProps) {
         disabled={!isAnswersValid || isActionPending}
         className={styles.submit}
         buttonVariant="solid"
-        onClick={() => {
-          setIsActionPending(true);
-
-          submitPoll(poll.id, { answers: answers })
-            .then(() => {
-              router.push('/polls');
-
-              notification.show('Ваш відповіді зараховані', 'plain');
-            })
-            .catch(() => {
-              setIsActionPending(false);
-
-              notification.show('Сталася помилка', 'error');
-            });
-        }}
+        onClick={onSubmitPoll}
       >
         Відправити
       </Button>

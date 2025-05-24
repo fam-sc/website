@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export type Poll = {
   title: string;
   startDate: Date;
@@ -7,6 +9,11 @@ export type Poll = {
 };
 
 export type ShortPoll = Pick<Poll, 'title' | 'startDate' | 'endDate'>;
+
+export type PollWithEndDateAndRespondents = {
+  endDate: Date | null;
+  respondents: Pick<PollRespondent, 'userId'>[];
+};
 
 export type PollQuestion = { title: string } & (
   | { type: 'text' }
@@ -27,6 +34,9 @@ export type PollQuestionOption = {
 };
 
 export type PollRespondent = {
+  // We save userId not to use it in processing,
+  // but to disallow posting more than one response with the same account.
+  userId: ObjectId;
   date: Date;
   answers: PollRespondentAnswer[];
 };

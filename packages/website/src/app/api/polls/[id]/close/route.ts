@@ -12,8 +12,8 @@ export async function POST(
   const { id } = await params;
 
   return authRoute(request, UserRole.ADMIN, async (repo) => {
-    const { modifiedCount } = await repo.polls().closePoll(id);
+    const { matchedCount } = await repo.polls().closePoll(id);
 
-    return modifiedCount === 0 ? notFound() : new NextResponse();
+    return matchedCount === 0 ? notFound() : new NextResponse();
   });
 }

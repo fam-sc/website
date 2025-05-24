@@ -1,9 +1,21 @@
-import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
+import {
+  ClientSession,
+  MongoClient,
+  ObjectId,
+  UpdateResult,
+  WithId,
+} from 'mongodb';
 
-import { Poll, PollRespondent, ShortPoll } from '../types/poll';
+import {
+  Poll,
+  PollRespondent,
+  PollWithEndDateAndRespondents,
+  ShortPoll,
+} from '../types/poll';
 
-import { EntityCollection } from './base';
+import { EntityCollection, resolveObjectId } from './base';
 import { pagination } from '../misc/pagination';
+import { emptyUpdateResult } from '../misc/result';
 
 export class PollCollection extends EntityCollection<Poll> {
   constructor(client: MongoClient, session?: ClientSession) {
@@ -22,12 +34,29 @@ export class PollCollection extends EntityCollection<Poll> {
     });
   }
 
+  findPollWithEndDateAndAnswers(id: string) {
+    return this.findById<PollWithEndDateAndRespondents>(id, {
+      projection: { endDate: 1, 'respondents.userId': 1 },
+    });
+  }
+
   addRespondent(id: string | ObjectId, respondent: PollRespondent) {
     return this.updateById(id, { $push: { respondents: respondent } });
   }
 
-  closePoll(id: string | ObjectId) {
-    return this.updateById(id, { $set: { endDate: new Date() } });
+  async closePoll(id: string | ObjectId): Promise<UpdateResult<Poll>> {
+    let objectId: ObjectId;
+    try {
+      objectId = resolveObjectId(id);
+    } catch {
+      return emptyUpdateResult();
+    }
+
+    // Do not update endDate if it's already not null
+    return this.updateOne(
+      { _id: objectId, endDate: null },
+      { $set: { endDate: new Date() } }
+    );
   }
 
   async getPage(index: number, size: number) {
@@ -45,7 +74,7 @@ export class PollCollection extends EntityCollection<Poll> {
     }
 
     return {
-      total: result.metadata[0].totalCount as number,
+      total: (result.metadata[0]?.totalCount ?? 0) as number,
       items: result.data as WithId<Poll>[],
     };
   }

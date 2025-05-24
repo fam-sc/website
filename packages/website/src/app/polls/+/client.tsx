@@ -14,6 +14,7 @@ import { TextInput } from '@/components/TextInput';
 import { AddPollPayload } from '@/api/polls/types';
 import { UserRole } from '@data/types/user';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
+import { useRouter } from 'next/navigation';
 
 export function ClientComponent() {
   useCheckUserRole(UserRole.ADMIN);
@@ -23,6 +24,7 @@ export function ClientComponent() {
   const [isActionPending, setIsActionPending] = useState(false);
 
   const notification = useNotification();
+  const router = useRouter();
 
   const isPollValid =
     items.length > 0 && items.every((item) => isValidItem(item));
@@ -58,6 +60,8 @@ export function ClientComponent() {
 
           addPoll({ title, questions })
             .then(() => {
+              router.push('/polls');
+
               notification.show('Опитування додано успішно', 'plain');
             })
             .catch(() => {

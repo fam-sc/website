@@ -59,6 +59,7 @@ export default tseslint.config(
       '@typescript-eslint/restrict-template-expressions': 'off',
       'import/no-anonymous-default-export': 'off',
       'unicorn/prefer-top-level-await': 'off',
+      'unicorn/no-negated-condition': 'off',
     },
   },
   ...compat.extends('next'),

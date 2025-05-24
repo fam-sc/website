@@ -7,7 +7,7 @@ import { unauthrorized } from './responses';
 export async function authRoute(
   request: NextRequest,
   minRole: UserRole,
-  block: (repo: Repository) => Promise<NextResponse>
+  block: (repo: Repository, userId: string) => Promise<NextResponse>
 ): Promise<NextResponse> {
   const sessionId = getSessionIdNumber(request);
   if (sessionId === undefined) {
@@ -21,5 +21,5 @@ export async function authRoute(
     return unauthrorized();
   }
 
-  return await block(repo);
+  return await block(repo, userWithRole.id);
 }

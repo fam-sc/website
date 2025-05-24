@@ -98,7 +98,7 @@
   @include size(40px);
 
   @include desktop-view() {
-    display: none;
+    display: none !important;
   }
 }
 

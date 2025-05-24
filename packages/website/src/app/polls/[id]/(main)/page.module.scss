@@ -7,10 +7,6 @@
   padding: 1em 5em;
 }
 
-.submit {
-  align-self: center;
-}
-
 .header {
   display: flex;
   margin-bottom: 0.5em;
@@ -18,4 +14,9 @@
 
 .info {
   margin-left: auto;
+}
+
+.error-message {
+  align-self: center;
+  margin-top: 1em;
 }
