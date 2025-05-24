@@ -17,15 +17,14 @@ export function UserAvatar({
   const [hasAvatar, setHasAvatar] = useState(initialHasAvatar);
 
   return (
-    <div className={className}>
-      <CompactInlineImageDropArea
-        src={hasAvatar ? getMediaFileUrl(`user/${userId}`) : undefined}
-        alt="Фотографія користувача"
-        onFileChanged={async (file) => {
-          await uploadUserAvatar(file);
-          setHasAvatar(true);
-        }}
-      />
-    </div>
+    <CompactInlineImageDropArea
+      className={className}
+      src={hasAvatar ? getMediaFileUrl(`user/${userId}`) : undefined}
+      alt="Фотографія користувача"
+      onFileChanged={async (file) => {
+        await uploadUserAvatar(file);
+        setHasAvatar(true);
+      }}
+    />
   );
 }

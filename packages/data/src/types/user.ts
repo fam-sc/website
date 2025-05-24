@@ -20,6 +20,22 @@ export type User = {
   telegramUserId: number | null;
 };
 
+// Info about user that has registered, but yet not clicked magic link in email.
+export type PendingUser = {
+  firstName: string;
+  lastName: string;
+  parentName: string | null;
+  academicGroup: string;
+  email: string;
+  telnum: string | null;
+  passwordHash: Binary;
+
+  createdAt: Date;
+
+  // Token to approve the user and move it to all other users.
+  token: Binary;
+};
+
 export interface UserWithRole {
   id: string;
   role: UserRole;

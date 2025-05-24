@@ -11,6 +11,7 @@ import { UserCollection } from './collections/users';
 
 import { getEnvChecked } from '@shared/env';
 import { PollCollection } from './collections/polls';
+import { PendingUserCollection } from './collections/pendingUsers';
 
 export class Repository implements AsyncDisposable {
   private client: MongoClient;
@@ -22,6 +23,7 @@ export class Repository implements AsyncDisposable {
   }
 
   users = this.collection(UserCollection);
+  pendingUsers = this.collection(PendingUserCollection);
   events = this.collection(EventCollection);
   galleryImages = this.collection(GalleryImageCollection);
   sessions = this.collection(SessionCollection);

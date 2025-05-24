@@ -53,3 +53,9 @@ export function logOut() {
     method: 'POST',
   });
 }
+
+export function finishSignUp(token: string) {
+  return apiCheckedFetch(`/api/signUp/finish?token=${token}`, {
+    method: 'POST',
+  });
+}
