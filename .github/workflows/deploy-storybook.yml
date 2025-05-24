@@ -1,6 +1,8 @@
 name: Deploy storybook
 on:
-  push
+  push:
+    paths:
+      - "./packages/website/src/**/*.stories.tsx"
 
 jobs:
   deploy:

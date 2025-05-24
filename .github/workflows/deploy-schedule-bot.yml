@@ -5,7 +5,7 @@ on:
       - 'packages/schedule-bot/*'
   
 jobs:
-  deploy-media-worker:
+  deploy-schedule-bot:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
