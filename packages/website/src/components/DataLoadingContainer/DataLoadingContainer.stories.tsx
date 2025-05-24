@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { DataLoadingContainer } from '.';
-import { NotificationWrapper } from '../Notification';
 import { useDataLoader } from '@/hooks/useDataLoader';
 import { delay } from '@/utils/delay';
 
@@ -17,13 +16,6 @@ function Component({ loader }: { loader: () => Promise<string> }) {
 
 export default {
   component: Component,
-  decorators: [
-    (Story) => (
-      <NotificationWrapper>
-        <Story />
-      </NotificationWrapper>
-    ),
-  ],
 } satisfies Meta<typeof Component>;
 
 type Story = StoryObj<typeof Component>;

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { CompactInlineImageDropArea, CompactInlineImageDropAreaProps } from '.';
-import { NotificationWrapper } from '../Notification';
 
 function Component(props: CompactInlineImageDropAreaProps) {
   return (
@@ -14,13 +13,6 @@ function Component(props: CompactInlineImageDropAreaProps) {
 
 export default {
   component: Component,
-  decorators: [
-    (Story) => (
-      <NotificationWrapper>
-        <Story />
-      </NotificationWrapper>
-    ),
-  ],
 } satisfies Meta<typeof Component>;
 
 type Story = StoryObj<typeof Component>;

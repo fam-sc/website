@@ -1,17 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { LazyImageScroll } from '.';
-import { NotificationWrapper } from '../Notification';
 
 export default {
   component: LazyImageScroll,
-  decorators: [
-    (Story) => (
-      <NotificationWrapper>
-        <Story />
-      </NotificationWrapper>
-    ),
-  ],
 } satisfies Meta<typeof LazyImageScroll<string>>;
 
 type Story = StoryObj<typeof LazyImageScroll<string>>;
