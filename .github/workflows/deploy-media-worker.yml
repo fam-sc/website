@@ -1,6 +1,8 @@
 name: Deploy media worker
 on:
   push:
+    branches:
+      - main
     paths:
       - 'packages/media-worker/*'
   

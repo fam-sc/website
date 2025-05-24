@@ -1,6 +1,8 @@
 name: Deploy schedule bot
 on:
   push:
+    branches:
+      - main
     paths:
       - 'packages/schedule-bot/*'
   
