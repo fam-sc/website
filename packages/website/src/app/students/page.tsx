@@ -5,6 +5,7 @@ import { shortenRichText } from '@shared/richText/short';
 import { WithId } from 'mongodb';
 import { ClientEvent } from '../events/(list)/client';
 import { Event } from '@data/types';
+import { Metadata } from 'next';
 
 function toClientEvent(event: WithId<Event>): ClientEvent {
   return {
@@ -15,6 +16,10 @@ function toClientEvent(event: WithId<Event>): ClientEvent {
     description: shortenRichText(event.description, 200),
   };
 }
+
+export const metadata: Metadata = {
+  title: 'Студентство',
+};
 
 export default async function Page() {
   await using repo = await Repository.openConnection();

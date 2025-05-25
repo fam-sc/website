@@ -9,7 +9,10 @@ import { UserRole } from '@data/types/user';
 
 import styles from './page.module.scss';
 import { PollWithSubmit } from './PollWithSubmit';
-import { PropsWithChildren } from 'react';
+import { cache, PropsWithChildren } from 'react';
+import { Metadata } from 'next';
+
+type PollPageProps = PageProps<{ id: string }>;
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (
@@ -19,7 +22,32 @@ function ErrorMessage({ children }: PropsWithChildren) {
   );
 }
 
-export default async function Page({ params }: PageProps<{ id: string }>) {
+const getPoll = cache(async (id: string) => {
+  await using repo = await Repository.openConnection();
+
+  return await repo.polls().findById(id);
+});
+
+export async function generateMetadata({
+  params,
+}: PollPageProps): Promise<Metadata> {
+  const { id } = await params;
+
+  const poll = await getPoll(id);
+
+  if (poll === null) {
+    return {};
+  }
+
+  return {
+    title: poll.title,
+    openGraph: {
+      title: poll.title,
+    },
+  };
+}
+
+export default async function Page({ params }: PollPageProps) {
   const { id } = await params;
 
   const userInfo = await getCurrentUserInfo();
@@ -27,9 +55,7 @@ export default async function Page({ params }: PageProps<{ id: string }>) {
     redirect('/polls');
   }
 
-  await using repo = await Repository.openConnection();
-
-  const poll = await repo.polls().findById(id);
+  const poll = await getPoll(id);
   if (poll === null) {
     notFound();
   }

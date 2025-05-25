@@ -42,7 +42,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: { template: `%s | СР ФПМ`, default: 'СР ФПМ' },
-  description: 'Опис студради',
+  openGraph: {
+    type: 'website',
+    locale: 'uk_UA',
+  },
 };
 
 export default async function RootLayout({
@@ -53,7 +56,7 @@ export default async function RootLayout({
   const userInfo = await getCurrentUserInfo();
 
   return (
-    <html lang="ua">
+    <html lang="uk-UA">
       <head>
         <link
           rel="icon"
