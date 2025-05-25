@@ -10,8 +10,13 @@ import { getCurrentUserInfo } from '@/auth/session/next';
 import { UserRole } from '@data/types/user';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';
+import { Metadata } from 'next';
 
 const ITEMS_PER_PAGE = 20;
+
+export const metadata: Metadata = {
+  title: 'Опитування',
+};
 
 export default async function Page({ searchParams }: PageProps) {
   const userInfo = await getCurrentUserInfo();
@@ -39,7 +44,7 @@ export default async function Page({ searchParams }: PageProps) {
     <div className={styles.root}>
       {canAddPoll && (
         <LinkButton hasIcon className={styles['add-poll']} href="/polls/+">
-          <PlusIcon />
+          <PlusIcon aria-hidden />
           Додати
         </LinkButton>
       )}

@@ -2,6 +2,11 @@ import { getCurrentSessionId } from '@/auth/session/next';
 import { Repository } from '@data/repo';
 import { redirect, RedirectType } from 'next/navigation';
 import { ClientComponent } from './client';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Профіль',
+};
 
 export default async function Page() {
   const sessionId = await getCurrentSessionId();

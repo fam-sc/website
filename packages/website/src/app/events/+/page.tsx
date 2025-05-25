@@ -3,6 +3,7 @@ import { ClientComponent, ClientEvent } from './client';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
 import { PageProps } from '@/types/next';
 import { redirect } from 'next/navigation';
+import { Metadata } from 'next';
 
 async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   try {
@@ -20,6 +21,16 @@ async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   } catch {
     return undefined;
   }
+}
+
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const { edit } = await searchParams;
+
+  const title = edit === undefined ? 'Редагування події' : 'Додати подію';
+
+  return { title };
 }
 
 export default async function Page({ searchParams }: PageProps) {
