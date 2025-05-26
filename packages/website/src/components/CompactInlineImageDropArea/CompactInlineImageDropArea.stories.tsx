@@ -19,13 +19,13 @@ type Story = StoryObj<typeof Component>;
 
 export const Primary: Story = {
   args: {
-    style: { width: '300px', height: '300px' },
+    style: { width: '300px', minHeight: '300px' },
     src: 'https://i.imgur.com/OEuYkKXl.png',
   },
 };
 
 export const NoImage: Story = {
   args: {
-    style: { width: '300px', height: '300px' },
+    style: { width: '300px', minHeight: '300px' },
   },
 };

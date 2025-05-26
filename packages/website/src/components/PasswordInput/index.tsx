@@ -16,6 +16,7 @@ interface PasswordInputProps
 export function PasswordInput({
   className,
   onTextChanged,
+  disabled,
   ...rest
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +25,7 @@ export function PasswordInput({
     <TextInput
       {...rest}
       className={classNames(className, styles.root)}
+      disabled={disabled}
       type={showPassword ? 'text' : 'password'}
       endContent={
         <IconButton
@@ -33,6 +35,7 @@ export function PasswordInput({
           className={styles['show-password-button']}
           title={showPassword ? 'Приховати пароль' : 'Показати пароль'}
           rounding="circle"
+          disabled={disabled}
         >
           <SeePasswordIcon active={showPassword} />
         </IconButton>

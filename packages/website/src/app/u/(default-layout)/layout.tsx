@@ -33,7 +33,7 @@ export default async function Layout({
 
   return (
     <div className={styles.root}>
-      <div className={styles.navSide}>
+      <div className={styles['nav-side']}>
         <UserAvatar
           className={styles.avatar}
           userId={userInfo.id}
@@ -43,7 +43,7 @@ export default async function Layout({
         <UserLayoutNavigation tabs={tabsForRole} />
       </div>
 
-      <div className={styles.tabContent}>{children}</div>
+      <div className={styles['tab-content']}>{children}</div>
     </div>
   );
 }

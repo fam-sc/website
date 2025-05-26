@@ -1,3 +1,5 @@
+'use client';
+
 import { ApiError } from '@/api/error';
 import { ApiErrorCode } from '@/api/errorCodes';
 import { changePassword } from '@/api/user/client';

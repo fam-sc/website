@@ -64,7 +64,7 @@ export function CompactInlineImageDropArea({
         />
       )}
 
-      <div className={styles.dropArea}>
+      <div className={styles['drop-area']}>
         <UploadFileButton buttonVariant="solid" onFiles={onFiles} />
       </div>
     </div>
