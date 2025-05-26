@@ -93,7 +93,7 @@ export function Header() {
         onClick={({ target }) => {
           // Hide mobile menu if the user navigated to another page - the mobile menu
           // is no longer relevant.
-          if (target instanceof HTMLElement && target.nodeName === 'a') {
+          if (target instanceof HTMLElement && target.nodeName === 'A') {
             setMobileMenuOpen(false);
           }
         }}
