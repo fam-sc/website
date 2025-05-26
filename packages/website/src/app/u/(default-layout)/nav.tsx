@@ -10,6 +10,7 @@ import { TabInfo } from './types';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/Button';
 import { logOut } from '@/api/user/client';
+import styles from './nav.module.scss';
 
 type UserLayoutNavigationProps = {
   tabs: TabInfo[];
@@ -19,7 +20,7 @@ export function UserLayoutNavigation({ tabs }: UserLayoutNavigationProps) {
   const currentPath = usePathname();
 
   return (
-    <nav>
+    <nav className={styles.root}>
       <List>
         {tabs.map(({ href, title }) => (
           <li key={href}>
