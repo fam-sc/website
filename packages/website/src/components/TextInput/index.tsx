@@ -29,12 +29,14 @@ export function TextInput({
   onTextChanged,
   ...rest
 }: TextInputProps) {
+  console.log(error);
+
   return (
     <div className={classNames(styles.root, className)}>
       <div
         className={styles.input}
         data-variant={variant ?? 'bordered'}
-        data-state={error === undefined ? undefined : 'error'}
+        data-state={error ? 'error' : undefined}
         data-disabled={disabled}
       >
         <Typography
