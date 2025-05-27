@@ -10,18 +10,18 @@
   border-radius: 12px;
   box-sizing: border-box;
 
-  // --- Адаптивність для менших екранів (планшети/мобільні) ---
+
   @media (max-width: 768px) {
-    padding: 15px; // Трохи зменшуємо padding
-    margin: 1.5rem auto; // Зменшуємо вертикальні відступи
+    padding: 15px;
+    margin: 1.5rem auto;
   }
 
-  // --- Адаптивність для дуже маленьких екранів ---
+
   @media (max-width: 480px) {
-    max-width: 100%; // Дозволяємо займати всю ширину
-    margin: 1rem 0.5rem; // Мінімальні відступи по ширині, 1rem зверху/знизу
-    padding: 15px; // Зберігаємо невеликий padding
-    border-radius: 8px; // Можна зменшити заокруглення
+    max-width: 100%;
+    margin: 10px 5px;
+    padding: 15px;
+    border-radius: 8px;
   }
 }
 
@@ -29,17 +29,16 @@
   text-align: center;
   font-size: 32px;
   margin-bottom: 32px;
-  font-weight: bold; // Додамо жирності для кращої видимості
+  font-weight: bold;
 
-  // --- Адаптивність для менших екранів ---
   @media (max-width: 768px) {
-    font-size: 28px; // Зменшуємо розмір шрифту
+    font-size: 28px;
     margin-bottom: 28px;
   }
 
-  // --- Адаптивність для дуже маленьких екранів ---
+
   @media (max-width: 480px) {
-    font-size: 24px; // Ще менший шрифт
+    font-size: 24px;
     margin-bottom: 24px;
   }
 }
@@ -50,9 +49,9 @@
   gap: 12px;
   margin-bottom: 24px;
 
-  // --- Адаптивність для дуже маленьких екранів ---
+
   @media (max-width: 480px) {
-    gap: 10px; // Трохи менший проміжок
-    margin-bottom: 20px; // Менший відступ
+    gap: 10px;
+    margin-bottom: 20px;
   }
 }

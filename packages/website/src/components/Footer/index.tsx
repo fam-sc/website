@@ -39,30 +39,28 @@ export function Footer({ className }: FooterProps) {
         <Typography as="strong">Підтримка</Typography>
 
         <div className={styles.linkWithIcon}>
-          <Image src="/icons/bot.svg" width={15} height={15} alt="Bot" />
+          <Image src="/icons/Question.svg" width={15} height={15} alt="Bot" />
+
           <Link href="https://t.me/fpm_sc_bot">Чат-бот</Link>
         </div>
 
         <div className={styles.linkWithIcon}>
           <Image src="/icons/Logo.svg" width={15} height={15} alt="Bot" />
-          <Link href="#">Про нас</Link>
+          <Link href="/home">Про нас</Link>
         </div>
 
-        <div className={styles.linkWithIcon}>
-          <Image src="/icons/Question.svg" width={15} height={15} alt="Bot" />
-          <Link href="#">FAQ</Link>
-        </div>
       </div>
 
       <div className={styles.section}>
-        <Link href="#">
+        <Link href="/privacy-policy">
           <Typography as="strong">Політика конфіденційності</Typography>
         </Link>
+      </div>
 
         <div className={styles.icons}>
-          <Link href="malito:sr.fam.kpi@gmail.com" aria-label="Email">
+          <a href="mailto:sr.fam.kpi@gmail.com" aria-label="Email">
             <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
-          </Link>
+          </a>
 
           <Link href="https://www.instagram.com/fam_kpi/">
             <Image
@@ -89,7 +87,6 @@ export function Footer({ className }: FooterProps) {
             />
           </Link>
         </div>
-      </div>
     </footer>
-  );
+    );
 }
