@@ -3,7 +3,7 @@
 import { getMediaFileUrl } from '@shared/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
-import { RichTextEditor } from '@/components/RichTextEditor';
+import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
 import { fileToDataUrl } from '@/utils/fileTransformations';
 import { useRef, useState } from 'react';
 
@@ -17,6 +17,8 @@ import { useNotification } from '@/components/Notification';
 import { Event } from '@data/types';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { Labeled } from '@/components/Labeled';
+import { useCheckUserRole } from '@/hooks/useCheckUserRole';
+import { UserRole } from '@data/types/user';
 
 export type ClientEvent = {
   id: string;
@@ -30,6 +32,8 @@ export type ClientComponentProps = {
 };
 
 export function ClientComponent({ event }: ClientComponentProps) {
+  useCheckUserRole(UserRole.ADMIN);
+
   const errorAlert = useNotification();
 
   const [image, setImage] = useState(
@@ -40,8 +44,10 @@ export function ClientComponent({ event }: ClientComponentProps) {
   const [title, setTitle] = useState(event?.title ?? '');
   const [date, setDate] = useState(event?.date ?? new Date());
   const [status, setStatus] = useState<Event['status']>('pending');
-  const [description, setDescription] = useState(event?.description ?? '');
-  const [isDescriptionSaved, setIsDescriptionSaved] = useState(true);
+  const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(
+    event === undefined
+  );
+  const descriptionRef = useRef<RichTextEditorRef | null>(null);
 
   const [actionPending, setActionPending] = useState(false);
 
@@ -105,17 +111,11 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
       <Labeled title="Опис">
         <RichTextEditor
+          ref={descriptionRef}
           disabled={actionPending}
           className={styles.description}
-          text={description}
-          onSaveText={(newText) => {
-            setDescription(newText);
-
-            return Promise.resolve(newText);
-          }}
-          onIsSavedChanged={(value) => {
-            setIsDescriptionSaved(!value);
-          }}
+          text={event?.description ?? ''}
+          onIsEmptyChanged={setIsDescriptionEmpty}
         />
       </Labeled>
 
@@ -123,8 +123,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
         className={styles.errors}
         items={[
           title.length === 0 && 'Пустий заголовок',
-          description.length === 0 && 'Пустий опис',
-          !isDescriptionSaved && 'Не збережений опис',
+          isDescriptionEmpty && 'Пустий опис',
           image === undefined && 'Немає картинки',
         ]}
       />
@@ -134,8 +133,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
         disabled={
           actionPending ||
           title.length === 0 ||
-          description.length === 0 ||
-          !isDescriptionSaved ||
+          isDescriptionEmpty ||
           image === undefined
         }
         buttonVariant="solid"
@@ -145,6 +143,8 @@ export function ClientComponent({ event }: ClientComponentProps) {
           setActionPending(true);
 
           let promise: Promise<void> | undefined;
+
+          const description = descriptionRef.current?.getHTMLText() ?? '';
 
           if (event === undefined) {
             if (image !== undefined) {

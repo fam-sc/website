@@ -34,7 +34,7 @@ export function TextInput({
       <div
         className={styles.input}
         data-variant={variant ?? 'bordered'}
-        data-state={error === undefined ? undefined : 'error'}
+        data-state={error ? 'error' : undefined}
         data-disabled={disabled}
       >
         <Typography

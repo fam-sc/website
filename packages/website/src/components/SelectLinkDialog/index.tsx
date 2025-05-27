@@ -22,8 +22,7 @@ export type SelectLinkDialogProps = {
 export function SelectLinkDialog(props: SelectLinkDialogProps) {
   const [link, setLink] = useState('');
 
-  const urlPattern = useMemo(() => urlRegex(), []);
-  const isValidLink = useMemo(() => urlPattern.test(link), [urlPattern, link]);
+  const isValidLink = useMemo(() => urlRegex.test(link), [link]);
 
   return (
     <ModalDialog
@@ -48,7 +47,7 @@ export function SelectLinkDialog(props: SelectLinkDialogProps) {
     >
       <TextInput
         value={link}
-        error={isValidLink && 'Неправильний формат посилання'}
+        error={!isValidLink && 'Неправильний формат посилання'}
         onTextChanged={setLink}
         placeholder="Посилання"
       />
