@@ -8,8 +8,9 @@ This platform is designed to keep students informed about important news, upcomi
 
 - [Design ideas and mockups](https://www.figma.com/design/Vcf6rhZOLasv6mF4tE3M32/site-sc-fam?m=auto&t=yEhCsyhIOVcBc5io-6)
 
+- [Production Storybook](https://sc-fam-storybook.pages.dev/)
 
-## Project structure
+## Folder structure
 
 ```sh
 packages
@@ -42,6 +43,24 @@ Start website server locally:
 yarn start
 ```
 
+## Lint
+
+Lint and typecheck:
+
+```sh
+yarn lint
+```
+
+Lint with fixing:
+
+```sh
+yarn lint:fix
+```
+
+## Storybook
+
+See [docs](/docs/website/storybook.md)
+
 ## Testing
 
 The project uses Vitest for unit testing. The test for a file is stored nearby in the same directory. 
@@ -53,7 +72,7 @@ yarn test
 ```
 
 ### Created by
-- [Oleg Khmaruk КМ-23](https://github.com/pelmenstar1)
+- [Oleh Khmaruk КМ-23](https://github.com/pelmenstar1)
 - [Valeriia Baranivska КМ-23]( https://github.com/ValeriiaBaranivska)
 
 
