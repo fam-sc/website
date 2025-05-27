@@ -6,6 +6,7 @@ const meta: Meta<typeof SignInForm> = {
   component: SignInForm,
   parameters: {
     layout: 'centered',
+    margin: 'auto',
   },
 };
 

@@ -1,95 +1,58 @@
-.formContainer {
+.signinForm {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 400px;
-  padding: 50px;
+  margin: 2rem auto;
+  padding: 20px;
+  background-color: var(--color-background);
+  color: var(--color-text-on-background);
   border-radius: 12px;
+  box-sizing: border-box;
+
+  // --- Адаптивність для менших екранів (планшети/мобільні) ---
+  @media (max-width: 768px) {
+    padding: 15px; // Трохи зменшуємо padding
+    margin: 1.5rem auto; // Зменшуємо вертикальні відступи
+  }
+
+  // --- Адаптивність для дуже маленьких екранів ---
+  @media (max-width: 480px) {
+    max-width: 100%; // Дозволяємо займати всю ширину
+    margin: 1rem 0.5rem; // Мінімальні відступи по ширині, 1rem зверху/знизу
+    padding: 15px; // Зберігаємо невеликий padding
+    border-radius: 8px; // Можна зменшити заокруглення
+  }
 }
 
 .formTitle {
-  font-size: 40px;
-  margin-bottom: 20px;
-}
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 32px;
+  font-weight: bold; // Додамо жирності для кращої видимості
 
-.signupForm {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  // --- Адаптивність для менших екранів ---
+  @media (max-width: 768px) {
+    font-size: 28px; // Зменшуємо розмір шрифту
+    margin-bottom: 28px;
+  }
+
+  // --- Адаптивність для дуже маленьких екранів ---
+  @media (max-width: 480px) {
+    font-size: 24px; // Ще менший шрифт
+    margin-bottom: 24px;
+  }
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 12px;
+  margin-bottom: 24px;
 
-  label {
-    font-size: 16px;
-    font-weight: normal;
-  }
-}
-
-.inputField {
-  height: 36px;
-  padding: 0 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  width: 150%;
-}
-
-.checkboxGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 5px 0;
-
-  label {
-    font-size: 16px;
-  }
-}
-
-.checkbox {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-
-.passwordWrapper {
-  position: relative;
-  width: 100%;
-}
-
-.eyeIcon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #6b6b6b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.submitButton {
-  margin-top: 12px;
-  height: 40px;
-  background-color: #ffeb3b; 
-  border: none;
-  border-radius: 2px;
-  color: black;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #fdd835;
-  }
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+  // --- Адаптивність для дуже маленьких екранів ---
+  @media (max-width: 480px) {
+    gap: 10px; // Трохи менший проміжок
+    margin-bottom: 20px; // Менший відступ
   }
 }

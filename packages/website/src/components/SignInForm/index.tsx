@@ -7,6 +7,7 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { Typography } from '@/components/Typography';
 import { Checkbox } from '@/components/Checkbox';
 import { Link } from '../Link';
+import styles from './index.module.scss';
 
 export default function SignInForm() {
   const [formData, setFormData] = useState({
@@ -29,20 +30,23 @@ export default function SignInForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Typography as="strong" variant="h4">З Поверненням!</Typography>
-
-      <div>
+    <form onSubmit={handleSubmit} className={styles.signinForm}>
+        <div className={styles.formTitle}>
+      <Typography as="strong" variant="h4" className="formTitle">
+        З Поверненням!
+      </Typography>
+        </div>
+      <div className={styles.formGroup}>
         <Typography as="label" variant="bodyLarge">Пошта</Typography>
         <TextInput
           id="email"
-          name="text"
+          name="email"
           value={formData.email}
           onChange={handleChange}
         />
       </div>
 
-      <div>
+        <div className={styles.formGroup}>
         <Typography as="label" variant="bodyLarge">Пароль</Typography>
         <PasswordInput
           id="password"
@@ -52,22 +56,24 @@ export default function SignInForm() {
         />
       </div>
 
-      <div>
-      <Checkbox
-        id="remember"
-        name="remember"
-        checked={formData.remember}
-        onChange={handleChange}
-      >
-        Запам’ятати мене
-      </Checkbox>
+        <div className={styles.formGroup}>
+        <Checkbox
+          id="remember"
+          name="remember"
+          checked={formData.remember}
+          onChange={handleChange}
+        >
+          Запам’ятати мене
+        </Checkbox>
       </div>
-      
-      <div >
+
+        <div className={styles.formGroup}>
         <Link href="https://t.me/fpm_sc_bot">Забули пароль?</Link>
       </div>
 
-      <Button type="submit" buttonVariant="solid">Увійти</Button>
+        <div className={styles.formGroup}>
+        <Button type="submit" buttonVariant="solid">Увійти</Button>
+      </div>
     </form>
   );
 }

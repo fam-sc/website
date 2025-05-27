@@ -6,7 +6,7 @@ import { TextInput } from '@/components/TextInput';
 import { PasswordInput } from '@/components/PasswordInput';
 import { Typography } from '@/components/Typography';
 import { Checkbox } from '@/components/Checkbox';
-
+import styles from "./index.module.scss";
 
 
 export default function SignUpForm() {
@@ -18,10 +18,10 @@ export default function SignUpForm() {
     email: '',
     phone: '',
     group: '',
-    isGroupHead: false, 
+    isGroupHead: false,
     password: '',
     confirmPassword: '',
-    agreesToTerms: false, 
+    agreesToTerms: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,29 +38,31 @@ export default function SignUpForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.signupForm}>
+        <div className={styles.formTitle}>
       <Typography as="strong" variant="h4">Створіть акаунт</Typography>
-      <div>
+    </div>
+
+      <div className={styles.formGroup}>
         <Typography as="label" variant="bodyLarge">Прізвище</Typography>
         <TextInput
           id="surname"
           name="surname"
-          value={formData.name}
+          value={formData.surname}
           onChange={handleChange}
         />
-      </div>
 
-      <div>
+
+
         <Typography as="label" variant="bodyLarge">Ім’я</Typography>
         <TextInput
           id="name"
           name="name"
-          value={formData.surname}
+          value={formData.name}
           onChange={handleChange}
         />
-      </div>
 
-      <div>
+
         <Typography as="label" variant="bodyLarge">По батькові</Typography>
         <TextInput
           id="secondName"
@@ -70,7 +72,7 @@ export default function SignUpForm() {
         />
       </div>
 
-      <div>
+        <div className={styles.formGroup}>
         <Typography as="label"  variant="bodyLarge">Група (АА-11)</Typography>
         <TextInput
           id="group"
@@ -78,7 +80,7 @@ export default function SignUpForm() {
           value={formData.group}
           onChange={handleChange}
         />
-      
+
         <Checkbox
           id="isGroupHead"
           name="isGroupHead"
@@ -89,7 +91,7 @@ export default function SignUpForm() {
         </Checkbox>
       </div>
 
-      <div>
+        <div className={styles.formGroup}>
         <Typography as="label" variant="bodyLarge">Пошта</Typography>
         <TextInput
           id="email"
@@ -97,9 +99,7 @@ export default function SignUpForm() {
           value={formData.email}
           onChange={handleChange}
         />
-      </div>
 
-      <div>
         <Typography as="label"  variant="bodyLarge">Номер телефону</Typography>
         <TextInput
           id="phone"
@@ -109,7 +109,7 @@ export default function SignUpForm() {
         />
       </div>
 
-      <div>
+        <div className={styles.formGroup}>
         <Typography as="label"  variant="bodyLarge">Пароль</Typography>
         <PasswordInput
           id="password"
@@ -117,7 +117,7 @@ export default function SignUpForm() {
           value={formData.password}
           onChange={handleChange}
         />
-      
+
         <Typography as="label" variant="bodyLarge">Підтвердіть пароль</Typography>
         <PasswordInput
           id="confirmPassword"
@@ -126,9 +126,9 @@ export default function SignUpForm() {
           onChange={handleChange}
         />
       </div>
-  
 
-      <div>
+
+        <div className={styles.formGroup}>
         <Checkbox
           id="agreesToTerms"
           name="agreesToTerms"
