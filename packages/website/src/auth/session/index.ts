@@ -1,18 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { randomBytes } from 'node:crypto';
+import { randomBytes } from '@shared/crypto/random';
 
 export const SESSION_ID_COOKIE = 'sid';
 
-export function newSessionId(): Promise<bigint> {
-  return new Promise((resolve, reject) => {
-    randomBytes(8, (error, buffer) => {
-      if (error === null) {
-        resolve(buffer.readBigInt64LE(0));
-      } else {
-        reject(error);
-      }
-    });
-  });
+export async function newSessionId(): Promise<bigint> {
+  const buffer = await randomBytes(8);
+
+  return buffer.readBigInt64LE(0);
 }
 
 export function getSessionId(request: NextRequest): string | undefined {

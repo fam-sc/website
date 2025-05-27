@@ -1,5 +1,5 @@
 import { Schedule } from './types';
-import type { UpdateScheduleLinksPayload } from './update';
+import { UpdateScheduleLinksPayload } from './types';
 
 export function scheduleToUpdateLinksPayload(
   value: Schedule

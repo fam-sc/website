@@ -1,12 +1,10 @@
-/* eslint-disable unicorn/no-array-callback-reference */
-import { Repository } from '@data/repo';
 import {
   DaySchedule as CampusDaySchedule,
   LessonSchedule,
   Weekday,
 } from '@shared/api/campus/types';
 
-import { resolveTeachers, TeacherMap } from './teachers';
+import { TeacherMap } from './teachers';
 import {
   DaySchedule as ApiDaySchedule,
   Schedule as ApiSchedule,
@@ -16,7 +14,9 @@ import {
   Day,
   DaySchedule as DataDaySchedule,
   Schedule as DataSchedule,
+  ScheduleWithTeachers as DataScheduleWithTeachers,
 } from '@data/types/schedule';
+import { convertToKeyMap } from '@/utils/keyMap';
 
 export function campusDayToWeekdayNumber(value: Weekday): Day {
   switch (value) {
@@ -41,19 +41,22 @@ export function campusDayToWeekdayNumber(value: Weekday): Day {
   }
 }
 
-function getUniqueTeachersFromWeek(week: DataDaySchedule[], out: Set<string>) {
-  for (const { lessons } of week) {
-    for (const { teacher } of lessons) {
-      out.add(teacher);
+function getUniqueTeachersFromWeek(
+  week: { pairs: { teacherName: string }[] }[],
+  out: Set<string>
+) {
+  for (const { pairs } of week) {
+    for (const { teacherName } of pairs) {
+      out.add(teacherName);
     }
   }
 }
 
-function getUniqueTeachers(value: DataSchedule): Set<string> {
+export function getUniqueTeachers(value: LessonSchedule): Set<string> {
   const result = new Set<string>();
 
-  getUniqueTeachersFromWeek(value.firstWeek, result);
-  getUniqueTeachersFromWeek(value.secondWeek, result);
+  getUniqueTeachersFromWeek(value.scheduleFirstWeek, result);
+  getUniqueTeachersFromWeek(value.scheduleSecondWeek, result);
 
   return result;
 }
@@ -79,8 +82,11 @@ export function campusScheduleToDataSchedule(
 ): DataSchedule {
   return {
     groupCampusId: value.groupCode,
-    firstWeek: value.scheduleFirstWeek.map(campusDayScheduleToDaySchedule),
-    secondWeek: value.scheduleSecondWeek.map(campusDayScheduleToDaySchedule),
+    weeks: [value.scheduleFirstWeek, value.scheduleSecondWeek].map(
+      (schedule) => ({
+        days: schedule.map((day) => campusDayScheduleToDaySchedule(day)),
+      })
+    ) as DataSchedule['weeks'],
   };
 }
 
@@ -93,7 +99,7 @@ function dataScheduleWeekToApiScheduleWeek(
     lessons: value.lessons.map(({ teacher: teacherName, link, ...rest }) => {
       const teacher = teacherMap.get(teacherName);
       if (teacher === undefined) {
-        throw new Error('Cannot find teacher by given name');
+        throw new Error(`Cannot find teacher by given name: ${teacherName}`);
       }
 
       return { teacher, link: link ?? undefined, ...rest };
@@ -101,17 +107,16 @@ function dataScheduleWeekToApiScheduleWeek(
   };
 }
 
-export async function dataScheduleToApiSchedule(
-  value: DataSchedule,
-  repo?: Repository
-): Promise<ApiSchedule> {
-  const teachers = await resolveTeachers(getUniqueTeachers(value), repo);
-  const weeks = [value.firstWeek, value.secondWeek].map((week) =>
-    week.map((value) => dataScheduleWeekToApiScheduleWeek(value, teachers))
+export function dataScheduleToApiSchedule(
+  value: DataScheduleWithTeachers
+): ApiSchedule {
+  const teachers = convertToKeyMap(value.teachers, 'name');
+  const weeks = value.weeks.map(({ days }) =>
+    days.map((value) => dataScheduleWeekToApiScheduleWeek(value, teachers))
   );
 
   return {
     groupCampusId: value.groupCampusId,
-    weeks: weeks as [ApiDaySchedule[], ApiDaySchedule[]],
+    weeks: weeks as ApiSchedule['weeks'],
   };
 }

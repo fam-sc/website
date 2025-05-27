@@ -4,7 +4,7 @@ import { PollQuestion, PollQuestionProps } from '.';
 import { useState } from 'react';
 
 function Component(props: PollQuestionProps<'radio'>) {
-  const [choice, setChoice] = useState<string | number>('');
+  const [selectedIndex, setSelectedIndex] = useState<number>();
 
   return (
     <PollQuestion
@@ -16,9 +16,9 @@ function Component(props: PollQuestionProps<'radio'>) {
           title: `Choice ${i}`,
         })),
       }}
-      answer={{ selectedId: choice }}
-      onAnswerChanged={({ selectedId }) => {
-        setChoice(selectedId);
+      answer={{ selectedIndex }}
+      onAnswerChanged={({ selectedIndex }) => {
+        setSelectedIndex(selectedIndex);
       }}
     />
   );

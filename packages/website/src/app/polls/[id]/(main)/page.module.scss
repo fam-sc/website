@@ -1,0 +1,22 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1em;
+
+  padding: 1em 5em;
+}
+
+.header {
+  display: flex;
+  margin-bottom: 0.5em;
+}
+
+.info {
+  margin-left: auto;
+}
+
+.error-message {
+  align-self: center;
+  margin-top: 1em;
+}

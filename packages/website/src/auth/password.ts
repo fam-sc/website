@@ -69,5 +69,4 @@ export async function verifyPassword(
   const expected = hashed.slice(SALT_LENGTH);
 
   return isSameBuffers(expected, actual);
-  //return verify(hashed, password, options);
 }

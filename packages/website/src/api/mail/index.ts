@@ -1,4 +1,5 @@
 import { getEnvChecked } from '@shared/env';
+import { checkedFetch } from '@shared/fetch';
 
 type ResendBody = {
   from: string;
@@ -23,12 +24,13 @@ export async function sendMail(
     text: content.text,
   };
 
-  await fetch('https://api.resend.com/emails', {
+  await checkedFetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    json: true,
+    body,
   });
 }

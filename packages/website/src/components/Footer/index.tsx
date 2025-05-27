@@ -6,6 +6,7 @@ import { Typography } from '../Typography';
 import styles from './index.module.scss';
 
 import { classNames } from '@/utils/classNames';
+import { navigationMainRoutes } from '@/constants/navigation';
 
 export interface FooterProps {
   className?: string;
@@ -13,9 +14,7 @@ export interface FooterProps {
 
 const items: { title: string; href: string }[] = [
   { title: 'Головна', href: '/home' },
-  { title: 'Студентство', href: '/students' },
-  { title: 'Розклад', href: '/schedule' },
-  { title: 'Опитування', href: '#' },
+  ...navigationMainRoutes,
 ];
 
 export function Footer({ className }: FooterProps) {

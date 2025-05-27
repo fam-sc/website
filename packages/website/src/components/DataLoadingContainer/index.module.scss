@@ -1,0 +1,17 @@
+@use '../../theme/utils' as *;
+
+.root {
+  display: flex;
+}
+
+.error,
+.progress {
+  align-self: center;
+  justify-self: center;
+
+  @include mx(auto);
+}
+
+.progress {
+  @include size(4em);
+}

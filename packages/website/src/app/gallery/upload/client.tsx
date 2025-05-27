@@ -13,8 +13,12 @@ import { SelectEventDialog } from '@/components/SelectEventDialog';
 import { ShortEvent } from '@/api/events/types';
 import { fetchAllEventsShort } from '@/api/events/client';
 import { Typography } from '@/components/Typography';
+import { useCheckUserRole } from '@/hooks/useCheckUserRole';
+import { UserRole } from '@data/types/user';
 
 export function ClientComponent() {
+  useCheckUserRole(UserRole.ADMIN);
+
   const [files, setFiles] = useState<File[]>([]);
   const [date, setDate] = useState<Date>(() => new Date());
   const [attachedEvent, setAttachedEvent] = useState<ShortEvent>();
@@ -32,9 +36,7 @@ export function ClientComponent() {
       <MultipleInlineImageDropArea
         disabled={isActionPending}
         className={styles.images}
-        onFiles={(files) => {
-          setFiles(files);
-        }}
+        onFiles={setFiles}
       />
 
       <div className={styles['right-side']}>
@@ -42,9 +44,7 @@ export function ClientComponent() {
           <DatePicker
             disabled={isActionPending}
             value={date}
-            onValueChanged={(value) => {
-              setDate(value);
-            }}
+            onValueChanged={setDate}
           />
 
           <div className={styles['attach-event']}>

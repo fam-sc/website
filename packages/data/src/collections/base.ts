@@ -7,6 +7,7 @@ import {
   BulkWriteOptions,
   ClientSession,
   Collection,
+  DeleteOptions,
   DeleteResult,
   Document,
   Filter,
@@ -19,6 +20,7 @@ import {
   UpdateResult,
   WithId,
 } from 'mongodb';
+import { emptyDeleteResult, emptyUpdateResult } from '../misc/result';
 
 export function resolveObjectId(value: string | ObjectId): ObjectId {
   return typeof value === 'string' ? new ObjectId(value) : value;
@@ -47,7 +49,10 @@ export class EntityCollection<T extends Document> {
     return this.collection().find({}, this.options());
   }
 
-  findById(id: string | ObjectId): Promise<WithId<T> | null> {
+  findById<R = T>(
+    id: string | ObjectId,
+    options?: FindOptions<T>
+  ): Promise<WithId<R> | null> {
     let objectId: ObjectId;
 
     try {
@@ -56,9 +61,12 @@ export class EntityCollection<T extends Document> {
       return Promise.resolve(null);
     }
 
-    return this.collection().findOne(
+    return this.collection().findOne<WithId<R>>(
       { _id: objectId } as Filter<T>,
-      this.options()
+      {
+        ...options,
+        session: this.session,
+      }
     );
   }
 
@@ -80,21 +88,28 @@ export class EntityCollection<T extends Document> {
     try {
       objectId = resolveObjectId(id);
     } catch {
-      return Promise.resolve({ acknowledged: true, deletedCount: 0 });
+      return Promise.resolve(emptyDeleteResult());
     }
 
-    return this.collection().deleteOne(
-      { _id: objectId } as Filter<T>,
-      this.options()
-    );
+    return this.deleteOne({ _id: objectId } as Filter<T>);
+  }
+
+  deleteOne(filter: Filter<T>, options?: DeleteOptions) {
+    return this.collection().deleteOne(filter, {
+      session: this.session,
+      ...options,
+    });
   }
 
   protected options() {
     return { session: this.session };
   }
 
-  protected findOne(filter: Filter<T>, options?: FindOptions<T>) {
-    return this.collection().findOne(filter, {
+  protected findOne<R = WithId<T>>(
+    filter: Filter<T>,
+    options?: FindOptions<T>
+  ) {
+    return this.collection().findOne<R>(filter, {
       ...options,
       session: this.session,
     });
@@ -125,21 +140,18 @@ export class EntityCollection<T extends Document> {
     id: string | ObjectId,
     update: UpdateFilter<T> | Document[],
     options?: UpdateOptions
-  ): Promise<UpdateResult> {
+  ): Promise<UpdateResult<T>> {
     let objectId: ObjectId;
     try {
-      objectId = new ObjectId(id);
+      objectId = resolveObjectId(id);
     } catch {
-      return Promise.resolve({
-        acknowledged: true,
-        matchedCount: 0,
-        modifiedCount: 0,
-        upsertedCount: 0,
-        upsertedId: null,
-      });
+      return Promise.resolve(emptyUpdateResult());
     }
 
-    return this.updateOne({ _id: objectId } as Filter<T>, update, options);
+    return this.updateOne({ _id: objectId } as Filter<T>, update, {
+      ...options,
+      session: this.session,
+    });
   }
 
   protected find(filter: Filter<T>, options?: FindOptions & Abortable) {

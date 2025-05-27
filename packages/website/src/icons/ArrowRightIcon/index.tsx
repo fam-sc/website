@@ -1,9 +1,5 @@
-import { SvgProps } from '../types';
+import { googleIcon } from '../google';
 
-export function ArrowRightIcon(props: SvgProps) {
-  return (
-    <svg width="24px" height="24px" viewBox="0 -960 960 960" {...props}>
-      <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
-    </svg>
-  );
-}
+export const ArrowRightIcon = googleIcon(
+  'm321-80-71-71 329-329-329-329 71-71 400 400L321-80Z'
+);

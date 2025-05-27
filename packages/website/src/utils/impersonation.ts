@@ -1,37 +1,41 @@
 // TODO: Refactor
 
-import { FunctionComponent, ReactElement, ReactNode } from 'react';
+import {
+  ComponentProps,
+  JSX,
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+} from 'react';
 
-import { PropsMap, PropsOf } from '@/types/react';
-
-type Name = keyof PropsMap;
+export type ImpersonatedName =
+  | keyof JSX.IntrinsicElements
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | JSXElementConstructor<any>;
 
 type PartialProperty<T, K extends keyof T> = Omit<T, K> & {
   [K2 in K]?: T[K2];
 };
 
-type BaseImpersonated<Base, As = Name | FunctionComponent> = Base & {
+type BaseImpersonated<Base, As = ImpersonatedName> = Base & {
   className?: string;
   children?: ReactNode;
   as: As;
 };
 
-export type ImpersonatedProps<Base, As extends Name> = BaseImpersonated<
+export type ImpersonatedProps<
   Base,
-  As
-> &
-  PropsMap[As];
+  As extends ImpersonatedName,
+> = ComponentProps<As> & BaseImpersonated<Base, As>;
 
-export type ImpersonatedFunctionalProps<Base, As> = BaseImpersonated<Base, As> &
-  PropsOf<As>;
-
-export type ImpersonatedComponent<Base, Default extends Name> = {
-  <As extends Name>(props: ImpersonatedProps<Base, As>): ReactElement;
-  <As>(props: ImpersonatedFunctionalProps<Base, As>): ReactElement;
-  (props: Base & PropsMap[Default]): ReactElement;
+export type ImpersonatedComponent<Base, Default extends ImpersonatedName> = {
+  <As extends ImpersonatedName>(
+    props: ImpersonatedProps<Base, As>
+  ): ReactElement;
+  (props: Base & ComponentProps<Default>): ReactElement;
 };
 
-export function impersonatedComponent<Base, Default extends Name>(
+export function impersonatedComponent<Base, Default extends ImpersonatedName>(
   defaultAs: Default,
   factory: (props: BaseImpersonated<Base>) => ReactElement
 ): ImpersonatedComponent<Base, Default> {

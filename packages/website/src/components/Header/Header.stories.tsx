@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Header } from '.';
+import { AuthProvider } from '@/auth/context';
+import { UserRole } from '@data/types/user';
 
 export default {
   component: Header,
@@ -8,5 +10,24 @@ export default {
 
 type Story = StoryObj<typeof Header>;
 
-export const PrimaryWithoutUser: Story = {};
-export const PrimaryWithUser: Story = { args: { userLogOn: true } };
+export const PrimaryWithoutUser: Story = {
+  decorators: [
+    (Story) => (
+      <AuthProvider value={{ user: null }}>
+        <Story />
+      </AuthProvider>
+    ),
+  ],
+};
+
+export const PrimaryWithUser: Story = {
+  decorators: [
+    (Story) => (
+      <AuthProvider
+        value={{ user: { id: '1', role: UserRole.ADMIN, hasAvatar: false } }}
+      >
+        <Story />
+      </AuthProvider>
+    ),
+  ],
+};

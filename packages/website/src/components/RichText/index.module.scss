@@ -203,7 +203,7 @@
     width: 100%;
     table-layout: fixed;
 
-    @include breakpoint-up('tablet') {
+    @include breakpoint-up('md') {
       table-layout: auto;
     }
   }
@@ -215,7 +215,7 @@
     word-wrap: break-all;
     padding: 0.4rem;
 
-    @include breakpoint-up('tablet') {
+    @include breakpoint-up('md') {
       width: auto;
       word-wrap: initial;
       overflow-wrap: initial;

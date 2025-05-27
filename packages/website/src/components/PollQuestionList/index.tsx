@@ -5,6 +5,7 @@ import {
   QuestionDescriptor,
 } from '../PollQuestion';
 import styles from './index.module.scss';
+import { List } from '../List';
 
 type QuestionItem = {
   title: string;
@@ -16,8 +17,8 @@ export type PollQuestionListProps = {
   disabled?: boolean;
 
   items: QuestionItem[];
-  answers: (QuestionAnswer | undefined)[];
-  onAnswersChanged: (value: (QuestionAnswer | undefined)[]) => void;
+  answers: QuestionAnswer[];
+  onAnswersChanged: (value: QuestionAnswer[]) => void;
 };
 
 export function PollQuestionList({
@@ -28,22 +29,23 @@ export function PollQuestionList({
   onAnswersChanged,
 }: PollQuestionListProps) {
   return (
-    <ul className={classNames(styles.root, className)}>
+    <List className={classNames(styles.root, className)}>
       {items.map(({ title, descriptor }, i) => (
-        <PollQuestion
-          key={i}
-          disabled={disabled}
-          descriptor={descriptor}
-          answer={answers[i]}
-          title={title}
-          onAnswerChanged={(answer) => {
-            const copy = [...answers];
-            copy[i] = answer;
+        <li key={i}>
+          <PollQuestion
+            disabled={disabled}
+            descriptor={descriptor}
+            answer={answers[i]}
+            title={title}
+            onAnswerChanged={(answer) => {
+              const copy = [...answers];
+              copy[i] = answer;
 
-            onAnswersChanged(copy);
-          }}
-        />
+              onAnswersChanged(copy);
+            }}
+          />
+        </li>
       ))}
-    </ul>
+    </List>
   );
 }

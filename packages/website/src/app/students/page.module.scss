@@ -7,9 +7,29 @@
 }
 
 .useful-links {
-  @include px(1em);
+  align-self: center;
+  width: 90%;
 
   @include breakpoint-up('md') {
-    @include px(6em);
+    width: 60%;
   }
+}
+
+.events-title {
+  text-align: center;
+  margin: 1.5em 0 0.7em 0;
+}
+
+.events {
+  width: 90%;
+  align-self: center;
+
+  @include breakpoint-up('md') {
+    width: 70%;
+  }
+}
+
+.events-more {
+  margin: 1.5em 0;
+  align-self: center;
 }

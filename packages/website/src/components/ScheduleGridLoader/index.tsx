@@ -1,13 +1,12 @@
 import { Schedule } from '@/api/schedule/types';
-import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';
-
-import styles from './index.module.scss';
 
 import { getSchedule } from '@/api/schedule/client';
 import { useDataLoader } from '@/hooks/useDataLoader';
-import { classNames } from '@/utils/classNames';
 import { broadcastUpdatedLesson } from '@/utils/schedule/broadcast';
+import { DataLoadingContainer } from '../DataLoadingContainer';
+
+import styles from './index.module.scss';
 
 export type ScheduleGridLoaderProps = {
   className?: string;
@@ -26,43 +25,40 @@ export function ScheduleGridLoader({
   isEditable,
   onScheduleChanged,
 }: ScheduleGridLoaderProps) {
-  const [schedule, isPending, setSchedule] = useDataLoader(
+  const [scheduleState, onRetry, setScheduleState] = useDataLoader(
     () =>
       groupId === undefined ? Promise.resolve(undefined) : getSchedule(groupId),
     [groupId]
   );
 
   return (
-    <div className={classNames(styles.root, className)}>
-      {isPending && (
-        <div className={styles['loading-container']}>
-          <IndeterminateCircularProgress
-            className={styles['loading-indicator']}
+    <DataLoadingContainer
+      className={className}
+      value={scheduleState}
+      onRetry={onRetry}
+    >
+      {(schedule) =>
+        schedule && (
+          <ScheduleGrid
+            className={styles.schedule}
+            week={schedule.weeks[week - 1]}
+            currentLesson={currentLesson}
+            isEditable={isEditable}
+            onScheduleChanged={(newWeek, target) => {
+              const newWeeks = [...schedule.weeks] as Schedule['weeks'];
+              newWeeks[week - 1] = newWeek;
+
+              const newSchedule = broadcastUpdatedLesson(
+                { ...schedule, weeks: newWeeks },
+                target
+              );
+
+              setScheduleState(newSchedule);
+              onScheduleChanged?.(newSchedule);
+            }}
           />
-        </div>
-      )}
-
-      {schedule && (
-        <ScheduleGrid
-          week={schedule.weeks[week - 1]}
-          currentLesson={currentLesson}
-          isEditable={isEditable}
-          onScheduleChanged={(newWeek, target) => {
-            const newWeeks = [...schedule.weeks] as Schedule['weeks'];
-            newWeeks[week - 1] = newWeek;
-
-            const newSchedule = broadcastUpdatedLesson(
-              { ...schedule, weeks: newWeeks },
-              target
-            );
-
-            console.log(newSchedule);
-
-            setSchedule(newSchedule);
-            onScheduleChanged?.(newSchedule);
-          }}
-        />
-      )}
-    </div>
+        )
+      }
+    </DataLoadingContainer>
   );
 }

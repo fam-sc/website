@@ -1,44 +1,47 @@
-import { useNotification } from '@/components/Notification';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  DependencyList,
+  Dispatch,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+export type DataState<T> = { value: T } | 'pending' | 'error';
+
+type ResultArray<T> = [DataState<T>, () => void, Dispatch<T>];
 
 export function useDataLoader<T>(
   loader: () => Promise<T>,
-  deps?: unknown[]
-): [T | undefined, boolean, (value: T) => void];
+  deps: DependencyList
+): ResultArray<T> {
+  const [state, setState] = useState<DataState<T>>('pending');
 
-export function useDataLoader<T>(
-  loader: () => Promise<T>,
-  deps: unknown[],
-  initial: T
-): [T, boolean, (value: T) => void];
+  const setResult = useCallback(
+    (value: T) => {
+      setState({ value });
+    },
+    [setState]
+  );
 
-export function useDataLoader<T>(
-  loader: () => Promise<T>,
-  deps: unknown[] | undefined,
-  initial?: T
-): [T | undefined, boolean, (value: T) => void] {
-  const notification = useNotification();
-  const [result, setResult] = useState<T | undefined>(initial);
-  const [isPending, setPending] = useState(false);
+  const doLoad = useCallback(() => {
+    setState('pending');
 
-  useEffect(() => {
     loader()
-      .then((result) => {
-        setPending(false);
-
-        setResult(result);
+      .then((value) => {
+        setState({ value });
       })
       .catch((error: unknown) => {
-        setPending(false);
-
-        notification.show('Сталася помилка при завантаженні даних', 'error');
         console.error(error);
+
+        setState('error');
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
-  return useMemo(
-    () => [result, isPending, setResult],
-    [result, isPending, setResult]
-  );
+  useEffect(() => {
+    doLoad();
+  }, [doLoad]);
+
+  return useMemo(() => [state, doLoad, setResult], [state, doLoad, setResult]);
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import Blockquote from '@tiptap/extension-blockquote';
 import Bold from '@tiptap/extension-bold';
 import Document from '@tiptap/extension-document';
@@ -56,12 +56,13 @@ const headerLevels = [1, 2, 3, 4, 5, 6] as const;
 
 type Alignment = 'left' | 'center' | 'right' | 'justify';
 
-const alignmentIcons: Record<Alignment, FC<SvgProps>> = {
-  left: AlignLeftIcon,
-  center: AlignCenterIcon,
-  right: AlignRightIcon,
-  justify: AlignJustifyIcon,
-};
+const alignmentInfo: Record<Alignment, { icon: FC<SvgProps>; title: string }> =
+  {
+    left: { icon: AlignLeftIcon, title: 'Вирівнювання по лівому краю' },
+    center: { icon: AlignCenterIcon, title: 'Вирівнювання по центру' },
+    right: { icon: AlignRightIcon, title: 'Вирівнювання по правому краю' },
+    justify: { icon: AlignJustifyIcon, title: 'Вирівнювання по ширині' },
+  };
 
 const extensions: Extensions = [
   Document,
@@ -89,6 +90,7 @@ type Toggle = string | {};
 
 type ToggleButtonProps = {
   toggle: Toggle;
+  title: string;
   children: ReactNode;
 } & (
   | {
@@ -97,12 +99,16 @@ type ToggleButtonProps = {
   | { onClick: (editor: Editor) => void }
 );
 
-function ToggleButton({ toggle, children, ...rest }: ToggleButtonProps) {
+function ToggleButton({ toggle, children, title, ...rest }: ToggleButtonProps) {
   const { editor } = useCurrentEditor();
+  const isActive = editor?.isActive(toggle);
 
   return (
     <IconButton
+      role="checkbox"
+      aria-checked={isActive}
       className={styles['toggle-button']}
+      title={title}
       onClick={() => {
         if (editor !== null) {
           if ('onToggle' in rest) {
@@ -112,7 +118,7 @@ function ToggleButton({ toggle, children, ...rest }: ToggleButtonProps) {
           }
         }
       }}
-      data-active={editor?.isActive(toggle)}
+      data-active={isActive}
     >
       {children}
     </IconButton>
@@ -121,13 +127,15 @@ function ToggleButton({ toggle, children, ...rest }: ToggleButtonProps) {
 
 type AlignButtonProps = {
   children: ReactNode;
+  title: string;
   type: Alignment;
 };
 
-function AlignButton({ type, children }: AlignButtonProps) {
+function AlignButton({ type, title, children }: AlignButtonProps) {
   return (
     <ToggleButton
       toggle={{ textAlign: type }}
+      title={title}
       onToggle={(c) => c.setTextAlign(type)}
     >
       {children}
@@ -143,6 +151,7 @@ function LinkButton() {
     <>
       <ToggleButton
         toggle="link"
+        title="Додати посилання"
         onClick={(editor) => {
           const isActive = editor.isActive('link');
 
@@ -181,6 +190,7 @@ function InsertImageButton() {
     <>
       <IconButton
         className={styles['toggle-button']}
+        title="Додати зображення"
         onClick={() => {
           setIsOpen(true);
         }}
@@ -222,29 +232,50 @@ type MenuProps = {
 function Menu({ isChanged, onSave }: MenuProps) {
   return (
     <div className={styles.menu}>
-      <ToggleButton onToggle={(c) => c.toggleBold()} toggle="bold">
+      <ToggleButton
+        onToggle={(c) => c.toggleBold()}
+        toggle="bold"
+        title="Жирний текст"
+      >
         <BoldIcon />
       </ToggleButton>
 
-      <ToggleButton onToggle={(c) => c.toggleItalic()} toggle="italic">
+      <ToggleButton
+        onToggle={(c) => c.toggleItalic()}
+        toggle="italic"
+        title="Курсив"
+      >
         <ItalicIcon />
       </ToggleButton>
 
-      <ToggleButton onToggle={(c) => c.toggleUnderline()} toggle="underline">
+      <ToggleButton
+        onToggle={(c) => c.toggleUnderline()}
+        toggle="underline"
+        title="Нижнє підкреслення"
+      >
         <UnderlineIcon />
       </ToggleButton>
 
-      <ToggleButton onToggle={(c) => c.toggleStrike()} toggle="strike">
+      <ToggleButton
+        onToggle={(c) => c.toggleStrike()}
+        toggle="strike"
+        title="Перекреслений текст"
+      >
         <StrikeIcon />
       </ToggleButton>
 
-      <ToggleButton onToggle={(c) => c.toggleSubscript()} toggle="subscript">
+      <ToggleButton
+        onToggle={(c) => c.toggleSubscript()}
+        toggle="subscript"
+        title="Нижній індекс"
+      >
         <SubscriptIcon />
       </ToggleButton>
 
       <ToggleButton
         onToggle={(c) => c.toggleSuperscript()}
         toggle="superscript"
+        title="Верхній індекс"
       >
         <SubscriptIcon />
       </ToggleButton>
@@ -252,20 +283,25 @@ function Menu({ isChanged, onSave }: MenuProps) {
       {headerLevels.map((level) => (
         <ToggleButton
           key={`h${level}`}
+          title={`Заголовок рівня ${level}`}
           onToggle={(c) => c.toggleHeading({ level })}
           toggle={{ heading: { level } }}
         >
-          H{level}
+          {`H${level}`}
         </ToggleButton>
       ))}
 
-      {mapObjectToArray(alignmentIcons, (alignment, Icon) => (
-        <AlignButton key={`align-${alignment}`} type={alignment}>
+      {mapObjectToArray(alignmentInfo, (alignment, { icon: Icon, title }) => (
+        <AlignButton key={`align-${alignment}`} type={alignment} title={title}>
           <Icon />
         </AlignButton>
       ))}
 
-      <ToggleButton toggle="blockquote" onToggle={(c) => c.toggleBlockquote()}>
+      <ToggleButton
+        toggle="blockquote"
+        onToggle={(c) => c.toggleBlockquote()}
+        title="Цитата"
+      >
         <BlockQuoteIcon />
       </ToggleButton>
 
@@ -276,6 +312,8 @@ function Menu({ isChanged, onSave }: MenuProps) {
       <IconButton
         className={styles['save-button']}
         data-active={isChanged}
+        disabled={!isChanged}
+        title="Зберегти текст"
         onClick={() => {
           onSave();
         }}
@@ -320,6 +358,29 @@ export function RichTextEditor({
     },
   });
 
+  const onSave = useCallback(() => {
+    if (editor !== null) {
+      setIsChanged(false);
+      onIsSavedChanged(false);
+
+      // Disallow changing the text if we're updating it -
+      // the update might return a different text (if we have an image in it).
+      setDisabled(true);
+
+      onSaveText?.(editor.getHTML())
+        .then((newText) => {
+          editor.commands.setContent(newText, false);
+
+          setDisabled(propsDisabled ?? false);
+        })
+        .catch((error: unknown) => {
+          console.error(error);
+
+          setDisabled(propsDisabled ?? false);
+        });
+    }
+  }, [editor, onIsSavedChanged, onSaveText, propsDisabled]);
+
   useEffect(() => {
     editor?.setEditable(!disabled, false);
   }, [editor, disabled]);
@@ -334,31 +395,7 @@ export function RichTextEditor({
       aria-disabled={disabled}
     >
       <EditorContext.Provider value={{ editor }}>
-        <Menu
-          isChanged={isChanged}
-          onSave={() => {
-            if (editor !== null) {
-              setIsChanged(false);
-              onIsSavedChanged(false);
-
-              // Disallow changing the text if we're updating it -
-              // the update might return a different text (if we have an image in it).
-              setDisabled(true);
-
-              onSaveText?.(editor.getHTML())
-                .then((newText) => {
-                  editor.commands.setContent(newText, false);
-
-                  setDisabled(propsDisabled ?? false);
-                })
-                .catch((error: unknown) => {
-                  console.error(error);
-
-                  setDisabled(propsDisabled ?? false);
-                });
-            }
-          }}
-        />
+        <Menu isChanged={isChanged} onSave={onSave} />
         <EditorContent
           data-variant="body"
           className={classNames(typographyStyles.root, richTextStyles.root)}

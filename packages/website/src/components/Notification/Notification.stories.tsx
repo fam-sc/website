@@ -22,15 +22,6 @@ function Component({ type }: { type: NotificationType }) {
 
 export default {
   component: Component,
-  decorators: [
-    (Story) => {
-      return (
-        <NotificationWrapper>
-          <Story />
-        </NotificationWrapper>
-      );
-    },
-  ],
 } satisfies Meta<typeof Component>;
 
 type Story = StoryObj<typeof Component>;

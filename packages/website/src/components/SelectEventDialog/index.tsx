@@ -3,8 +3,9 @@ import { Button } from '../Button';
 
 import styles from './index.module.scss';
 import { Typography } from '../Typography';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
+import { List } from '../List';
 
 export type EventWithId = {
   id: string;
@@ -27,10 +28,12 @@ export function SelectEventDialog({
   onClose,
   onSelect,
 }: SelectEventDialogProps) {
+  const globalId = useId();
   const [selected, setSelected] = useState<EventWithId | undefined>(
     selectedEvent
   );
 
+  // TODO: Rewrite list as radio button group to enable native keyboard actions.
   return (
     <ModalDialog
       onClose={onClose}
@@ -56,12 +59,24 @@ export function SelectEventDialog({
           className={styles['loading-indicator']}
         />
       ) : (
-        <ul className={styles.list}>
+        <List
+          className={styles.list}
+          role="listbox"
+          aria-label="Події"
+          aria-activedescendant={
+            selected ? `${globalId}-${selected.id}` : undefined
+          }
+          aria-multiselectable={false}
+          aria-required
+        >
           {events.map((event) => (
             <Typography
               as="li"
+              id={`${globalId}-${event.id}`}
               key={event.id}
-              data-selected={event === selected}
+              role="option"
+              aria-selected={event === selected}
+              tabindex={0}
               onClick={() => {
                 setSelected(event);
               }}
@@ -69,7 +84,7 @@ export function SelectEventDialog({
               {event.title}
             </Typography>
           ))}
-        </ul>
+        </List>
       )}
     </ModalDialog>
   );

@@ -66,16 +66,22 @@
 .avatar {
   display: none;
   border: 2px solid var(--color-text-on-background);
-  border-radius: 100%;
-
-  @include size(50px);
 
   transition: border 0.1s linear;
 
+  @include size(40px);
+
+  border-radius: 100%;
   margin-right: 1em;
 
   &:hover {
-    border-color: var(--color-text-on-background-dark);
+    $color: var(--color-text-on-background-dark);
+
+    border-color: $color;
+
+    svg {
+      fill: $color;
+    }
   }
 
   @include desktop-view() {
@@ -90,7 +96,7 @@
   @include size(40px);
 
   @include desktop-view() {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -132,6 +138,7 @@
   .avatar {
     display: block;
     align-self: center;
+    margin-right: 0;
 
     @include size(5em);
   }

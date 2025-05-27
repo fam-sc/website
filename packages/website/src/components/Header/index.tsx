@@ -13,21 +13,15 @@ import styles from './index.module.scss';
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { MenuIcon } from '@/icons/MenuIcon';
-
-export type HeaderProps = {
-  userLogOn: boolean;
-};
-
-const items: { title: string; href: string }[] = [
-  { title: 'Студентство', href: '/students' },
-  { title: 'Розклад', href: '/schedule' },
-  { title: 'Опитування', href: '#' },
-];
+import { useAuthInfo } from '@/auth/context';
+import { getMediaFileUrl } from '@shared/media';
+import { navigationMainRoutes } from '@/constants/navigation';
+import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
 
 function Navigation() {
   return (
     <ul className={styles.nav}>
-      {items.map(({ title, href }) => (
+      {navigationMainRoutes.map(({ title, href }) => (
         <li key={`${href}-${title}`}>
           <Link linkVariant="clean" href={href}>
             {title}
@@ -52,29 +46,42 @@ function Buttons() {
   );
 }
 
-function Avatar() {
+type AvatarProps = {
+  userId: string;
+  hasAvatar: boolean | undefined;
+};
+
+function Avatar({ userId, hasAvatar }: AvatarProps) {
   return (
-    <Image
-      className={styles.avatar}
-      src="https://i.imgur.com/xxCgHWM.png"
-      alt=""
-      width={512}
-      height={512}
-    />
+    <Link className={styles.avatar} href="/u/info">
+      <UserAvatarOrPlaceholder
+        src={hasAvatar ? getMediaFileUrl(`user/${userId}`) : undefined}
+      />
+    </Link>
   );
 }
 
-function MobileMenu({ userLogOn }: HeaderProps) {
+function AvatarOrButtons() {
+  const { user } = useAuthInfo();
+
+  return user === null ? (
+    <Buttons />
+  ) : (
+    <Avatar userId={user.id} hasAvatar={user.hasAvatar} />
+  );
+}
+
+function MobileMenu() {
   return (
     <div className={styles['mobile-menu']}>
       <Navigation />
 
-      {userLogOn ? <Avatar /> : <Buttons />}
+      <AvatarOrButtons />
     </div>
   );
 }
 
-export function Header({ userLogOn }: HeaderProps) {
+export function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useScrollbar(!isMobileMenuOpen);
@@ -86,17 +93,17 @@ export function Header({ userLogOn }: HeaderProps) {
         onClick={({ target }) => {
           // Hide mobile menu if the user navigated to another page - the mobile menu
           // is no longer relevant.
-          if (target instanceof HTMLElement && target.nodeName === 'a') {
+          if (target instanceof HTMLElement && target.nodeName === 'A') {
             setMobileMenuOpen(false);
           }
         }}
       >
-        <Link href="/" className={styles.logo}>
+        <Link href="/" className={styles.logo} aria-hidden>
           <Image src={Logo} alt="Logo" />
         </Link>
 
         <Navigation />
-        {userLogOn ? <Avatar /> : <Buttons />}
+        <AvatarOrButtons />
 
         <IconButton
           className={styles['menu-button']}
@@ -107,7 +114,7 @@ export function Header({ userLogOn }: HeaderProps) {
           {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
         </IconButton>
 
-        {isMobileMenuOpen && <MobileMenu userLogOn={userLogOn} />}
+        {isMobileMenuOpen && <MobileMenu />}
       </div>
     </header>
   );

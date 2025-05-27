@@ -3,17 +3,19 @@ import { getLessons } from '@shared/api/campus';
 import {
   campusScheduleToDataSchedule,
   dataScheduleToApiSchedule,
+  getUniqueTeachers,
 } from './transform';
 import { Schedule as ApiSchedule } from './types';
 
 import { CachedExternalApi } from '@data/cache';
 import { Repository } from '@data/repo';
-import { Schedule as DataSchedule } from '@data/types/schedule';
+import { ScheduleWithTeachers as DataScheduleWithTeachers } from '@data/types/schedule';
+import { getTeachers } from './teachers';
 
 // 7 days
 const SCHEDULE_INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;
 
-class ScheduleExternalApi extends CachedExternalApi<DataSchedule> {
+class ScheduleExternalApi extends CachedExternalApi<DataScheduleWithTeachers> {
   private groupId: string;
 
   constructor(groupId: string, repo?: Repository) {
@@ -23,17 +25,21 @@ class ScheduleExternalApi extends CachedExternalApi<DataSchedule> {
   }
 
   protected fetchFromRepo(repo: Repository) {
-    return repo.schedule().findByGroup(this.groupId);
+    return repo.schedule().findByGroupWithTeachers(this.groupId);
   }
 
-  protected async fetchFromExternalApi(): Promise<DataSchedule> {
+  protected async fetchFromExternalApi(): Promise<DataScheduleWithTeachers> {
     const campusSchedule = await getLessons(this.groupId);
+    const teachers = await getTeachers(getUniqueTeachers(campusSchedule));
 
-    return campusScheduleToDataSchedule(campusSchedule);
+    return { ...campusScheduleToDataSchedule(campusSchedule), teachers };
   }
 
-  protected async putToRepo(repo: Repository, value: DataSchedule) {
-    await repo.schedule().upsert(value);
+  protected async putToRepo(repo: Repository, value: DataScheduleWithTeachers) {
+    await Promise.all([
+      repo.schedule().upsert(value),
+      repo.scheduleTeachers().insertOrUpdateMany(value.teachers),
+    ]);
   }
 }
 
@@ -45,5 +51,5 @@ export async function getScheduleForGroup(
   await using repo = await Repository.openConnection();
   const dataSchedule = await getDataSchedule(groupId, repo);
 
-  return await dataScheduleToApiSchedule(dataSchedule, repo);
+  return dataScheduleToApiSchedule(dataSchedule);
 }

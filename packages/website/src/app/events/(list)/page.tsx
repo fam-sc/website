@@ -8,15 +8,34 @@ import { Event } from '@data/types';
 import { formatDateTime } from '@/utils/date';
 import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@/utils/parseInt';
+import { Metadata } from 'next';
 
 const ITEMS_PER_PAGE = 5;
 
 function toClientEvent(event: WithId<Event>): ClientEvent {
   return {
     id: event._id.toString(),
+    status: event.status,
     title: event.title,
     date: formatDateTime(event.date),
     description: shortenRichText(event.description, 200),
+    image: event.image,
+  };
+}
+
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const { page: rawPage } = await searchParams;
+  const page = parseInt(rawPage) ?? 1;
+  const description = `Сторінка ${page}`;
+
+  return {
+    title: 'Події',
+    description,
+    openGraph: {
+      description,
+    },
   };
 }
 

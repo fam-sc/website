@@ -58,9 +58,14 @@ function BackForwardButton({
   href,
   className,
   children,
+  ...rest
 }: BackForwardButtonProps) {
   return (
-    <Link href={href} className={classNames(styles['back-forward'], className)}>
+    <Link
+      href={href}
+      className={classNames(styles['back-forward'], className)}
+      {...rest}
+    >
       {children}
     </Link>
   );
@@ -88,7 +93,7 @@ export function Pagination({
   return (
     <nav
       role="navigation"
-      aria-label="Pagination Navigation"
+      aria-label="Сторінки"
       className={classNames(styles.root, className)}
     >
       {current > 1 && (

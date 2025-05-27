@@ -7,6 +7,8 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { backgroundColor } from '@/theme';
 import { NotificationWrapper } from '@/components/Notification';
+import { getCurrentUserInfo } from '@/auth/session/next';
+import { AuthProvider } from '@/auth/context';
 
 // Cannot move options to a helper - it all must be a constant.
 const mursGothic = localFont({
@@ -40,16 +42,21 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: { template: `%s | СР ФПМ`, default: 'СР ФПМ' },
-  description: 'Опис студради',
+  openGraph: {
+    type: 'website',
+    locale: 'uk_UA',
+  },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userInfo = await getCurrentUserInfo();
+
   return (
-    <html lang="ua">
+    <html lang="uk-UA">
       <head>
         <link
           rel="icon"
@@ -67,10 +74,12 @@ export default function RootLayout({
       </head>
       <body className={mursGothic.variable}>
         <NotificationWrapper>
-          <Header userLogOn={false} />
-          <main>{children}</main>
+          <AuthProvider value={{ user: userInfo }}>
+            <Header />
+            <main>{children}</main>
 
-          <Footer />
+            <Footer />
+          </AuthProvider>
         </NotificationWrapper>
       </body>
     </html>

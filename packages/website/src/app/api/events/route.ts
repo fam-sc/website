@@ -6,6 +6,9 @@ import { parseHtmlToRichText } from '@shared/richText/parser';
 import { creatMediaServerParseContext } from '@/api/media/richText';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
+import { getImageSize } from '@/image/size';
+import { authRoute } from '@/api/authRoute';
+import { UserRole } from '@data/types/user';
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const url = new URL(request.url);
@@ -20,8 +23,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const result = await repo
     .events()
     .getAll()
-    .project({ title: 1 })
-    .map(({ _id, title }) => ({ id: (_id as ObjectId).toString(), title }))
+    .project<{ _id: ObjectId; title: string }>({ title: 1 })
+    .map(({ _id, title }) => ({ id: _id.toString(), title }))
     .toArray();
 
   return ok(result);
@@ -29,7 +32,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const formData = await request.formData();
-  const { title, description, date, image } = parseAddEventPayload(formData);
+  const { title, description, date, image, status } =
+    parseAddEventPayload(formData);
 
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
   await using mediaTransaction = new MediaTransaction();
@@ -39,17 +43,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     creatMediaServerParseContext(mediaTransaction)
   );
 
-  await using repo = await Repository.openConnection();
+  const imageBuffer = await image.bytes();
+  const imageSize = getImageSize(imageBuffer);
 
-  await repo.transaction(async (trepo) => {
-    const { insertedId } = await trepo
-      .events()
-      .insert({ date, title, description: richTextDescription });
+  return await authRoute(request, UserRole.ADMIN, async (repo) => {
+    return await repo.transaction(async (trepo) => {
+      const { insertedId } = await trepo.events().insert({
+        date,
+        status,
+        title,
+        description: richTextDescription,
+        image: imageSize,
+      });
 
-    mediaTransaction.put(`events/${insertedId}`, image.stream());
+      mediaTransaction.put(`events/${insertedId}`, imageBuffer);
+
+      await mediaTransaction.commit();
+
+      return new NextResponse();
+    });
   });
-
-  await mediaTransaction.commit();
-
-  return new NextResponse();
 }

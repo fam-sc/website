@@ -56,6 +56,7 @@ export function ScheduleTile({
 
         {canExpand && (
           <IconButton
+            title={isExpanded ? 'Показати менше' : 'Показати більше'}
             onClick={() => {
               setIsExpanded((state) => !state);
             }}
@@ -66,6 +67,7 @@ export function ScheduleTile({
 
         {isEditable && !canExpand && (
           <IconButton
+            title="Додати посилання"
             onClick={() => {
               onLinkChanged?.('');
               setIsExpanded(true);
@@ -77,19 +79,20 @@ export function ScheduleTile({
       </div>
 
       <Typography className={styles.name}>{lesson.name}</Typography>
+
       <OptionalLink href={lesson.teacher.link} linkVariant="clean">
         {lesson.teacher.name}
       </OptionalLink>
 
       {lesson.place.length > 0 ? (
         <Typography hasIcon>
-          <PlaceIcon />
+          <PlaceIcon aria-hidden />
           {lesson.place}
         </Typography>
       ) : null}
 
       <Typography hasIcon className={styles.time}>
-        <TimeIcon />
+        <TimeIcon aria-hidden />
         {lesson.time}
       </Typography>
 
@@ -99,6 +102,7 @@ export function ScheduleTile({
             <input
               type="text"
               value={lesson.link}
+              placeholder="Посилання на пару"
               onInput={(event) => {
                 const { value } = event.target as HTMLInputElement;
 
@@ -106,7 +110,9 @@ export function ScheduleTile({
               }}
             />
           ) : (
-            <Link href={lesson.link}>{lesson.link}</Link>
+            <Link href={lesson.link} aria-label="Посилання на пару">
+              {lesson.link}
+            </Link>
           )}
         </div>
       )}

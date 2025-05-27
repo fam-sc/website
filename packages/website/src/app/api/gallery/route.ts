@@ -1,7 +1,9 @@
+import { authRoute } from '@/api/authRoute';
 import { MediaTransaction } from '@/api/media/transaction';
 import { badRequest, ok } from '@/api/responses';
+import { getImageSize } from '@/image/size';
 import { Repository } from '@data/repo';
-import { BSONError } from 'bson';
+import { UserRole } from '@data/types/user';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -57,12 +59,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return badRequest({ message: "Every item of 'files' should be a file" });
   }
 
+  const filesWithSize = await Promise.all(
+    files.map(async (file) => {
+      const content = await file.bytes();
+
+      return { content, size: getImageSize(content) };
+    })
+  );
+
   const date = new Date(dateString);
   if (Number.isNaN(date.getTime())) {
     return badRequest({ message: 'Invalid date format' });
   }
-
-  await using repo = await Repository.openConnection();
 
   let eventObjectId: ObjectId | undefined;
 
@@ -70,44 +78,41 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     if (eventId !== null) {
       eventObjectId = new ObjectId(eventId);
     }
-  } catch (error: unknown) {
-    if (BSONError.isBSONError(error)) {
-      return badRequest({ message: 'Invalid event ID' });
-    }
-
-    throw error;
+  } catch {
+    return badRequest({ message: 'Invalid event ID' });
   }
 
-  const insertResult = await repo.transaction(async (trepo) => {
-    if (eventObjectId !== undefined) {
-      const event = await repo.events().findById(eventObjectId);
+  return authRoute(request, UserRole.ADMIN, async (repo) => {
+    return repo.transaction(async (trepo) => {
+      if (eventObjectId !== undefined) {
+        const event = await repo.events().findById(eventObjectId);
 
-      if (event === null) {
-        return;
+        if (event === null) {
+          return badRequest({ message: EVENT_NOT_EXIST_MESSAGE });
+        }
       }
-    }
 
-    return await trepo
-      .galleryImages()
-      .insertMany(files.map((_, i) => ({ eventId, date, order: i })));
+      const { insertedIds } = await trepo.galleryImages().insertMany(
+        filesWithSize.map(({ size }, i) => ({
+          eventId,
+          date,
+          order: i,
+          image: size,
+        }))
+      );
+
+      await using mediaTransaction = new MediaTransaction();
+
+      // eslint-disable-next-line unicorn/no-for-loop
+      for (let i = 0; i < filesWithSize.length; i++) {
+        const id = insertedIds[i];
+
+        mediaTransaction.put(`gallery/${id}`, filesWithSize[i].content);
+      }
+
+      await mediaTransaction.commit();
+
+      return new NextResponse();
+    });
   });
-
-  if (!insertResult) {
-    return badRequest({ message: EVENT_NOT_EXIST_MESSAGE });
-  }
-
-  await using mediaTransaction = new MediaTransaction();
-
-  const { insertedIds } = insertResult;
-
-  // eslint-disable-next-line unicorn/no-for-loop
-  for (let i = 0; i < files.length; i++) {
-    const id = insertedIds[i];
-
-    mediaTransaction.put(`gallery/${id}`, files[i]);
-  }
-
-  await mediaTransaction.commit();
-
-  return new NextResponse();
 }

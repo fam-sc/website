@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { AriaAttributes, FC, ReactNode, useId } from 'react';
 import styles from './index.module.scss';
 import { Typography } from '../Typography';
 import { TextArea } from '../TextArea';
@@ -24,33 +24,40 @@ export interface PollQuestionProps<T extends QuestionType> {
 
 type OptionGroupProps = {
   choices: Choice[];
-  children: (id: string | number, title: string) => ReactNode;
+  children: (id: string | number, index: number, title: string) => ReactNode;
 };
 
 function OptionGroup({ choices, children }: OptionGroupProps) {
   return (
     <div className={styles['option-group']}>
-      {choices.map(({ id, title }) => children(id, title))}
+      {choices.map(({ id, title }, index) => children(id, index, title))}
     </div>
   );
 }
 
-type ContentTypeProps<T extends QuestionType = QuestionType> = {
+interface ContentTypeProps<T extends QuestionType = QuestionType>
+  extends AriaAttributes {
   disabled?: boolean;
 
   descriptor: QuestionDescriptor<T>;
   answer: QuestionAnswer<T> | undefined;
   onAnswerChanged: (value: QuestionAnswer<T>) => void;
-};
+}
 
-type ContentComponentMap = {
-  [T in QuestionType]: FC<ContentTypeProps<T>>;
-};
+type ContentComponentMap = Omit<
+  {
+    [T in QuestionType]: FC<ContentTypeProps<T>>;
+  },
+  'checkbox'
+>;
 
 function TextContent({
   disabled,
   answer,
   onAnswerChanged,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  descriptor: _descriptor,
+  ...rest
 }: ContentTypeProps<'text'>) {
   return (
     <TextArea
@@ -59,30 +66,32 @@ function TextContent({
       onTextChanged={(text) => {
         onAnswerChanged({ text });
       }}
+      {...rest}
     />
   );
 }
 
-function CheckboxContent({
+function MultiCheckboxContent({
   disabled,
   descriptor,
   answer,
   onAnswerChanged,
-}: ContentTypeProps<'checkbox'>) {
-  const selectedIds = answer?.selectedIds ?? [];
+  ...rest
+}: ContentTypeProps<'multicheckbox'>) {
+  const selectedIndices = answer?.selectedIndices ?? [];
 
   return (
-    <OptionGroup choices={descriptor.choices}>
-      {(id, title) => (
+    <OptionGroup choices={descriptor.choices} {...rest}>
+      {(id, index, title) => (
         <Checkbox
           key={id}
           disabled={disabled}
-          checked={selectedIds.includes(id)}
+          checked={selectedIndices.includes(index)}
           onCheckedChanged={(state) => {
             onAnswerChanged({
-              selectedIds: state
-                ? [...selectedIds, id]
-                : selectedIds.filter((value) => value !== id),
+              selectedIndices: state
+                ? [...selectedIndices, index]
+                : selectedIndices.filter((value) => value !== index),
             });
           }}
         >
@@ -98,17 +107,18 @@ function RadioContent({
   descriptor,
   answer,
   onAnswerChanged,
+  ...rest
 }: ContentTypeProps<'radio'>) {
   return (
-    <OptionGroup choices={descriptor.choices}>
-      {(id, title) => (
+    <OptionGroup choices={descriptor.choices} {...rest}>
+      {(id, index, title) => (
         <RadioButton
           key={id}
           disabled={disabled}
-          checked={answer?.selectedId === id}
+          checked={answer?.selectedIndex === index}
           onCheckedChanged={(state) => {
             if (state) {
-              onAnswerChanged({ selectedId: id });
+              onAnswerChanged({ selectedIndex: index });
             }
           }}
         >
@@ -119,9 +129,35 @@ function RadioContent({
   );
 }
 
+interface CheckboxQuestionProps extends AriaAttributes {
+  title: string;
+  answer: QuestionAnswer<'checkbox'>;
+  onAnswerChanged: (value: QuestionAnswer<'checkbox'>) => void;
+}
+
+function CheckboxQuestion({
+  title,
+  answer,
+  onAnswerChanged,
+  ...rest
+}: CheckboxQuestionProps) {
+  return (
+    <div className={styles.root} {...rest}>
+      <Checkbox
+        checked={answer.status}
+        onCheckedChanged={(status) => {
+          onAnswerChanged({ status });
+        }}
+      >
+        {title}
+      </Checkbox>
+    </div>
+  );
+}
+
 const contentComponentMap: ContentComponentMap = {
   text: TextContent,
-  checkbox: CheckboxContent,
+  multicheckbox: MultiCheckboxContent,
   radio: RadioContent,
 };
 
@@ -132,13 +168,26 @@ export function PollQuestion<T extends QuestionType>({
   answer,
   onAnswerChanged,
 }: PollQuestionProps<T>) {
-  const Content = contentComponentMap[descriptor.type] as FC<
+  const type = descriptor.type;
+  const titleId = useId();
+
+  if (type === 'checkbox') {
+    return (
+      <CheckboxQuestion
+        title={title}
+        answer={answer as QuestionAnswer<'checkbox'>}
+        onAnswerChanged={onAnswerChanged}
+      />
+    );
+  }
+
+  const Content = (contentComponentMap as Record<T, unknown>)[type] as FC<
     ContentTypeProps<T>
   >;
 
   return (
     <fieldset className={styles.root}>
-      <Typography as="legend" variant="bodyLarge">
+      <Typography as="legend" variant="bodyLarge" id={titleId}>
         {title}
       </Typography>
 
@@ -147,6 +196,7 @@ export function PollQuestion<T extends QuestionType>({
         descriptor={descriptor}
         answer={answer}
         onAnswerChanged={onAnswerChanged}
+        aria-labelledby={titleId}
       />
     </fieldset>
   );

@@ -30,7 +30,10 @@ export function Select<T extends string>({
     const key = (event.target as HTMLElement).dataset.key;
 
     if (key !== undefined) {
-      onItemSelected?.(key as T);
+      if (key !== selectedItem) {
+        onItemSelected?.(key as T);
+      }
+
       setIsOpen(false);
     }
   };

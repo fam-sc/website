@@ -1,18 +1,18 @@
 import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
-import Link from 'next/link';
-import Image from 'next/image';
 import { getMediaFileUrl } from '@shared/media';
-import { Typography } from '@/components/Typography';
 import { RichTextString } from '@shared/richText/types';
-import { EventIcon } from '@/icons/EventIcon';
-import { RichText } from '@/components/RichText';
+import { Event, ImageInfo } from '@data/types';
+import { EventListItem } from '@/components/EventListItem';
+import { List } from '@/components/List';
 
 export type ClientEvent = {
   id: string;
+  status: Event['status'];
   title: string;
   date: string;
   description: RichTextString;
+  image?: ImageInfo;
 };
 
 export type ClientComponentProps = {
@@ -21,33 +21,6 @@ export type ClientComponentProps = {
   totalPages: number;
 };
 
-function Item({ value }: { value: ClientEvent }) {
-  return (
-    <Link href={`/events/${value.id}`}>
-      <Image
-        src={getMediaFileUrl(`events/${value.id}`)}
-        alt=""
-        width={0}
-        height={0}
-      />
-
-      <div className={styles['item-info']}>
-        <Typography className={styles['item-title']} variant="h5">
-          {value.title}
-        </Typography>
-        <RichText
-          className={styles['item-description']}
-          text={value.description}
-        />
-        <Typography className={styles['item-date']}>
-          <EventIcon />
-          {value.date}
-        </Typography>
-      </div>
-    </Link>
-  );
-}
-
 export function ClientComponent({
   items,
   currentPage,
@@ -55,13 +28,21 @@ export function ClientComponent({
 }: ClientComponentProps) {
   return (
     <div className={styles.root}>
-      <ul className={styles.list}>
-        {items.map((item) => (
-          <li key={item.id}>
-            <Item value={item} />
+      <List>
+        {items.map(({ id, image, ...rest }) => (
+          <li key={id}>
+            <EventListItem
+              {...rest}
+              id={id}
+              image={{
+                src: getMediaFileUrl(`events/${id}`),
+                width: image?.width ?? 0,
+                height: image?.height ?? 0,
+              }}
+            />
           </li>
         ))}
-      </ul>
+      </List>
 
       {totalPages > 1 && (
         <Pagination

@@ -9,21 +9,25 @@ import { UploadIcon } from '@/icons/UploadIcon';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { GalleryImageInfoDialog } from './dialog';
+import { GalleryImageWithSize } from '@/api/gallery/types';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
 
 export type ClientComponentProps = {
-  canModify: boolean;
-  selectedId: string | null;
+  selected: GalleryImageWithSize | null;
 };
 
 export function ClientComponent({
-  canModify,
-  selectedId: initialSelectedId,
+  selected: initialSelected,
 }: ClientComponentProps) {
-  const [selectedId, setSelectedId] = useState<string | null>(
-    initialSelectedId
+  const [selectedId, setSelectedId] = useState<GalleryImageWithSize | null>(
+    initialSelected
   );
 
   const router = useRouter();
+
+  const { user } = useAuthInfo();
+  const canModify = user !== null && user.role >= UserRole.ADMIN;
 
   return (
     <div className={styles.content}>
@@ -37,15 +41,15 @@ export function ClientComponent({
       <LazyImageScroll
         className={styles['image-scroll']}
         requestPage={(page) => fetchGalleryPage(page)}
-        getImageSource={(id) => getMediaFileUrl(`gallery/${id}`)}
-        onImageClick={(id) => {
-          router.replace(`/gallery?id=${id}`);
-          setSelectedId(id);
+        getImageInfo={({ id }) => getMediaFileUrl(`gallery/${id}`)}
+        onImageClick={(item) => {
+          router.replace(`/gallery?id=${item.id}`);
+          setSelectedId(item);
         }}
       />
       {selectedId && (
         <GalleryImageInfoDialog
-          id={selectedId}
+          info={selectedId}
           canModify={canModify}
           onClose={() => {
             setSelectedId(null);

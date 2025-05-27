@@ -1,10 +1,12 @@
 import { parseEditEventPayload } from '@/api/events/payloads';
 import { deleteMediaFile } from '@/api/media';
 import { MediaTransaction } from '@/api/media/transaction';
-import { Repository } from '@data/repo';
 import { parseHtmlToRichText } from '@shared/richText/parser';
 import { creatMediaServerParseContext } from '@/api/media/richText';
 import { NextRequest, NextResponse } from 'next/server';
+import { getImageSize } from '@/image/size';
+import { authRoute } from '@/api/authRoute';
+import { UserRole } from '@data/types/user';
 
 type Params = {
   params: Promise<{ id: string }>;
@@ -17,7 +19,11 @@ export async function PUT(
   const { id } = await params;
 
   const formData = await request.formData();
-  const { title, description, date, image } = parseEditEventPayload(formData);
+  const { title, description, date, image, status } =
+    parseEditEventPayload(formData);
+
+  const imageBuffer = await image?.bytes();
+  const imageSize = imageBuffer ? getImageSize(imageBuffer) : undefined;
 
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
   await using mediaTransaction = new MediaTransaction();
@@ -27,38 +33,43 @@ export async function PUT(
     creatMediaServerParseContext(mediaTransaction)
   );
 
-  await using repo = await Repository.openConnection();
+  return await authRoute(request, UserRole.ADMIN, async (repo) => {
+    await repo.transaction(async (trepo) => {
+      const result = await trepo.events().update(id, {
+        date,
+        title,
+        status,
+        description: richTextDescription,
+        image: imageSize,
+      });
 
-  await repo.transaction(async (trepo) => {
-    const result = await trepo
-      .events()
-      .update(id, { date, title, description: richTextDescription });
+      if (result.matchedCount === 0) {
+        throw new Error("Specified event doesn't exist");
+      }
 
-    if (result.matchedCount === 0) {
-      throw new Error("Specified event doesn't exist");
-    }
+      if (image !== undefined) {
+        mediaTransaction.put(`events/${id}`, image.stream());
+      }
+    });
 
-    if (image !== undefined) {
-      mediaTransaction.put(`events/${id}`, image.stream());
-    }
+    await mediaTransaction.commit();
+
+    return new NextResponse();
   });
-
-  await mediaTransaction.commit();
-
-  return new NextResponse();
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: Params
 ): Promise<NextResponse> {
   const { id } = await params;
-  await using repo = await Repository.openConnection();
 
-  const result = await repo.events().delete(id);
-  if (result.deletedCount !== 0) {
-    await deleteMediaFile(`events/${id}`);
-  }
+  return authRoute(request, UserRole.ADMIN, async (repo) => {
+    const result = await repo.events().delete(id);
+    if (result.deletedCount !== 0) {
+      await deleteMediaFile(`events/${id}`);
+    }
 
-  return new NextResponse();
+    return new NextResponse();
+  });
 }

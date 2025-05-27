@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { verifyHmac } from './crypto';
-import { toHexString } from './hex';
+import { toHexString } from '@shared/hex';
 
 test('verifyHmac', async () => {
   const key = '123';

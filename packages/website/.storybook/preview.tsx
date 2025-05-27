@@ -2,6 +2,7 @@ import type { Preview } from '@storybook/react';
 import localFont from 'next/font/local';
 
 import '../src/theme/global.scss';
+import { NotificationWrapper } from '@/components/Notification';
 
 const mursGothic = localFont({
   src: [
@@ -17,7 +18,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <div className={mursGothic.variable}>
-        <Story />
+        <NotificationWrapper>
+          <Story />
+        </NotificationWrapper>
       </div>
     ),
   ],

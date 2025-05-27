@@ -1,11 +1,16 @@
 import Image from 'next/image';
 import { InfiniteScroll } from '../InfiniteScroll';
 import styles from './index.module.scss';
+import { usePageFetcher } from '@/hooks/usePageFetcher';
+import { useNotification } from '../Notification';
+import { List } from '../List';
 
 export type LazyImageScrollProps<T> = {
   className?: string;
   requestPage: (page: number) => Promise<T[]>;
-  getImageSource: (value: T) => string;
+  getImageInfo: (
+    value: T
+  ) => string | { src: string; width: number; height: number };
 
   onImageClick: (value: T) => void;
 };
@@ -13,27 +18,49 @@ export type LazyImageScrollProps<T> = {
 export function LazyImageScroll<T>({
   className,
   requestPage,
-  getImageSource,
+  getImageInfo,
   onImageClick,
 }: LazyImageScrollProps<T>) {
+  const notification = useNotification();
+  const { items, hasMoreItems, onRequestNextPage } = usePageFetcher(
+    requestPage,
+    () => {
+      notification.show('Не вдалось завантажити фото', 'error');
+    }
+  );
+
   return (
     <InfiniteScroll
       className={className}
-      contentClassName={styles.content}
-      requestPage={requestPage}
+      hasMoreElements={hasMoreItems}
+      onRequesNextPage={onRequestNextPage}
     >
-      {(value, index) => (
-        <div
-          key={`${value}-${index}`}
-          onClick={() => {
-            onImageClick(value);
-          }}
-        >
-          <Image src={getImageSource(value)} alt="" width={0} height={0} />
+      <List className={styles.content}>
+        {items.map((value, index) => {
+          const imageInfo = getImageInfo(value);
 
-          <span />
-        </div>
-      )}
+          return (
+            <div
+              key={`${value}-${index}`}
+              onClick={() => {
+                onImageClick(value);
+              }}
+            >
+              {typeof imageInfo === 'string' ? (
+                <Image src={imageInfo} alt="" width={0} height={0} />
+              ) : (
+                <Image
+                  src={imageInfo.src}
+                  alt=""
+                  width={imageInfo.width}
+                  height={imageInfo.height}
+                />
+              )}
+              <span />
+            </div>
+          );
+        })}
+      </List>
     </InfiniteScroll>
   );
 }

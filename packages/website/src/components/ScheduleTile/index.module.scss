@@ -116,6 +116,8 @@ $type-gradient-map: (
 
     @include variant-full-body('body');
 
+    color: var(--color-text-on-background);
+
     text-decoration: underline;
     text-underline-offset: 0.15em;
     text-underline-position: from-font;

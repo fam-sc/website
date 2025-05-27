@@ -54,6 +54,7 @@ export function OptionListBuilder({
               className={styles.remove}
               disabled={disabled}
               hover="fill"
+              title="Видалити елемент"
               onClick={() => {
                 const copy = [...items];
                 copy.splice(i, 1);

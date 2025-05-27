@@ -1,0 +1,21 @@
+.content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2em;
+  height: 100%;
+}
+
+.saveChanges {
+  align-self: flex-end;
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.sections {
+  flex-grow: 1;
+}

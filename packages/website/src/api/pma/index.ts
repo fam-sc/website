@@ -17,11 +17,11 @@ async function fetchPage(url: string): Promise<string> {
   throw new Error(response.statusText);
 }
 
-function mapNameWithLink<T extends NameWithLink>(items: T[]): T[] {
-  return items.map(({ link, ...rest }) => ({
+function mapNameWithLink(items: NameWithLink[]): NameWithLink[] {
+  return items.map(({ name, link }) => ({
+    name,
     link: `${SITE_URL}${link}`,
-    ...rest,
-  })) as T[];
+  }));
 }
 
 export async function getTeachers(): Promise<Teacher[]> {
@@ -33,7 +33,7 @@ export async function getTeachers(): Promise<Teacher[]> {
 
 export async function getDisciplines(): Promise<Discipline[]> {
   const pageContent = await fetchPage(
-    `${SITE_URL}//uk/studentam/navchalni-distsiplini`
+    `${SITE_URL}/uk/studentam/navchalni-distsiplini`
   );
   const disciplineListBlock = findNextDataBlock(
     pageContent,

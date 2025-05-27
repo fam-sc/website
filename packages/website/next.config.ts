@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -10,7 +12,11 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  serverExternalPackages: ['knex'],
+  redirects: () =>
+    Promise.resolve([
+      { source: '/u', destination: '/u/info', permanent: true },
+    ]),
+  outputFileTracingRoot: path.join(__dirname, '../../'),
 };
 
 export default nextConfig;

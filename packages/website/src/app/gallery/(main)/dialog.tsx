@@ -1,7 +1,10 @@
 'use client';
 
 import { fetchGalleryImage, deleteGalleryImage } from '@/api/gallery/client';
-import { GalleryImageWithEvent } from '@/api/gallery/types';
+import {
+  GalleryImageWithEvent,
+  GalleryImageWithSize,
+} from '@/api/gallery/types';
 import { getMediaFileUrl } from '@shared/media';
 import { IconButton } from '@/components/IconButton';
 import { ModalOverlay } from '@/components/ModalOverlay';
@@ -18,13 +21,13 @@ import Image from 'next/image';
 import { InlineQuestion } from '@/components/InlineQuestion';
 
 export type GalleryImageInfoDialogProps = {
-  id: string;
+  info: GalleryImageWithSize;
   canModify: boolean;
   onClose: () => void;
 };
 
 export function GalleryImageInfoDialog({
-  id,
+  info,
   canModify,
   onClose,
 }: GalleryImageInfoDialogProps) {
@@ -32,7 +35,7 @@ export function GalleryImageInfoDialog({
   const notification = useNotification();
 
   useEffect(() => {
-    fetchGalleryImage(id)
+    fetchGalleryImage(info.id)
       .then((value) => {
         setValue(value);
       })
@@ -43,7 +46,7 @@ export function GalleryImageInfoDialog({
 
         onClose();
       });
-  }, [id, notification, onClose]);
+  }, [info.id, notification, onClose]);
 
   return (
     <ModalOverlay effect="blur" className={styles['modal-overlay']}>
@@ -53,10 +56,10 @@ export function GalleryImageInfoDialog({
 
       <div className={styles.content}>
         <Image
-          src={getMediaFileUrl(`gallery/${id}`)}
+          src={getMediaFileUrl(`gallery/${info.id}`)}
           alt=""
-          width={0}
-          height={0}
+          width={info.width ?? 0}
+          height={info.height ?? 0}
         />
 
         <div className={styles['right-side']}>
@@ -67,7 +70,7 @@ export function GalleryImageInfoDialog({
               questionText="Ви справді хочете видалити фото?"
               onAction={(type) => {
                 if (type === 'yes') {
-                  deleteGalleryImage(id)
+                  deleteGalleryImage(info.id)
                     .then(() => {
                       notification.show('Фото видалене', 'plain');
                       onClose();

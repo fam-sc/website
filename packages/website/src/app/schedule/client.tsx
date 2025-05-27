@@ -23,11 +23,12 @@ import { Button } from '@/components/Button';
 import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
 import { updateScheduleLinks } from '@/api/schedule/client';
 import { useNotification } from '@/components/Notification';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
 
 type Week = 1 | 2;
 
 type ClientComponentProps = {
-  canModify: boolean;
   initialWeek: Week;
   initialGroup: Group | null;
 };
@@ -41,11 +42,13 @@ const weekTextMap: Record<Week, string> = {
 };
 
 export function ClientComponent({
-  canModify,
   initialWeek,
   initialGroup,
 }: ClientComponentProps) {
   const router = useRouter();
+
+  const { user } = useAuthInfo();
+  const canModify = user !== null && user.role >= UserRole.GROUP_HEAD;
 
   const [selectedWeek, setSelectedWeek] = useState<Week>(initialWeek);
   const [selectedGroup, setSelectedGroup] = useState(initialGroup?.campusId);
