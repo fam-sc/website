@@ -1,702 +1,705 @@
-openapi: '3.0.3'
+openapi: "3.0.3"
 info:
   title: Website API
   description: REST API documentation for the client-server website, covering users, events, gallery, polls, and more.
-  version: '1.0'
+  version: "1.0"
 
 tags:
   - name: Authentication
-    description: Operations for user sign-in and sign-up.
-  - name: Useful Links
-    description: Managing useful links and their images.
+    description: Operations related to user sign-in and sign-up.
   - name: Events
-    description: Operations related to events.
   - name: Gallery
-    description: Accessing photo galleries.
-  - name: Mail
-    description: Sending emails like confirmations.
   - name: Polls
-    description: Managing user polls.
   - name: Schedule
-    description: Accessing schedules.
-  - name: Telegram
-    description: Sending messages via Telegram.
 
 paths:
-  "/usefulLinkImage/{id}":
+  # Authentication
+
+  "/signIn":
+    post:
+      summary: Sign in for user
+      tags: ["Authentication"]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignInData"
+      responses:
+        "200":
+          description: User signed in successfully.
+          headers:
+            Set-Cookie:
+              description: Session cookie set by server.
+              schema:
+                type: string
+                example: "sessionId=12345; Path=/; HttpOnly"
+        "400":
+          description: Bad request ( missing fields).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized (invalid credentials).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/signUp":
+    post:
+      summary: Sign up for user
+      description:
+        The user is not actually signed up after this. 
+        An mail will be sent to given e-mail with a link that user should click in order to confirm that the one owns the email.
+        This link will activate the account.
+      tags: ["Authentication"]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUpData"
+      responses:
+        "200":
+          description: User signed up successfully.
+          headers:
+            Set-Cookie:
+              description: Session cookie set by server.
+              schema:
+                type: string
+        "400":
+          description: Bad request (invalid body, passwords mismatch, etc.).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Conflict (User with this email already exists).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/signUp/finish":
+    post:
+      summary: Activates the account.
+      description:
+        /signUp call sents mail to the user with a token. 
+        This token must be passed to this method to authenticate the request.
+      tags: ["Authentication"]
+      responses:
+        "200":
+          description: The account is activated
+        "400":
+          description: Invalid request (e.g, invalid or no token)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Conflict (User with this email already exists).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  # Events
+
+  "/events":
     get:
-      summary: Get image of the useful link
-      tags: [ "Useful Links" ]
+      summary: Gets short information about all events
+      tags: ["Events"]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ShortEvent"
+
+    post:
+      summary: Adds new event
+      description: The request must be authenticated.
+      tags: ["Events"]
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          "multipart/form-data":
+            schema:
+              $ref: "#/components/schemas/AddEventPayload"
+      responses:
+        "200":
+          description: Event created.
+
+        "400":
+          description: Bad Request (Invalid data).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/events/{id}":
+    put:
+      summary: Updates the event
+      description: The request must be authorized.
+      tags: ["Events"]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: ID of the event to change
+          required: true
+      requestBody:
+        required: true
+        content:
+          "multipart/form-data":
+            schema:
+              $ref: "#/components/schemas/EditEventPayload"
+      responses:
+        "200":
+          description: Event updated auccessfully.
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Event not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      summary: Deletes the event
+      description: The request must be authorized.
+      tags: ["Events"]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: ID of the event to delete
+          required: true
+      responses:
+        "200":
+          description: Event deleted successfully.
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Event Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  # Gallery
+
+  "/gallery":
+    get:
+      summary: Get a page of gallery images
+      tags: [Gallery]
+      parameters:
+        - in: query
+          name: page
+          required: true
+          description: 
+            The number of the page to query. 
+            The page is 1-based and should be only integer. 
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+             schema:
+               type: array
+               items:
+                $ref: "#/components/schemas/GalleryPageItem"
+
+  "/gallery":
+    post:
+      summary: Adds a new gallery images
+      tags: [Gallery]
+      requestBody:
+        required: true
+        content:
+          "multipart/form-data":
+            schema:
+              type: object
+              properties:
+                eventId:
+                  type: string
+                  format: uuid
+                  description: ID of the event these images relate to
+                date:
+                  type: string
+                  required: true
+                  format: date-time
+                  description: When the images were taken.
+                files:
+                  type: string
+                  format: binary
+                  description: An array of images
+      responses:
+        "200":
+          description: Images added.
+        "400":
+          description: Invalid payload.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/gallery/{id}":
+    get:
+      summary: Get detailed information about a gallery photo
+      tags: [Gallery]
       parameters:
         - in: path
           name: id
           schema:
             type: string
           required: true
-          description: ID of the useful link to get image of
+          description: ID of the photo to retrieve.
       responses:
         "200":
           description: OK
-        "404":
-          description: The link was not found
-
-  "/signIn":
-      post:
-        summary: Sign in for user
-        tags: [ "Authentication" ]
-        requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SignInInput' # Reference schema
-        responses:
-          '200':
-            description: User signed in successfully.
-            headers:
-              Set-Cookie:
-                description: Session cookie set by server.
-                schema:
-                  type: string
-                  example: 'sessionId=abcde12345; Path=/; HttpOnly'
-          '400':
-            description: Bad request (invalid body, missing fields).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '401':
-            description: Unauthorized (invalid credentials).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-
-  "/signUp":
-      post:
-        summary: Sign up for user
-        tags: [ "Authentication" ]
-        requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SignUpInput' # Reference schema
-        responses:
-          '201': # Use 201 Created for new resource
-            description: User signed up successfully.
-            headers:
-              Set-Cookie:
-                description: Session cookie set by server.
-                schema:
-                  type: string
-          '400':
-            description: Bad request (invalid body, passwords mismatch, etc.).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '409': # Use 409 Conflict if email already exists
-            description: Conflict (User with this email already exists).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-
-  "/events":
-    get:
-      summary: Gets short information about all events
-      tags: [ "Events" ]
-      responses:
-        "200":
-          description: OK - An array of short event information.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventShort'
-        "500":
-          description: Internal Server Error.
+                  $ref: "#/components/schemas/GalleryImageWithEvent"
+        "404":
+          description: Given photo not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      summary: Adds new event
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Deletes the image
       description: The request must be authorized.
-      tags: [ "Events" ]
+      tags: ["Gallery"]
       security:
-        - cookieAuth: [ ]
-      requestBody:
-        required: true
-        content:
-          "multipart/form-data":
-            schema:
-              $ref: '#/components/schemas/NewEventInput'
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: ID of the image to delete
+          required: true
       responses:
-        "201":
-          description: Event Created Successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Event'
-        "400":
-          description: Bad Request (Invalid data).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        "200":
+          description: Image deleted successfully.
         "401":
           description: Unauthorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-
-  "/events/{id}":
-      get:
-        summary: Get details of a specific event
-        tags: [ "Events" ]
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            required: true
-            description: ID of the event to retrieve.
-        responses:
-          '200':
-            description: Detailed information about the event.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Event'
-          '404':
-            description: Event not found.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-      put:
-        summary: Updates the event
-        description: The request must be authorized.
-        tags: [ "Events" ]
-        security:
-          - cookieAuth: [ ]
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            description: ID of the event to change
-            required: true
-        requestBody:
-          required: true
-          content:
-            "multipart/form-data":
-              schema:
-                $ref: '#/components/schemas/UpdateEventInput'
-        responses:
-          "200":
-            description: Event Updated Successfully.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Event'
-          "400":
-            description: Bad Request (Invalid data).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          "401":
-            description: Unauthorized.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          "404":
-            description: Event Not Found.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-      delete:
-        summary: Deletes the event
-        description: The request must be authorized.
-        tags: [ "Events" ]
-        security:
-          - cookieAuth: [ ]
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            description: ID of the event to delete
-            required: true
-        responses:
-          "204": # 204 No Content is standard for successful DELETE
-            description: Event Deleted Successfully.
-          "401":
-            description: Unauthorized.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          "404":
-            description: Event Not Found.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-
-  "/gallery/{id}":
-      get:
-        summary: Get photo gallery
-        tags: [ Gallery ]
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            required: true
-            description: ID of the gallery to retrieve.
-        responses:
-          '200':
-            description: List of photos.
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Image'
-          '404':
-            description: Gallery not found.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-
-  /mail/confirmation:
-      post:
-        summary: Send confirmation letter
-        tags: [ Mail ]
-        requestBody:
-          required: true
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Image not found.
           content:
             application/json:
               schema:
-                type: object
-                required: [ email ]
-                properties:
-                  email:
-                    type: string
-                    format: email
-                    example: new_user@example.com
-        responses:
-          '200':
-            description: The letter was sent successfully.
-          '400':
-            description: Bad request (e.g., invalid email).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '500':
-            description: Internal Server Error (Failed to send mail).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
+
+  # Polls
+
+  /polls:
+    post:
+      summary: Adds a new poll
+      description: The request must be authorized.
+      tags: ["Polls"]
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+             schema:
+               $ref: "#/components/schemas/AddPollPayload"
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /polls/{id}:
-      get:
-        summary: Get details of a specific poll
-        description: Retrieves the question, options, and current results (if allowed) for a single poll.
-        tags: [ Polls ]
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            required: true
-            description: The ID of the poll to retrieve.
-        responses:
-          '200':
-            description: Poll details.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Poll'
-          '404':
-            description: Poll not found.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-      post:
-        summary: Vote on a specific poll
-        tags: [ Polls ]
-        security:
-          - cookieAuth: [ ]
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            required: true
-            description: The ID of the poll to vote on.
-        requestBody:
+    post:
+      summary: Vote on a specific poll
+      description: The request must be authorized.
+      tags: ["Polls"]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
           required: true
+          description: The ID of the poll to vote on.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitPollPayload"
+      responses:
+        "200":
+          description: Vote recorded successfully.
+        "400":
+          description: Bad request (e.g., poll closed).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PollVoteInput'
-        responses:
-          '200':
-            description: Vote recorded successfully.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Poll' # Return updated poll
-          '400':
-            description: Bad request (e.g., invalid option ID, poll closed).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '401':
-            description: Unauthorized.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '403':
-            description: Forbidden (e.g., user already voted).
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '404':
-            description: Poll not found.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Poll not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
+  /polls/{id}/close:
+    post:
+      summary: Closes the poll
+      description: The request must be authenticated
+      tags: [Polls]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: ID of the poll to close
+          required: true
+      responses:
+        "200":
+          description: Poll closed.
+        "404":
+          description: Poll not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /polls/{id}/table:
+    get:
+      summary: Get answers of the poll formatted as a table.
+      description: The request must be authenticated
+      tags: [Polls]
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: ID of the poll to close
+          required: true
+      responses:
+        "200":
+          description: Poll closed.
+        "404":
+          description: Poll not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  # Schedule
+  
   /schedule:
-      get:
-        summary: Get the schedule
-        tags: [ Schedule ]
-        parameters:
-          - in: query
-            name: group
-            required: false
-            schema:
-              type: string
-            description: Filter schedule by group name (e.g., KM-23).
-            example: "KM-23"
-          - in: query
-            name: date
-            required: false
-            schema:
-              type: string
-              format: date
-            description: Get schedule for a specific date.
-        responses:
-          '200':
-            description: Schedule data.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Schedule'
-          '404':
-            description: Schedule not found for the given criteria.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
+    get:
+      summary: Get the schedule
+      tags: [Schedule]
+      parameters:
+        - in: query
+          name: group
+          required: false
+          schema:
+            type: string
+          description: Group to get schedule of (e.g., KM-23).
+          example: "KM-23"
 
-  /telegram/send:
-      post:
-        summary: Send message via Telegram
-        description: Sends a message to a Telegram chat.
-        tags: [ Telegram ]
-        security:
-          - cookieAuth: [ ]
-        requestBody:
-          required: true
+      responses:
+        "200":
+          description: OK
           content:
             application/json:
               schema:
-                type: object
-                required: [ chatId, message ]
-                properties:
-                  chatId:
-                    type: string
-                    description: Target Telegram chat ID.
-                  message:
-                    type: string
-                    description: Message content.
-        responses:
-          '200':
-            description: Message sent successfully.
-          '400':
-            description: Bad request.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '401':
-            description: Unauthorized to send messages.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '500':
-            description: Failed to send message.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Schedule"
+        "400":
+          description: Bad request (e.g., no group parameter)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        "404":
+          description: The group not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
-    schemas:
-      SignInInput:
-        type: object
-        required:
-          - email
-          - password
-        properties:
-          email:
-            type: string
-            format: email
-            example: user@example.com
-          password:
-            type: string
-            format: password
-            example: mySecurePassword123
-      SignUpInput:
-        type: object
-        required:
-          - surname
-          - name
-          - group
-          - email
-          - phone
-          - password
-          - confirmPassword
-        properties:
-          surname:
-            type: string
-            example: Council
-          name:
-            type: string
-            example: Student
-          secondname:
-            type: string
-            example: FAM
-          group:
-            type: string
-            example: KM-23
-          isGroupHead:
-            type: boolean
-            example: false
-            description: Indicates if the user is the head of their group.
-          email:
-            type: string
-            format: email
-            example: user@example.com
-          phone:
-            type: string
-            example: +380671234567
-            pattern: '^\\+?[1-9]\\d{1,14}$'
-          password:
-            type: string
-            format: password
-            example: MySecurePassword123
-          confirmPassword:
-            type: string
-            format: password
-            example: MySecurePassword123
-      EventShort:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: ID of an event
-          title:
-            type: string
-            description: Title of an event
-          date:
-            type: string
-            format: date-time
-          status:
-            type: string
-            enum: [ "pending", "ended" ]
-      Event:
+  schemas:
+    SignInData:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: mySecurePassword123
+
+    SignUpData:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        parentName:
+          type: string
+
+        academicGroup:
+          type: string
+          example: KM-23
+          
+        email:
+          type: string
+          format: email
+          example: user@example.com
+
+        telnum:
+          type: string
+          example: +380671234567
+          pattern: '^\\+?[1-9]\\d{1,14}$'
+
+        password:
+          type: string
+          format: password
+          example: MySecurePassword123
+
+    ShortEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of an event
+        title:
+          type: string
+          description: Title of an event
+        date:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: ["pending", "ended"]
+
+    AddEventPayload:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the event
+        description:
+          type: string
+          description: Description of the event
+        date:
+          type: string
+          format: date-time
+          description: Date of the event
+        status:
+          type: string
+          enum: ["pending", "ended"]
+          description: Status of the event (defaults to 'pending' usually)
+          default: "pending"
+        image:
+          type: string
+          format: binary
+          description: Image of the event.
+
+    EditEventPayload:
+      type: object
+      properties:
+        title:
+          type: string
+          description: New title of the event
+        description:
+          type: string
+          description: New description of the event
+        date:
+          type: string
+          format: date-time
+          description: New date of the event
+        status:
+          type: string
+          enum: ["pending", "ended"]
+          description: New status of the event
+        image:
+          type: string
+          format: binary
+          description: New image of the event (optional).
+
+    GalleryPageItem:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+        width:
+          type: number
+          format: integer
+          example: 123
+        height:
+          type: number
+          format: integer,
+          example: 321
+
+    GalleryImageWithEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        event:
           type: object
           properties:
             id:
               type: string
-              format: uuid
             title:
               type: string
-            description:
-              type: string
-            date:
-              type: string
-              format: date-time
-            status:
-              type: string
-              enum: [ "pending", "ended" ]
-            imageUrl:
-              type: string
-              format: uri
-            createdAt:
-              type: string
-              format: date-time
-            updatedAt:
-              type: string
-              format: date-time
-      NewEventInput:
-          type: object
-          required: [ title ]
-          properties:
-            title:
-              type: string
-              description: Title of the event
-            description:
-              type: string
-              description: Description of the event
-            date:
-              type: string
-              format: date-time
-              description: Date of the event
-            status:
-              type: string
-              enum: [ "pending", "ended" ]
-              description: Status of the event (defaults to 'pending' usually)
-              default: "pending"
-            image:
-              type: string
-              format: binary
-              description: Image of the event.
-      UpdateEventInput:
-          type: object
-          properties:
-            title:
-              type: string
-              description: New title of the event
-            description:
-              type: string
-              description: New description of the event
-            date:
-              type: string
-              format: date-time
-              description: New date of the event
-            status:
-              type: string
-              enum: [ "pending", "ended" ]
-              description: New status of the event
-            image:
-              type: string
-              format: binary
-              description: New image of the event (optional).
-      Image:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-          url:
-            type: string
-            format: uri
-          caption:
-            type: string
-      Poll:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-          question:
-            type: string
-          options:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                text:
-                  type: string
-                votes:
-                  type: integer
-          isOpen:
-            type: boolean
-          endDate:
-            type: string
-            format: date-time
-      PollVoteInput:
-        type: object
-        required: [ optionId ]
-        properties:
-          optionId:
-            type: string
-            description: The ID of the poll option being voted for.
-            example: "opt_a7b4c9"
-      Schedule:
-        type: object
-        properties:
-          group:
-            type: string
-          date:
-            type: string
-            format: date
-          lessons:
-            type: array
-            items:
-              type: object
-              properties:
-                startTime:
-                  type: string
-                  format: time
-                  example: "09:00:00"
-                endTime:
-                  type: string
-                  format: time
-                  example: "10:20:00"
-                subject:
-                  type: string
-                type:
-                  type: string
-                  enum: [ Lecture, Practice, Lab ]
-                teacher:
-                  type: string
-                location:
-                  type: string
-      Error:
-        type: object
-        required: [ message ]
-        properties:
-          code:
-            type: string
-            description: An internal error code.
-            example: "INVALID_INPUT"
-          message:
-            type: string
-            description: A human-readable error message.
-            example: "Password and confirmation must match."
-          details:
+          
+    SubmitPollPayload:
+      type: object
+      properties:
+        answers:
+          type: array
+          items:
             type: object
-            description: Additional details about the error.
-            additionalProperties: true
+            properties:
+              text:
+                type: string
+                description: An answer to a text question.
+              status:
+                type: boolean
+                description: An answer to a checkbox question.
+              selectedIndex:
+                type: number
+                description: An answer to a single option question.
+              selectedIndices:
+                type: array
+                description: An answer to a multi option question.
+                items:
+                  type: number
+    
+    AddPollPayload:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the poll. Must be at least one character long.
+        questions:
+          type: array
+          items:
+            type: object
+            properties:
+              type: 
+                type: string
+                enum:
+                  - text
+                  - radio
+                  - multicheckbox
+                  - checkbox
+              title: 
+                type: string
+              options:
+                type: array
+                description: Options to select. It's required if the type is radio or multicheckbox.
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+              requiredTrue:
+                type: boolean
+                description: Determines whether the checkbox should always be checked.
 
-    securitySchemes:
-      cookieAuth:
-        type: apiKey
-        in: cookie
-        name: sessionId
+    Error:
+      type: object
+      required: [message]
+      properties:
+        code:
+          type: number
+          description: An internal error code.
+        message:
+          type: string
+          description: A human-readable error message.
+          example: "Password and confirmation must match."
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionId

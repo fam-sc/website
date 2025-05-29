@@ -1,8 +1,7 @@
 import { Binary, ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { ApiErrorCode } from '@/api/errorCodes';
-import { badRequest, internalServerError } from '@/api/responses';
+import { badRequest, conflict, internalServerError } from '@/api/responses';
 import { hashPassword } from '@/auth/password';
 import { newSessionId, setSessionId } from '@/auth/session';
 import { SignUpDataSchema } from '@/auth/types';
@@ -62,10 +61,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     userId = result.insertedId;
   } catch (error: unknown) {
     if (isDuplicateKeyError(error)) {
-      return badRequest({
-        message: 'Email exists',
-        code: ApiErrorCode.EMAIL_EXISTS,
-      });
+      return conflict({ message: 'Email exists' });
     }
 
     console.error(error);
