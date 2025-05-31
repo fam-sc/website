@@ -1,6 +1,6 @@
 {
   "name": "sc-fam",
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.1",
   "scripts": {
     "dev": "yarn workspace @sc-fam/website dev",
     "build": "yarn workspace @sc-fam/website build",
@@ -12,7 +12,7 @@
   "devDependencies": {
     "@eslint/js": "9.23.0",
     "@vitejs/plugin-react": "4.3.4",
-    "eslint": "9.23.0",
+    "eslint": "9.26.0",
     "eslint-config-next": "15.2.5",
     "eslint-config-prettier": "10.1.1",
     "eslint-plugin-import": "2.31.0",
@@ -32,5 +32,9 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2"
+  }
 }

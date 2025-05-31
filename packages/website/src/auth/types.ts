@@ -1,3 +1,4 @@
+import { emailRegex, telnumRegex } from '@/utils/regex';
 import { nullable, string, z } from 'zod';
 
 export const SignInDataSchema = z.object({
@@ -12,8 +13,8 @@ export const SignUpDataSchema = z.object({
   lastName: string(),
   parentName: nullable(string()),
   academicGroup: string(),
-  email: string(),
-  telnum: nullable(string()),
+  email: string().regex(emailRegex),
+  telnum: nullable(string().regex(telnumRegex)),
 
   // Open text password
   password: string(),

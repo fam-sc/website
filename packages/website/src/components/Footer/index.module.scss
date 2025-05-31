@@ -1,32 +1,62 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
 .root {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 32px;
-  background: var(--color-background-dark);
-  color: var(--color-text-on-background);
+  align-items: flex-start;
+  padding: 2rem 4rem;
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-primary-dark);
+
+  // --- Мобільні стилі ---
+  @media (max-width: 768px) {
+    flex-direction: column; // Ставимо секції одну під одною
+    align-items: center; // Центруємо секції
+    padding: 1.5rem 1rem; // Зменшуємо відступи
+    text-align: center; // Центруємо текст всередині секцій
+  }
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
+  align-items: flex-start;
+  gap: 0.8rem;
 
-.icons {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  &:not(:last-child) {
+    margin-right: 2rem;
+  }
 
-  img {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
+  // --- Мобільні стилі ---
+  @media (max-width: 768px) {
+    align-items: center; // Центруємо елементи всередині секції
+    margin-right: 0; // Прибираємо правий відступ
+    margin-bottom: 1.5rem; // Додаємо нижній відступ
+    width: 100%; // Робимо секцію на всю ширину (для кращого центрування)
+
+    &:last-child {
+      margin-bottom: 0; // У останньої секції не потрібен відступ
+    }
   }
 }
 
 .linkWithIcon {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0.5rem;
 }
+
+.icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+
+  // --- Мобільні стилі ---
+  @media (max-width: 768px) {
+    justify-content: center; // Центруємо іконки
+    width: 100%; // Робимо на всю ширину
+  }
+}
+
+// ... інші стилі

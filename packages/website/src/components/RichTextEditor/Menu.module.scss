@@ -16,7 +16,7 @@
 
   margin-left: auto;
 
-  &[data-active=false] {
+  &[data-active='false'] {
     transform: scale(0);
   }
 }

@@ -35,11 +35,11 @@ function Navigation() {
 function Buttons() {
   return (
     <div className={styles.buttons}>
-      <LinkButton href="#" buttonVariant="solid">
+      <LinkButton href="/sign?mode=signin" buttonVariant="solid">
         Увійти
       </LinkButton>
 
-      <LinkButton href="#" buttonVariant="outlined">
+      <LinkButton href="/sign?mode=signup" buttonVariant="outlined">
         Зареєструватись
       </LinkButton>
     </div>

@@ -1,25 +1,25 @@
 import { Select } from '../Select';
 
-import { getGroups } from '@/api/schedule/client';
+import { getGroups } from '@/api/groups/client';
 import { Group } from '@data/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
 import { shortenGuid } from '@/utils/guid';
 import { useEffect, useMemo } from 'react';
 import { useNotification } from '../Notification';
 
-export type ScheduleGroupSelectProps = {
+export type GroupSelectProps = {
   className?: string;
   disabled?: boolean;
   selectedId: string | undefined;
   onSelected: (value: Group) => void;
 };
 
-export function ScheduleGroupSelect({
+export function GroupSelect({
   disabled,
   className,
   selectedId,
   onSelected,
-}: ScheduleGroupSelectProps) {
+}: GroupSelectProps) {
   const [itemsState] = useDataLoader(getGroups, []);
   const items = useMemo(
     () =>
@@ -31,6 +31,7 @@ export function ScheduleGroupSelect({
         : [],
     [itemsState]
   );
+
   const notification = useNotification();
 
   useEffect(() => {

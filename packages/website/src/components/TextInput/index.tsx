@@ -9,9 +9,9 @@ import { Typography } from '../Typography';
 type InputProps = PropsMap['input'];
 
 export interface TextInputProps extends InputProps {
-  error?: string | false;
+  error?: string | boolean;
   endContent?: ReactNode;
-  type?: 'text' | 'password';
+  type?: 'text' | 'password' | 'email' | 'tel';
   variant?: 'bordered' | 'underline';
   ref?: Ref<HTMLInputElement>;
 

@@ -38,56 +38,47 @@ export function Footer({ className }: FooterProps) {
         <Typography as="strong">Підтримка</Typography>
 
         <div className={styles.linkWithIcon}>
-          <Image src="/icons/bot.svg" width={15} height={15} alt="Bot" />
+          <Image src="/icons/Question.svg" width={15} height={15} alt="Bot" />
+
           <Link href="https://t.me/fpm_sc_bot">Чат-бот</Link>
         </div>
 
         <div className={styles.linkWithIcon}>
           <Image src="/icons/Logo.svg" width={15} height={15} alt="Bot" />
-          <Link href="#">Про нас</Link>
-        </div>
-
-        <div className={styles.linkWithIcon}>
-          <Image src="/icons/Question.svg" width={15} height={15} alt="Bot" />
-          <Link href="#">FAQ</Link>
+          <Link href="/home">Про нас</Link>
         </div>
       </div>
 
       <div className={styles.section}>
-        <Link href="#">
+        <Link href="/privacy-policy">
           <Typography as="strong">Політика конфіденційності</Typography>
         </Link>
+      </div>
 
-        <div className={styles.icons}>
-          <Link href="malito:sr.fam.kpi@gmail.com" aria-label="Email">
-            <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
-          </Link>
+      <div className={styles.icons}>
+        <a href="mailto:sr.fam.kpi@gmail.com" aria-label="Email">
+          <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
+        </a>
 
-          <Link href="https://www.instagram.com/fam_kpi/">
-            <Image
-              src="/icons/Instagram.svg"
-              width={24}
-              height={24}
-              alt="Instagram"
-            />
-          </Link>
-          <Link href="https://t.me/primat_kpi">
-            <Image
-              src="/icons/Telegram.svg"
-              width={24}
-              height={24}
-              alt="Telegram"
-            />
-          </Link>
-          <Link href="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
-            <Image
-              src="/icons/TikTok.svg"
-              width={24}
-              height={24}
-              alt="TikTok"
-            />
-          </Link>
-        </div>
+        <Link href="https://www.instagram.com/fam_kpi/">
+          <Image
+            src="/icons/Instagram.svg"
+            width={24}
+            height={24}
+            alt="Instagram"
+          />
+        </Link>
+        <Link href="https://t.me/primat_kpi">
+          <Image
+            src="/icons/Telegram.svg"
+            width={24}
+            height={24}
+            alt="Telegram"
+          />
+        </Link>
+        <Link href="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
+          <Image src="/icons/TikTok.svg" width={24} height={24} alt="TikTok" />
+        </Link>
       </div>
     </footer>
   );

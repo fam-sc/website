@@ -40,7 +40,7 @@
       @include drop-area-dash-style();
     }
 
-    &[data-has-image=true] {
+    &[data-has-image='true'] {
       .drop-area {
         position: absolute;
         top: 0;
@@ -60,7 +60,7 @@
     }
   }
 
-  &[data-has-image=true] {
+  &[data-has-image='true'] {
     @media (pointer: none) or (pointer: coarse) {
       .drop-area {
         margin-top: 0.5em;
@@ -68,7 +68,7 @@
     }
   }
 
-  &[data-has-image=false] {
+  &[data-has-image='false'] {
     .drop-area {
       @include drop-area-dash-style();
     }

@@ -93,7 +93,6 @@ export function RichTextEditor({
   );
 
   useEffect(() => {
-    console.log('effect');
     editor?.setEditable(!disabled, false);
   }, [editor, disabled]);
 

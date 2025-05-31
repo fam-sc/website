@@ -8,7 +8,7 @@
   a {
     display: block;
 
-    &[data-current=true] {
+    &[data-current='true'] {
       background: var(--color-background-dark);
     }
   }

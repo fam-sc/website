@@ -1,6 +1,7 @@
 import { UserPersonalInfo, UserRole } from '@data/types/user';
 import { ChangePasswordPayload, UserInfo, UserInfoWithRole } from './types';
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
+import { SignInData, SignUpData } from '@/auth/types';
 
 export function uploadUserAvatar(body: BodyInit) {
   return apiCheckedFetch(`/api/users/avatar`, {
@@ -48,14 +49,30 @@ export function changePassword(payload: ChangePasswordPayload) {
   });
 }
 
-export function logOut() {
-  return apiCheckedFetch(`/api/users/logOut`, {
+export function signIn(payload: SignInData) {
+  return apiCheckedFetch('/api/signIn', {
     method: 'POST',
+    body: payload,
+    json: true,
+  });
+}
+
+export function signUp(payload: SignUpData) {
+  return apiCheckedFetch('/api/signUp', {
+    method: 'POST',
+    body: payload,
+    json: true,
   });
 }
 
 export function finishSignUp(token: string) {
   return apiCheckedFetch(`/api/signUp/finish?token=${token}`, {
+    method: 'POST',
+  });
+}
+
+export function logOut() {
+  return apiCheckedFetch(`/api/users/logOut`, {
     method: 'POST',
   });
 }

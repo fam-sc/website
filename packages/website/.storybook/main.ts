@@ -8,7 +8,9 @@ function getAbsolutePath(packageName: string) {
 }
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: [
+    'c:/Users/ACER/website/packages/website/**/*.stories.@(js|jsx|ts|tsx)',
+  ],
   addons: [
     '@storybook/addon-actions',
     '@storybook/addon-links',

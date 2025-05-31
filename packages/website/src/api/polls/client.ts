@@ -1,5 +1,5 @@
 import { checkedFetch, fetchObject } from '@shared/fetch';
-import { AddPollPayload, PollResultsTable, SubmitPollPayload, Poll } from './types';
+import { AddPollPayload, PollResultsTable, SubmitPollPayload } from './types';
 
 export function addPoll(payload: AddPollPayload) {
   return checkedFetch(`/api/polls`, {
@@ -23,21 +23,6 @@ export function closePoll(id: string) {
   });
 }
 
-export function deletePoll(id: string) {
-    return checkedFetch(`/api/polls/${id}`, {
-        method: 'DELETE',
-    });
-}
-
 export function fetchPollResultsTable(id: string) {
   return fetchObject<PollResultsTable>(`/api/polls/${id}/table`);
 }
-
-export function fetchPoll(id: string) {
-    return fetchObject<Poll>(`/api/polls/${id}`);
-}
-
-
-
-
-
