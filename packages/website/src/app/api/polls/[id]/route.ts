@@ -2,6 +2,7 @@ import { authRoute } from '@/api/authRoute';
 import { ApiErrorCode } from '@/api/errorCodes';
 import { submitPollPayload } from '@/api/polls/types';
 import { badRequest, notFound } from '@/api/responses';
+import { isValidAnswers } from '@/utils/polls/validation';
 import { UserRole } from '@data/types/user';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
@@ -19,9 +20,11 @@ export async function POST(request: NextRequest, { params }: RequestParams) {
     return badRequest();
   }
 
+  const { answers } = payloadResult.data;
+
   return authRoute(request, UserRole.STUDENT, async (repo, userId) => {
     return await repo.transaction(async (trepo) => {
-      const poll = await trepo.polls().findPollWithEndDateAndAnswers(id);
+      const poll = await trepo.polls().findById(id);
       if (poll === null) {
         return notFound();
       }
@@ -42,10 +45,14 @@ export async function POST(request: NextRequest, { params }: RequestParams) {
         return badRequest({ message: 'The user has already responded' });
       }
 
+      if (!isValidAnswers(poll.questions, answers)) {
+        return badRequest({ message: 'Invalid poll answers' });
+      }
+
       await trepo.polls().addRespondent(id, {
         userId: objectUserId,
         date: new Date(),
-        answers: payloadResult.data.answers,
+        answers,
       });
 
       return new NextResponse();

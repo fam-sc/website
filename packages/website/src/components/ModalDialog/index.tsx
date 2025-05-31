@@ -30,7 +30,7 @@ export function ModalDialog({
   useScrollbar(false);
 
   return (
-    <ModalOverlay className={styles.overlay}>
+    <ModalOverlay className={styles.overlay} effect="tint">
       <div className={styles.dialog} role="dialog" aria-labelledby={titleId}>
         <div className={styles.header}>
           {title === undefined ? undefined : (

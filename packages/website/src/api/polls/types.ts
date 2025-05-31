@@ -18,13 +18,13 @@ export const question = z.discriminatedUnion('type', [
 export const answer = z.object({
   text: z.string().min(1).optional(),
   status: z.boolean().optional(),
-  selectedIndex: z.number().optional(),
-  selectedIndices: z.array(z.number()).optional(),
+  selectedIndex: z.number().int().optional(),
+  selectedIndices: z.array(z.number().int()).optional(),
 });
 
 export const poll = z.object({
   title: z.string().min(1),
-  questions: z.array(question),
+  questions: z.array(question).min(1),
 });
 
 export const addPollPayload = poll;

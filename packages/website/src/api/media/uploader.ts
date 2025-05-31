@@ -20,7 +20,6 @@ export function mediaFileUploader({
 
     xhr.addEventListener('progress', (event) => {
       const progress = event.loaded / file.size;
-      console.log(progress);
 
       onProgress?.(progress);
     });
