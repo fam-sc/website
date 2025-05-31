@@ -1,4 +1,5 @@
 import { authRoute } from '@/api/authRoute';
+import { getFacultyGroupMapById } from '@/api/groups/utils';
 import { badRequest, ok } from '@/api/responses';
 import { UserInfoWithRole } from '@/api/user/types';
 import { parseInt } from '@/utils/parseInt';
@@ -18,11 +19,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   return authRoute(request, UserRole.ADMIN, async (repo) => {
     const users = await repo.users().getPage(page - 1, PAGE_SIZE);
 
+    const groups = await getFacultyGroupMapById(
+      users.map(({ academicGroup }) => academicGroup)
+    );
+
     const responseResult: UserInfoWithRole[] = users.map((item) => ({
       id: item.id,
       name: formPersonName(item.firstName, item.lastName, item.parentName),
       email: item.email,
-      group: item.academicGroup,
+      group: groups.get(item.academicGroup) ?? '',
       role: item.role,
       hasAvatar: item.hasAvatar ?? false,
     }));

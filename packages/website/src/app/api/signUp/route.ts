@@ -9,6 +9,7 @@ import { Repository } from '@data/repo';
 import { isDuplicateKeyError } from '@/utils/errors/mongo';
 import { randomBytes } from '@shared/crypto/random';
 import { sendConfirmationMail } from '@/api/mail/confirmation';
+import { checkFacultyGroupExists } from '@/api/groups/get';
 
 function newPendingToken(): Promise<Buffer> {
   return randomBytes(32);
@@ -44,6 +45,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   await using repo = await Repository.openConnection();
   let userId: ObjectId;
+
+  const groupExists = await checkFacultyGroupExists(academicGroup);
+  if (!groupExists) {
+    return badRequest({ message: 'Unknown academic group' });
+  }
 
   try {
     const result = await repo.pendingUsers().insert({

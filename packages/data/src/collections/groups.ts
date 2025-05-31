@@ -24,4 +24,12 @@ export class GroupCollection extends EntityCollection<Group> {
   findByCampusId(campusId: string) {
     return this.findOne({ campusId });
   }
+
+  findByIds(ids: string[]) {
+    return this.find({ campusId: { $in: ids } }).toArray();
+  }
+
+  groupExists(campusId: string): Promise<boolean> {
+    return this.documentExists({ campusId });
+  }
 }

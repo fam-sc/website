@@ -16,6 +16,7 @@ import { SignUpData } from '@/auth/types';
 import { pick } from '@/utils/object/pick';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '../Notification';
+import { normalizeGuid } from '@/utils/guid';
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -66,7 +67,7 @@ export default function SignUpForm() {
         'password',
       ]),
       telnum: formData.phone,
-      academicGroup: group as string,
+      academicGroup: normalizeGuid(group as string),
     };
 
     setActionInProgress(true);

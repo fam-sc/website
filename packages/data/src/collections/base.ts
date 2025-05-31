@@ -170,4 +170,13 @@ export class EntityCollection<T extends Document> {
       session: this.session,
     });
   }
+
+  protected async documentExists(filter: Filter<T>): Promise<boolean> {
+    const result = await this.collection().countDocuments(
+      filter,
+      this.options()
+    );
+
+    return result > 0;
+  }
 }

@@ -1,3 +1,4 @@
+import { getFacultyGroupMapById } from '@/api/groups/utils';
 import { ok, unauthrorized } from '@/api/responses';
 import { UserInfo } from '@/api/user/types';
 import { getSessionIdNumber } from '@/auth/session';
@@ -27,11 +28,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       role === UserRole.ADMIN ? undefined : academicGroup
     );
 
+  const groups = await getFacultyGroupMapById(
+    users.map(({ academicGroup }) => academicGroup)
+  );
+
   const result: UserInfo[] = users.map((item) => ({
     id: item.id,
     name: formPersonName(item.firstName, item.lastName, item.parentName),
     email: item.email,
-    group: item.academicGroup,
+    group: groups.get(item.academicGroup) ?? '',
     hasAvatar: item.hasAvatar ?? false,
   }));
 
