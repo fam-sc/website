@@ -1,5 +1,6 @@
 .root input {
-  &::-ms-reveal, &::-ms-clear {
+  &::-ms-reveal,
+  &::-ms-clear {
     display: none;
   }
 }

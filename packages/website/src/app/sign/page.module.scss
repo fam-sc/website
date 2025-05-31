@@ -50,7 +50,9 @@
   width: 2px;
   height: 80%;
   max-height: 600px;
-  transition: width 0.3s ease, height 0.3s ease;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease;
 
   @media (max-width: 768px) {
     display: block;
@@ -62,7 +64,6 @@
 }
 
 .footer {
-
   text-align: center;
   padding: 20px;
 

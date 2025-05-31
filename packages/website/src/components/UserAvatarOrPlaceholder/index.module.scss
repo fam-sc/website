@@ -1,5 +1,6 @@
 .root {
-  &, img {
+  &,
+  img {
     border-radius: 100%;
   }
 
@@ -12,8 +13,9 @@
     stroke: var(--color-text-on-background);
   }
 
-  img, svg {
+  img,
+  svg {
     width: 100%;
     height: 100%;
-  } 
+  }
 }

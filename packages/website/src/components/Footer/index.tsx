@@ -47,7 +47,6 @@ export function Footer({ className }: FooterProps) {
           <Image src="/icons/Logo.svg" width={15} height={15} alt="Bot" />
           <Link href="/home">Про нас</Link>
         </div>
-
       </div>
 
       <div className={styles.section}>
@@ -56,36 +55,31 @@ export function Footer({ className }: FooterProps) {
         </Link>
       </div>
 
-        <div className={styles.icons}>
-          <a href="mailto:sr.fam.kpi@gmail.com" aria-label="Email">
-            <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
-          </a>
+      <div className={styles.icons}>
+        <a href="mailto:sr.fam.kpi@gmail.com" aria-label="Email">
+          <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
+        </a>
 
-          <Link href="https://www.instagram.com/fam_kpi/">
-            <Image
-              src="/icons/Instagram.svg"
-              width={24}
-              height={24}
-              alt="Instagram"
-            />
-          </Link>
-          <Link href="https://t.me/primat_kpi">
-            <Image
-              src="/icons/Telegram.svg"
-              width={24}
-              height={24}
-              alt="Telegram"
-            />
-          </Link>
-          <Link href="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
-            <Image
-              src="/icons/TikTok.svg"
-              width={24}
-              height={24}
-              alt="TikTok"
-            />
-          </Link>
-        </div>
+        <Link href="https://www.instagram.com/fam_kpi/">
+          <Image
+            src="/icons/Instagram.svg"
+            width={24}
+            height={24}
+            alt="Instagram"
+          />
+        </Link>
+        <Link href="https://t.me/primat_kpi">
+          <Image
+            src="/icons/Telegram.svg"
+            width={24}
+            height={24}
+            alt="Telegram"
+          />
+        </Link>
+        <Link href="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
+          <Image src="/icons/TikTok.svg" width={24} height={24} alt="TikTok" />
+        </Link>
+      </div>
     </footer>
-    );
+  );
 }

@@ -12,7 +12,7 @@ import { getTrueCurrentTime } from '@/api/time';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { CurrentLesson } from '@/components/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';
-import { ScheduleGroupSelect } from '@/components/ScheduleGroupSelect';
+import { GroupSelect } from '@/components/GroupSelect';
 import { Group } from '@data/types';
 import { useInterval } from '@/hooks/useInterval';
 import { shortenGuid } from '@/utils/guid';
@@ -140,7 +140,7 @@ export function ClientComponent({
         }}
       />
 
-      <ScheduleGroupSelect
+      <GroupSelect
         disabled={isScheduleEditable}
         className={styles['group-select']}
         selectedId={selectedGroup}

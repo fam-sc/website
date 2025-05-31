@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
-import  { PrivacyPolicyComponent }  from './privacy-policy';
-
+import { PrivacyPolicyComponent } from './privacy-policy';
 
 export const metadata: Metadata = {
   title: 'Політика конфіденційності',

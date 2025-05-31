@@ -1,2 +1,17 @@
 export const urlRegex =
-  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  /^https?:\/\/(?:[a-z\d]+(?::[a-z\d]+)?@)?(?:[a-z\d.-]{1,253})(?::\d{1,5})?(?:\/[a-z\d\-./_]*)?(?:\?[a-z\d.-_=]+)?(?:#[a-z\d.-_]*)?$/i;
+
+// Local part (before @)
+// - A-Z ignoring the case
+// - 0-9
+// - !#$%&'*+-/=?^_`{|}~
+// - . provided that it does not appear consecutively
+// - max length: 64
+// Domain part (after @)
+// - A-Z ignoring the case
+// - 0-9
+// - - (hyphen)
+export const emailRegex =
+  /^(?:[a-z\d!#$%&'*+\-/=?^_`{|}~]|(\.(?!\.))){1,64}@[a-z\d][a-z\d.-]+[a-z\d]$/i;
+
+export const telnumRegex = /^\+\d{12}$/;

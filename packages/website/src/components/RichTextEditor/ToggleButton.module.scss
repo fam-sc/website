@@ -2,7 +2,7 @@
   width: 32px;
   height: 32px;
 
-  &[aria-checked=true] {
+  &[aria-checked='true'] {
     background: var(--color-background-dark);
   }
 }
