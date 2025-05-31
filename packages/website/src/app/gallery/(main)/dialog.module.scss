@@ -41,7 +41,9 @@
 
   img {
     width: 100%;
-    height: 100%;
+
+    // TOOD: This is a quick fix. Need a long term fix.
+    height: 80dvh;
 
     object-fit: contain;
     border-top-left-radius: 1em;
@@ -66,7 +68,7 @@
   }
 }
 
-.right-side {
+.info-side {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -75,10 +77,11 @@
 
   padding-left: 0.5em;
 
-  margin-bottom: 1em;
+  margin: 1em 0;
 
   @include desktop-view() {
-    margin-bottom: 0;
+    margin: 0;
+    padding: 0.75em;
   }
 }
 

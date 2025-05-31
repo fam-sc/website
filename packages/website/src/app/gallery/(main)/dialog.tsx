@@ -62,7 +62,7 @@ export function GalleryImageInfoDialog({
           height={info.height ?? 0}
         />
 
-        <div className={styles['right-side']}>
+        <div className={styles['info-side']}>
           {canModify && (
             <InlineQuestion
               className={styles.delete}
