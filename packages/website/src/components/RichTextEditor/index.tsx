@@ -80,9 +80,10 @@ export function RichTextEditor({
     content: text,
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
+    onUpdate: ({ editor }) => {
+      onIsEmptyChanged?.(editor.isEmpty);
+    },
   });
-
-  const isEmpty = editor?.isEmpty ?? false;
 
   useImperativeHandle(
     ref,
@@ -95,10 +96,6 @@ export function RichTextEditor({
   useEffect(() => {
     editor?.setEditable(!disabled, false);
   }, [editor, disabled]);
-
-  useEffect(() => {
-    onIsEmptyChanged?.(isEmpty);
-  }, [onIsEmptyChanged, isEmpty]);
 
   const menuOptions = useMenuOptions(editor);
 

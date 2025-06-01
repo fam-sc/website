@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
 import { getMediaFileUrl } from '@shared/media';
@@ -5,6 +7,10 @@ import { RichTextString } from '@shared/richText/types';
 import { Event, ImageInfo } from '@data/types';
 import { EventListItem } from '@/components/EventListItem';
 import { List } from '@/components/List';
+import { useAuthInfo } from '@/auth/context';
+import { UserRole } from '@data/types/user';
+import { LinkButton } from '@/components/LinkButton';
+import { PlusIcon } from '@/icons/PlusIcon';
 
 export type ClientEvent = {
   id: string;
@@ -26,8 +32,18 @@ export function ClientComponent({
   currentPage,
   totalPages,
 }: ClientComponentProps) {
+  const { user } = useAuthInfo();
+  const canAddEvent = user !== null && user.role >= UserRole.ADMIN;
+
   return (
     <div className={styles.root}>
+      {canAddEvent && (
+        <LinkButton hasIcon className={styles['add-event']} href="/polls/+">
+          <PlusIcon aria-hidden />
+          Додати
+        </LinkButton>
+      )}
+
       <List>
         {items.map(({ id, image, ...rest }) => (
           <li key={id}>
