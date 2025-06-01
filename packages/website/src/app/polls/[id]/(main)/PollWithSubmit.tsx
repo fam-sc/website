@@ -80,7 +80,7 @@ export function PollWithSubmit({ id, questions }: PollWithSubmitProps) {
         type: question.type,
         requiredTrue:
           question.type === 'checkbox' ? question.requiredTrue : false,
-        choices:
+        options:
           question.type === 'multicheckbox' || question.type === 'radio'
             ? question.options.map(({ title }, j) => ({ id: j, title }))
             : [],

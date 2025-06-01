@@ -28,10 +28,6 @@ export function isValidAnswer(
         return false;
       }
 
-      if (answer.selectedIndices.length !== question.options.length) {
-        return false;
-      }
-
       return answer.selectedIndices.every((index) =>
         isValidIndexInOptions(index, question.options.length)
       );

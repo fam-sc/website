@@ -43,7 +43,7 @@ export function ClientComponent({ poll }: ClientComponentProps) {
                 .then(() => {
                   setPollClosed(true);
 
-                  notification.show('Опитування закрито', 'plain');
+                  notification.show('Опитування закрите', 'plain');
                 })
                 .catch((error: unknown) => {
                   console.error(error);
@@ -59,7 +59,9 @@ export function ClientComponent({ poll }: ClientComponentProps) {
 
       <Prefixed value="Дата початку">{poll.startDate}</Prefixed>
 
-      <Prefixed value="Дата закінчення">{poll.endDate}</Prefixed>
+      {poll.endDate && (
+        <Prefixed value="Дата закінчення">{poll.endDate}</Prefixed>
+      )}
 
       <Tabs>
         <Tab tabId="results" title="Результати">

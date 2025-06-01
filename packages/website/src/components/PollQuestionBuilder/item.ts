@@ -13,7 +13,7 @@ export function isValidItem({ title, descriptor }: QuestionBuildItem): boolean {
   switch (descriptor.type) {
     case 'multicheckbox':
     case 'radio': {
-      return descriptor.choices.length > 0;
+      return descriptor.options.length > 0;
     }
     default: {
       return true;

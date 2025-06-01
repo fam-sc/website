@@ -10,7 +10,7 @@ type TypeMap = {
   };
   radio: {
     descriptor: {
-      choices: Choice[];
+      options: Choice[];
     };
     answer: {
       selectedIndex: number | undefined;
@@ -18,7 +18,7 @@ type TypeMap = {
   };
   multicheckbox: {
     descriptor: {
-      choices: Choice[];
+      options: Choice[];
     };
     answer: {
       selectedIndices: number[];

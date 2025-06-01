@@ -11,7 +11,7 @@ function Component(props: PollQuestionProps<'multicheckbox'>) {
       {...props}
       descriptor={{
         type: 'multicheckbox',
-        choices: [1, 2, 3].map((i) => ({
+        options: [1, 2, 3].map((i) => ({
           id: i.toString(),
           title: `Choice ${i}`,
         })),

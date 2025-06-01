@@ -36,11 +36,11 @@ export const Primary: Story = {
       },
       {
         title: 'Question 2',
-        descriptor: { type: 'multicheckbox', choices: items },
+        descriptor: { type: 'multicheckbox', options: items },
       },
       {
         title: 'Question 3',
-        descriptor: { type: 'radio', choices: items },
+        descriptor: { type: 'radio', options: items },
       },
     ],
   },

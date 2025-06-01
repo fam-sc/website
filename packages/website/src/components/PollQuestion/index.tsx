@@ -81,7 +81,7 @@ function MultiCheckboxContent({
   const selectedIndices = answer?.selectedIndices ?? [];
 
   return (
-    <OptionGroup choices={descriptor.choices} {...rest}>
+    <OptionGroup choices={descriptor.options} {...rest}>
       {(id, index, title) => (
         <Checkbox
           key={id}
@@ -110,7 +110,7 @@ function RadioContent({
   ...rest
 }: ContentTypeProps<'radio'>) {
   return (
-    <OptionGroup choices={descriptor.choices} {...rest}>
+    <OptionGroup choices={descriptor.options} {...rest}>
       {(id, index, title) => (
         <RadioButton
           key={id}

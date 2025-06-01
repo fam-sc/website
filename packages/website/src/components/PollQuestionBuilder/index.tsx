@@ -50,11 +50,11 @@ function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(
     return (
       <OptionListBuilder
         disabled={disabled}
-        items={descriptor.choices.map(({ title }) => title)}
+        items={descriptor.options.map(({ title }) => title)}
         onItemsChanged={(items) => {
           onDescriptorChanged({
             type,
-            choices: items.map((title, id) => ({ id, title })),
+            options: items.map((title, id) => ({ id, title })),
           });
         }}
       />
@@ -87,7 +87,7 @@ function getEmptyDescriptor(type: QuestionType): QuestionDescriptor {
     }
     case 'multicheckbox':
     case 'radio': {
-      return { type, choices: [] };
+      return { type, options: [] };
     }
     case 'checkbox': {
       return { type, requiredTrue: false };
