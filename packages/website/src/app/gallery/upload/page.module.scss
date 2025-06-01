@@ -26,7 +26,10 @@
 .images {
   $border: 2px solid var(--color-background-dark);
 
-  max-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  max-height: 80dvh;
 
   border-bottom: $border;
 
