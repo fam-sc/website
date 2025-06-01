@@ -53,10 +53,6 @@ export async function getScheduleForGroup(
   let { links } = dataSchedule;
   if (links === null) {
     links = await repo.schedule().getLinks(groupId);
-
-    if (links === null) {
-      throw new Error('Cannot find schedule with given id');
-    }
   }
 
   return dataScheduleToApiSchedule(dataSchedule, links ?? {});
