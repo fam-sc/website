@@ -4,7 +4,6 @@ import { getMediaFileUrl } from '@shared/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
-import { fileToDataUrl } from '@/utils/fileTransformations';
 import { useRef, useState } from 'react';
 
 import styles from './page.module.scss';
@@ -19,6 +18,7 @@ import { OptionSwitch } from '@/components/OptionSwitch';
 import { Labeled } from '@/components/Labeled';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { UserRole } from '@data/types/user';
+import { useObjectUrl } from '@/hooks/useObjectUrl';
 
 export type ClientEvent = {
   id: string;
@@ -36,7 +36,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
   const errorAlert = useNotification();
 
-  const [image, setImage] = useState(
+  const [image, setImage] = useObjectUrl(
     event && getMediaFileUrl(`events/${event.id}`)
   );
   const imageFileRef = useRef<File>(undefined);
@@ -72,19 +72,9 @@ export function ClientComponent({ event }: ClientComponentProps) {
           onFile={(file) => {
             imageFileRef.current = file;
 
-            if (file === undefined) {
-              setImage(undefined);
-            } else {
-              fileToDataUrl(file)
-                .then((url) => {
-                  setImage(url);
-                })
-                .catch((error: unknown) => {
-                  console.error(error);
-
-                  errorAlert.show('Сталася помилка', 'error');
-                });
-            }
+            setImage(
+              file && { url: URL.createObjectURL(file), type: 'object' }
+            );
           }}
         />
       </Labeled>

@@ -1,28 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { InlineImageDropArea, InlineImageDropAreaProps } from '.';
-import { fileToDataUrl } from '@/utils/fileTransformations';
-import { useState } from 'react';
+import { useObjectUrl } from '@/hooks/useObjectUrl';
 
 function Component(props: InlineImageDropAreaProps) {
-  const [image, setImage] = useState<string>();
+  const [image, setImage] = useObjectUrl();
 
   return (
     <InlineImageDropArea
       {...props}
       imageSrc={image}
       onFile={(file) => {
-        if (file === undefined) {
-          setImage(undefined);
-        } else {
-          fileToDataUrl(file)
-            .then((base64) => {
-              setImage(base64);
-            })
-            .catch((error: unknown) => {
-              console.error(error);
-            });
-        }
+        setImage(file && { url: URL.createObjectURL(file), type: 'object' });
       }}
     />
   );
