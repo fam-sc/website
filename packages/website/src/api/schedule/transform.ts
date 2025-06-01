@@ -15,6 +15,7 @@ import {
   DaySchedule as DataDaySchedule,
   Schedule as DataSchedule,
   ScheduleWithTeachers as DataScheduleWithTeachers,
+  LessonId,
 } from '@data/types/schedule';
 import { convertToKeyMap } from '@/utils/keyMap';
 
@@ -70,7 +71,6 @@ export function campusDayScheduleToDaySchedule(
       name,
       place,
       time,
-      link: null,
       type: tag,
       teacher: teacherName,
     })),
@@ -82,6 +82,7 @@ export function campusScheduleToDataSchedule(
 ): DataSchedule {
   return {
     groupCampusId: value.groupCode,
+    links: null,
     weeks: [value.scheduleFirstWeek, value.scheduleSecondWeek].map(
       (schedule) => ({
         days: schedule.map((day) => campusDayScheduleToDaySchedule(day)),
@@ -91,28 +92,34 @@ export function campusScheduleToDataSchedule(
 }
 
 function dataScheduleWeekToApiScheduleWeek(
-  value: DataDaySchedule,
+  { day, lessons }: DataDaySchedule,
+  links: Record<LessonId, string>,
   teacherMap: TeacherMap
 ): ApiDaySchedule {
   return {
-    day: value.day,
-    lessons: value.lessons.map(({ teacher: teacherName, link, ...rest }) => {
+    day,
+    lessons: lessons.map(({ teacher: teacherName, type, name, ...rest }) => {
       const teacher = teacherMap.get(teacherName);
       if (teacher === undefined) {
         throw new Error(`Cannot find teacher by given name: ${teacherName}`);
       }
 
-      return { teacher, link: link ?? undefined, ...rest };
+      const link = links[`${type}-${name}-${teacherName}`];
+
+      return { ...rest, teacher, link, type, name };
     }),
   };
 }
 
 export function dataScheduleToApiSchedule(
-  value: DataScheduleWithTeachers
+  value: Omit<DataScheduleWithTeachers, 'links'>,
+  links: Record<LessonId, string>
 ): ApiSchedule {
   const teachers = convertToKeyMap(value.teachers, 'name');
   const weeks = value.weeks.map(({ days }) =>
-    days.map((value) => dataScheduleWeekToApiScheduleWeek(value, teachers))
+    days.map((value) =>
+      dataScheduleWeekToApiScheduleWeek(value, links, teachers)
+    )
   );
 
   return {

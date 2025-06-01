@@ -1,12 +1,6 @@
 @use 'sass:math';
 @use '../../theme/breakpoints' as *;
 
-@mixin desktop-view() {
-  @include breakpoint-up('lg') {
-    @content;
-  }
-}
-
 .root {
   height: fit-content;
 
@@ -14,7 +8,7 @@
   flex-direction: column;
   gap: 0.5em;
 
-  @include desktop-view() {
+  @include breakpoint-up('lg') {
     $columns: 6;
 
     display: grid;
@@ -23,54 +17,5 @@
         $columns,
         minmax(0, math.div(100%, $columns))
       );
-  }
-}
-
-.base-tile {
-  $day: calc(var(--day) + 1);
-  $time: calc(var(--time) + 1);
-
-  grid-column: $day/$day;
-  grid-row: $time/$time;
-}
-
-.tile {
-  margin: 0.25em;
-}
-
-.day-marker {
-  $day: calc(var(--day) + 1);
-
-  grid-column: $day/$day;
-  grid-row: 1/1;
-
-  text-align: center;
-  margin: 0.5em 0.5em;
-
-  font-weight: 700 !important;
-
-  &[data-is-empty='true'] {
-    display: none;
-  }
-
-  @include desktop-view() {
-    &[data-is-empty='true'] {
-      display: block;
-    }
-  }
-}
-
-.time-marker {
-  display: none;
-
-  @include desktop-view() {
-    $index: calc(var(--index) + 2);
-
-    display: block;
-
-    grid-column: 1/1;
-    grid-row: $index;
-
-    margin-top: 0.5em;
   }
 }

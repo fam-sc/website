@@ -5,7 +5,7 @@ import { getScheduleForGroup } from '@/api/schedule/get';
 import { normalizeGuid } from '@/utils/guid';
 import { authRoute } from '@/api/authRoute';
 import { UserRole } from '@data/types/user';
-import { UpdateScheduleLinksPayload } from '@/api/schedule/types';
+import { isValidPayload } from '@/api/schedule/links';
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
@@ -18,22 +18,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const result = await getScheduleForGroup(normalizeGuid(group));
 
   return ok(result);
-}
-
-function isValidPayload(
-  payload: unknown
-): payload is Partial<UpdateScheduleLinksPayload> {
-  if (typeof payload === 'object') {
-    for (const value of Object.values(payload as object)) {
-      if (typeof value !== 'string' && value !== null) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  return false;
 }
 
 export async function PATCH(request: NextRequest): Promise<NextResponse> {
@@ -57,26 +41,10 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
 
   return authRoute(request, UserRole.GROUP_HEAD, async (repo) => {
     return await repo.transaction(async (trepo) => {
-      const schedule = await trepo.schedule().findByGroup(group);
-
-      if (schedule === null) {
+      const result = await trepo.schedule().updateLinks(group, payload);
+      if (result.matchedCount === 0) {
         return notFound();
       }
-
-      for (const week of schedule.weeks) {
-        for (const { lessons } of week.days) {
-          for (const lesson of lessons) {
-            const id = `${lesson.type}-${lesson.name}-${lesson.teacher}`;
-            const newLink = payload[id];
-
-            if (newLink !== undefined) {
-              lesson.link = newLink;
-            }
-          }
-        }
-      }
-
-      await trepo.schedule().update(schedule);
 
       return new NextResponse();
     });

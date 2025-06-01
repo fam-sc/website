@@ -32,7 +32,7 @@ export class ScheduleCollection extends EntityCollection<Schedule> {
     ]).next();
   }
 
-  upsert({ groupCampusId, weeks }: Schedule) {
+  upsertWeeks({ groupCampusId, weeks }: Schedule) {
     return this.updateOne(
       { groupCampusId },
       { $set: { groupCampusId, weeks } },
@@ -40,22 +40,17 @@ export class ScheduleCollection extends EntityCollection<Schedule> {
     );
   }
 
-  update({ groupCampusId, weeks }: Schedule) {
-    return this.updateOne({ groupCampusId }, { $set: { weeks } });
+  updateLinks(groupCampusId: string, links: Schedule['links']) {
+    return this.updateOne({ groupCampusId }, { $set: { links } });
   }
 
-  updateLinks(
-    groupId: string,
-    links: { type: string; name: string; teacher: string; link: string }[]
-  ) {
-    return this.bulkWrite(
-      links.map(({ type, name, teacher, link }) => ({
-        updateMany: {
-          filter: { groupCampusId: groupId, type, name, teacher },
-          update: { $set: { link } },
-        },
-      }))
+  async getLinks(groupCampusId: string): Promise<Schedule['links'] | null> {
+    const result = await this.findOne<Pick<Schedule, 'links'>>(
+      { groupCampusId },
+      { projection: { links: 1 } }
     );
+
+    return result?.links ?? null;
   }
 
   findSchedulesWithGroupIds(ids: string[]) {

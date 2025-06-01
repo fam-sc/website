@@ -1,6 +1,6 @@
 import { Schedule } from './types';
 
-import { UpdateScheduleLinksPayload } from './types';
+import { UpdateScheduleLinksPayload } from './links';
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function getSchedule(groupId: string): Promise<Schedule> {

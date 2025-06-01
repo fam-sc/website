@@ -1,5 +1,5 @@
 import { Schedule } from './types';
-import { UpdateScheduleLinksPayload } from './types';
+import { UpdateScheduleLinksPayload } from './links';
 
 export function scheduleToUpdateLinksPayload(
   value: Schedule
@@ -9,7 +9,9 @@ export function scheduleToUpdateLinksPayload(
   for (const week of value.weeks) {
     for (const { lessons } of week) {
       for (const { type, name, teacher, link } of lessons) {
-        result[`${type}-${name}-${teacher.name}`] = link ?? null;
+        if (link !== undefined) {
+          result[`${type}-${name}-${teacher.name}`] = link;
+        }
       }
     }
   }

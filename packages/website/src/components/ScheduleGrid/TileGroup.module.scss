@@ -1,0 +1,11 @@
+.base-tile {
+  $day: calc(var(--day) + 1);
+  $time: calc(var(--time) + 1);
+
+  grid-column: $day/$day;
+  grid-row: $time/$time;
+}
+
+.tile {
+  margin: 0.25em;
+}
