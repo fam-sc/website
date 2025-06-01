@@ -13,6 +13,7 @@ type ButtonColor = 'primary';
 
 export interface ButtonProps extends WithDataSpace<'button-variant' | 'color'> {
   hasIcon?: boolean;
+  disabled?: boolean;
   className?: string;
   buttonVariant?: ButtonVariant;
   color?: ButtonColor;
@@ -20,11 +21,12 @@ export interface ButtonProps extends WithDataSpace<'button-variant' | 'color'> {
 
 export const Button = impersonatedComponent<ButtonProps, 'button'>(
   'button',
-  ({ className, buttonVariant, color, ...rest }) => {
+  ({ className, buttonVariant, color, disabled, ...rest }) => {
     return (
       <Typography
         data-button-variant={buttonVariant ?? 'flat'}
         data-color={color ?? 'primary'}
+        disabled={disabled}
         className={classNames(styles.root, className)}
         {...rest}
       />

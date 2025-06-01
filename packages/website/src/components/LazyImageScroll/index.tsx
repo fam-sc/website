@@ -4,6 +4,7 @@ import styles from './index.module.scss';
 import { usePageFetcher } from '@/hooks/usePageFetcher';
 import { useNotification } from '../Notification';
 import { List } from '../List';
+import { useCallback } from 'react';
 
 export type LazyImageScrollProps<T> = {
   className?: string;
@@ -22,11 +23,14 @@ export function LazyImageScroll<T>({
   onImageClick,
 }: LazyImageScrollProps<T>) {
   const notification = useNotification();
+
+  const onError = useCallback(() => {
+    notification.show('Не вдалось завантажити фото', 'error');
+  }, [notification]);
+
   const { items, hasMoreItems, onRequestNextPage } = usePageFetcher(
     requestPage,
-    () => {
-      notification.show('Не вдалось завантажити фото', 'error');
-    }
+    onError
   );
 
   return (

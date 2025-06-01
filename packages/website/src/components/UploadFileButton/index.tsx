@@ -27,6 +27,7 @@ export function UploadFileButton({
       as="label"
       className={classNames(styles.root, className)}
       role="button"
+      disabled={disabled}
       {...rest}
     >
       <input

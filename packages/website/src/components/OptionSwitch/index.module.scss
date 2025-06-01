@@ -44,5 +44,6 @@
 
   &[aria-disabled='true'] li {
     pointer-events: none;
+    color: var(--color-text-on-background-dark);
   }
 }

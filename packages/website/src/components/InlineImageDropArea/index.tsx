@@ -42,6 +42,7 @@ export function InlineImageDropArea({
       ) : (
         <DeleteButtonWrapper
           className={styles['image-blur-wrapper']}
+          disabled={disabled}
           onDelete={() => {
             onFile(undefined);
           }}

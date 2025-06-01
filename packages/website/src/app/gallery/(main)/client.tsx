@@ -40,7 +40,7 @@ export function ClientComponent({
 
       <LazyImageScroll
         className={styles['image-scroll']}
-        requestPage={(page) => fetchGalleryPage(page)}
+        requestPage={fetchGalleryPage}
         getImageInfo={({ id }) => getMediaFileUrl(`gallery/${id}`)}
         onImageClick={(item) => {
           router.replace(`/gallery?id=${item.id}`);
