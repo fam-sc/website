@@ -1,28 +1,33 @@
 import { shortenByWord } from '../shortenByWord';
 import { RichTextAtomNode, RichTextString } from './types';
 import { richTextCharacterLength } from './length';
+import { Ending } from '../ending';
 
 export function shortenRichText(
   value: RichTextAtomNode,
-  limit: number
+  limit: number,
+  ending?: Ending
 ): RichTextAtomNode;
 
 export function shortenRichText(
   value: RichTextAtomNode[],
-  limit: number
+  limit: number,
+  ending?: Ending
 ): RichTextAtomNode[];
 
 export function shortenRichText(
   value: RichTextString,
-  limit: number
+  limit: number,
+  ending?: Ending
 ): RichTextString;
 
 export function shortenRichText(
   value: RichTextString,
-  limit: number
+  limit: number,
+  ending?: Ending
 ): RichTextString {
   if (typeof value === 'string') {
-    return shortenByWord(value, limit);
+    return shortenByWord(value, limit, ending);
   } else if (Array.isArray(value)) {
     let currentLength = 0;
     const result: RichTextAtomNode[] = [];
@@ -31,7 +36,7 @@ export function shortenRichText(
       const elementLength = richTextCharacterLength(element);
 
       if (currentLength + elementLength > limit) {
-        result.push(shortenRichText(element, limit - currentLength));
+        result.push(shortenRichText(element, limit - currentLength, ending));
         break;
       }
 
@@ -53,7 +58,7 @@ export function shortenRichText(
     name: value.name,
     attrs: value.attrs,
     children: value.children
-      ? shortenRichText(value.children, limit)
+      ? shortenRichText(value.children, limit, ending)
       : undefined,
   };
 }

@@ -13,7 +13,7 @@ function toClientEvent(event: WithId<Event>): ClientEvent {
     status: event.status,
     title: event.title,
     date: formatDateTime(event.date),
-    description: shortenRichText(event.description, 200),
+    description: shortenRichText(event.description, 200, 'ellipsis'),
   };
 }
 

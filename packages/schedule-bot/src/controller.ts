@@ -49,11 +49,11 @@ export class BotController {
   async handleTimeTrigger(userId: number, lessons: Lesson[]) {
     let message = lessons.length === 1 ? 'Почалася пара' : 'Почалися пари';
     message += ':\n\n';
-    message += lessons
-      .map((lesson) => {
-        return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
-      })
-      .join('\n');
+    // message += lessons
+    //   .map((lesson) => {
+    //     return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
+    //   })
+    //   .join('\n');
 
     await this.bot.sendMessage(userId, message);
   }

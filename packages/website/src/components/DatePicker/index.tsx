@@ -1,6 +1,7 @@
 import { PropsMap } from '@/types/react';
 import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
+import { toLocalISOString } from '@/utils/date';
 
 type InputProps = PropsMap['input'];
 
@@ -13,7 +14,7 @@ export interface DatePickerProps
 }
 
 function dateToString(value: Date | undefined) {
-  return value?.toISOString().slice(0, -8);
+  return value ? toLocalISOString(value).slice(0, -8) : undefined;
 }
 
 export function DatePicker({
@@ -33,9 +34,8 @@ export function DatePicker({
       max={dateToString(max)}
       onChange={(event) => {
         const { value } = event.target;
-        const date = new Date(value);
 
-        onValueChanged?.(date);
+        onValueChanged?.(new Date(value));
       }}
       {...rest}
     />

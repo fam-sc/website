@@ -10,6 +10,14 @@
   }
 }
 
+.list > li {
+  border-bottom: 2px solid var(--color-background-dark);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
 .pagination {
   align-self: center;
 

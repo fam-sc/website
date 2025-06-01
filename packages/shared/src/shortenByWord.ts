@@ -1,10 +1,16 @@
+import { Ending, withEnding } from './ending';
+
 const DELIMITER_REGEX = /[\s.,;:()[\]]/;
 
 // Shortens the input to be near the given limit.
 // Tries to end at the end of the word at 'limit' position.
 // That way the result is: shortenByWord('hello world one', 8) = 'hello world' instead of
 // 'hello world one'.slice(0, 8) = 'hello wo'
-export function shortenByWord(input: string, limit: number): string {
+export function shortenByWord(
+  input: string,
+  limit: number,
+  ending?: Ending
+): string {
   if (input.length <= limit) {
     return input;
   }
@@ -14,5 +20,11 @@ export function shortenByWord(input: string, limit: number): string {
     return input;
   }
 
-  return input.slice(0, limit + delimiterIndex).trimEnd();
+  const end = limit + delimiterIndex;
+
+  if (end < input.length) {
+    return withEnding(input.slice(0, end).trimEnd(), ending);
+  }
+
+  return input;
 }

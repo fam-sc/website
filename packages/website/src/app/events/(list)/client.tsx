@@ -38,13 +38,13 @@ export function ClientComponent({
   return (
     <div className={styles.root}>
       {canAddEvent && (
-        <LinkButton hasIcon className={styles['add-event']} href="/polls/+">
+        <LinkButton hasIcon className={styles['add-event']} href="/events/+">
           <PlusIcon aria-hidden />
           Додати
         </LinkButton>
       )}
 
-      <List>
+      <List className={styles.list}>
         {items.map(({ id, image, ...rest }) => (
           <li key={id}>
             <EventListItem
