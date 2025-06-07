@@ -3,7 +3,7 @@
 import { parse } from 'parse5';
 import { Element, Node, Template, TextNode } from './types';
 
-function minifyInlineCss(text: string): string {
+export function minifyInlineCss(text: string): string {
   let result = text
     .split(';')
     .map((part) => {
@@ -20,7 +20,9 @@ function minifyInlineCss(text: string): string {
     .filter((part) => part.length > 0)
     .join(';');
 
-  result += ';';
+  if (result.length > 0) {
+    result += ';';
+  }
 
   return result;
 }
