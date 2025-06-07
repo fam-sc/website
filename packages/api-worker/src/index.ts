@@ -7,6 +7,7 @@ import './gallery/route';
 import './gallery/[id]/route';
 
 import './groups/route';
+import './groups/[id]/route';
 
 import './polls/route';
 import './polls/[id]/route';
@@ -23,6 +24,7 @@ import './users/personal/route';
 import './users/password/route';
 import './users/logOut/route';
 import './users/avatar/route';
+import './users/me/route';
 import './users/approveList/route';
 import './users/[id]/disapprove/route';
 import './users/[id]/role/route';

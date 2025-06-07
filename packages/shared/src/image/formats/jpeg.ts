@@ -1,10 +1,10 @@
-import { Size } from '../types';
+import { ImageSize } from '../types';
 
 export function isJpeg(data: Uint8Array): boolean {
   return data[0] === 0xff && data[1] === 0xd8;
 }
 
-export function getSize(data: Uint8Array): Size {
+export function getSize(data: Uint8Array): ImageSize {
   let off = 0;
 
   while (off < data.length) {

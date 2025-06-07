@@ -1,4 +1,4 @@
-import { Size } from '../types';
+import { ImageSize } from '../types';
 
 function readUint32BigEndian(buffer: Uint8Array, offset: number): number {
   return (
@@ -22,7 +22,7 @@ export function isPng(buffer: Uint8Array): boolean {
   );
 }
 
-export function getSize(buffer: Uint8Array): Size {
+export function getSize(buffer: Uint8Array): ImageSize {
   const width = readUint32BigEndian(buffer, 0x10);
   const height = readUint32BigEndian(buffer, 0x14);
 

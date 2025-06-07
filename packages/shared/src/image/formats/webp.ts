@@ -1,4 +1,4 @@
-import { Size } from '../types';
+import { ImageSize } from '../types';
 
 function get16Bit(buffer: Uint8Array, offset: number): number {
   return buffer[offset] | (buffer[offset + 1] << 8);
@@ -19,7 +19,7 @@ export function isWebp(buffer: Uint8Array): boolean {
   );
 }
 
-export function getSize(buffer: Uint8Array): Size {
+export function getSize(buffer: Uint8Array): ImageSize {
   if (buffer[12] === 0x56 && buffer[13] === 0x50 && buffer[14] == 0x38) {
     switch (buffer[15]) {
       case 0x20: {

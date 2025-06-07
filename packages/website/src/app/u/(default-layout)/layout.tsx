@@ -1,4 +1,4 @@
-import { getCurrentUserInfo } from '@/auth/session/next';
+import { getCurrentUserInfo } from '@/api/user/client';
 import { redirect, RedirectType } from 'next/navigation';
 
 import styles from './layout.module.scss';

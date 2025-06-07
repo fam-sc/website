@@ -13,7 +13,6 @@ import { OptionSwitch } from '@/components/OptionSwitch';
 import { CurrentLesson } from '@/components/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';
 import { GroupSelect } from '@/components/GroupSelect';
-import { Group } from '@data/types';
 import { useInterval } from '@/hooks/useInterval';
 import { shortenGuid } from '@shared/guid';
 import { EditIcon } from '@/icons/EditIcon';
@@ -25,6 +24,7 @@ import { updateScheduleLinks } from '@/api/schedule/client';
 import { useNotification } from '@/components/Notification';
 import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
+import { Group } from '@shared/api/groups/types';
 
 type Week = 1 | 2;
 

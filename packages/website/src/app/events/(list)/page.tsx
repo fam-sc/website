@@ -1,6 +1,6 @@
 import { Repository } from '@data/repo';
 import { PageProps } from '@/types/next';
-import { coerce } from '@/utils/math';
+import { coerce } from '@shared/math';
 import { ClientComponent, ClientEvent } from './client';
 import { redirect, RedirectType } from 'next/navigation';
 import { WithId } from 'mongodb';

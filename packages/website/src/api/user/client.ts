@@ -1,11 +1,16 @@
-import { UserPersonalInfo } from '@data/types/user';
+import { UserInfo, UserPersonalInfo } from '@shared/api/user/types';
 import {
   ChangePasswordPayload,
-  UserInfo,
+  UserSelfInfo,
   UserInfoWithRole,
   UserRole,
 } from '@shared/api/user/types';
-import { apiCheckedFetch, apiFetchObject } from '../fetch';
+import {
+  apiCheckedFetch,
+  apiFetch,
+  apiFetchObject,
+  getApiErrorFromResponse,
+} from '../fetch';
 import { SignInData, SignUpData } from '@shared/api/auth/types';
 
 export function uploadUserAvatar(body: BodyInit) {
@@ -80,4 +85,16 @@ export function logOut() {
   return apiCheckedFetch(`/api/users/logOut`, {
     method: 'POST',
   });
+}
+export async function getCurrentUserInfo(): Promise<UserSelfInfo | null> {
+  const response = await apiFetch(`/users/me`);
+
+  // Unauthorized
+  if (response.status === 401) {
+    return null;
+  } else if (!response.ok) {
+    throw await getApiErrorFromResponse(response);
+  }
+
+  return (await response.json()) as UserSelfInfo;
 }

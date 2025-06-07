@@ -1,12 +1,12 @@
 import { Pagination } from '@/components/Pagination';
 import { ShortPollInfoList } from '@/components/ShortPollInfoList';
 import { PageProps } from '@/types/next';
-import { coerce } from '@/utils/math';
+import { coerce } from '@shared/math';
 import { parseInt } from '@shared/parseInt';
 import { Repository } from '@data/repo';
 import { redirect, RedirectType } from 'next/navigation';
 import styles from './page.module.scss';
-import { getCurrentUserInfo } from '@/auth/session/next';
+import { getCurrentUserInfo } from '@/api/user/client';
 import { UserRole } from '@shared/api/user/types';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';

@@ -1,5 +1,5 @@
 import { ok, unauthrorized } from '@shared/responses';
-import { UserInfo } from '@shared/api/user/types';
+import { UserSelfInfo } from '@shared/api/user/types';
 import { getSessionIdNumber } from '@shared/api/auth';
 import { formPersonName } from '@shared/person';
 import { Repository } from '@data/repo';
@@ -32,7 +32,7 @@ app.get('/users/approveList', async (request) => {
     users.map(({ academicGroup }) => academicGroup)
   );
 
-  const result: UserInfo[] = users.map((item) => ({
+  const result: UserSelfInfo[] = users.map((item) => ({
     id: item.id,
     name: formPersonName(item.firstName, item.lastName, item.parentName),
     email: item.email,

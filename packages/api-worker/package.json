@@ -1,5 +1,5 @@
 {
-  "name": "api-worker",
+  "name": "@sc-fam/api-worker",
   "packageManager": "yarn@4.9.1",
   "scripts": {
     "deploy": "wrangler deploy",

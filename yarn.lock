@@ -3289,6 +3289,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sc-fam/api-worker@workspace:packages/api-worker":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/api-worker@workspace:packages/api-worker"
+  dependencies:
+    tsx: "npm:4.19.4"
+    typescript: "npm:5.8.3"
+    wrangler: "npm:4.19.1"
+  languageName: unknown
+  linkType: soft
+
 "@sc-fam/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@sc-fam/data@workspace:packages/data"
@@ -5499,16 +5509,6 @@ __metadata:
   checksum: 10c0/57b06ae984bc32a0d22592c87384cd88fe4511b1dd7581497831c56d41939c8a001b28e7b853e1450f2bf61992dfcaa8ae2d0d161a0a90c4fb631ef07098fbac
   languageName: node
   linkType: hard
-
-"api-worker@workspace:packages/api-worker":
-  version: 0.0.0-use.local
-  resolution: "api-worker@workspace:packages/api-worker"
-  dependencies:
-    tsx: "npm:4.19.4"
-    typescript: "npm:5.8.3"
-    wrangler: "npm:4.19.1"
-  languageName: unknown
-  linkType: soft
 
 "argparse@npm:^2.0.1":
   version: 2.0.1

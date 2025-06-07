@@ -1,6 +1,6 @@
 'use client';
 
-import { UserWithRoleAndAvatar } from '@data/types/user';
+import { UserWithRoleAndAvatar } from '@shared/api/user/types';
 import { createContext, ReactNode, useContext } from 'react';
 
 export type AuthContextInfo = {

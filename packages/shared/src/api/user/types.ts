@@ -26,6 +26,28 @@ export const userPersonalInfo = z.object({
   parentName: z.string().min(1).or(z.null()),
 });
 
+export type UserPersonalInfo = z.infer<typeof userPersonalInfo>;
+
+export interface UserWithRoleAndAvatar {
+  id: string;
+  role: UserRole;
+  hasAvatar?: boolean;
+}
+
+export interface ShortUser extends UserWithRoleAndAvatar {
+  firstName: string;
+  lastName: string;
+  parentName: string | null;
+  academicGroup: string;
+  email: string;
+}
+
+export type UserSelfInfo = {
+  id: string;
+  role: UserRole;
+  hasAvatar: boolean;
+};
+
 export const changePasswordPayload = z.object({
   oldPassword: z.string(),
   newPassword: z.string(),

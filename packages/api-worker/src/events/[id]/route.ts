@@ -7,6 +7,29 @@ import { getImageSize } from '@shared/image/size';
 import { authRoute } from '@/authRoute';
 import { UserRole } from '@shared/api/user/types';
 import { app } from '@/app';
+import { Repository } from '@data/repo';
+import { notFound, ok } from '@shared/responses';
+import { Event } from '@shared/api/events/types';
+import { richTextToHtml } from '@shared/richText/htmlBuilder';
+
+app.get('/events/:id', async (_request, { params: { id } }) => {
+  await using repo = await Repository.openConnection();
+  const event = await repo.events().findById(id);
+
+  if (event === null) {
+    return notFound();
+  }
+
+  const responseData: Event = {
+    id,
+    status: event.status,
+    title: event.title,
+    date: event.date.toISOString(),
+    description: richTextToHtml(event.description),
+  };
+
+  return ok(responseData);
+});
 
 app.put('/events/:id', async (request, { params: { id } }) => {
   const formData = await request.formData();

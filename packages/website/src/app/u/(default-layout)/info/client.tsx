@@ -1,6 +1,5 @@
 'use client';
 
-import { UserPersonalInfo } from '@data/types/user';
 import styles from './page.module.scss';
 import { Labeled } from '@/components/Labeled';
 import { ReactNode, useState } from 'react';
@@ -8,6 +7,7 @@ import { TextInput } from '@/components/TextInput';
 import { useNotification } from '@/components/Notification';
 import { Button } from '@/components/Button';
 import { updateUserPersonalInfo } from '@/api/user/client';
+import { UserPersonalInfo } from '@shared/api/user/types';
 
 export type ClientComponentProps = {
   personalInfo: UserPersonalInfo;

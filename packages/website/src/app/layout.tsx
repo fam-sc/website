@@ -7,7 +7,7 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { backgroundColor } from '@/theme';
 import { NotificationWrapper } from '@/components/Notification';
-import { getCurrentUserInfo } from '@/auth/session/next';
+import { getCurrentUserInfo } from '@/api/user/client';
 import { AuthProvider } from '@/auth/context';
 
 // Cannot move options to a helper - it all must be a constant.

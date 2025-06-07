@@ -1,30 +1,30 @@
 import { objectToFormData } from '@shared/formData';
 import { AddEventPayload, EditEventPayload } from '@shared/api/events/payloads';
-import { checkedFetch, fetchObject } from '@shared/fetch';
 import { ShortEvent } from './types';
+import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function fetchAllEventsShort(): Promise<ShortEvent[]> {
-  return fetchObject(`/api/events?type=short`, {
+  return apiFetchObject(`/events?type=short`, {
     method: 'GET',
   });
 }
 
 export async function addEvent(payload: AddEventPayload) {
-  await checkedFetch(`/api/events`, {
+  await apiCheckedFetch(`/events`, {
     method: 'POST',
     body: objectToFormData(payload),
   });
 }
 
 export async function editEvent(id: string, payload: EditEventPayload) {
-  await checkedFetch(`/api/events/${id}`, {
+  await apiCheckedFetch(`/events/${id}`, {
     method: 'PUT',
     body: objectToFormData(payload),
   });
 }
 
 export async function deleteEvent(id: string) {
-  await checkedFetch(`/api/events/${id}`, {
+  await apiCheckedFetch(`/events/${id}`, {
     method: 'DELETE',
   });
 }
