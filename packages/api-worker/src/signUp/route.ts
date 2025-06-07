@@ -20,7 +20,7 @@ function createConfirmationLink(token: Buffer): string {
   return `https://sc-fam.org/u/finish-sign-up?token=${tokenString}`;
 }
 
-app.post('/signUp', async (request) => {
+app.post('/signUp', async (request, { env }) => {
   const rawContent = await request.json();
   const signUpResult = SignUpDataSchema.safeParse(rawContent);
   if (signUpResult.error) {
@@ -73,7 +73,11 @@ app.post('/signUp', async (request) => {
     return internalServerError();
   }
 
-  await sendConfirmationMail(email, createConfirmationLink(pendingToken));
+  await sendConfirmationMail(
+    env.RESEND_API_KEY,
+    email,
+    createConfirmationLink(pendingToken)
+  );
 
   const sessionId = await newSessionId();
 

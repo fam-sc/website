@@ -29,8 +29,12 @@ import './users/approveList/route';
 import './users/[id]/disapprove/route';
 import './users/[id]/role/route';
 
+import { Repository } from '@data/repo';
+
 export default {
   fetch(request, env) {
+    Repository.setDefaultConnectionString(env.MONGO_CONNECTION_STRING);
+
     return app.handleRequest(request, env);
   },
 } as ExportedHandler<Env>;

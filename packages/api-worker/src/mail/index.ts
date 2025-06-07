@@ -1,4 +1,3 @@
-import { getEnvChecked } from '@shared/env';
 import { checkedFetch } from '@shared/fetch';
 
 type ResendBody = {
@@ -10,12 +9,11 @@ type ResendBody = {
 };
 
 export async function sendMail(
+  apiKey: string,
   recepient: string,
   subject: string,
   content: { text?: string; html?: string }
 ) {
-  const apiKey = getEnvChecked('RESEND_API_KEY');
-
   const body: ResendBody = {
     from: 'registration@sc-fam.org',
     to: recepient,

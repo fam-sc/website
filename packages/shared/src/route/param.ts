@@ -1,11 +1,6 @@
 import { methodNotAllowed, notFound } from '../responses';
 import { HttpMethod } from './types';
 
-const enum NodeType {
-  LITERAL = 0,
-  PARAM = 1,
-}
-
 type Params = Record<string, string>;
 
 type Handler<Env> = (
@@ -16,13 +11,12 @@ type Handler<Env> = (
 type HandlerMap<Env> = Partial<Record<HttpMethod, Handler<Env>>>;
 
 interface BasePathNode<Env> {
-  type: NodeType;
-  name: string;
-  children: PathNode<Env>[];
+  paramNode?: { name: string; value: BasePathNode<Env> };
+  children: Record<string, BasePathNode<Env> | undefined>;
 }
 
 interface HandlerPathNode<Env> extends BasePathNode<Env> {
-  handlers: HandlerMap<Env>;
+  handlers?: HandlerMap<Env>;
 }
 
 type PathNode<Env> = BasePathNode<Env> | HandlerPathNode<Env>;
@@ -41,7 +35,7 @@ function handleRequestMethod<Env>(
 }
 
 export class ParamRouter<Env> {
-  private paths: PathNode<Env>[] = [];
+  private paths: Record<string, PathNode<Env> | undefined> = {};
 
   get = this.createPathHandler('GET');
   post = this.createPathHandler('POST');
@@ -61,15 +55,11 @@ export class ParamRouter<Env> {
       throw new Error('First path part cannot be param');
     }
 
-    let currentNode = this.paths.find((node) => node.name === firstPart);
+    let currentNode = this.paths[firstPart];
     if (currentNode === undefined) {
-      currentNode = {
-        type: NodeType.LITERAL,
-        name: firstPart,
-        children: [],
-      };
+      currentNode = { children: {} };
 
-      this.paths.push(currentNode);
+      this.paths[firstPart] = currentNode;
     }
 
     if (restParts.length === 0) {
@@ -79,9 +69,9 @@ export class ParamRouter<Env> {
         ...currentHandlerNode.handlers,
         [method]: handler,
       };
+    } else {
+      this.addPathPart(currentNode, restParts, method, handler);
     }
-
-    this.addPathPart(currentNode, restParts, method, handler);
   }
 
   private addPathPart(
@@ -90,38 +80,40 @@ export class ParamRouter<Env> {
     method: HttpMethod,
     handler: Handler<Env>
   ) {
-    if (parts.length === 0) {
-      return;
-    }
-
     const [firstPart, ...restParts] = parts;
-    let currentNode = node.children.find((node) => node.name === firstPart);
-    if (currentNode === undefined) {
-      currentNode = firstPart.startsWith(':')
-        ? {
-            type: NodeType.LITERAL,
-            name: firstPart,
-            children: [],
-          }
-        : {
-            type: NodeType.PARAM,
-            name: firstPart.slice(1),
-            children: [],
-          };
+    const isParam = firstPart.startsWith(':');
+    const name = isParam ? firstPart.slice(1) : firstPart;
 
-      this.paths.push(currentNode);
+    let currentNode = node.children[name];
+    if (currentNode === undefined) {
+      if (
+        isParam &&
+        node.paramNode !== undefined &&
+        node.paramNode.name !== name
+      ) {
+        throw new Error('Already have param route');
+      }
+
+      currentNode = { children: {} };
+
+      if (isParam) {
+        node.paramNode = { name, value: currentNode };
+      } else {
+        node.children[name] = currentNode;
+      }
     }
 
     if (restParts.length === 0) {
       const currentHandlerNode = currentNode as HandlerPathNode<Env>;
 
-      currentHandlerNode.handlers = {
-        ...currentHandlerNode.handlers,
-        [method]: handler,
-      };
-    }
+      if (currentHandlerNode.handlers === undefined) {
+        currentHandlerNode.handlers = {};
+      }
 
-    this.addPathPart(currentNode, restParts, method, handler);
+      currentHandlerNode.handlers[method] = handler;
+    } else {
+      this.addPathPart(currentNode, restParts, method, handler);
+    }
   }
 
   handleRequest(request: Request, env: Env) {
@@ -129,7 +121,7 @@ export class ParamRouter<Env> {
 
     const [firstPart, ...parts] = pathname.slice(1).split('/');
 
-    const node = this.paths.find((node) => node.name === firstPart);
+    const node = this.paths[firstPart];
     if (node !== undefined) {
       return this.handleRequestByParts(parts, node, request, env, {});
     }
@@ -146,9 +138,17 @@ export class ParamRouter<Env> {
   ): Promise<Response> {
     if (parts.length > 0) {
       const [firstPart, ...restParts] = parts;
-      let nextNode = node.children.find(
-        (node) => node.type === NodeType.LITERAL && node.name === firstPart
-      );
+      let nextNode = node.children[firstPart];
+      const nextParams = params;
+
+      if (nextNode === undefined) {
+        const { paramNode } = node;
+
+        if (paramNode !== undefined) {
+          nextNode = paramNode.value;
+          nextParams[paramNode.name] = firstPart;
+        }
+      }
 
       if (nextNode !== undefined) {
         return this.handleRequestByParts(
@@ -156,19 +156,10 @@ export class ParamRouter<Env> {
           nextNode,
           request,
           env,
-          params
+          nextParams
         );
       }
-
-      nextNode = node.children.find((node) => node.type === NodeType.PARAM);
-
-      if (nextNode !== undefined) {
-        return this.handleRequestByParts(restParts, nextNode, request, env, {
-          ...params,
-          [nextNode.name]: firstPart,
-        });
-      }
-    } else if ('handlers' in node) {
+    } else if ('handlers' in node && node.handlers !== undefined) {
       return handleRequestMethod(node.handlers, request, env, params);
     }
 

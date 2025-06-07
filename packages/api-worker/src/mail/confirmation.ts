@@ -42,10 +42,11 @@ function html(activationLink: string): string {
 }
 
 export async function sendConfirmationMail(
+  apiKey: string,
   recepient: string,
   activationLink: string
 ) {
-  await sendMail(recepient, 'Активація облікового запису SC FAM', {
+  await sendMail(apiKey, recepient, 'Активація облікового запису SC FAM', {
     text: text(activationLink),
     html: html(activationLink),
   });
