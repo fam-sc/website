@@ -1,0 +1,61 @@
+import { parseEditEventPayload } from '@shared/api/events/payloads';
+import { deleteMediaFile } from '@shared/api/media';
+import { MediaTransaction } from '@shared/api/media/transaction';
+import { parseHtmlToRichText } from '@shared/richText/parser';
+import { creatMediaServerParseContext } from '@shared/api/media/richText';
+import { getImageSize } from '@shared/image/size';
+import { authRoute } from '@/authRoute';
+import { UserRole } from '@shared/api/user/types';
+import { app } from '@/app';
+
+app.put('/events/:id', async (request, { params: { id } }) => {
+  const formData = await request.formData();
+  const { title, description, date, image, status } =
+    parseEditEventPayload(formData);
+
+  const imageBuffer = await image?.bytes();
+  const imageSize = imageBuffer ? getImageSize(imageBuffer) : undefined;
+
+  // Use media and repo transactions here to ensure consistency if an error happens somewhere.
+  await using mediaTransaction = new MediaTransaction();
+
+  const richTextDescription = await parseHtmlToRichText(
+    description,
+    creatMediaServerParseContext(mediaTransaction)
+  );
+
+  return await authRoute(request, UserRole.ADMIN, async (repo) => {
+    await repo.transaction(async (trepo) => {
+      const result = await trepo.events().update(id, {
+        date,
+        title,
+        status,
+        description: richTextDescription,
+        image: imageSize,
+      });
+
+      if (result.matchedCount === 0) {
+        throw new Error("Specified event doesn't exist");
+      }
+
+      if (image !== undefined) {
+        mediaTransaction.put(`events/${id}`, image.stream());
+      }
+    });
+
+    await mediaTransaction.commit();
+
+    return new Response();
+  });
+});
+
+app.delete('/events/:id', async (request, { params: { id } }) => {
+  return authRoute(request, UserRole.ADMIN, async (repo) => {
+    const result = await repo.events().delete(id);
+    if (result.deletedCount !== 0) {
+      await deleteMediaFile(`events/${id}`);
+    }
+
+    return new Response();
+  });
+});

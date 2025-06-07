@@ -2,13 +2,13 @@
 
 import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import { RichTextString } from '@shared/richText/types';
 import { Event, ImageInfo } from '@data/types';
 import { EventListItem } from '@/components/EventListItem';
 import { List } from '@/components/List';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 import { LinkButton } from '@/components/LinkButton';
 import { PlusIcon } from '@/icons/PlusIcon';
 

@@ -4,7 +4,7 @@ import { ClientComponent } from './client';
 
 import { getCurrentTime } from '@shared/api/campus';
 import { getFacultyGroupById } from '@/api/groups/get';
-import { normalizeGuid } from '@/utils/guid';
+import { normalizeGuid } from '@shared/guid';
 import { pick } from '@/utils/object/pick';
 import { PageProps } from '@/types/next';
 import { cache } from 'react';

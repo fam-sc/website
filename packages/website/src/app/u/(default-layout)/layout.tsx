@@ -5,8 +5,8 @@ import styles from './layout.module.scss';
 import { TabInfo } from './types';
 import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
-import { mediaFileExists } from '@/api/media';
-import { UserRole } from '@data/types/user';
+import { mediaFileExists } from '@shared/api/media';
+import { UserRole } from '@shared/api/user/types';
 
 const tabs: TabInfo[] = [
   { href: '/u/info', title: 'Загальне' },

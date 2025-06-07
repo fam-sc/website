@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers';
 
-import { parseSessionIdString, SESSION_ID_COOKIE } from '.';
+import { parseSessionIdString, SESSION_ID_COOKIE } from '@shared/api/auth';
 
 import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 
 type UserInfo = {
   id: string;

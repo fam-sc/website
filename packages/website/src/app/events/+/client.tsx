@@ -1,6 +1,6 @@
 'use client';
 
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
@@ -17,7 +17,7 @@ import { Event } from '@data/types';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { Labeled } from '@/components/Labeled';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 import { useObjectUrl } from '@/hooks/useObjectUrl';
 
 export type ClientEvent = {

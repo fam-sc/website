@@ -4,8 +4,8 @@ import { fetchGalleryImage, deleteGalleryImage } from '@/api/gallery/client';
 import {
   GalleryImageWithEvent,
   GalleryImageWithSize,
-} from '@/api/gallery/types';
-import { getMediaFileUrl } from '@shared/media';
+} from '@shared/api/gallery/types';
+import { getMediaFileUrl } from '@shared/api/media';
 import { IconButton } from '@/components/IconButton';
 import { ModalOverlay } from '@/components/ModalOverlay';
 import { useNotification } from '@/components/Notification';

@@ -5,9 +5,9 @@ import { PageProps } from '@/types/next';
 import { omitProperty } from '@/utils/object/omit';
 import { Metadata } from 'next';
 import { cache } from 'react';
-import { shortenByWord } from '@shared/shortenByWord';
+import { shortenByWord } from '@shared/string/shortenByWord';
 import { richTextToPlainText } from '@shared/richText/plainTransform';
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 
 const getEvent = cache(async (id: string) => {
   await using repo = await Repository.openConnection();

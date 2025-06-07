@@ -1,5 +1,9 @@
 import { checkedFetch, fetchObject } from '@shared/fetch';
-import { AddPollPayload, PollResultsTable, SubmitPollPayload } from './types';
+import {
+  AddPollPayload,
+  PollResultsTable,
+  SubmitPollPayload,
+} from '@shared/api/polls/types';
 
 export function addPoll(payload: AddPollPayload) {
   return checkedFetch(`/api/polls`, {

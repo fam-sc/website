@@ -1,6 +1,6 @@
 import CSS from 'csstype';
 
-import { capitalizeFirstLetter } from './capitalizeFirstLetter';
+import { capitalizeFirstLetter } from './string/capitalizeFirstLetter';
 
 function toCamelCase(text: string): string {
   const parts = text.split('-');

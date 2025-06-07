@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 import { RichTextString } from '@shared/richText/types';
-import { UserRole } from './user';
+import { UserRole } from '@shared/api/user/types';
 
 export type Event = {
   title: string;

@@ -1,6 +1,6 @@
 import { Repository } from '@data/repo';
 import { ClientComponent } from './client';
-import { formatDateTime } from '@/utils/date';
+import { formatDateTime } from '@shared/date';
 import { shortenRichText } from '@shared/richText/short';
 import { WithId } from 'mongodb';
 import { ClientEvent } from '../events/(list)/client';

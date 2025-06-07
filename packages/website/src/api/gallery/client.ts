@@ -1,6 +1,9 @@
 import { checkedFetch, fetchObject } from '@shared/fetch';
-import { UploadGalleryImagesPayload } from './payloads';
-import { GalleryImageWithEvent, GalleryImageWithSize } from './types';
+import { UploadGalleryImagesPayload } from '@shared/api/gallery/payloads';
+import {
+  GalleryImageWithEvent,
+  GalleryImageWithSize,
+} from '@shared/api/gallery/types';
 
 export function fetchGalleryPage(
   page: number

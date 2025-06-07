@@ -1,4 +1,4 @@
-import { parseHexString } from '@shared/hex';
+import { parseHexString } from '@shared/string/hex';
 
 export async function verifyHmac(
   key: string,

@@ -1,6 +1,6 @@
 import { encodeInitBodyToJson, ExtendedRequestInit } from '@shared/fetch';
-import { isErrorResponseBody } from './responses';
-import { ApiError } from './error';
+import { isErrorResponseBody } from '@shared/responses';
+import { ApiError } from '@shared/api/error';
 
 export async function apiCheckedFetch(
   url: string | URL,

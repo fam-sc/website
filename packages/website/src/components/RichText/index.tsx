@@ -6,7 +6,7 @@ import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import {
   RichTextElementNode,
   RichTextNode,

@@ -15,16 +15,16 @@ import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';
 import { GroupSelect } from '@/components/GroupSelect';
 import { Group } from '@data/types';
 import { useInterval } from '@/hooks/useInterval';
-import { shortenGuid } from '@/utils/guid';
+import { shortenGuid } from '@shared/guid';
 import { EditIcon } from '@/icons/EditIcon';
 import { CheckIcon } from '@/icons/CheckIcon';
-import { Schedule } from '@/api/schedule/types';
+import { Schedule } from '@shared/api/schedule/types';
 import { Button } from '@/components/Button';
 import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
 import { updateScheduleLinks } from '@/api/schedule/client';
 import { useNotification } from '@/components/Notification';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 
 type Week = 1 | 2;
 

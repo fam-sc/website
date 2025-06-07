@@ -11,7 +11,7 @@ import { Tabs } from '@/components/Tabs';
 import { Tab } from '@/components/Tab';
 import { ResultsTab } from './tabs/results';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 
 export type PollInfo = {
   id: string;

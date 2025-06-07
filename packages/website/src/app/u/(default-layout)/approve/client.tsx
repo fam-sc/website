@@ -13,10 +13,10 @@ import {
   UserApproveItemType,
 } from '@/components/UserApproveBoard';
 import { useCallback } from 'react';
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import { Typography } from '@/components/Typography';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 import { redirect } from 'next/navigation';
 import { DataLoadingContainer } from '@/components/DataLoadingContainer';
 

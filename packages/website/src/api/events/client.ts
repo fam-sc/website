@@ -1,5 +1,5 @@
-import { objectToFormData } from '@/utils/formData';
-import { AddEventPayload, EditEventPayload } from './payloads';
+import { objectToFormData } from '@shared/formData';
+import { AddEventPayload, EditEventPayload } from '@shared/api/events/payloads';
 import { checkedFetch, fetchObject } from '@shared/fetch';
 import { ShortEvent } from './types';
 

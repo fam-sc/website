@@ -3,15 +3,15 @@
 import { LazyImageScroll } from '@/components/LazyImageScroll';
 import styles from './page.module.scss';
 import { fetchGalleryPage } from '@/api/gallery/client';
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import Link from 'next/link';
 import { UploadIcon } from '@/icons/UploadIcon';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { GalleryImageInfoDialog } from './dialog';
-import { GalleryImageWithSize } from '@/api/gallery/types';
+import { GalleryImageWithSize } from '@shared/api/gallery/types';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 
 export type ClientComponentProps = {
   selected: GalleryImageWithSize | null;

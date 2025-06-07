@@ -8,7 +8,7 @@ import { TextInput } from '../TextInput';
 
 import styles from './index.module.scss';
 
-import { urlRegex } from '@/utils/regex';
+import { urlRegex } from '@shared/string/regex';
 
 type Result = {
   link: string;
