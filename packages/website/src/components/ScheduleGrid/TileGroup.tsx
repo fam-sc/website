@@ -1,5 +1,5 @@
 import { classNames } from '@/utils/classNames';
-import { Day } from '@/api/schedule/types';
+import { Day } from '@shared/api/schedule/types';
 import { Time, timeBreakpoints } from '@shared/api/campus/types';
 import { ScheduleTile } from '../ScheduleTile';
 import styles from './TileGroup.module.scss';

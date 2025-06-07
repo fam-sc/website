@@ -1,4 +1,4 @@
-import { coerce, lerp } from '@/utils/math';
+import { coerce, lerp } from '@shared/math';
 import { createTouchManager, TouchManager } from './touchManager';
 
 // Must be in sync with css.

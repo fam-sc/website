@@ -11,8 +11,8 @@ import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
 import { addPoll } from '@/api/polls/client';
 import { TextInput } from '@/components/TextInput';
-import { AddPollPayload } from '@/api/polls/types';
-import { UserRole } from '@data/types/user';
+import { AddPollPayload } from '@shared/api/polls/types';
+import { UserRole } from '@shared/api/user/types';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { useRouter } from 'next/navigation';
 

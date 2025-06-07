@@ -2,7 +2,7 @@ import { PageProps } from '@/types/next';
 import { ClientComponent } from './client';
 import { Repository } from '@data/repo';
 import { notFound } from 'next/navigation';
-import { formatDateTime } from '@/utils/date';
+import { formatDateTime } from '@shared/date';
 import { Metadata } from 'next';
 import { cache } from 'react';
 

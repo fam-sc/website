@@ -1,6 +1,6 @@
 'use client';
 
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
@@ -13,12 +13,12 @@ import { TextInput } from '@/components/TextInput';
 import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
 import { useNotification } from '@/components/Notification';
-import { Event } from '@data/types';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { Labeled } from '@/components/Labeled';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 import { useObjectUrl } from '@/hooks/useObjectUrl';
+import { EventStatus } from '@shared/api/events/types';
 
 export type ClientEvent = {
   id: string;
@@ -43,7 +43,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
   const [title, setTitle] = useState(event?.title ?? '');
   const [date, setDate] = useState(event?.date ?? new Date());
-  const [status, setStatus] = useState<Event['status']>('pending');
+  const [status, setStatus] = useState<EventStatus>('pending');
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(
     event === undefined
   );

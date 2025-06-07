@@ -35,5 +35,5 @@
     "./src/**/*",
     "./.storybook/**/*",
     ".next/types/**/*.ts"
-  ]
+, "../shared/src/math.ts", "../shared/src/math.test.ts"  ]
 }

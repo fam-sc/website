@@ -1,6 +1,6 @@
 import { RichTextAtomNode, RichTextNode } from './types';
 
-import { getMediaFileUrl } from '../media';
+import { getMediaFileUrl } from '../api/media';
 
 function attributesToString(attrs: Record<string, unknown>): string {
   return Object.entries(attrs)

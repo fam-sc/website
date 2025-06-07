@@ -1,11 +1,11 @@
 import { PageProps } from '@/types/next';
 import { Repository } from '@data/repo';
 import { notFound, redirect } from 'next/navigation';
-import { getCurrentUserInfo } from '@/auth/session/next';
+import { getCurrentUserInfo } from '@/api/user/client';
 import { IconLinkButton } from '@/components/IconLinkButton';
 import { Typography } from '@/components/Typography';
 import { InfoIcon } from '@/icons/InfoIcon';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 
 import styles from './page.module.scss';
 import { PollWithSubmit } from './PollWithSubmit';

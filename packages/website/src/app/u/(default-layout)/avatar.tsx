@@ -2,7 +2,7 @@
 
 import { uploadUserAvatar } from '@/api/user/client';
 import { CompactInlineImageDropArea } from '@/components/CompactInlineImageDropArea';
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import { useState } from 'react';
 
 export function UserAvatar({

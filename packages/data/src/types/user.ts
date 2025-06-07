@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 import { Binary, ObjectId } from 'mongodb';
-
-export enum UserRole {
-  STUDENT_NON_APPROVED = -1,
-  STUDENT = 0,
-  GROUP_HEAD = 1,
-  ADMIN = 2,
-}
+import { UserRole } from '@shared/api/user/types';
 
 export type User = {
   firstName: string;

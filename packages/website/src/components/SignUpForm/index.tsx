@@ -8,15 +8,15 @@ import { Typography } from '@/components/Typography';
 import { Checkbox } from '@/components/Checkbox';
 import styles from './index.module.scss';
 import { GroupSelect } from '../GroupSelect';
-import { emailRegex, telnumRegex } from '@/utils/regex';
+import { emailRegex, telnumRegex } from '@shared/string/regex';
 import { useTestRegex } from '@/hooks/useTestRegex';
 import { ErrorBoard } from '../ErrorBoard';
 import { signUp } from '@/api/user/client';
-import { SignUpData } from '@/auth/types';
+import { SignUpData } from '@shared/api/auth/types';
 import { pick } from '@/utils/object/pick';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '../Notification';
-import { normalizeGuid } from '@/utils/guid';
+import { normalizeGuid } from '@shared/guid';
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({

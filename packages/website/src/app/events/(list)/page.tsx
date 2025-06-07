@@ -1,13 +1,13 @@
 import { Repository } from '@data/repo';
 import { PageProps } from '@/types/next';
-import { coerce } from '@/utils/math';
+import { coerce } from '@shared/math';
 import { ClientComponent, ClientEvent } from './client';
 import { redirect, RedirectType } from 'next/navigation';
 import { WithId } from 'mongodb';
 import { Event } from '@data/types';
-import { formatDateTime } from '@/utils/date';
+import { formatDateTime } from '@shared/date';
 import { shortenRichText } from '@shared/richText/short';
-import { parseInt } from '@/utils/parseInt';
+import { parseInt } from '@shared/parseInt';
 import { Metadata } from 'next';
 
 const ITEMS_PER_PAGE = 5;

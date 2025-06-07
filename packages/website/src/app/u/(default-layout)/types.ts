@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 
 export type TabInfo = {
   href: string;

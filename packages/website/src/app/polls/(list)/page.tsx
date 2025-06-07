@@ -1,13 +1,13 @@
 import { Pagination } from '@/components/Pagination';
 import { ShortPollInfoList } from '@/components/ShortPollInfoList';
 import { PageProps } from '@/types/next';
-import { coerce } from '@/utils/math';
-import { parseInt } from '@/utils/parseInt';
+import { coerce } from '@shared/math';
+import { parseInt } from '@shared/parseInt';
 import { Repository } from '@data/repo';
 import { redirect, RedirectType } from 'next/navigation';
 import styles from './page.module.scss';
-import { getCurrentUserInfo } from '@/auth/session/next';
-import { UserRole } from '@data/types/user';
+import { getCurrentUserInfo } from '@/api/user/client';
+import { UserRole } from '@shared/api/user/types';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';
 import { Metadata } from 'next';

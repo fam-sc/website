@@ -1,10 +1,10 @@
 import { PageProps } from '@/types/next';
 import { ClientComponent } from './client';
-import { GalleryImageWithSize } from '@/api/gallery/types';
+import { GalleryImageWithSize } from '@shared/api/gallery/types';
 import { Repository } from '@data/repo';
 import { Metadata } from 'next';
 import { cache } from 'react';
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 
 const getGalleryImage = cache(
   async (id: string): Promise<GalleryImageWithSize | null> => {

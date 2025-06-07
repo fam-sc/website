@@ -14,7 +14,7 @@ import { ShortEvent } from '@/api/events/types';
 import { fetchAllEventsShort } from '@/api/events/client';
 import { Typography } from '@/components/Typography';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 
 export function ClientComponent() {
   useCheckUserRole(UserRole.ADMIN);

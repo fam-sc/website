@@ -1,9 +1,8 @@
 'use client';
 
-import { Event } from '@data/types';
 import styles from './page.module.scss';
 import { Typography } from '@/components/Typography';
-import { getMediaFileUrl } from '@shared/media';
+import { getMediaFileUrl } from '@shared/api/media';
 import Image from 'next/image';
 import { RichText } from '@/components/RichText';
 import Link from 'next/link';
@@ -18,10 +17,19 @@ import { useRouter } from 'next/navigation';
 import { useNotification } from '@/components/Notification';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
+import { RichTextString } from '@shared/richText/types';
+import { ImageSize } from '@shared/image/types';
 
 export type ClientComponentProps = {
-  event: Event & { id: string };
+  event: {
+    id: string;
+    title: string;
+    status: 'pending' | 'ended';
+    date: Date;
+    description: RichTextString;
+    image?: ImageSize;
+  };
 };
 
 type DeleteEventDialogProps = {

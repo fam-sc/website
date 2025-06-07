@@ -9,6 +9,6 @@
     "module": "esnext",
     "moduleResolution": "bundler"
   },
-  "include": ["./src", "src/fetch.ts"],
+  "include": [ "./src/**/*.ts"],
   "exclude": ["./node_modules"]
 }

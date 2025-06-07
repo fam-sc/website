@@ -1,11 +1,14 @@
-import { checkedFetch, fetchObject } from '@shared/fetch';
-import { UploadGalleryImagesPayload } from './payloads';
-import { GalleryImageWithEvent, GalleryImageWithSize } from './types';
+import { UploadGalleryImagesPayload } from '@shared/api/gallery/payloads';
+import {
+  GalleryImageWithEvent,
+  GalleryImageWithSize,
+} from '@shared/api/gallery/types';
+import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function fetchGalleryPage(
   page: number
 ): Promise<GalleryImageWithSize[]> {
-  return fetchObject(`/api/gallery?page=${page}`);
+  return apiFetchObject(`/api/gallery?page=${page}`);
 }
 
 export function uploadGalleryImages(payload: UploadGalleryImagesPayload) {
@@ -20,18 +23,18 @@ export function uploadGalleryImages(payload: UploadGalleryImagesPayload) {
     formData.append('files', file);
   }
 
-  return checkedFetch(`/api/gallery`, {
+  return apiCheckedFetch(`/gallery`, {
     method: 'POST',
     body: formData,
   });
 }
 
 export function fetchGalleryImage(id: string): Promise<GalleryImageWithEvent> {
-  return fetchObject(`/api/gallery/${id}`);
+  return apiFetchObject(`/gallery/${id}`);
 }
 
 export async function deleteGalleryImage(id: string): Promise<void> {
-  await checkedFetch(`/api/gallery/${id}`, {
+  await apiCheckedFetch(`/gallery/${id}`, {
     method: 'DELETE',
   });
 }

@@ -5,16 +5,17 @@ import { Typography } from '@/components/Typography';
 import { EventIcon } from '@/icons/EventIcon';
 import { RichText } from '@/components/RichText';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
-import { Event, ImageInfo } from '@data/types';
 import { RichTextString } from '@shared/richText/types';
+import { EventStatus } from '@shared/api/events/types';
+import { ImageSize } from '@shared/image/types';
 
 export type EventListItemProps = {
   id: string;
-  status: Event['status'];
+  status: EventStatus;
   title: string;
   date: string;
   description: RichTextString;
-  image: ImageInfo & {
+  image: ImageSize & {
     src: string;
   };
 };

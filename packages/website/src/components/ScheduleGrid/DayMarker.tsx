@@ -1,4 +1,4 @@
-import { Day } from '@data/types/schedule';
+import { Day } from '@shared/api/schedule/types';
 import { Typography } from '../Typography';
 import styles from './DayMarker.module.scss';
 

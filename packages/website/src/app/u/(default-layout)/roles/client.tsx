@@ -9,7 +9,7 @@ import { startTransition, useOptimistic } from 'react';
 
 import styles from './page.module.scss';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@shared/api/user/types';
 import { redirect } from 'next/navigation';
 
 export function ClientComponent() {

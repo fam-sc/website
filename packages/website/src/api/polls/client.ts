@@ -1,8 +1,12 @@
-import { checkedFetch, fetchObject } from '@shared/fetch';
-import { AddPollPayload, PollResultsTable, SubmitPollPayload } from './types';
+import {
+  AddPollPayload,
+  PollResultsTable,
+  SubmitPollPayload,
+} from '@shared/api/polls/types';
+import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function addPoll(payload: AddPollPayload) {
-  return checkedFetch(`/api/polls`, {
+  return apiCheckedFetch(`/api/polls`, {
     method: 'POST',
     body: payload,
     json: true,
@@ -10,7 +14,7 @@ export function addPoll(payload: AddPollPayload) {
 }
 
 export function submitPoll(id: string, payload: SubmitPollPayload) {
-  return checkedFetch(`/api/polls/${id}`, {
+  return apiCheckedFetch(`/api/polls/${id}`, {
     method: 'POST',
     body: payload,
     json: true,
@@ -18,11 +22,11 @@ export function submitPoll(id: string, payload: SubmitPollPayload) {
 }
 
 export function closePoll(id: string) {
-  return checkedFetch(`/api/polls/${id}/close`, {
+  return apiCheckedFetch(`/api/polls/${id}/close`, {
     method: 'POST',
   });
 }
 
 export function fetchPollResultsTable(id: string) {
-  return fetchObject<PollResultsTable>(`/api/polls/${id}/table`);
+  return apiFetchObject<PollResultsTable>(`/api/polls/${id}/table`);
 }

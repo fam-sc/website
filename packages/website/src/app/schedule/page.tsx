@@ -3,15 +3,14 @@ import { Metadata } from 'next';
 import { ClientComponent } from './client';
 
 import { getCurrentTime } from '@shared/api/campus';
-import { getFacultyGroupById } from '@/api/groups/get';
-import { normalizeGuid } from '@/utils/guid';
 import { pick } from '@/utils/object/pick';
 import { PageProps } from '@/types/next';
 import { cache } from 'react';
 import { Group } from '@data/types';
+import { getGroupById } from '@/api/groups/client';
 
 const getGroup = cache(async (groupId: string) => {
-  return getFacultyGroupById(normalizeGuid(groupId));
+  return getGroupById(groupId);
 });
 
 async function getGroupFromSearchParams(

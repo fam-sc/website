@@ -1,7 +1,7 @@
 'use client';
 
 import { submitPoll } from '@/api/polls/client';
-import { Poll } from '@/api/polls/types';
+import { Poll } from '@shared/api/polls/types';
 import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
 import {
