@@ -1,5 +1,5 @@
 import { encodeInitBodyToJson, ExtendedRequestInit } from '@shared/fetch';
-import { ErrorResponseBody } from './responses';
+import { isErrorResponseBody } from './responses';
 import { ApiError } from './error';
 
 export async function apiCheckedFetch(
@@ -9,15 +9,15 @@ export async function apiCheckedFetch(
   const response = await fetch(url, encodeInitBodyToJson(init));
   if (!response.ok) {
     const text = await response.text();
-    let object: ErrorResponseBody | undefined;
+    let object: unknown;
 
     try {
-      object = JSON.parse(text) as ErrorResponseBody;
+      object = JSON.parse(text);
     } catch {
       // Here we only handling the case when response body is not valid JSON.
     }
 
-    const error = object
+    const error = isErrorResponseBody(object)
       ? new ApiError(object.message, object.code)
       : new Error(text);
 

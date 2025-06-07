@@ -1,7 +1,7 @@
 import { RichTextAtomNode, RichTextString } from './types';
 
 function normalizeWhitespaces(text: string): string {
-  return text.replaceAll(/s+/g, ' ');
+  return text.replaceAll(/\s+/g, ' ').trim();
 }
 
 function transformNodeArrayToPlainText(nodes: RichTextAtomNode[]): string {
@@ -12,7 +12,7 @@ function transformNodeArrayToPlainText(nodes: RichTextAtomNode[]): string {
 
 export function richTextToPlainText(text: RichTextString): string {
   if (typeof text === 'string') {
-    return text;
+    return normalizeWhitespaces(text);
   }
 
   if (Array.isArray(text)) {

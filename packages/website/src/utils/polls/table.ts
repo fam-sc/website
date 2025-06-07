@@ -7,7 +7,7 @@ import {
 import { indexMany } from '../indexMany';
 import { formatDateTime } from '../date';
 
-function answerToString(
+export function answerToString(
   answer: PollRespondentAnswer,
   question: PollQuestion
 ): string {
@@ -36,6 +36,10 @@ function answerToString(
         .join('; ');
     }
     case 'checkbox': {
+      if (answer.status === undefined) {
+        throw new Error('Invalid answer: no status');
+      }
+
       return answer.status ? '+' : '-';
     }
   }

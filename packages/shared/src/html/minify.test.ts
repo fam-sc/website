@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { minifyHTML } from './minify';
+import { minifyHTML, minifyInlineCss } from './minify';
 
 test.each<[string, string]>([
   [
@@ -40,6 +40,18 @@ test.each<[string, string]>([
   ],
 ])('minifyHTML', (input, expected) => {
   const actual = minifyHTML(input);
+
+  expect(actual).toEqual(expected);
+});
+
+test.each<[string, string]>([
+  ['', ''],
+  ['color: white;', 'color:white;'],
+  ['color:white;', 'color:white;'],
+  ['color:  white  ; background:   black  ;', 'color:white;background:black;'],
+  ['color:white', 'color:white;'],
+])('minifyInlineCss', (input, expected) => {
+  const actual = minifyInlineCss(input);
 
   expect(actual).toEqual(expected);
 });

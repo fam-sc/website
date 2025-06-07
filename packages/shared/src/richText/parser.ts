@@ -1,7 +1,6 @@
 import { parseFragment, serializeOuter } from 'parse5';
 import type { ChildNode, DocumentFragment, Element } from '../html/types';
 
-import { transformArrayAttributesToRichText } from './attributes';
 import { createRichTextNode } from './factory';
 import {
   RichTextAtomNode,
@@ -14,6 +13,7 @@ import {
   getAttributeNumberValue,
   getAttributeValue,
   HtmlNodeWithName,
+  transformArrayAttributesToObject,
 } from '../html';
 import { normalizeToRelative } from '../url';
 
@@ -106,7 +106,7 @@ const handlerMap = createHandlerMap({
   },
   a: async ({ attrs, childNodes }, context) => {
     let href = getAttributeValue(attrs, 'href');
-    const parsedAttributes = transformArrayAttributesToRichText(attrs);
+    const parsedAttributes = transformArrayAttributesToObject(attrs);
     const children = await transformChildNodes(childNodes, context);
 
     if (href !== undefined) {
@@ -141,7 +141,7 @@ const defaultHandler: NodeTransformer<Element> = async (element, context) => {
 
   return createRichTextNode({
     name: nodeName,
-    attrs: transformArrayAttributesToRichText(attrs),
+    attrs: transformArrayAttributesToObject(attrs),
     children: await transformChildNodes(childNodes, context),
   });
 };

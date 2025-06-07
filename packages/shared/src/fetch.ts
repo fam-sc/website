@@ -5,15 +5,29 @@ export type ExtendedRequestInit =
       body: object;
     });
 
-export function getJsonOrError<T>(response: Response): Promise<T> {
-  return response.ok
-    ? response.json()
-    : Promise.reject(new Error(response.statusText));
+async function createErrorResponse(response: Response): Promise<Error> {
+  const { statusText: status } = response;
+
+  try {
+    const text = await response.text();
+
+    return new Error(text.length > 0 ? `${status}: ${text}` : status);
+  } catch {
+    return new Error(status);
+  }
+}
+
+export async function getJsonOrError<T>(response: Response): Promise<T> {
+  if (response.ok) {
+    return response.json() as T;
+  }
+
+  throw await createErrorResponse(response);
 }
 
 export async function ensureOkResponse(response: Response) {
   if (!response.ok) {
-    throw new Error(`${response.statusText}: ${await response.text()}`);
+    throw await createErrorResponse(response);
   }
 }
 
