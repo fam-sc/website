@@ -1,14 +1,28 @@
 import { methodNotAllowed, notFound } from '../responses';
 import { HttpMethod } from './types';
 
-type Params = Record<string, string>;
+type Params<P extends string[] = string[]> = Record<P[number], string>;
 
-type Handler<Env> = (
+type ResolvePathPart<P extends string> = P extends `:${infer Name}`
+  ? [Name]
+  : [];
+
+type ResolvePathParams<P extends string> = P extends `/${infer Rest}`
+  ? ResolvePathParams<Rest>
+  : P extends `${infer Param}/${infer Rest}`
+    ? [...ResolvePathPart<Param>, ...ResolvePathParams<Rest>]
+    : P extends `${infer Param}`
+      ? ResolvePathPart<Param>
+      : [];
+
+type Handler<Env, P extends string[] = string[]> = (
   request: Request,
-  args: { env: Env; params: Params }
+  args: { env: Env; params: Params<P> }
 ) => Promise<Response>;
 
-type HandlerMap<Env> = Partial<Record<HttpMethod, Handler<Env>>>;
+type HandlerMap<Env, P extends string[] = string[]> = Partial<
+  Record<HttpMethod, Handler<Env, P>>
+>;
 
 interface BasePathNode<Env> {
   paramNode?: { name: string; value: BasePathNode<Env> };
@@ -21,11 +35,11 @@ interface HandlerPathNode<Env> extends BasePathNode<Env> {
 
 type PathNode<Env> = BasePathNode<Env> | HandlerPathNode<Env>;
 
-function handleRequestMethod<Env>(
-  map: HandlerMap<Env>,
+function handleRequestMethod<Env, P extends string[]>(
+  map: HandlerMap<Env, P>,
   request: Request,
   env: Env,
-  params: Params
+  params: Params<P>
 ) {
   const handler = map[request.method as HttpMethod];
 
@@ -44,7 +58,10 @@ export class ParamRouter<Env> {
   delete = this.createPathHandler('DELETE');
 
   private createPathHandler(method: HttpMethod) {
-    return (path: string, handler: Handler<Env>) => {
+    return <P extends string>(
+      path: P,
+      handler: Handler<Env, ResolvePathParams<P>>
+    ) => {
       this.addPath(path, method, handler);
     };
   }

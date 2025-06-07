@@ -7,7 +7,7 @@ import { authRoute } from '@/authRoute';
 import { UserRole } from '@shared/api/user/types';
 import { app } from '@/app';
 
-app.get('/gallery', async (_request, { params: { id } }) => {
+app.get('/gallery/:id', async (_request, { params: { id } }) => {
   let objectId: ObjectId;
   try {
     objectId = new ObjectId(id);
@@ -33,7 +33,7 @@ app.get('/gallery', async (_request, { params: { id } }) => {
 });
 
 app.delete(
-  '/gallery',
+  '/gallery/:id',
   async (request, { env: { MEDIA_BUCKET }, params: { id } }) => {
     return authRoute(request, UserRole.ADMIN, async (repo) => {
       const result = await repo.galleryImages().delete(id);
