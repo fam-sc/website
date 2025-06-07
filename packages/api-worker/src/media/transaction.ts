@@ -1,21 +1,27 @@
-import { deleteMediaFile, putMediaFile } from '.';
-
 type TransactionOperation = {
-  run: () => Promise<void>;
-  revert: () => Promise<void>;
+  run: () => Promise<unknown>;
+  revert: () => Promise<unknown>;
 };
 
 export class MediaTransaction implements AsyncDisposable {
   private ops: TransactionOperation[] = [];
   private runSucessful: boolean = false;
+  private bucket: R2Bucket;
 
-  put(path: string, body: BodyInit) {
+  constructor(bucket: R2Bucket) {
+    this.bucket = bucket;
+  }
+
+  put(
+    path: string,
+    body: ReadableStream | ArrayBuffer | ArrayBufferView | string | null | Blob
+  ) {
     this.ops.push({
       run: () => {
-        return putMediaFile(path, body);
+        return this.bucket.put(path, body);
       },
       revert: () => {
-        return deleteMediaFile(path);
+        return this.bucket.delete(path);
       },
     });
   }

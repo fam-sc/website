@@ -1,5 +1,4 @@
 import { GalleryImageWithEvent } from '@shared/api/gallery/types';
-import { deleteMediaFile } from '@shared/api/media';
 import { notFound, ok } from '@shared/responses';
 import { Repository } from '@data/repo';
 import { formatDateTime } from '@shared/date';
@@ -33,17 +32,17 @@ app.get('/gallery', async (_request, { params: { id } }) => {
   return ok(result);
 });
 
-app.delete('/gallery', async (request, { params: { id } }) => {
-  return authRoute(request, UserRole.ADMIN, async (repo) => {
-    const result = await repo.galleryImages().delete(id);
+app.delete(
+  '/gallery',
+  async (request, { env: { MEDIA_BUCKET }, params: { id } }) => {
+    return authRoute(request, UserRole.ADMIN, async (repo) => {
+      const result = await repo.galleryImages().delete(id);
 
-    if (result.deletedCount > 0) {
-      // Unability to delete image from R2 should not an obstacle for deleting an image.
-      deleteMediaFile(`gallery/${id}`).catch((error: unknown) => {
-        console.error(error);
-      });
-    }
+      if (result.deletedCount > 0) {
+        await MEDIA_BUCKET.delete(`gallery/${id}`);
+      }
 
-    return new Response();
-  });
-});
+      return new Response();
+    });
+  }
+);

@@ -3293,6 +3293,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sc-fam/api-worker@workspace:packages/api-worker"
   dependencies:
+    "@types/node": "npm:22.15.30"
     tsx: "npm:4.19.4"
     typescript: "npm:5.8.3"
     wrangler: "npm:4.19.1"
@@ -4350,7 +4351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:22.15.30":
   version: 22.15.30
   resolution: "@types/node@npm:22.15.30"
   dependencies:

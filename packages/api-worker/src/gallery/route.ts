@@ -1,5 +1,5 @@
 import { authRoute } from '@/authRoute';
-import { MediaTransaction } from '@shared/api/media/transaction';
+import { MediaTransaction } from '@/media/transaction';
 import { badRequest, ok } from '@shared/responses';
 import { getImageSize } from '@shared/image/size';
 import { Repository } from '@data/repo';
@@ -30,7 +30,7 @@ app.get('/gallery', async (request) => {
   return ok(images);
 });
 
-app.post('/gallery', async (request) => {
+app.post('/gallery', async (request, { env: { MEDIA_BUCKET } }) => {
   const formData = await request.formData();
 
   const eventId = formData.get('eventId');
@@ -94,7 +94,7 @@ app.post('/gallery', async (request) => {
         }))
       );
 
-      await using mediaTransaction = new MediaTransaction();
+      await using mediaTransaction = new MediaTransaction(MEDIA_BUCKET);
 
       // eslint-disable-next-line unicorn/no-for-loop
       for (let i = 0; i < filesWithSize.length; i++) {
