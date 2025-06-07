@@ -12,8 +12,13 @@ export function getCookieValue(
     cookieValue = value;
   }
 
-  for (const part of cookieValue.split(';')) {
-    const colonIndex = part.indexOf(':');
+  let parts = cookieValue.split(';');
+  if (parts.length === 0) {
+    parts = [cookieValue];
+  }
+
+  for (const part of parts) {
+    const colonIndex = part.indexOf('=');
     if (colonIndex !== -1) {
       const name = part.slice(0, colonIndex).trim();
 

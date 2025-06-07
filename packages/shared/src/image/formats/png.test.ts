@@ -4,7 +4,7 @@ import { getSize } from './png';
 
 test('size', async () => {
   const content = await fs.readFile(
-    'packages/website/src/image/formats/test-data/test.png'
+    'packages/shared/src/image/formats/test-data/test.png'
   );
   const size = getSize(content);
 

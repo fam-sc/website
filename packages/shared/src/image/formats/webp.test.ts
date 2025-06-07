@@ -4,7 +4,7 @@ import { getSize } from './webp';
 
 test('size', async () => {
   const content = await fs.readFile(
-    'packages/website/src/image/formats/test-data/test.webp'
+    'packages/shared/src/image/formats/test-data/test.webp'
   );
   const size = getSize(content);
 

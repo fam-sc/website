@@ -4,7 +4,7 @@ import { getSize } from './jpeg';
 
 test('size', async () => {
   const content = await fs.readFile(
-    'packages/website/src/image/formats/test-data/test.jpeg'
+    'packages/shared/src/image/formats/test-data/test.jpeg'
   );
   const size = getSize(content);
 
