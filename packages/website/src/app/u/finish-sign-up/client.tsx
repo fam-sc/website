@@ -1,4 +1,4 @@
-import { finishSignUp } from '@/api/user/client';
+import { finishSignUp } from '@/api/users/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { LinkButton } from '@/components/LinkButton';
 import { Typography } from '@/components/Typography';

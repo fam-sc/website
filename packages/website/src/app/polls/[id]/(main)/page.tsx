@@ -1,5 +1,5 @@
 import { Repository } from '@data/repo';
-import { getCurrentUserInfo } from '@/api/user/client';
+import { getCurrentUserInfo } from '@/api/users/client';
 import { IconLinkButton } from '@/components/IconLinkButton';
 import { Typography } from '@/components/Typography';
 import { InfoIcon } from '@/icons/InfoIcon';

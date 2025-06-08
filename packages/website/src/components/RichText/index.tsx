@@ -3,7 +3,7 @@ import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import {
   RichTextElementNode,
   RichTextNode,

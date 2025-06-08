@@ -5,6 +5,7 @@
     "build:no-emit": "tsc --noEmit"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.826.0",
     "parse5": "7.2.1"
   },
   "devDependencies": {

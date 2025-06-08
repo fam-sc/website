@@ -1,7 +1,7 @@
 import { LazyImageScroll } from '@/components/LazyImageScroll';
 import styles from './page.module.scss';
 import { fetchGalleryPage } from '@/api/gallery/client';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { UploadIcon } from '@/icons/UploadIcon';
 import { useState } from 'react';
 import { GalleryImageInfoDialog } from './dialog';

@@ -2,7 +2,7 @@ import {
   approveUser,
   disapproveUser,
   getUsersForApprove,
-} from '@/api/user/client';
+} from '@/api/users/client';
 import { useDataLoader } from '@/hooks/useDataLoader';
 
 import styles from './page.module.scss';
@@ -11,7 +11,7 @@ import {
   UserApproveItemType,
 } from '@/components/UserApproveBoard';
 import { useCallback } from 'react';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { Typography } from '@/components/Typography';
 import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';

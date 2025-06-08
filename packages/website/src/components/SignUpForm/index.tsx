@@ -9,7 +9,7 @@ import { GroupSelect } from '../GroupSelect';
 import { emailRegex, telnumRegex } from '@shared/string/regex';
 import { useTestRegex } from '@/hooks/useTestRegex';
 import { ErrorBoard } from '../ErrorBoard';
-import { signUp } from '@/api/user/client';
+import { signUp } from '@/api/users/client';
 import { SignUpData } from '@shared/api/auth/types';
 import { pick } from '@/utils/object/pick';
 import { useNotification } from '../Notification';

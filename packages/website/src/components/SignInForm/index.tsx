@@ -5,7 +5,7 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { Typography } from '@/components/Typography';
 import { Link } from '../Link';
 import styles from './index.module.scss';
-import { signIn } from '@/api/user/client';
+import { signIn } from '@/api/users/client';
 import { useNotification } from '../Notification';
 
 export default function SignInForm() {

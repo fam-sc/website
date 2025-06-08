@@ -11,7 +11,7 @@ import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { MenuIcon } from '@/icons/MenuIcon';
 import { useAuthInfo } from '@/auth/context';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { navigationMainRoutes } from '@/constants/navigation';
 import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
 

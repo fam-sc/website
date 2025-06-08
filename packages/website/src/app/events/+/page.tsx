@@ -14,7 +14,9 @@ async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
           id,
           title: editEvent.title,
           date: editEvent.date,
-          description: richTextToHtml(editEvent.description),
+          description: richTextToHtml(editEvent.description, {
+            mediaUrl: import.meta.env.VITE_MEDIA_URL,
+          }),
         }
       : undefined;
   } catch {

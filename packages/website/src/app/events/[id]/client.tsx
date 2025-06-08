@@ -1,6 +1,6 @@
 import styles from './page.module.scss';
 import { Typography } from '@/components/Typography';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { RichText } from '@/components/RichText';
 import { EditIcon } from '@/icons/EditIcon';
 import { DeleteIcon } from '@/icons/DeleteIcon';

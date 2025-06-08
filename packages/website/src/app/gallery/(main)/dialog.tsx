@@ -3,7 +3,7 @@ import {
   GalleryImageWithEvent,
   GalleryImageWithSize,
 } from '@shared/api/gallery/types';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { IconButton } from '@/components/IconButton';
 import { ModalOverlay } from '@/components/ModalOverlay';
 import { useNotification } from '@/components/Notification';

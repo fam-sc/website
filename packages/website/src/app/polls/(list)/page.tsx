@@ -4,7 +4,7 @@ import { coerce } from '@shared/math';
 import { parseInt } from '@shared/parseInt';
 import { Repository } from '@data/repo';
 import styles from './page.module.scss';
-import { getCurrentUserInfo } from '@/api/user/client';
+import { getCurrentUserInfo } from '@/api/users/client';
 import { UserRole } from '@shared/api/user/types';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';

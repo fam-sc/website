@@ -2,14 +2,51 @@ import type { EntryContext } from 'react-router';
 import { ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 
+import { app } from '@/api/app';
+import '@/api/routes';
+
 import { renderToReadableStream } from 'react-dom/server.edge';
+import { AppLoadContext } from 'react-router';
+import { Repository } from '@data/repo';
+import { getEnvChecked } from '@shared/env';
+
+async function handleApiRequest(request: Request, loadContext: AppLoadContext) {
+  let env: Env;
+  if (import.meta.env.PROD) {
+    env = loadContext.cloudflare.env;
+
+    Repository.setDefaultConnectionString(env.MONGO_CONNECTION_STRING);
+  } else {
+    const { ApiR2Bucket } = await import('@shared/r2/api');
+    const bucket = new ApiR2Bucket(
+      getEnvChecked('MEDIA_ACCOUNT_ID'),
+      getEnvChecked('MEDIA_ACCESS_KEY_ID'),
+      getEnvChecked('MEDIA_SECRET_ACCESS_KEY'),
+      getEnvChecked('MEDIA_BUCKET_NAME')
+    );
+
+    env = {
+      MONGO_CONNECTION_STRING: getEnvChecked('MONGO_CONNECTION_STRING'),
+      RESEND_API_KEY: getEnvChecked('RESEND_API_KEY'),
+      MEDIA_BUCKET: bucket,
+    };
+  }
+
+  return app.handleRequest(request, env);
+}
 
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  routerContext: EntryContext
+  routerContext: EntryContext,
+  loadContext: AppLoadContext
 ) {
+  const { pathname } = new URL(request.url);
+  if (pathname.startsWith('/api')) {
+    return handleApiRequest(request, loadContext);
+  }
+
   let shellRendered = false;
   const userAgent = request.headers.get('user-agent');
 

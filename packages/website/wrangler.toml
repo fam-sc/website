@@ -1,12 +1,15 @@
 name = "website"
 main = "src/worker.ts"
-minify = true
 compatibility_date = "2025-02-14"
 compatibility_flags = ["nodejs_compat"]
 
 # routes = [
 #   { pattern = "test-website.sc-fam.org", custom_domain = true }
 # ]
+
+[[r2_buckets]]
+binding = 'MEDIA_BUCKET'
+bucket_name = 'sc-fam-website'
 
 [assets]
 not_found_handling = "single-page-application"

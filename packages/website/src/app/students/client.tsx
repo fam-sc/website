@@ -7,7 +7,7 @@ import { UsefulLinkList } from '@/components/UsefulLinkList';
 import { ClientEvent } from '../events/(list)/client';
 import { List } from '@/components/List';
 import { EventListItem } from '@/components/EventListItem';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { LinkButton } from '@/components/LinkButton';
 import { Title } from '@/components/Title';
 

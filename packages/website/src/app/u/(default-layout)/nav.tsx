@@ -7,7 +7,7 @@ import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { TabInfo } from './types';
 import { Button } from '@/components/Button';
-import { logOut } from '@/api/user/client';
+import { logOut } from '@/api/users/client';
 import styles from './nav.module.scss';
 
 type UserLayoutNavigationProps = {

@@ -1,4 +1,4 @@
-import { changeUserRole, getAllUsers } from '@/api/user/client';
+import { changeUserRole, getAllUsers } from '@/api/users/client';
 import { InfiniteScroll } from '@/components/InfiniteScroll';
 import { useNotification } from '@/components/Notification';
 import { UserRoleBoard } from '@/components/UserRoleBoard';

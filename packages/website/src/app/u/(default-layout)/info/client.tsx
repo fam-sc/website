@@ -4,7 +4,7 @@ import { ReactNode, useState } from 'react';
 import { TextInput } from '@/components/TextInput';
 import { useNotification } from '@/components/Notification';
 import { Button } from '@/components/Button';
-import { updateUserPersonalInfo } from '@/api/user/client';
+import { updateUserPersonalInfo } from '@/api/users/client';
 import { UserPersonalInfo } from '@shared/api/user/types';
 import { Title } from '@/components/Title';
 

@@ -1,4 +1,4 @@
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
