@@ -20,10 +20,7 @@ export async function getApiErrorFromResponse(
 }
 
 export async function apiFetch(url: string | URL, init?: ExtendedRequestInit) {
-  return fetch(
-    `${import.meta.env.VITE_API_URL}${url}`,
-    encodeInitBodyToJson(init)
-  );
+  return fetch(url, encodeInitBodyToJson(init));
 }
 
 export async function apiCheckedFetch(

@@ -9,10 +9,17 @@ function getAbsolutePath(packageName: string) {
 
 const config: StorybookConfig = {
   stories: ['../**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-actions', '@storybook/addon-a11y'].map((name) =>
+  addons: ['@storybook/addon-a11y', '@storybook/addon-links'].map((name) =>
     getAbsolutePath(name)
   ),
-  framework: getAbsolutePath('@storybook/nextjs'),
+  framework: {
+    name: getAbsolutePath('@storybook/react-vite'),
+    options: {
+      builder: {
+        viteConfigPath: 'vite.storybook.config.ts',
+      },
+    },
+  },
   staticDirs: ['../public'],
 };
 
