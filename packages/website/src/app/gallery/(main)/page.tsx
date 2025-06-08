@@ -1,10 +1,8 @@
-import { PageProps } from '@/types/next';
 import { ClientComponent } from './client';
 import { GalleryImageWithSize } from '@shared/api/gallery/types';
 import { Repository } from '@data/repo';
-import { Metadata } from 'next';
 import { cache } from 'react';
-import { getMediaFileUrl } from '@shared/api/media';
+import { Route } from './+types/page';
 
 const getGalleryImage = cache(
   async (id: string): Promise<GalleryImageWithSize | null> => {
@@ -15,14 +13,7 @@ const getGalleryImage = cache(
   }
 );
 
-async function getGalleryImageFromSearchParams(
-  searchParams: PageProps['searchParams']
-) {
-  const { id: rawId } = await searchParams;
-
-  return typeof rawId === 'string' ? await getGalleryImage(rawId) : null;
-}
-
+/*
 export async function generateMetadata({
   searchParams,
 }: PageProps): Promise<Metadata> {
@@ -45,8 +36,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ searchParams }: PageProps) {
-  const image = await getGalleryImageFromSearchParams(searchParams);
+*/
 
+export async function loader({ request }: Route.LoaderArgs) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  const image = id !== null ? await getGalleryImage(id) : null;
+
+  return { image };
+}
+
+export default function Page({ loaderData: { image } }: Route.ComponentProps) {
   return <ClientComponent selected={image} />;
 }

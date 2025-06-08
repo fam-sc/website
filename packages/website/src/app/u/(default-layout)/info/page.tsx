@@ -1,24 +1,24 @@
-import { getCurrentSessionId } from '@/auth/session/next';
 import { Repository } from '@data/repo';
-import { redirect, RedirectType } from 'next/navigation';
 import { ClientComponent } from './client';
-import { Metadata } from 'next';
+import { redirect } from 'react-router';
+import { Route } from './+types/page';
+import { getSessionIdNumber } from '@shared/api/auth';
 
-export const metadata: Metadata = {
-  title: 'Профіль',
-};
-
-export default async function Page() {
-  const sessionId = await getCurrentSessionId();
+export async function loader({ request }: Route.LoaderArgs) {
+  const sessionId = getSessionIdNumber(request);
   if (sessionId === undefined) {
-    redirect('/', RedirectType.replace);
+    return redirect('/');
   }
 
   await using repo = await Repository.openConnection();
   const pi = await repo.sessions().getUserPersonalInfo(sessionId);
   if (pi === null) {
-    redirect('/', RedirectType.replace);
+    return redirect('/');
   }
 
-  return <ClientComponent personalInfo={pi} />;
+  return pi;
+}
+
+export default function Page({ loaderData }: Route.ComponentProps) {
+  return <ClientComponent personalInfo={loaderData} />;
 }

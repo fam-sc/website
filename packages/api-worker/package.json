@@ -3,6 +3,7 @@
   "packageManager": "yarn@4.9.1",
   "scripts": {
     "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
     "build:no-emit": "tsc --noEmit"
   },
   "devDependencies": {

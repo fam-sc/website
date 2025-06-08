@@ -1,4 +1,4 @@
-'use client';
+
 
 import styles from './page.module.scss';
 import { Labeled } from '@/components/Labeled';
@@ -30,6 +30,8 @@ export function ClientComponent({ personalInfo }: ClientComponentProps) {
 
   return (
     <div className={styles.content}>
+      <title>Профіль</title>
+
       <div className={styles.sections}>
         <Section title="Персональна інформація">
           <TextInput

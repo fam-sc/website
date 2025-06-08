@@ -1,4 +1,4 @@
-'use client';
+
 
 import { uploadUserAvatar } from '@/api/user/client';
 import { CompactInlineImageDropArea } from '@/components/CompactInlineImageDropArea';

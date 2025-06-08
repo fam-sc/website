@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import { LinkButton } from '../LinkButton';
 import { Typography } from '../Typography';
 
@@ -11,12 +9,14 @@ export type TextWithImageProps = {
   className?: string;
   title: string;
   subtext: string;
-  image: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  };
+  image:
+    | string
+    | {
+        src: string;
+        alt: string;
+        width: number;
+        height: number;
+      };
   button?: {
     title: string;
     href: string;
@@ -33,19 +33,23 @@ export function TextWithImage({
   return (
     <div className={classNames(styles.root, className)}>
       <div className={styles['image-wrapper']}>
-        <Image
-          src={image.src}
-          alt={image.alt}
-          width={image.width}
-          height={image.height}
-        />
+        {typeof image === 'string' ? (
+          <img src={image} />
+        ) : (
+          <img
+            src={image.src}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+          />
+        )}
       </div>
 
       <div className={styles['text-section']}>
         <Typography variant="h4">{title}</Typography>
         <Typography>{subtext}</Typography>
         {button === undefined ? undefined : (
-          <LinkButton href={button.href} buttonVariant="solid" color="primary">
+          <LinkButton to={button.href} buttonVariant="solid" color="primary">
             {button.title}
           </LinkButton>
         )}

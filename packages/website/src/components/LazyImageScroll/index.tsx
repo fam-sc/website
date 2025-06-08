@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { InfiniteScroll } from '../InfiniteScroll';
 import styles from './index.module.scss';
 import { usePageFetcher } from '@/hooks/usePageFetcher';
@@ -51,9 +50,9 @@ export function LazyImageScroll<T>({
               }}
             >
               {typeof imageInfo === 'string' ? (
-                <Image src={imageInfo} alt="" width={0} height={0} />
+                <img src={imageInfo} alt="" width={0} height={0} />
               ) : (
-                <Image
+                <img
                   src={imageInfo.src}
                   alt=""
                   width={imageInfo.width}

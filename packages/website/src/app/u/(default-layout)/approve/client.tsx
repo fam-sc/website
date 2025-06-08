@@ -1,4 +1,4 @@
-'use client';
+
 
 import {
   approveUser,
@@ -17,11 +17,13 @@ import { getMediaFileUrl } from '@shared/api/media';
 import { Typography } from '@/components/Typography';
 import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
-import { redirect } from 'next/navigation';
 import { DataLoadingContainer } from '@/components/DataLoadingContainer';
+import { useNavigate } from 'react-router';
 
 export function ClientComponent() {
   const { user } = useAuthInfo();
+  const redirect = useNavigate();
+
   if (user === null || user.role < UserRole.ADMIN) {
     redirect('/');
   }
@@ -51,6 +53,8 @@ export function ClientComponent() {
 
   return (
     <div>
+      <title>Підтвердження користувачів</title>
+
       <Typography>
         Підтвердіть, що ці користувачі це студенти вашої групи
       </Typography>

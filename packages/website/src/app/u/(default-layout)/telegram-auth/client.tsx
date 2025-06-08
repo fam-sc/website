@@ -1,4 +1,4 @@
-'use client';
+
 
 import { finishAuthToScheduleBot } from '@/api/schedulebot/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';

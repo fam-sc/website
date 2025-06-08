@@ -1,5 +1,4 @@
 import { getCurrentUserInfo } from '@/api/user/client';
-import { redirect, RedirectType } from 'next/navigation';
 
 import styles from './layout.module.scss';
 import { TabInfo } from './types';
@@ -7,6 +6,7 @@ import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
 import { mediaFileExists } from '@shared/api/media';
 import { UserRole } from '@shared/api/user/types';
+import { useNavigate } from 'react-router';
 
 const tabs: TabInfo[] = [
   { href: '/u/info', title: 'Загальне' },
@@ -15,20 +15,25 @@ const tabs: TabInfo[] = [
   { href: '/u/roles', title: 'Ролі', minRole: UserRole.ADMIN },
 ];
 
-export default async function Layout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  /*
   const userInfo = await getCurrentUserInfo();
+  const redirect = useNavigate();
+
   if (userInfo === null) {
-    redirect('/', RedirectType.replace);
+    redirect('/', { replace: true });
+    return;
   }
 
   const avatarExists = await mediaFileExists(`user/${userInfo.id}`);
+  */
 
   const tabsForRole = tabs.filter(
-    ({ minRole }) => minRole === undefined || userInfo.role >= minRole
+    ({ minRole }) => minRole === undefined  //|| userInfo.role >= minRole
   );
 
   return (
@@ -36,8 +41,8 @@ export default async function Layout({
       <div className={styles['nav-side']}>
         <UserAvatar
           className={styles.avatar}
-          userId={userInfo.id}
-          hasAvatar={avatarExists}
+          userId={/* userInfo.id */ '1'}
+          hasAvatar={true}
         />
 
         <UserLayoutNavigation tabs={tabsForRole} />

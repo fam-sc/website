@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import Link, { LinkProps } from 'next/link';
+import { Link, LinkProps } from 'react-router';
 
 import { Button, ButtonProps } from '../Button';
 

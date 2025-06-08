@@ -1,23 +1,15 @@
-main = ".open-next/worker.js"
 name = "website"
+main = "src/worker.ts"
+minify = true
 compatibility_date = "2025-02-14"
-compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+compatibility_flags = ["nodejs_compat"]
 
-routes = [
-  { pattern = "sc-fam.org", custom_domain = true }
-]
+# routes = [
+#   { pattern = "test-website.sc-fam.org", custom_domain = true }
+# ]
 
 [assets]
-directory = ".open-next/assets"
-binding="ASSETS"
-
-[[services]]
-binding = "WORKER_SELF_REFERENCE"
-service = "website"
-
-[[r2_buckets]]
-binding = "NEXT_INC_CACHE_R2_BUCKET"
-bucket_name = "website-inc-cache"
+not_found_handling = "single-page-application"
 
 [observability]
 enabled = true

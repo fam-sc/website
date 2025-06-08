@@ -18,7 +18,7 @@ export function ShortPollInfo({ className, title, href }: ShortPollInfoProps) {
         <LinkButton
           className={styles.linkButton}
           buttonVariant="outlined"
-          href={href}
+          to={href}
         >
           Пройти опитування
         </LinkButton>

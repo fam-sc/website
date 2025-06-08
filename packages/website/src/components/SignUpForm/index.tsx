@@ -1,4 +1,4 @@
-'use client';
+
 
 import { useState } from 'react';
 import { Button } from '@/components/Button';
@@ -14,9 +14,9 @@ import { ErrorBoard } from '../ErrorBoard';
 import { signUp } from '@/api/user/client';
 import { SignUpData } from '@shared/api/auth/types';
 import { pick } from '@/utils/object/pick';
-import { useRouter } from 'next/navigation';
 import { useNotification } from '../Notification';
 import { normalizeGuid } from '@shared/guid';
+import { useNavigate } from 'react-router';
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ export default function SignUpForm() {
 
   const [actionInProgress, setActionInProgress] = useState(false);
 
-  const router = useRouter();
+  const redirect = useNavigate();
   const notification = useNotification();
 
   const isValidEmail = useTestRegex(formData.email, emailRegex);
@@ -73,7 +73,7 @@ export default function SignUpForm() {
     setActionInProgress(true);
     signUp(payload)
       .then(() => {
-        router.push('/sign/email');
+        return redirect('/sign/email');
       })
       .catch(() => {
         setActionInProgress(false);

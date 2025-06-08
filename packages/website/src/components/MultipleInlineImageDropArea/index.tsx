@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styles from './index.module.scss';
-import Image from 'next/image';
 import { BaseFileDropArea } from '../BaseFileDropArea';
 import { classNames } from '@/utils/classNames';
 import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
@@ -45,7 +44,7 @@ export function MultipleInlineImageDropArea({
                 fireOnFiles(newFiles);
               }}
             >
-              <Image src={url} alt="" width={0} height={0} />
+              <img src={url} />
             </DeleteButtonWrapper>
           ))}
         </div>

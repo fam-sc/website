@@ -1,6 +1,3 @@
-import { Metadata, Viewport } from 'next';
-import localFont from 'next/font/local';
-
 import '../theme/global.scss';
 
 import { Footer } from '@/components/Footer';
@@ -10,6 +7,7 @@ import { NotificationWrapper } from '@/components/Notification';
 import { getCurrentUserInfo } from '@/api/user/client';
 import { AuthProvider } from '@/auth/context';
 
+/*
 // Cannot move options to a helper - it all must be a constant.
 const mursGothic = localFont({
   src: [
@@ -48,6 +46,9 @@ export const metadata: Metadata = {
   },
 };
 
+*/
+
+/*
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -72,16 +73,11 @@ export default async function RootLayout({
         />
         <meta name="apple-mobile-web-app-title" content="СР ФПМ" />
       </head>
-      <body className={mursGothic.variable}>
-        <NotificationWrapper>
-          <AuthProvider value={{ user: userInfo }}>
-            <Header />
-            <main>{children}</main>
-
-            <Footer />
-          </AuthProvider>
-        </NotificationWrapper>
+      <body className={/* mursGothic.variable  ''}>
+        
       </body>
     </html>
   );
 }
+
+*/

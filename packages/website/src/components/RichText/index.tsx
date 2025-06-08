@@ -1,7 +1,4 @@
 import React, { Key, ReactNode } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-
 import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
@@ -13,6 +10,7 @@ import {
   RichTextString,
 } from '@shared/richText/types';
 import { classNames } from '@/utils/classNames';
+import { Link } from 'react-router';
 
 export type RichTextProps = {
   className?: string;
@@ -27,7 +25,7 @@ function renderElementNode(node: RichTextElementNode, key?: Key): ReactNode {
 
   if (node.name === 'a') {
     return (
-      <Link {...attrs} href={attrs?.href ?? '/'} key={key}>
+      <Link {...attrs} to={attrs?.href ?? '/'} key={key}>
         {childrenTree}
       </Link>
     );
@@ -49,9 +47,8 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
 
   if (node.name === '#image') {
     return (
-      <Image
+      <img
         src={getMediaFileUrl(node.filePath)}
-        alt=""
         width={node.width}
         height={node.height}
       />

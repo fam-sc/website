@@ -8,7 +8,7 @@ export default function NotFoundPage() {
     <div className={styles.content}>
       <Typography variant="h3">Нема</Typography>
       <Typography variant="bodyLarge">Схоже такої сторінки немає...</Typography>
-      <LinkButton href="/" buttonVariant="solid">
+      <LinkButton to="/" buttonVariant="solid">
         На головну
       </LinkButton>
     </div>

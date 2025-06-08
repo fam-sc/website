@@ -1,4 +1,4 @@
-'use client';
+
 
 import { fetchGalleryImage, deleteGalleryImage } from '@/api/gallery/client';
 import {
@@ -17,7 +17,6 @@ import { TimeIcon } from '@/icons/TimeIcon';
 import { useState, useEffect } from 'react';
 
 import styles from './dialog.module.scss';
-import Image from 'next/image';
 import { InlineQuestion } from '@/components/InlineQuestion';
 
 export type GalleryImageInfoDialogProps = {
@@ -55,7 +54,7 @@ export function GalleryImageInfoDialog({
       </IconButton>
 
       <div className={styles.content}>
-        <Image
+        <img
           src={getMediaFileUrl(`gallery/${info.id}`)}
           alt=""
           width={info.width ?? 0}

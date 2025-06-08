@@ -1,9 +1,8 @@
 import { Repository } from '@data/repo';
 import { ClientComponent, ClientEvent } from './client';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
-import { PageProps } from '@/types/next';
-import { redirect } from 'next/navigation';
-import { Metadata } from 'next';
+import { redirect } from 'react-router';
+import { Route } from './+types/page';
 
 async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   try {
@@ -23,6 +22,7 @@ async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   }
 }
 
+/*
 export async function generateMetadata({
   searchParams,
 }: PageProps): Promise<Metadata> {
@@ -32,17 +32,24 @@ export async function generateMetadata({
 
   return { title };
 }
+*/
 
-export default async function Page({ searchParams }: PageProps) {
-  const { edit: editEventId } = await searchParams;
-  const event =
+export async function loader({ params }: Route.LoaderArgs) {
+   const editEventId = '1';
+     const event =
     typeof editEventId === 'string'
       ? await getClientEvent(editEventId)
       : undefined;
 
   if (event === undefined && typeof editEventId === 'string') {
-    redirect('/events/+');
+    return redirect('/events/+');
   }
 
+  return { event };
+}
+
+export default function Page({
+  loaderData: { event },
+}: Route.ComponentProps) {
   return <ClientComponent event={event} />;
 }

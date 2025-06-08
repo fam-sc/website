@@ -1,16 +1,13 @@
-'use client';
-
-import InvitationImage from '@public/images/logo-2.png';
-import Image from 'next/image';
+import InvitationImage from '@/images/logo-2.png';
 
 import { ColumnText } from '@/components/ColumnText';
 import { Swiper } from '@/components/Swiper';
 import { TextWithImage } from '@/components/TextWithImage';
 import { Typography } from '@/components/Typography';
 
-import SwiperImage1 from '@public/images/swiper/1.jpg';
-import SwiperImage2 from '@public/images/swiper/2.jpg';
-import SwiperImage3 from '@public/images/swiper/3.png';
+import SwiperImage1 from '@/images/swiper/1.jpg';
+import SwiperImage2 from '@/images/swiper/2.jpg';
+import SwiperImage3 from '@/images/swiper/3.png';
 
 import styles from './page.module.scss';
 
@@ -43,20 +40,14 @@ function GreetingText() {
 export function ClientComponent() {
   return (
     <>
+      <title>Головна</title>
+
       <Swiper
         className={styles['image-swiper']}
-        slides={[SwiperImage1, SwiperImage2, SwiperImage3].map(
-          (data, index) => ({ id: index, ...data })
-        )}
-        renderSlide={({ src, width, height }) => (
-          <Image
-            src={src}
-            alt=""
-            width={width}
-            height={height}
-            draggable={false}
-          />
-        )}
+        slides={[SwiperImage1, SwiperImage2, SwiperImage3].map((id) => ({
+          id,
+        }))}
+        renderSlide={({ id }) => <img src={id} alt="" draggable={false} />}
       />
 
       <GreetingText />
@@ -65,7 +56,7 @@ export function ClientComponent() {
         className={styles.invitation}
         title="Цей час настав!"
         subtext="Заповни цю коротку форму та очікуй на фідбек, щоб стати частиною нашої команди;)"
-        image={{ ...InvitationImage, alt: '' }}
+        image={InvitationImage}
         button={{
           title: 'Стань частиною команди!',
           href: 'https://t.me/fpm_sc_bot',

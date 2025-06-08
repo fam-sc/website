@@ -1,4 +1,4 @@
-import NextLink from 'next/link';
+import { Link as RouterLink } from 'react-router';
 
 import { Typography, TypographyProps } from '../Typography';
 
@@ -8,7 +8,7 @@ import { WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 import { ComponentProps } from 'react';
 
-type AnchorProps = ComponentProps<typeof NextLink>;
+type AnchorProps = ComponentProps<typeof RouterLink>;
 
 export interface LinkProps
   extends TypographyProps,
@@ -21,7 +21,7 @@ export function Link({ linkVariant, className, ...rest }: LinkProps) {
   return (
     <Typography
       data-link-variant={linkVariant}
-      as={NextLink}
+      as={RouterLink}
       className={classNames(styles.root, className)}
       {...rest}
     />

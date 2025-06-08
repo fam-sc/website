@@ -1,4 +1,4 @@
-'use client';
+
 
 import { ApiError } from '@shared/api/error';
 import { ApiErrorCode } from '@shared/api/errorCodes';
@@ -48,6 +48,8 @@ export function ClientComponent() {
 
   return (
     <div className={styles.content}>
+      <title>Зміна паролю</title>
+
       <PasswordInput
         disabled={actionInProgress}
         autoComplete="current-password"

@@ -1,4 +1,4 @@
-'use client';
+
 // This component is refactored out into another file on purpose.
 // In layout we don't know URL because layouts don't get re-rendered when the page in that layout changes.
 // Because of that, even if we knew the initial URL, we don't get to know the current URL if a user client-navigates.
@@ -7,7 +7,6 @@
 import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { TabInfo } from './types';
-import { usePathname } from 'next/navigation';
 import { Button } from '@/components/Button';
 import { logOut } from '@/api/user/client';
 import styles from './nav.module.scss';
@@ -17,14 +16,14 @@ type UserLayoutNavigationProps = {
 };
 
 export function UserLayoutNavigation({ tabs }: UserLayoutNavigationProps) {
-  const currentPath = usePathname();
+  // const currentPath = usePathname();
 
   return (
     <nav className={styles.root}>
       <List>
         {tabs.map(({ href, title }) => (
           <li key={href}>
-            <LinkButton href={href} data-current={href === currentPath}>
+            <LinkButton to={href} data-current={true}>
               {title}
             </LinkButton>
           </li>

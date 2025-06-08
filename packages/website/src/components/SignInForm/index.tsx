@@ -1,4 +1,4 @@
-'use client';
+
 
 import { useState } from 'react';
 import { Button } from '@/components/Button';
@@ -72,7 +72,7 @@ export default function SignInForm() {
       </div>
 
       <div className={styles.formGroup}>
-        <Link href="https://t.me/fpm_sc_bot">Забули пароль?</Link>
+        <Link to="https://t.me/fpm_sc_bot">Забули пароль?</Link>
       </div>
 
       <div className={styles.formGroup}>

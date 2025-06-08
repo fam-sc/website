@@ -5,20 +5,12 @@ import prettier from 'eslint-plugin-prettier/recommended';
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
-import { FlatCompat } from '@eslint/eslintrc';
-
-const compat = new FlatCompat({
-  recommendedConfig: eslint.configs.recommended,
-  allConfig: eslint.configs.all,
-});
-
 export default tseslint.config(
   {
     ignores: [
-      'packages/website/.next',
-      'packages/website/next-env.d.ts',
-      'packages/website/next.config.ts',
       'packages/website/storybook-static',
+      'packages/website/build',
+      'packages/website/.react-router',
       '**/*/worker-configuration.d.ts',
       '*/**/dist/',
       '*/**/vite.config.ts',
@@ -60,10 +52,9 @@ export default tseslint.config(
       'import/no-anonymous-default-export': 'off',
       'unicorn/prefer-top-level-await': 'off',
       'unicorn/no-negated-condition': 'off',
+      'react/react-in-jsx-scope': 'off',
     },
   },
-  ...compat.extends('next'),
-
   // prettier must be at the end
   prettier
 );

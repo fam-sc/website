@@ -1,4 +1,4 @@
-'use client';
+
 
 import { changeUserRole, getAllUsers } from '@/api/user/client';
 import { InfiniteScroll } from '@/components/InfiniteScroll';
@@ -10,12 +10,14 @@ import { startTransition, useOptimistic } from 'react';
 import styles from './page.module.scss';
 import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
-import { redirect } from 'next/navigation';
+import { useNavigate } from 'react-router';
 
 export function ClientComponent() {
   const { user } = useAuthInfo();
+  const navigate = useNavigate();
+
   if (user === null || user.role < UserRole.ADMIN) {
-    redirect('/');
+    void navigate('/');
   }
 
   const notification = useNotification();
@@ -30,6 +32,8 @@ export function ClientComponent() {
 
   return (
     <div className={styles.content}>
+      <title>Зміна ролей</title>
+
       <InfiniteScroll
         hasMoreElements={hasMoreItems}
         onRequesNextPage={onRequestNextPage}

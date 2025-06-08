@@ -1,4 +1,4 @@
-'use client';
+
 
 import { fetchPollResultsTable } from '@/api/polls/client';
 import { useDataLoader } from '@/hooks/useDataLoader';

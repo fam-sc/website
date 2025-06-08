@@ -1,4 +1,4 @@
-'use client';
+
 
 import { ReactElement, useId, useState } from 'react';
 import { List } from '../List';

@@ -5,7 +5,7 @@ import { shortenRichText } from '@shared/richText/short';
 import { WithId } from 'mongodb';
 import { ClientEvent } from '../events/(list)/client';
 import { Event } from '@data/types';
-import { Metadata } from 'next';
+import { Route } from './+types/page';
 
 function toClientEvent(event: WithId<Event>): ClientEvent {
   return {
@@ -17,17 +17,15 @@ function toClientEvent(event: WithId<Event>): ClientEvent {
   };
 }
 
-export const metadata: Metadata = {
-  title: 'Студентство',
-};
-
-export default async function Page() {
+export async function loader() {
   await using repo = await Repository.openConnection();
   const latestEvents = await repo.events().getLatestEvents(3);
 
-  return (
-    <ClientComponent
-      latestEvents={latestEvents.map((value) => toClientEvent(value))}
-    />
-  );
+  return { latestEvents: latestEvents.map((value) => toClientEvent(value)) };
+}
+
+export default function Page({
+  loaderData: { latestEvents },
+}: Route.ComponentProps) {
+  return <ClientComponent latestEvents={latestEvents} />;
 }

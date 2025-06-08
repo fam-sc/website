@@ -1,4 +1,4 @@
-'use client';
+
 
 import { Typography } from '../Typography';
 

@@ -1,6 +1,5 @@
-'use client';
 
-import Image from 'next/image';
+
 import { useCallback, useState } from 'react';
 import { useNotification } from '../Notification';
 import { classNames } from '@/utils/classNames';
@@ -54,7 +53,7 @@ export function CompactInlineImageDropArea({
       {...rest}
     >
       {src !== undefined && (
-        <Image
+        <img
           src={
             cacheInvalidate === undefined ? src : `${src}?${cacheInvalidate}`
           }

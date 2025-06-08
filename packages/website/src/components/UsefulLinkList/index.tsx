@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import { Link } from '../Link';
 import { Typography } from '../Typography';
 
@@ -23,10 +21,10 @@ export function UsefulLinkList({ items, className }: UsefulLinkListProps) {
   return (
     <div className={classNames(styles.root, className)}>
       {items.map((item) => (
-        <Link key={item.id} href={item.href} linkVariant="clean">
+        <Link key={item.id} to={item.href} linkVariant="clean">
           <Typography>{item.title}</Typography>
 
-          <Image src={item.imageSrc} alt="" width={0} height={0} />
+          <img src={item.imageSrc} alt="" width={0} height={0} />
         </Link>
       ))}
     </div>

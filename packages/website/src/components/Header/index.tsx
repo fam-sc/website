@@ -1,8 +1,7 @@
-'use client';
+
 
 import { useState } from 'react';
-import Logo from '@public/images/logo.png';
-import Image from 'next/image';
+import Logo from '@/images/logo.png';
 
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';
@@ -23,7 +22,7 @@ function Navigation() {
     <ul className={styles.nav}>
       {navigationMainRoutes.map(({ title, href }) => (
         <li key={`${href}-${title}`}>
-          <Link linkVariant="clean" href={href}>
+          <Link linkVariant="clean" to={href}>
             {title}
           </Link>
         </li>
@@ -35,11 +34,11 @@ function Navigation() {
 function Buttons() {
   return (
     <div className={styles.buttons}>
-      <LinkButton href="/sign?mode=signin" buttonVariant="solid">
+      <LinkButton to="/sign?mode=signin" buttonVariant="solid">
         Увійти
       </LinkButton>
 
-      <LinkButton href="/sign?mode=signup" buttonVariant="outlined">
+      <LinkButton to="/sign?mode=signup" buttonVariant="outlined">
         Зареєструватись
       </LinkButton>
     </div>
@@ -53,7 +52,7 @@ type AvatarProps = {
 
 function Avatar({ userId, hasAvatar }: AvatarProps) {
   return (
-    <Link className={styles.avatar} href="/u/info">
+    <Link className={styles.avatar} to="/u/info">
       <UserAvatarOrPlaceholder
         src={hasAvatar ? getMediaFileUrl(`user/${userId}`) : undefined}
       />
@@ -98,8 +97,8 @@ export function Header() {
           }
         }}
       >
-        <Link href="/" className={styles.logo} aria-hidden>
-          <Image src={Logo} alt="Logo" />
+        <Link to="/" className={styles.logo} aria-hidden>
+          <img src={Logo} alt="Logo" />
         </Link>
 
         <Navigation />

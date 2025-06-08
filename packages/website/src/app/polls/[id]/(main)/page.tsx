@@ -1,6 +1,4 @@
-import { PageProps } from '@/types/next';
 import { Repository } from '@data/repo';
-import { notFound, redirect } from 'next/navigation';
 import { getCurrentUserInfo } from '@/api/user/client';
 import { IconLinkButton } from '@/components/IconLinkButton';
 import { Typography } from '@/components/Typography';
@@ -10,9 +8,11 @@ import { UserRole } from '@shared/api/user/types';
 import styles from './page.module.scss';
 import { PollWithSubmit } from './PollWithSubmit';
 import { cache, PropsWithChildren } from 'react';
-import { Metadata } from 'next';
+import { redirect } from 'react-router';
+import { notFound } from '@shared/responses';
 
-type PollPageProps = PageProps<{ id: string }>;
+import { Route } from './+types/page';
+import { omitProperty } from '@/utils/object/omit';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (
@@ -28,6 +28,7 @@ const getPoll = cache(async (id: string) => {
   return await repo.polls().findById(id);
 });
 
+/*
 export async function generateMetadata({
   params,
 }: PollPageProps): Promise<Metadata> {
@@ -46,18 +47,17 @@ export async function generateMetadata({
     },
   };
 }
+*/
 
-export default async function Page({ params }: PollPageProps) {
-  const { id } = await params;
-
+export async function loader({ params }: Route.LoaderArgs) {
   const userInfo = await getCurrentUserInfo();
   if (userInfo === null || userInfo.role < UserRole.STUDENT) {
-    redirect('/polls');
+    return redirect('/polls');
   }
 
-  const poll = await getPoll(id);
+  const poll = await getPoll(params.id);
   if (poll === null) {
-    notFound();
+    return notFound();
   }
 
   const userReposponded = poll.respondents.find(
@@ -67,6 +67,17 @@ export default async function Page({ params }: PollPageProps) {
   const isPollEnded = poll.endDate !== null;
   const canViewInfo = userInfo.role >= UserRole.ADMIN;
 
+  return {
+    poll: { id: poll._id.toString(), ...omitProperty(poll, '_id') },
+    canViewInfo,
+    isPollEnded,
+    userReposponded,
+  };
+}
+
+export default function Page({
+  loaderData: { poll, canViewInfo, isPollEnded, userReposponded },
+}: Route.ComponentProps) {
   return (
     <div className={styles.content}>
       <div className={styles.header}>
@@ -76,7 +87,7 @@ export default async function Page({ params }: PollPageProps) {
           <IconLinkButton
             className={styles.info}
             hover="fill"
-            href={`/polls/${id}/info`}
+            to={`/polls/${poll.id}/info`}
           >
             <InfoIcon />
           </IconLinkButton>
@@ -88,7 +99,7 @@ export default async function Page({ params }: PollPageProps) {
       ) : userReposponded ? (
         <ErrorMessage>Ви вже відповіли на це опитування</ErrorMessage>
       ) : (
-        <PollWithSubmit id={id} questions={poll.questions} />
+        <PollWithSubmit id={poll.id} questions={poll.questions} />
       )}
     </div>
   );

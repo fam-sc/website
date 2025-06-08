@@ -2,7 +2,9 @@
 import { classNames } from '@/utils/classNames';
 
 import styles from './index.module.scss';
-import Image, { ImageProps } from 'next/image';
+import { PropsMap } from '@/types/react';
+
+type ImageProps = PropsMap['img'];
 
 export function ImageBlur({
   src,
@@ -16,8 +18,8 @@ export function ImageBlur({
 
   return (
     <div className={classNames(styles.root, className)} {...rest}>
-      <Image className={styles.main} {...imageProps} />
-      <Image className={styles.background} {...imageProps} />
+      <img className={styles.main} {...imageProps} />
+      <img className={styles.background} {...imageProps} />
     </div>
   );
 }

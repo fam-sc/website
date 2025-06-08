@@ -1,4 +1,4 @@
-'use client';
+
 
 import { usefulLinks } from './usefulLinks';
 
@@ -19,6 +19,8 @@ export type ClientComponentProps = {
 export function ClientComponent({ latestEvents }: ClientComponentProps) {
   return (
     <>
+      <title>Студентство</title>
+
       <Typography variant="h4" className={styles['useful-links-title']}>
         Корисні джерела
       </Typography>
@@ -45,7 +47,7 @@ export function ClientComponent({ latestEvents }: ClientComponentProps) {
       </List>
 
       <LinkButton
-        href="/events"
+        to="/events"
         buttonVariant="solid"
         className={styles['events-more']}
       >

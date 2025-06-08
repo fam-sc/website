@@ -1,12 +1,10 @@
-import { PageProps } from '@/types/next';
 import { ClientComponent } from './client';
 import { Repository } from '@data/repo';
-import { notFound } from 'next/navigation';
 import { formatDateTime } from '@shared/date';
-import { Metadata } from 'next';
 import { cache } from 'react';
-
-type PollPageProps = PageProps<{ id: string }>;
+import { notFound } from '@shared/responses';
+import { Route } from './+types/page';
+import { omitProperty } from '@/utils/object/omit';
 
 const getPoll = cache(async (id: string) => {
   await using repo = await Repository.openConnection();
@@ -14,6 +12,8 @@ const getPoll = cache(async (id: string) => {
   return await repo.polls().findShortPoll(id);
 });
 
+// TODO: Fix it.
+/*
 export async function generateMetadata({
   params,
 }: PollPageProps): Promise<Metadata> {
@@ -28,24 +28,25 @@ export async function generateMetadata({
 
   return {
     title,
-    openGraph: {
-      title,
-    },
   };
 }
+*/
 
-export default async function Page({ params }: PageProps<{ id: string }>) {
-  const { id } = await params;
-  const poll = await getPoll(id);
+export async function loader({ params }: Route.LoaderArgs) {
+  const poll = await getPoll(params.id);
 
   if (poll === null) {
-    notFound();
+    return notFound();
   }
 
+  return { poll: { id: poll._id.toString(), ...omitProperty(poll, '_id') } };
+}
+
+export default function Page({ loaderData: { poll } }: Route.ComponentProps) {
   return (
     <ClientComponent
       poll={{
-        id,
+        id: poll.id,
         title: poll.title,
         startDate: formatDateTime(poll.startDate),
         endDate: poll.endDate ? formatDateTime(poll.endDate) : null,

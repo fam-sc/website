@@ -1,5 +1,4 @@
-import { MetadataRoute } from 'next';
-
+/*
 import { backgroundColor } from '@/theme';
 
 export default function manifest(): MetadataRoute.Manifest {
@@ -23,3 +22,4 @@ export default function manifest(): MetadataRoute.Manifest {
     display: 'browser',
   };
 }
+*/
