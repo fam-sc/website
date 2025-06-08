@@ -32,7 +32,7 @@
     "@tiptap/pm": "2.11.7",
     "@tiptap/react": "2.11.7",
     "isbot": "5.1.28",
-    "mongodb": "6.17.0",
+    "mongodb": "6.15.0",
     "parse5": "7.3.0",
     "punycode": "2.3.1",
     "react": "19.1.0",

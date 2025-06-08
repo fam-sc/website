@@ -16,7 +16,7 @@ export abstract class CachedExternalApi<T, F = T> {
     this.specRepo = repo;
   }
 
-  async fetch(): Promise<T> {
+  async fetchValue(): Promise<T> {
     let repo = this.specRepo;
 
     try {
@@ -76,7 +76,7 @@ export abstract class CachedExternalApi<T, F = T> {
     implementation: new (...args: Args) => CachedExternalApi<T, F>
   ) {
     return (...args: Args) => {
-      return new implementation(...args).fetch();
+      return new implementation(...args).fetchValue();
     };
   }
 }

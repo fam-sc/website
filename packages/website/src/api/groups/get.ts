@@ -1,6 +1,7 @@
 import { CachedExternalApi } from '@data/cache';
 import { Repository } from '@data/repo';
 import { Group } from '@data/types';
+import { getApiFacultyGroups } from './faculty';
 
 // 7 days
 const GROUP_INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;
@@ -11,7 +12,7 @@ abstract class BaseExternalApi<T> extends CachedExternalApi<T, Group[]> {
   }
 
   protected fetchFromExternalApi(): Promise<Group[]> {
-    return getFacultyGroups();
+    return getApiFacultyGroups();
   }
 
   protected async putToRepo(repo: Repository, value: Group[]): Promise<void> {
