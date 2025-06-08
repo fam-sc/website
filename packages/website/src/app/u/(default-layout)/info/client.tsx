@@ -1,5 +1,3 @@
-
-
 import styles from './page.module.scss';
 import { Labeled } from '@/components/Labeled';
 import { ReactNode, useState } from 'react';
@@ -8,6 +6,7 @@ import { useNotification } from '@/components/Notification';
 import { Button } from '@/components/Button';
 import { updateUserPersonalInfo } from '@/api/user/client';
 import { UserPersonalInfo } from '@shared/api/user/types';
+import { Title } from '@/components/Title';
 
 export type ClientComponentProps = {
   personalInfo: UserPersonalInfo;
@@ -30,7 +29,7 @@ export function ClientComponent({ personalInfo }: ClientComponentProps) {
 
   return (
     <div className={styles.content}>
-      <title>Профіль</title>
+      <Title>Профіль</Title>
 
       <div className={styles.sections}>
         <Section title="Персональна інформація">

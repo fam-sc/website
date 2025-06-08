@@ -13,9 +13,7 @@ export default defineConfig({
       {
         plugins: [react(), tsconfigPaths()],
         test: {
-          include: [
-            '**/*.test.ts',
-          ],
+          include: ['**/*.test.ts'],
           name: 'unit',
           environment: 'node',
         },
@@ -23,20 +21,16 @@ export default defineConfig({
       {
         plugins: [react(), tsconfigPaths()],
         test: {
-          include: [
-            '**/*.btest.ts',
-          ],
+          include: ['**/*.btest.ts'],
           name: 'browser',
           browser: {
             enabled: true,
             headless: true,
             provider: 'playwright',
-            instances: [
-              { browser: 'chromium' },
-            ],
+            instances: [{ browser: 'chromium' }],
           },
         },
       },
-    ]
+    ],
   },
 });

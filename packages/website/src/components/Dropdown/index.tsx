@@ -1,5 +1,3 @@
-
-
 import React, {
   CSSProperties,
   Key,

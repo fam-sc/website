@@ -96,5 +96,5 @@ export async function getCurrentUserInfo(): Promise<UserSelfInfo | null> {
     throw await getApiErrorFromResponse(response);
   }
 
-  return (await response.json()) as UserSelfInfo;
+  return await response.json();
 }

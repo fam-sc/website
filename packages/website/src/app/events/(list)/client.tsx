@@ -1,5 +1,3 @@
-
-
 import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
 import { getMediaFileUrl } from '@shared/api/media';

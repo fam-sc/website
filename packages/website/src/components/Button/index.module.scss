@@ -53,7 +53,8 @@ $variants: ('solid', 'outlined', 'flat');
       #{$property}: var(--button-color-hover);
     }
 
-    &:disabled, &[disabled] {
+    &:disabled,
+    &[disabled] {
       #{$property}: var(--button-color-disabled);
     }
 
@@ -85,7 +86,8 @@ $variants: ('solid', 'outlined', 'flat');
         &[data-button-variant='#{$variant}'] {
           color: get-color($colors, text, $variant);
 
-          &:disabled, &[disabled] {
+          &:disabled,
+          &[disabled] {
             color: get-color($colors, textDisabled, $variant);
           }
         }

@@ -1,4 +1,5 @@
-@use '../theme/utils' as *;
+@use './utils' as *;
+@use './fonts' as *;
 
 :root {
   --color-background: #151641;
@@ -17,6 +18,8 @@
   --color-text-on-danger-dark: #bfbfbf;
 
   --color-accent: #cccf35;
+
+  --font-murs-gothic: 'Murs Gothic';
 }
 
 html,

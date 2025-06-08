@@ -1,5 +1,3 @@
-
-
 import { ReactNode, Ref, useEffect, useLayoutEffect, useRef } from 'react';
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 

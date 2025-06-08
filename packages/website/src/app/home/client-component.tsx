@@ -10,6 +10,7 @@ import SwiperImage2 from '@/images/swiper/2.jpg';
 import SwiperImage3 from '@/images/swiper/3.png';
 
 import styles from './page.module.scss';
+import { Title } from '@/components/Title';
 
 const greetingText = `Студентська рада факультету прикладної математики - це живе серце студентського життя,
  де майбутні математики, програмісти та аналітики об'єднуються для самореалізації та росту. 
@@ -40,7 +41,7 @@ function GreetingText() {
 export function ClientComponent() {
   return (
     <>
-      <title>Головна</title>
+      <Title>Головна</Title>
 
       <Swiper
         className={styles['image-swiper']}

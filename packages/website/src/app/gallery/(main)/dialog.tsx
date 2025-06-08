@@ -1,5 +1,3 @@
-
-
 import { fetchGalleryImage, deleteGalleryImage } from '@/api/gallery/client';
 import {
   GalleryImageWithEvent,

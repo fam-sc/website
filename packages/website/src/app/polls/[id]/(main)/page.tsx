@@ -13,6 +13,7 @@ import { notFound } from '@shared/responses';
 
 import { Route } from './+types/page';
 import { omitProperty } from '@/utils/object/omit';
+import { Title } from '@/components/Title';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (
@@ -27,27 +28,6 @@ const getPoll = cache(async (id: string) => {
 
   return await repo.polls().findById(id);
 });
-
-/*
-export async function generateMetadata({
-  params,
-}: PollPageProps): Promise<Metadata> {
-  const { id } = await params;
-
-  const poll = await getPoll(id);
-
-  if (poll === null) {
-    return {};
-  }
-
-  return {
-    title: poll.title,
-    openGraph: {
-      title: poll.title,
-    },
-  };
-}
-*/
 
 export async function loader({ params }: Route.LoaderArgs) {
   const userInfo = await getCurrentUserInfo();
@@ -80,6 +60,8 @@ export default function Page({
 }: Route.ComponentProps) {
   return (
     <div className={styles.content}>
+      <Title>{poll.title}</Title>
+
       <div className={styles.header}>
         <Typography variant="h5">{poll.title}</Typography>
 

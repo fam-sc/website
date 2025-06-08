@@ -1,5 +1,3 @@
-
-
 import { PollBuilder } from '@/components/PollBuilder';
 import styles from './page.module.scss';
 import { useState } from 'react';
@@ -60,7 +58,7 @@ export function ClientComponent() {
 
           addPoll({ title, questions })
             .then(() => {
-              navigate('/polls');
+              void navigate('/polls');
 
               notification.show('Опитування додано успішно', 'plain');
             })

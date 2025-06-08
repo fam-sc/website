@@ -10,6 +10,7 @@ import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
+import { Title } from '@/components/Title';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -54,7 +55,7 @@ export default function Page({
 }: Route.ComponentProps) {
   return (
     <div className={styles.root}>
-      <title>Опитування</title>
+      <Title>Опитування</Title>
 
       {canAddPoll && (
         <LinkButton hasIcon className={styles['add-poll']} to="/polls/+">

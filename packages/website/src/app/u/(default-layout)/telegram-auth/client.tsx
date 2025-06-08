@@ -1,5 +1,3 @@
-
-
 import { finishAuthToScheduleBot } from '@/api/schedulebot/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { useNotification } from '@/components/Notification';

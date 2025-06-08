@@ -1,4 +1,3 @@
-
 // This component is refactored out into another file on purpose.
 // In layout we don't know URL because layouts don't get re-rendered when the page in that layout changes.
 // Because of that, even if we knew the initial URL, we don't get to know the current URL if a user client-navigates.

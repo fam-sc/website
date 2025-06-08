@@ -1,5 +1,3 @@
-
-
 import { MultipleInlineImageDropArea } from '@/components/MultipleInlineImageDropArea';
 import styles from './page.module.scss';
 import { useState } from 'react';
@@ -15,6 +13,7 @@ import { Typography } from '@/components/Typography';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { UserRole } from '@shared/api/user/types';
 import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 export function ClientComponent() {
   useCheckUserRole(UserRole.ADMIN);
@@ -33,7 +32,7 @@ export function ClientComponent() {
 
   return (
     <div className={styles.content}>
-      <title>Завантаження фото</title>
+      <Title>Завантаження фото</Title>
 
       <MultipleInlineImageDropArea
         disabled={isActionPending}
@@ -90,7 +89,7 @@ export function ClientComponent() {
               files,
             })
               .then(() => {
-                navigate('/gallery');
+                void navigate('/gallery');
 
                 notification.show('Фото були додані', 'plain');
               })

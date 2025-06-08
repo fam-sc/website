@@ -1,5 +1,3 @@
-
-
 import { Typography } from '../Typography';
 
 import styles from './index.module.scss';

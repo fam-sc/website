@@ -1,5 +1,3 @@
-
-
 import { changeUserRole, getAllUsers } from '@/api/user/client';
 import { InfiniteScroll } from '@/components/InfiniteScroll';
 import { useNotification } from '@/components/Notification';
@@ -11,6 +9,7 @@ import styles from './page.module.scss';
 import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
 import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 export function ClientComponent() {
   const { user } = useAuthInfo();
@@ -32,7 +31,7 @@ export function ClientComponent() {
 
   return (
     <div className={styles.content}>
-      <title>Зміна ролей</title>
+      <Title>Зміна ролей</Title>
 
       <InfiniteScroll
         hasMoreElements={hasMoreItems}

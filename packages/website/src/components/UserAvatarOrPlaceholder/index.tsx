@@ -16,11 +16,7 @@ export function UserAvatarOrPlaceholder({
 }: UserAvatarOrPlaceholderProps) {
   return (
     <div className={classNames(styles.root, className)} {...rest}>
-      {src ? (
-        <img src={src} />
-      ) : (
-        <UnknownUserAvatar />
-      )}
+      {src ? <img src={src} /> : <UnknownUserAvatar />}
     </div>
   );
 }

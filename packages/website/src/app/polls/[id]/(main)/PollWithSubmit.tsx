@@ -1,5 +1,3 @@
-
-
 import { submitPoll } from '@/api/polls/client';
 import { Poll } from '@shared/api/polls/types';
 import { Button } from '@/components/Button';
@@ -97,7 +95,7 @@ export function PollWithSubmit({ id, questions }: PollWithSubmitProps) {
 
     submitPoll(id, { answers })
       .then(() => {
-        navigate('/polls');
+        void navigate('/polls');
 
         notification.show('Ваш відповіді зараховані', 'plain');
       })

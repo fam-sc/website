@@ -1,12 +1,8 @@
-import { getCurrentUserInfo } from '@/api/user/client';
-
 import styles from './layout.module.scss';
 import { TabInfo } from './types';
 import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
-import { mediaFileExists } from '@shared/api/media';
 import { UserRole } from '@shared/api/user/types';
-import { useNavigate } from 'react-router';
 
 const tabs: TabInfo[] = [
   { href: '/u/info', title: 'Загальне' },
@@ -33,7 +29,7 @@ export default function Layout({
   */
 
   const tabsForRole = tabs.filter(
-    ({ minRole }) => minRole === undefined  //|| userInfo.role >= minRole
+    ({ minRole }) => minRole === undefined //|| userInfo.role >= minRole
   );
 
   return (

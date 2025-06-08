@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import { classNames } from '@/utils/classNames';
 
 import styles from './index.module.scss';

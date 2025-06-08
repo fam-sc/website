@@ -22,7 +22,7 @@
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "rootDirs": [".", "./.react-router/types"],
-    "types": ["vite/client", "worker-configuration.d.ts"],
+    "types": ["vite/client", "./worker-configuration.d.ts"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
@@ -37,5 +37,5 @@
     "**/.client/**/*",
     "./.storybook/**/*",
     ".react-router/types/**/*"
-  ],
+  ]
 }

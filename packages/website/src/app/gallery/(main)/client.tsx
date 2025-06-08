@@ -1,5 +1,3 @@
-
-
 import { LazyImageScroll } from '@/components/LazyImageScroll';
 import styles from './page.module.scss';
 import { fetchGalleryPage } from '@/api/gallery/client';
@@ -42,7 +40,7 @@ export function ClientComponent({
         requestPage={fetchGalleryPage}
         getImageInfo={({ id }) => getMediaFileUrl(`gallery/${id}`)}
         onImageClick={(item) => {
-          navigate(`/gallery?id=${item.id}`, { replace: true });
+          void navigate(`/gallery?id=${item.id}`, { replace: true });
           setSelectedId(item);
         }}
       />
@@ -52,7 +50,7 @@ export function ClientComponent({
           canModify={canModify}
           onClose={() => {
             setSelectedId(null);
-            navigate(`/gallery`, { replace: true });
+            void navigate(`/gallery`, { replace: true });
           }}
         />
       )}

@@ -1,5 +1,3 @@
-
-
 import { finishSignUp } from '@/api/user/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { LinkButton } from '@/components/LinkButton';

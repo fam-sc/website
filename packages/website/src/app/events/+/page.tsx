@@ -22,21 +22,9 @@ async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   }
 }
 
-/*
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const { edit } = await searchParams;
-
-  const title = edit === undefined ? 'Редагування події' : 'Додати подію';
-
-  return { title };
-}
-*/
-
-export async function loader({ params }: Route.LoaderArgs) {
-   const editEventId = '1';
-     const event =
+export async function loader() {
+  const editEventId = '1';
+  const event =
     typeof editEventId === 'string'
       ? await getClientEvent(editEventId)
       : undefined;
@@ -48,8 +36,6 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { event };
 }
 
-export default function Page({
-  loaderData: { event },
-}: Route.ComponentProps) {
+export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   return <ClientComponent event={event} />;
 }

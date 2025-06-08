@@ -1,5 +1,3 @@
-
-
 import { useEffect, useRef, useState } from 'react';
 
 import { calculateCurrentLesson } from './date';
@@ -25,6 +23,7 @@ import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
 import { Group } from '@shared/api/groups/types';
 import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 type Week = 1 | 2;
 
@@ -78,7 +77,7 @@ export function ClientComponent({
       url += `?group=${shortenGuid(selectedGroup.campusId)}`;
     }
 
-    navigate(url, { preventScrollReset: true }); 
+    void navigate(url, { preventScrollReset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGroup]);
 
@@ -100,7 +99,9 @@ export function ClientComponent({
 
   return (
     <>
-      <title>{ selectedGroup ? `Розклад групи ${selectedGroup.name}` : 'Розклад'}</title>
+      <Title>
+        {selectedGroup ? `Розклад групи ${selectedGroup.name}` : 'Розклад'}
+      </Title>
 
       {canModify && (
         <Button

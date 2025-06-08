@@ -1,6 +1,7 @@
 import react from 'eslint-plugin-react';
 import unicorn from 'eslint-plugin-unicorn';
 import prettier from 'eslint-plugin-prettier/recommended';
+import reactHooks from 'eslint-plugin-react-hooks';
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
@@ -24,6 +25,7 @@ export default tseslint.config(
   tseslint.configs.strictTypeChecked,
   unicorn.configs.recommended,
   react.configs.flat.recommended,
+  reactHooks.configs['recommended-latest'],
   {
     files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
     plugins: {
@@ -53,6 +55,7 @@ export default tseslint.config(
       'unicorn/prefer-top-level-await': 'off',
       'unicorn/no-negated-condition': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
     },
   },
   // prettier must be at the end

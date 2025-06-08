@@ -1,5 +1,3 @@
-
-
 import { getMediaFileUrl } from '@shared/api/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
@@ -19,6 +17,7 @@ import { UserRole } from '@shared/api/user/types';
 import { useObjectUrl } from '@/hooks/useObjectUrl';
 import { EventStatus } from '@shared/api/events/types';
 import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 export type ClientEvent = {
   id: string;
@@ -55,6 +54,10 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
   return (
     <div className={styles.root}>
+      <Title>
+        {event !== undefined ? 'Редагування події' : 'Додати подію'}
+      </Title>
+
       <TextInput
         disabled={actionPending}
         error={title.length === 0 ? 'Пустий заголовок' : undefined}
@@ -153,7 +156,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
           if (promise) {
             promise
               .then(() => {
-                navigate('/events');
+                void navigate('/events');
               })
               .catch((error: unknown) => {
                 console.error(error);

@@ -1,5 +1,3 @@
-
-
 import { usefulLinks } from './usefulLinks';
 
 import styles from './page.module.scss';
@@ -11,6 +9,7 @@ import { List } from '@/components/List';
 import { EventListItem } from '@/components/EventListItem';
 import { getMediaFileUrl } from '@shared/api/media';
 import { LinkButton } from '@/components/LinkButton';
+import { Title } from '@/components/Title';
 
 export type ClientComponentProps = {
   latestEvents: ClientEvent[];
@@ -19,7 +18,7 @@ export type ClientComponentProps = {
 export function ClientComponent({ latestEvents }: ClientComponentProps) {
   return (
     <>
-      <title>Студентство</title>
+      <Title>Студентство</Title>
 
       <Typography variant="h4" className={styles['useful-links-title']}>
         Корисні джерела

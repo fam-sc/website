@@ -12,26 +12,6 @@ const getPoll = cache(async (id: string) => {
   return await repo.polls().findShortPoll(id);
 });
 
-// TODO: Fix it.
-/*
-export async function generateMetadata({
-  params,
-}: PollPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const poll = await getPoll(id);
-
-  if (poll === null) {
-    return {};
-  }
-
-  const title = `${poll.title} | Інформація`;
-
-  return {
-    title,
-  };
-}
-*/
-
 export async function loader({ params }: Route.LoaderArgs) {
   const poll = await getPoll(params.id);
 

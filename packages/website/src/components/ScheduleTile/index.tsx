@@ -1,5 +1,3 @@
-
-
 import { OptionalLink } from '../OptionalLink';
 import { Typography } from '../Typography';
 

@@ -1,5 +1,3 @@
-
-
 import {
   approveUser,
   disapproveUser,
@@ -19,13 +17,14 @@ import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
 import { DataLoadingContainer } from '@/components/DataLoadingContainer';
 import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 export function ClientComponent() {
   const { user } = useAuthInfo();
   const redirect = useNavigate();
 
   if (user === null || user.role < UserRole.ADMIN) {
-    redirect('/');
+    void redirect('/');
   }
 
   const [users, onRetry, setUsers] = useDataLoader(async () => {
@@ -53,7 +52,7 @@ export function ClientComponent() {
 
   return (
     <div>
-      <title>Підтвердження користувачів</title>
+      <Title>Підтвердження користувачів</Title>
 
       <Typography>
         Підтвердіть, що ці користувачі це студенти вашої групи

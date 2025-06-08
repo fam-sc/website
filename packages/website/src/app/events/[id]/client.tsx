@@ -1,5 +1,3 @@
-
-
 import styles from './page.module.scss';
 import { Typography } from '@/components/Typography';
 import { getMediaFileUrl } from '@shared/api/media';
@@ -9,7 +7,7 @@ import { DeleteIcon } from '@/icons/DeleteIcon';
 import { classNames } from '@/utils/classNames';
 import { ModalDialog } from '@/components/ModalDialog';
 import { Button } from '@/components/Button';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { deleteEvent } from '@/api/events/client';
 import { useNotification } from '@/components/Notification';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
@@ -18,6 +16,9 @@ import { UserRole } from '@shared/api/user/types';
 import { RichTextString } from '@shared/richText/types';
 import { ImageSize } from '@shared/image/types';
 import { Link, useNavigate } from 'react-router';
+import { richTextToPlainText } from '@shared/richText/plainTransform';
+import { shortenByWord } from '@shared/string/shortenByWord';
+import { Title } from '@/components/Title';
 
 export type ClientComponentProps = {
   event: {
@@ -67,8 +68,16 @@ export function ClientComponent({ event }: ClientComponentProps) {
   const { user } = useAuthInfo();
   const canEdit = user !== null && user.role >= UserRole.ADMIN;
 
+  const shortDescription = useMemo(
+    () => shortenByWord(richTextToPlainText(event.description), 200),
+    [event.description]
+  );
+
   return (
     <div className={styles.root}>
+      <Title>{event.title}</Title>
+      <meta name="description" content={shortDescription} />
+
       <div className={styles.header}>
         <Typography variant="h4">{event.title}</Typography>
 
@@ -114,7 +123,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
             deleteEvent(event.id)
               .then(() => {
                 notification.show('Видалено', 'plain');
-                navigate('/events');
+                void navigate('/events');
               })
               .catch((error: unknown) => {
                 console.error(error);

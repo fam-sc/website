@@ -1,5 +1,3 @@
-
-
 import { ApiError } from '@shared/api/error';
 import { ApiErrorCode } from '@shared/api/errorCodes';
 import { changePassword } from '@/api/user/client';
@@ -10,6 +8,7 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { useState } from 'react';
 
 import styles from './page.module.scss';
+import { Title } from '@/components/Title';
 
 export function ClientComponent() {
   const [oldPassword, setOldPassword] = useState('');
@@ -48,7 +47,7 @@ export function ClientComponent() {
 
   return (
     <div className={styles.content}>
-      <title>Зміна паролю</title>
+      <Title>Зміна паролю</Title>
 
       <PasswordInput
         disabled={actionInProgress}

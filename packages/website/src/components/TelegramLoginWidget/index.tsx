@@ -1,6 +1,5 @@
 /* eslint-disable unicorn/prefer-dom-node-dataset */
 
-
 import { useEffect, useRef } from 'react';
 
 export type User = {
