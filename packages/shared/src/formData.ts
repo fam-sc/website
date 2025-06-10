@@ -1,4 +1,4 @@
-import { z, ZodTypeDef } from 'zod';
+import { ZodMiniType } from 'zod/v4-mini';
 
 type FormDataValue = string | number | Date | Blob;
 type FormDataObject = Record<string, FormDataValue | undefined>;
@@ -17,7 +17,7 @@ export function parseFormDataToRawObject(
 
 export function parseFormDataToObject<T>(
   data: FormData,
-  schema: z.Schema<T, ZodTypeDef, unknown>
+  schema: ZodMiniType<T>
 ): T {
   return schema.parse(parseFormDataToRawObject(data));
 }

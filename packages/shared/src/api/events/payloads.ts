@@ -1,14 +1,13 @@
 import { parseFormDataToObject } from '../../formData';
-import { z } from 'zod';
+import { z } from 'zod/v4-mini';
 
-const date = z.string().pipe(z.coerce.date());
 const status = z.enum(['pending', 'ended']);
 
 export const addEventPayload = z.object({
   image: z.instanceof(File),
   status,
   title: z.string(),
-  date,
+  date: z.date(),
   description: z.string(),
 });
 
@@ -16,7 +15,7 @@ export const editEventPayload = z.object({
   image: z.optional(z.instanceof(File)),
   status,
   title: z.string(),
-  date,
+  date: z.date(),
   description: z.string(),
 });
 

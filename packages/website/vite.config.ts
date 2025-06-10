@@ -7,6 +7,7 @@ import { manifestPlugin } from './vite-plugins/manifest';
 export default defineConfig((env) => ({
   build: {
     outDir: 'build',
+    minify: 'esbuild',
   },
   esbuild: {
     target: 'es2022',

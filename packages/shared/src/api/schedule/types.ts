@@ -1,6 +1,6 @@
 import { Time } from '../campus/types';
 
-import { z } from 'zod';
+import { z } from 'zod/v4-mini';
 
 export type { Time } from '../campus/types';
 export { timeBreakpoints } from '../campus/types';

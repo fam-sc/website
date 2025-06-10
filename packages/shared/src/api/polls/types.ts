@@ -1,12 +1,8 @@
-import { z } from 'zod';
+import { z } from 'zod/v4-mini';
 
-const title = z.string().min(1);
+const title = z.string().check(z.minLength(1));
 
-const options = z.array(
-  z.object({
-    title: z.string().min(1),
-  })
-);
+const options = z.array(z.object({ title }));
 
 export const question = z.discriminatedUnion('type', [
   z.object({ type: z.literal('text'), title }),
@@ -15,16 +11,18 @@ export const question = z.discriminatedUnion('type', [
   z.object({ type: z.literal('checkbox'), title, requiredTrue: z.boolean() }),
 ]);
 
+const index = z.number().check(z.int());
+
 export const answer = z.object({
-  text: z.string().min(1).optional(),
-  status: z.boolean().optional(),
-  selectedIndex: z.number().int().optional(),
-  selectedIndices: z.array(z.number().int()).optional(),
+  text: z.optional(z.string().check(z.minLength(1))),
+  status: z.optional(z.boolean()),
+  selectedIndex: z.optional(index),
+  selectedIndices: z.optional(z.array(index)),
 });
 
 export const poll = z.object({
-  title: z.string().min(1),
-  questions: z.array(question).min(1),
+  title: z.string().check(z.minLength(1)),
+  questions: z.array(question).check(z.minLength(1)),
 });
 
 export const addPollPayload = poll;

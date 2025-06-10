@@ -1,6 +1,6 @@
 // See docs/campus/openapi.yml
 
-import { string, z } from 'zod';
+import { z } from 'zod/v4-mini';
 
 export const weekday = z.enum(['Пн', 'Вв', 'Ср', 'Чт', 'Пт', 'Сб']);
 
@@ -53,7 +53,7 @@ export const daySchedule = z.object({
 });
 
 export const lessonSchedule = z.object({
-  groupCode: string(),
+  groupCode: z.string(),
   scheduleFirstWeek: z.array(daySchedule),
   scheduleSecondWeek: z.array(daySchedule),
 });

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4-mini';
 
 export enum UserRole {
   STUDENT_NON_APPROVED = -1,
@@ -20,10 +20,12 @@ export interface UserInfoWithRole extends UserInfo {
   role: UserRole;
 }
 
+const nonEmptyString = z.string().check(z.minLength(1));
+
 export const userPersonalInfo = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  parentName: z.string().min(1).or(z.null()),
+  firstName: nonEmptyString,
+  lastName: nonEmptyString,
+  parentName: z.nullable(nonEmptyString),
 });
 
 export type UserPersonalInfo = z.infer<typeof userPersonalInfo>;
