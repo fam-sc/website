@@ -9,6 +9,7 @@ import { UserRole } from '@shared/api/user/types';
 import { LinkButton } from '@/components/LinkButton';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { ImageSize } from '@shared/image/types';
+import { useCallback } from 'react';
 
 export type ClientEvent = {
   id: string;
@@ -32,6 +33,10 @@ export function ClientComponent({
 }: ClientComponentProps) {
   const { user } = useAuthInfo();
   const canAddEvent = user !== null && user.role >= UserRole.ADMIN;
+  const getLink = useCallback(
+    (page: number) => (page === 1 ? '/events' : `/events?page=${page}`),
+    []
+  );
 
   return (
     <div className={styles.root}>
@@ -63,7 +68,7 @@ export function ClientComponent({
           className={styles.pagination}
           current={currentPage}
           total={totalPages}
-          getLink={(page) => (page === 1 ? '/events' : `/events?page=${page}`)}
+          getLink={getLink}
         />
       )}
     </div>

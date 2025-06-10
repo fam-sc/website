@@ -7,7 +7,7 @@ import { DeleteIcon } from '@/icons/DeleteIcon';
 import { classNames } from '@/utils/classNames';
 import { ModalDialog } from '@/components/ModalDialog';
 import { Button } from '@/components/Button';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { deleteEvent } from '@/api/events/client';
 import { useNotification } from '@/components/Notification';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
@@ -37,19 +37,18 @@ type DeleteEventDialogProps = {
 };
 
 function DeleteEventDialog({ onClose, onDelete }: DeleteEventDialogProps) {
+  const onCloseAndDelete = useCallback(() => {
+    onClose();
+    onDelete();
+  }, [onClose, onDelete]);
+
   return (
     <ModalDialog
       onClose={onClose}
       footer={
         <>
           <Button onClick={onClose}>Ні</Button>
-          <Button
-            onClick={() => {
-              onDelete();
-              onClose();
-            }}
-            buttonVariant="solid"
-          >
+          <Button onClick={onCloseAndDelete} buttonVariant="solid">
             Так
           </Button>
         </>
@@ -72,6 +71,23 @@ export function ClientComponent({ event }: ClientComponentProps) {
     () => shortenByWord(richTextToPlainText(event.description), 200),
     [event.description]
   );
+
+  const onClose = useCallback(() => {
+    setDeleteDialogShown(false);
+  }, []);
+
+  const onDeleteEvent = useCallback(() => {
+    deleteEvent(event.id)
+      .then(() => {
+        notification.show('Видалено', 'plain');
+        void navigate('/events');
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+
+        notification.show('Сталася помилка при видаленні', 'error');
+      });
+  }, [event.id, navigate, notification]);
 
   return (
     <div className={styles.root}>
@@ -108,30 +124,14 @@ export function ClientComponent({ event }: ClientComponentProps) {
         className={styles.image}
         src={getMediaFileUrl(`events/${event.id}`)}
         alt=""
-        width={event.image?.width ?? 0}
-        height={event.image?.height ?? 0}
+        width={event.image?.width}
+        height={event.image?.height}
       />
 
       <RichText text={event.description} />
 
       {isDeleteDialogShown && (
-        <DeleteEventDialog
-          onClose={() => {
-            setDeleteDialogShown(false);
-          }}
-          onDelete={() => {
-            deleteEvent(event.id)
-              .then(() => {
-                notification.show('Видалено', 'plain');
-                void navigate('/events');
-              })
-              .catch((error: unknown) => {
-                console.error(error);
-
-                notification.show('Сталася помилка при видаленні', 'error');
-              });
-          }}
-        />
+        <DeleteEventDialog onClose={onClose} onDelete={onDeleteEvent} />
       )}
     </div>
   );

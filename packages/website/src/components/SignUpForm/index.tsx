@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/TextInput';
 import { PasswordInput } from '@/components/PasswordInput';
@@ -123,9 +123,9 @@ export default function SignUpForm() {
 
         <GroupSelect
           selectedId={group}
-          onSelected={(group) => {
+          onSelected={useCallback((group) => {
             setGroup(group.campusId);
-          }}
+          }, [])}
         />
       </div>
 

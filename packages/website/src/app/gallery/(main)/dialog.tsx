@@ -12,7 +12,7 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EventIcon } from '@/icons/EventIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import styles from './dialog.module.scss';
 import { InlineQuestion } from '@/components/InlineQuestion';
@@ -30,6 +30,24 @@ export function GalleryImageInfoDialog({
 }: GalleryImageInfoDialogProps) {
   const [value, setValue] = useState<GalleryImageWithEvent>();
   const notification = useNotification();
+
+  const onAction = useCallback(
+    (type: 'yes' | 'no') => {
+      if (type === 'yes') {
+        deleteGalleryImage(info.id)
+          .then(() => {
+            notification.show('Фото видалене', 'plain');
+            onClose();
+          })
+          .catch((error: unknown) => {
+            console.error(error);
+
+            notification.show('Сталася помилка', 'error');
+          });
+      }
+    },
+    [info.id, notification, onClose]
+  );
 
   useEffect(() => {
     fetchGalleryImage(info.id)
@@ -65,20 +83,7 @@ export function GalleryImageInfoDialog({
               className={styles.delete}
               position="right"
               questionText="Ви справді хочете видалити фото?"
-              onAction={(type) => {
-                if (type === 'yes') {
-                  deleteGalleryImage(info.id)
-                    .then(() => {
-                      notification.show('Фото видалене', 'plain');
-                      onClose();
-                    })
-                    .catch((error: unknown) => {
-                      console.error(error);
-
-                      notification.show('Сталася помилка', 'error');
-                    });
-                }
-              }}
+              onAction={onAction}
             >
               <IconButton hover="fill">
                 <DeleteIcon />

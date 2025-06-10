@@ -3,7 +3,7 @@ import { InfiniteScroll } from '@/components/InfiniteScroll';
 import { useNotification } from '@/components/Notification';
 import { UserRoleBoard } from '@/components/UserRoleBoard';
 import { usePageFetcher } from '@/hooks/usePageFetcher';
-import { startTransition, useOptimistic } from 'react';
+import { startTransition, useCallback, useOptimistic } from 'react';
 
 import styles from './page.module.scss';
 import { useAuthInfo } from '@/auth/context';
@@ -29,6 +29,27 @@ export function ClientComponent() {
 
   const [optimisticItems, setOptimisticItems] = useOptimistic(items);
 
+  const onChangeRole = useCallback(
+    (id: string, role: UserRole) => {
+      startTransition(() => {
+        setOptimisticItems((t) =>
+          t.map((item) => (item.id === id ? { ...item, role } : item))
+        );
+
+        startTransition(async () => {
+          await changeUserRole(id, role);
+
+          startTransition(() => {
+            setItems((t) =>
+              t.map((item) => (item.id === id ? { ...item, role } : item))
+            );
+          });
+        });
+      });
+    },
+    [setItems, setOptimisticItems]
+  );
+
   return (
     <div className={styles.content}>
       <Title>Зміна ролей</Title>
@@ -40,23 +61,7 @@ export function ClientComponent() {
         <UserRoleBoard
           className={styles.list}
           users={optimisticItems}
-          onChangeRole={(id, role) => {
-            startTransition(() => {
-              setOptimisticItems((t) =>
-                t.map((item) => (item.id === id ? { ...item, role } : item))
-              );
-
-              startTransition(async () => {
-                await changeUserRole(id, role);
-
-                startTransition(() => {
-                  setItems((t) =>
-                    t.map((item) => (item.id === id ? { ...item, role } : item))
-                  );
-                });
-              });
-            });
-          }}
+          onChangeRole={onChangeRole}
         />
       </InfiniteScroll>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import { BaseFileDropArea } from '../BaseFileDropArea';
 import { classNames } from '@/utils/classNames';
@@ -22,9 +22,18 @@ export function MultipleInlineImageDropArea({
 }: MultipleInlineImageDropAreaProps) {
   const [files, setFiles] = useState<FileWithObjectUrl[]>([]);
 
-  function fireOnFiles(list: FileWithObjectUrl[]) {
-    onFiles?.(list.map(({ file }) => file));
-  }
+  useEffect(() => {
+    onFiles?.(files.map(({ file }) => file));
+  }, [onFiles, files]);
+
+  const onFilesCallback = useCallback((input: FileList) => {
+    const newFiles = [...input].map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }));
+
+    setFiles((files) => [...files, ...newFiles]);
+  }, []);
 
   return (
     <div className={classNames(styles.root, className)}>
@@ -41,7 +50,6 @@ export function MultipleInlineImageDropArea({
                 newFiles.splice(i, 1);
 
                 setFiles(newFiles);
-                fireOnFiles(newFiles);
               }}
             >
               <img src={url} />
@@ -55,15 +63,7 @@ export function MultipleInlineImageDropArea({
         className={styles['drop-area']}
         uploadText="Виберіть файли"
         dragText="Або перетягніть їх"
-        onFiles={(input) => {
-          const newFiles = [...input].map((file) => ({
-            file,
-            url: URL.createObjectURL(file),
-          }));
-
-          setFiles((files) => [...files, ...newFiles]);
-          fireOnFiles([...files, ...newFiles]);
-        }}
+        onFiles={onFilesCallback}
       />
     </div>
   );

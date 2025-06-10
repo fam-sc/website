@@ -2,7 +2,7 @@ import { getMediaFileUrl } from '@/api/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import styles from './page.module.scss';
 import { addEvent, editEvent } from '@/api/events/client';
@@ -72,13 +72,16 @@ export function ClientComponent({ event }: ClientComponentProps) {
           disabled={actionPending}
           className={styles.image}
           imageSrc={image}
-          onFile={(file) => {
-            imageFileRef.current = file;
+          onFile={useCallback(
+            (file) => {
+              imageFileRef.current = file;
 
-            setImage(
-              file && { url: URL.createObjectURL(file), type: 'object' }
-            );
-          }}
+              setImage(
+                file && { url: URL.createObjectURL(file), type: 'object' }
+              );
+            },
+            [setImage]
+          )}
         />
       </Labeled>
 
@@ -95,9 +98,11 @@ export function ClientComponent({ event }: ClientComponentProps) {
         <OptionSwitch
           options={['pending', 'ended']}
           selected={status}
-          renderOption={(status) =>
-            status === 'pending' ? 'Очікується' : 'Закінчилась'
-          }
+          renderOption={useCallback(
+            (status: 'pending' | 'ended') =>
+              status === 'pending' ? 'Очікується' : 'Закінчилась',
+            []
+          )}
           onOptionSelected={setStatus}
         />
       </Labeled>

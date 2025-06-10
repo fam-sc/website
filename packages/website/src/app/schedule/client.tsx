@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { calculateCurrentLesson } from './date';
 import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
@@ -137,20 +137,16 @@ export function ClientComponent({
         disabled={isScheduleEditable}
         className={styles['week-switch']}
         options={[1, 2]}
-        renderOption={(option) => weekTextMap[option]}
+        renderOption={useCallback((option: 1 | 2) => weekTextMap[option], [])}
         selected={selectedWeek}
-        onOptionSelected={(option) => {
-          setSelectedWeek(option);
-        }}
+        onOptionSelected={setSelectedWeek}
       />
 
       <GroupSelect
         disabled={isScheduleEditable}
         className={styles['group-select']}
         selectedId={selectedGroup?.campusId}
-        onSelected={(group) => {
-          setSelectedGroup(group);
-        }}
+        onSelected={setSelectedGroup}
       />
 
       <ScheduleGridLoader
@@ -159,9 +155,9 @@ export function ClientComponent({
         groupId={selectedGroup?.campusId}
         currentLesson={currentLesson}
         isEditable={isScheduleEditable}
-        onScheduleChanged={(newSchedule) => {
+        onScheduleChanged={useCallback((newSchedule: Schedule) => {
           editedScheduleRef.current = newSchedule;
-        }}
+        }, [])}
       />
     </>
   );

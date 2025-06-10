@@ -3,7 +3,7 @@ import styles from './page.module.scss';
 import { fetchGalleryPage } from '@/api/gallery/client';
 import { getMediaFileUrl } from '@/api/media';
 import { UploadIcon } from '@/icons/UploadIcon';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { GalleryImageInfoDialog } from './dialog';
 import { GalleryImageWithSize } from '@shared/api/gallery/types';
 import { useAuthInfo } from '@/auth/context';
@@ -26,6 +26,11 @@ export function ClientComponent({
   const { user } = useAuthInfo();
   const canModify = user !== null && user.role >= UserRole.ADMIN;
 
+  const onClose = useCallback(() => {
+    setSelectedId(null);
+    void navigate(`/gallery`, { replace: true });
+  }, [navigate]);
+
   return (
     <div className={styles.content}>
       {canModify && (
@@ -38,20 +43,23 @@ export function ClientComponent({
       <LazyImageScroll
         className={styles['image-scroll']}
         requestPage={fetchGalleryPage}
-        getImageInfo={({ id }) => getMediaFileUrl(`gallery/${id}`)}
-        onImageClick={(item) => {
-          void navigate(`/gallery?id=${item.id}`, { replace: true });
-          setSelectedId(item);
-        }}
+        getImageInfo={useCallback(
+          ({ id }: GalleryImageWithSize) => getMediaFileUrl(`gallery/${id}`),
+          []
+        )}
+        onImageClick={useCallback(
+          (item: GalleryImageWithSize) => {
+            void navigate(`/gallery?id=${item.id}`, { replace: true });
+            setSelectedId(item);
+          },
+          [navigate]
+        )}
       />
       {selectedId && (
         <GalleryImageInfoDialog
           info={selectedId}
           canModify={canModify}
-          onClose={() => {
-            setSelectedId(null);
-            void navigate(`/gallery`, { replace: true });
-          }}
+          onClose={onClose}
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 import { MultipleInlineImageDropArea } from '@/components/MultipleInlineImageDropArea';
 import styles from './page.module.scss';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button } from '@/components/Button';
 import { LinkIcon } from '@/icons/LinkIcon';
 import { DatePicker } from '@/components/DatePicker';
@@ -29,6 +29,10 @@ export function ClientComponent() {
   const notification = useNotification();
 
   const navigate = useNavigate();
+
+  const onDialogClose = useCallback(() => {
+    setIsSelectEventDialogShown(false);
+  }, []);
 
   return (
     <div className={styles.content}>
@@ -109,12 +113,8 @@ export function ClientComponent() {
         <SelectEventDialog
           events={events}
           selectedEvent={attachedEvent}
-          onSelect={(event) => {
-            setAttachedEvent(event);
-          }}
-          onClose={() => {
-            setIsSelectEventDialogShown(false);
-          }}
+          onSelect={setAttachedEvent}
+          onClose={onDialogClose}
         />
       )}
     </div>
