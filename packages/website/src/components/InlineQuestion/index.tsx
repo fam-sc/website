@@ -1,5 +1,3 @@
-'use client';
-
 import { cloneElement, ReactElement, useEffect, useRef, useState } from 'react';
 import styles from './index.module.scss';
 import { Typography } from '../Typography';

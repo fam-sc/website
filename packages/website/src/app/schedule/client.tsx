@@ -1,7 +1,4 @@
-'use client';
-
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 import { calculateCurrentLesson } from './date';
 import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
@@ -25,6 +22,8 @@ import { useNotification } from '@/components/Notification';
 import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
 import { Group } from '@shared/api/groups/types';
+import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 type Week = 1 | 2;
 
@@ -45,13 +44,13 @@ export function ClientComponent({
   initialWeek,
   initialGroup,
 }: ClientComponentProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const { user } = useAuthInfo();
   const canModify = user !== null && user.role >= UserRole.GROUP_HEAD;
 
   const [selectedWeek, setSelectedWeek] = useState<Week>(initialWeek);
-  const [selectedGroup, setSelectedGroup] = useState(initialGroup?.campusId);
+  const [selectedGroup, setSelectedGroup] = useState(initialGroup);
   const [isScheduleEditable, setScheduleEditable] = useState(false);
 
   const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
@@ -65,7 +64,8 @@ export function ClientComponent({
       const savedGroup = retrieveSavedSelectedGroup();
 
       if (savedGroup !== null) {
-        setSelectedGroup(savedGroup);
+        // TODO: Fix it
+        // setSelectedGroup(savedGroup);
       }
     }
   }, [initialGroup]);
@@ -74,16 +74,16 @@ export function ClientComponent({
     let url = '/schedule';
 
     if (selectedGroup) {
-      url += `?group=${shortenGuid(selectedGroup)}`;
+      url += `?group=${shortenGuid(selectedGroup.campusId)}`;
     }
 
-    router.replace(url, { scroll: false });
+    void navigate(url, { preventScrollReset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGroup]);
 
   useEffect(() => {
     if (selectedGroup) {
-      saveSelectedGroup(selectedGroup);
+      saveSelectedGroup(selectedGroup.campusId);
     }
   }, [selectedGroup]);
 
@@ -99,6 +99,10 @@ export function ClientComponent({
 
   return (
     <>
+      <Title>
+        {selectedGroup ? `Розклад групи ${selectedGroup.name}` : 'Розклад'}
+      </Title>
+
       {canModify && (
         <Button
           hasIcon
@@ -107,9 +111,9 @@ export function ClientComponent({
             const schedule = editedScheduleRef.current;
 
             if (isScheduleEditable) {
-              if (schedule !== undefined && selectedGroup !== undefined) {
+              if (schedule !== undefined && selectedGroup !== null) {
                 const payload = scheduleToUpdateLinksPayload(schedule);
-                updateScheduleLinks(selectedGroup, payload)
+                updateScheduleLinks(selectedGroup.campusId, payload)
                   .then(() => {
                     setScheduleEditable(false);
                   })
@@ -143,16 +147,16 @@ export function ClientComponent({
       <GroupSelect
         disabled={isScheduleEditable}
         className={styles['group-select']}
-        selectedId={selectedGroup}
+        selectedId={selectedGroup?.campusId}
         onSelected={(group) => {
-          setSelectedGroup(group.campusId);
+          setSelectedGroup(group);
         }}
       />
 
       <ScheduleGridLoader
         className={styles['schedule-grid']}
         week={selectedWeek}
-        groupId={selectedGroup}
+        groupId={selectedGroup?.campusId}
         currentLesson={currentLesson}
         isEditable={isScheduleEditable}
         onScheduleChanged={(newSchedule) => {

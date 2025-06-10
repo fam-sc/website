@@ -1,12 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
-'use client';
 
 import { Typography } from '@/components/Typography';
 import styles from './page.module.scss';
+import { Title } from '@/components/Title';
 
 export function PrivacyPolicyComponent() {
   return (
     <div className={styles.privacyWrapper}>
+      <Title>Політика конфіденційності</Title>
+
       <Typography as="h1" variant="h3" className={styles.title}>
         Політика конфіденційності
       </Typography>

@@ -1,21 +1,22 @@
-'use client';
-
 import { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import SignInForm from '@/components/SignInForm';
 import SignUpForm from '@/components/SignUpForm';
 import styles from './page.module.scss';
+import { useSearchParams } from 'react-router';
+import { Title } from '@/components/Title';
 
 export function SignComponent() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const initialMode = searchParams.get('mode');
 
   const [isSignIn, setIsSignIn] = useState(initialMode === 'signin');
 
   return (
     <div className={styles.authWrapper}>
+      <Title>{isSignIn ? 'Увійти' : 'Зареєструватися'}</Title>
+
       <div className={styles.leftSide}>
         {isSignIn ? (
           <>

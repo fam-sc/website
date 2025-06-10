@@ -1,5 +1,3 @@
-'use client';
-
 import { usefulLinks } from './usefulLinks';
 
 import styles from './page.module.scss';
@@ -9,8 +7,9 @@ import { UsefulLinkList } from '@/components/UsefulLinkList';
 import { ClientEvent } from '../events/(list)/client';
 import { List } from '@/components/List';
 import { EventListItem } from '@/components/EventListItem';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { LinkButton } from '@/components/LinkButton';
+import { Title } from '@/components/Title';
 
 export type ClientComponentProps = {
   latestEvents: ClientEvent[];
@@ -19,6 +18,8 @@ export type ClientComponentProps = {
 export function ClientComponent({ latestEvents }: ClientComponentProps) {
   return (
     <>
+      <Title>Студентство</Title>
+
       <Typography variant="h4" className={styles['useful-links-title']}>
         Корисні джерела
       </Typography>
@@ -45,7 +46,7 @@ export function ClientComponent({ latestEvents }: ClientComponentProps) {
       </List>
 
       <LinkButton
-        href="/events"
+        to="/events"
         buttonVariant="solid"
         className={styles['events-more']}
       >

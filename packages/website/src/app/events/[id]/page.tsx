@@ -1,60 +1,25 @@
-import { Repository } from '@data/repo';
 import { ClientComponent } from './client';
-import { notFound } from 'next/navigation';
-import { PageProps } from '@/types/next';
 import { omitProperty } from '@/utils/object/omit';
-import { Metadata } from 'next';
-import { cache } from 'react';
-import { shortenByWord } from '@shared/string/shortenByWord';
-import { richTextToPlainText } from '@shared/richText/plainTransform';
-import { getMediaFileUrl } from '@shared/api/media';
+import { notFound } from '@shared/responses';
+import { Route } from './+types/page';
+import { Repository } from '@data/repo';
 
-const getEvent = cache(async (id: string) => {
+export async function loader({ params }: Route.LoaderArgs) {
   await using repo = await Repository.openConnection();
+  const event = await repo.events().findById(params.id);
 
-  return await repo.events().findById(id);
-});
-
-export async function generateMetadata({
-  params,
-}: PageProps<{ id: string }>): Promise<Metadata> {
-  const { id } = await params;
-
-  const event = await getEvent(id);
   if (event === null) {
-    return {};
+    return notFound();
   }
 
-  const description = shortenByWord(
-    richTextToPlainText(event.description),
-    200
-  );
-
   return {
-    title: event.title,
-    description,
-    openGraph: {
-      title: event.title,
-      description,
-      images: getMediaFileUrl(`events/${id}`),
+    event: {
+      ...omitProperty(event, '_id'),
+      id: event._id.toString(),
     },
   };
 }
 
-export default async function Page({ params }: PageProps<{ id: string }>) {
-  const { id } = await params;
-  const event = await getEvent(id);
-
-  if (event === null) {
-    notFound();
-  }
-
-  return (
-    <ClientComponent
-      event={{
-        ...omitProperty(event, '_id'),
-        id: event._id.toString(),
-      }}
-    />
-  );
+export default function Page({ loaderData: { event } }: Route.ComponentProps) {
+  return <ClientComponent event={event} />;
 }

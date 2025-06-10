@@ -1,11 +1,11 @@
 import { classNames } from '@/utils/classNames';
 import styles from './index.module.scss';
-import Link from 'next/link';
 import { Typography } from '../Typography';
 import { getViewPages } from './pages';
 import { ReactNode } from 'react';
 import { ArrowLeftIcon } from '@/icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
+import { Link } from 'react-router';
 
 export type PaginationProps = {
   className?: string;
@@ -32,7 +32,7 @@ function PageItem({ page, href, current }: PageItemProps) {
           {page}
         </Typography>
       ) : (
-        <Link href={href} aria-label={`Перейти на сторінку ${page}`}>
+        <Link to={href} aria-label={`Перейти на сторінку ${page}`}>
           <span>{page}</span>
         </Link>
       )}
@@ -62,7 +62,7 @@ function BackForwardButton({
 }: BackForwardButtonProps) {
   return (
     <Link
-      href={href}
+      to={href}
       className={classNames(styles['back-forward'], className)}
       {...rest}
     >

@@ -1,5 +1,3 @@
-'use client';
-
 import { PollBuilder } from '@/components/PollBuilder';
 import styles from './page.module.scss';
 import { useState } from 'react';
@@ -14,7 +12,7 @@ import { TextInput } from '@/components/TextInput';
 import { AddPollPayload } from '@shared/api/polls/types';
 import { UserRole } from '@shared/api/user/types';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router';
 
 export function ClientComponent() {
   useCheckUserRole(UserRole.ADMIN);
@@ -24,7 +22,7 @@ export function ClientComponent() {
   const [isActionPending, setIsActionPending] = useState(false);
 
   const notification = useNotification();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const isPollValid =
     items.length > 0 && items.every((item) => isValidItem(item));
@@ -60,7 +58,7 @@ export function ClientComponent() {
 
           addPoll({ title, questions })
             .then(() => {
-              router.push('/polls');
+              void navigate('/polls');
 
               notification.show('Опитування додано успішно', 'plain');
             })

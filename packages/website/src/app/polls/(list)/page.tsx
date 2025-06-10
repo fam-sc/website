@@ -1,29 +1,23 @@
 import { Pagination } from '@/components/Pagination';
 import { ShortPollInfoList } from '@/components/ShortPollInfoList';
-import { PageProps } from '@/types/next';
 import { coerce } from '@shared/math';
 import { parseInt } from '@shared/parseInt';
-import { Repository } from '@data/repo';
-import { redirect, RedirectType } from 'next/navigation';
 import styles from './page.module.scss';
-import { getCurrentUserInfo } from '@/api/user/client';
 import { UserRole } from '@shared/api/user/types';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';
-import { Metadata } from 'next';
+import { redirect } from 'react-router';
+import { Route } from './+types/page';
+import { Title } from '@/components/Title';
+import { useAuthInfo } from '@/auth/context';
+import { Repository } from '@data/repo';
 
 const ITEMS_PER_PAGE = 20;
 
-export const metadata: Metadata = {
-  title: 'Опитування',
-};
+export async function loader({ request }: Route.LoaderArgs) {
+  const { searchParams } = new URL(request.url);
 
-export default async function Page({ searchParams }: PageProps) {
-  const userInfo = await getCurrentUserInfo();
-  const canVisitPoll = userInfo !== null && userInfo.role >= UserRole.STUDENT;
-  const canAddPoll = userInfo !== null && userInfo.role >= UserRole.ADMIN;
-
-  const { page: rawPage } = await searchParams;
+  const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;
 
   await using repo = await Repository.openConnection();
@@ -37,13 +31,33 @@ export default async function Page({ searchParams }: PageProps) {
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   if (oldPage !== page) {
-    redirect(`/polls/?page=${page}`, RedirectType.replace);
+    return redirect(`/polls/?page=${page}`);
   }
+
+  return {
+    items: items.map(({ _id, title }) => ({
+      id: _id.toString(),
+      title,
+    })),
+    page,
+    totalPages,
+  };
+}
+
+export default function Page({
+  loaderData: { items, page, totalPages },
+}: Route.ComponentProps) {
+  const { user } = useAuthInfo();
+
+  const canVisitPoll = user !== null && user.role >= UserRole.STUDENT;
+  const canAddPoll = user !== null && user.role >= UserRole.ADMIN;
 
   return (
     <div className={styles.root}>
+      <Title>Опитування</Title>
+
       {canAddPoll && (
-        <LinkButton hasIcon className={styles['add-poll']} href="/polls/+">
+        <LinkButton hasIcon className={styles['add-poll']} to="/polls/+">
           <PlusIcon aria-hidden />
           Додати
         </LinkButton>
@@ -51,10 +65,10 @@ export default async function Page({ searchParams }: PageProps) {
 
       <ShortPollInfoList
         className={styles.list}
-        items={items.map(({ _id, title }) => ({
-          id: _id.toString(),
+        items={items.map(({ id, title }) => ({
+          id,
           title,
-          href: `/polls/${_id}`,
+          href: `/polls/${id}`,
         }))}
         canVisitPoll={canVisitPoll}
       />

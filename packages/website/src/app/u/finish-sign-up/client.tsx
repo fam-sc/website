@@ -1,25 +1,22 @@
-'use client';
-
-import { finishSignUp } from '@/api/user/client';
+import { finishSignUp } from '@/api/users/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { LinkButton } from '@/components/LinkButton';
 import { Typography } from '@/components/Typography';
 import { useEffect, useState } from 'react';
 
 import styles from './page.module.scss';
-
-export type ClientComponentProps = {
-  token: string | undefined;
-};
+import { useSearchParams } from 'react-router';
 
 type State = 'pending' | 'success' | 'error';
 
-export function ClientComponent({ token }: ClientComponentProps) {
-  const [state, setState] = useState<State>(
-    token !== undefined ? 'pending' : 'error'
-  );
+export function ClientComponent() {
+  const [searchParams] = useSearchParams();
+
+  const [state, setState] = useState<State>('pending');
 
   useEffect(() => {
+    const token = searchParams.get('token');
+
     if (token) {
       finishSignUp(token)
         .then(() => {
@@ -28,8 +25,10 @@ export function ClientComponent({ token }: ClientComponentProps) {
         .catch(() => {
           setState('error');
         });
+    } else {
+      setState('error');
     }
-  }, [token]);
+  }, [searchParams]);
 
   return (
     <div className={styles.root}>

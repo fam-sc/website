@@ -10,7 +10,7 @@ type Story = StoryObj<typeof Link>;
 
 export const Primary: Story = {
   args: {
-    href: '/test',
+    to: '/test',
     children: 'Text',
   },
 };

@@ -1,6 +1,4 @@
-'use client';
-
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { Button } from '@/components/Button';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
@@ -8,7 +6,6 @@ import { useRef, useState } from 'react';
 
 import styles from './page.module.scss';
 import { addEvent, editEvent } from '@/api/events/client';
-import { useRouter } from 'next/navigation';
 import { TextInput } from '@/components/TextInput';
 import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
@@ -19,6 +16,8 @@ import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { UserRole } from '@shared/api/user/types';
 import { useObjectUrl } from '@/hooks/useObjectUrl';
 import { EventStatus } from '@shared/api/events/types';
+import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 export type ClientEvent = {
   id: string;
@@ -51,10 +50,14 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
   const [actionPending, setActionPending] = useState(false);
 
-  const router = useRouter();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.root}>
+      <Title>
+        {event !== undefined ? 'Редагування події' : 'Додати подію'}
+      </Title>
+
       <TextInput
         disabled={actionPending}
         error={title.length === 0 ? 'Пустий заголовок' : undefined}
@@ -153,7 +156,7 @@ export function ClientComponent({ event }: ClientComponentProps) {
           if (promise) {
             promise
               .then(() => {
-                router.push('/events');
+                void navigate('/events');
               })
               .catch((error: unknown) => {
                 console.error(error);

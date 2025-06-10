@@ -50,12 +50,17 @@ function handleRequestMethod<Env, P extends string[]>(
 
 export class ParamRouter<Env> {
   private paths: Record<string, PathNode<Env> | undefined> = {};
+  private prefix: string;
 
   get = this.createPathHandler('GET');
   post = this.createPathHandler('POST');
   put = this.createPathHandler('PUT');
   patch = this.createPathHandler('PATCH');
   delete = this.createPathHandler('DELETE');
+
+  constructor(prefix: string = '') {
+    this.prefix = prefix;
+  }
 
   private createPathHandler(method: HttpMethod) {
     return <P extends string>(
@@ -134,13 +139,17 @@ export class ParamRouter<Env> {
   }
 
   handleRequest(request: Request, env: Env) {
-    const { pathname } = new URL(request.url);
+    let { pathname } = new URL(request.url);
 
-    const [firstPart, ...parts] = pathname.slice(1).split('/');
+    if (pathname.startsWith(this.prefix)) {
+      pathname = pathname.slice(this.prefix.length);
 
-    const node = this.paths[firstPart];
-    if (node !== undefined) {
-      return this.handleRequestByParts(parts, node, request, env, {});
+      const [firstPart, ...parts] = pathname.slice(1).split('/');
+
+      const node = this.paths[firstPart];
+      if (node !== undefined) {
+        return this.handleRequestByParts(parts, node, request, env, {});
+      }
     }
 
     return Promise.resolve(notFound());

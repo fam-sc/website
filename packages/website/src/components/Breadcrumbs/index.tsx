@@ -31,7 +31,7 @@ export function Breadcrumbs({ items, className, ...rest }: BreadcrumbsProps) {
             <li key={href}>
               <Link
                 linkVariant="clean"
-                href={href}
+                to={href}
                 aria-current={i === items.length - 1 ? 'page' : undefined}
               >
                 {title}

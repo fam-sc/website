@@ -1,5 +1,3 @@
-'use client';
-
 import { Ref, useEffect, useImperativeHandle } from 'react';
 import Blockquote from '@tiptap/extension-blockquote';
 import Bold from '@tiptap/extension-bold';

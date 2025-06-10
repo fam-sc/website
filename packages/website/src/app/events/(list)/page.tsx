@@ -1,14 +1,13 @@
-import { Repository } from '@data/repo';
-import { PageProps } from '@/types/next';
 import { coerce } from '@shared/math';
 import { ClientComponent, ClientEvent } from './client';
-import { redirect, RedirectType } from 'next/navigation';
 import { WithId } from 'mongodb';
 import { Event } from '@data/types';
 import { formatDateTime } from '@shared/date';
 import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@shared/parseInt';
-import { Metadata } from 'next';
+import { redirect } from 'react-router';
+import { Route } from './+types/page';
+import { Repository } from '@data/repo';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -23,24 +22,9 @@ function toClientEvent(event: WithId<Event>): ClientEvent {
   };
 }
 
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const { page: rawPage } = await searchParams;
-  const page = parseInt(rawPage) ?? 1;
-  const description = `Сторінка ${page}`;
-
-  return {
-    title: 'Події',
-    description,
-    openGraph: {
-      description,
-    },
-  };
-}
-
-export default async function Page({ searchParams }: PageProps) {
-  const { page: rawPage } = await searchParams;
+export async function loader({ request }: Route.LoaderArgs) {
+  const { searchParams } = new URL(request.url);
+  const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;
 
   await using repo = await Repository.openConnection();
@@ -54,14 +38,20 @@ export default async function Page({ searchParams }: PageProps) {
   page = coerce(page, 1, totalPages);
 
   if (oldPage !== page) {
-    redirect(`/events/?page=${page}`, RedirectType.replace);
+    return redirect(`/events/?page=${page}`);
   }
 
+  return {
+    items: items.map((event) => toClientEvent(event)),
+    page,
+    totalPages,
+  };
+}
+
+export default function Page({
+  loaderData: { items, page, totalPages },
+}: Route.ComponentProps) {
   return (
-    <ClientComponent
-      items={items.map((event) => toClientEvent(event))}
-      currentPage={page}
-      totalPages={totalPages}
-    />
+    <ClientComponent items={items} currentPage={page} totalPages={totalPages} />
   );
 }

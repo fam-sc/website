@@ -1,5 +1,3 @@
-'use client';
-
 import { MultipleInlineImageDropArea } from '@/components/MultipleInlineImageDropArea';
 import styles from './page.module.scss';
 import { useState } from 'react';
@@ -8,13 +6,14 @@ import { LinkIcon } from '@/icons/LinkIcon';
 import { DatePicker } from '@/components/DatePicker';
 import { uploadGalleryImages } from '@/api/gallery/client';
 import { useNotification } from '@/components/Notification';
-import { useRouter } from 'next/navigation';
 import { SelectEventDialog } from '@/components/SelectEventDialog';
 import { ShortEvent } from '@/api/events/types';
 import { fetchAllEventsShort } from '@/api/events/client';
 import { Typography } from '@/components/Typography';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { UserRole } from '@shared/api/user/types';
+import { useNavigate } from 'react-router';
+import { Title } from '@/components/Title';
 
 export function ClientComponent() {
   useCheckUserRole(UserRole.ADMIN);
@@ -29,10 +28,12 @@ export function ClientComponent() {
 
   const notification = useNotification();
 
-  const router = useRouter();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.content}>
+      <Title>Завантаження фото</Title>
+
       <MultipleInlineImageDropArea
         disabled={isActionPending}
         className={styles.images}
@@ -88,7 +89,7 @@ export function ClientComponent() {
               files,
             })
               .then(() => {
-                router.push('/gallery');
+                void navigate('/gallery');
 
                 notification.show('Фото були додані', 'plain');
               })

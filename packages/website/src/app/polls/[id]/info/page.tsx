@@ -1,51 +1,40 @@
-import { PageProps } from '@/types/next';
 import { ClientComponent } from './client';
-import { Repository } from '@data/repo';
-import { notFound } from 'next/navigation';
 import { formatDateTime } from '@shared/date';
-import { Metadata } from 'next';
-import { cache } from 'react';
+import { notFound } from '@shared/responses';
+import { Route } from './+types/page';
+import { omitProperty } from '@/utils/object/omit';
+import { Repository } from '@data/repo';
+import { UserRole } from '@shared/api/user/types';
+import { redirect } from 'react-router';
+import { getSessionIdNumber } from '@shared/api/auth';
 
-type PollPageProps = PageProps<{ id: string }>;
-
-const getPoll = cache(async (id: string) => {
-  await using repo = await Repository.openConnection();
-
-  return await repo.polls().findShortPoll(id);
-});
-
-export async function generateMetadata({
-  params,
-}: PollPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const poll = await getPoll(id);
-
-  if (poll === null) {
-    return {};
+export async function loader({ request, params }: Route.LoaderArgs) {
+  const sessionId = getSessionIdNumber(request);
+  if (sessionId === undefined) {
+    return redirect('/polls');
   }
 
-  const title = `${poll.title} | Інформація`;
+  await using repo = await Repository.openConnection();
+  const userInfo = await repo.sessions().getUserWithRole(sessionId);
 
-  return {
-    title,
-    openGraph: {
-      title,
-    },
-  };
+  if (userInfo === null || userInfo.role < UserRole.STUDENT) {
+    return redirect('/polls');
+  }
+
+  const poll = await repo.polls().findShortPoll(params.id);
+
+  if (poll === null) {
+    return notFound();
+  }
+
+  return { poll: { id: poll._id.toString(), ...omitProperty(poll, '_id') } };
 }
 
-export default async function Page({ params }: PageProps<{ id: string }>) {
-  const { id } = await params;
-  const poll = await getPoll(id);
-
-  if (poll === null) {
-    notFound();
-  }
-
+export default function Page({ loaderData: { poll } }: Route.ComponentProps) {
   return (
     <ClientComponent
       poll={{
-        id,
+        id: poll.id,
         title: poll.title,
         startDate: formatDateTime(poll.startDate),
         endDate: poll.endDate ? formatDateTime(poll.endDate) : null,

@@ -1,7 +1,6 @@
 import { encodeInitBodyToJson, ExtendedRequestInit } from '@shared/fetch';
 import { isErrorResponseBody } from '@shared/responses';
 import { ApiError } from '@shared/api/error';
-import { getEnvChecked } from '@shared/env';
 
 export async function getApiErrorFromResponse(
   response: Response
@@ -20,12 +19,8 @@ export async function getApiErrorFromResponse(
     : new Error(text);
 }
 
-function getApiUrl(): string {
-  return getEnvChecked('NEXT_PUBLIC_API_URL');
-}
-
 export async function apiFetch(url: string | URL, init?: ExtendedRequestInit) {
-  return fetch(`${getApiUrl()}${url}`, encodeInitBodyToJson(init));
+  return fetch(url, encodeInitBodyToJson(init));
 }
 
 export async function apiCheckedFetch(

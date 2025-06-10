@@ -1,5 +1,3 @@
-'use client';
-
 import { OptionalLink } from '../OptionalLink';
 import { Typography } from '../Typography';
 
@@ -80,7 +78,7 @@ export function ScheduleTile({
 
       <Typography className={styles.name}>{lesson.name}</Typography>
 
-      <OptionalLink href={lesson.teacher.link} linkVariant="clean">
+      <OptionalLink to={lesson.teacher.link} linkVariant="clean">
         {lesson.teacher.name}
       </OptionalLink>
 
@@ -110,7 +108,7 @@ export function ScheduleTile({
               }}
             />
           ) : (
-            <Link href={lesson.link} aria-label="Посилання на пару">
+            <Link to={lesson.link} aria-label="Посилання на пару">
               {lesson.link}
             </Link>
           )}

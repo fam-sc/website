@@ -13,5 +13,5 @@ export async function getGroupById(id: string): Promise<Group | null> {
     throw await getApiErrorFromResponse(response);
   }
 
-  return (await response.json()) as Group | null;
+  return await response.json();
 }

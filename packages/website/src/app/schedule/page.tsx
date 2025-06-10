@@ -1,47 +1,23 @@
-import { Metadata } from 'next';
-
 import { ClientComponent } from './client';
 
 import { getCurrentTime } from '@shared/api/campus';
-import { pick } from '@/utils/object/pick';
-import { PageProps } from '@/types/next';
-import { cache } from 'react';
-import { Group } from '@data/types';
-import { getGroupById } from '@/api/groups/client';
+import { Route } from './+types/page';
+import { getFacultyGroupById } from '@/api/groups/get';
 
-const getGroup = cache(async (groupId: string) => {
-  return getGroupById(groupId);
-});
-
-async function getGroupFromSearchParams(
-  searchParams: PageProps['searchParams']
-): Promise<Group | null> {
-  const { group: rawGroup } = await searchParams;
-  const groupId =
-    typeof rawGroup === 'string' && rawGroup.length > 0 ? rawGroup : null;
-
-  return groupId !== null ? await getGroup(groupId) : null;
-}
-
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const group = await getGroupFromSearchParams(searchParams);
-
-  return {
-    title: group ? `Розклад групи ${group.name}` : 'Розклад',
-  };
-}
-
-export default async function Page({ searchParams }: PageProps) {
+export async function loader({ request }: Route.LoaderArgs) {
   const { currentWeek } = await getCurrentTime();
 
-  const group = await getGroupFromSearchParams(searchParams);
+  const { searchParams } = new URL(request.url);
+  const rawGroup = searchParams.get('group');
+  const groupId = rawGroup !== null && rawGroup.length > 0 ? rawGroup : null;
 
-  return (
-    <ClientComponent
-      initialGroup={group ? pick(group, ['campusId', 'name']) : null}
-      initialWeek={currentWeek}
-    />
-  );
+  const group = groupId !== null ? await getFacultyGroupById(groupId) : null;
+
+  return { currentWeek, group };
+}
+
+export default function Page({
+  loaderData: { currentWeek, group },
+}: Route.ComponentProps) {
+  return <ClientComponent initialGroup={group} initialWeek={currentWeek} />;
 }

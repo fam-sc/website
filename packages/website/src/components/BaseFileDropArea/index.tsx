@@ -1,5 +1,3 @@
-'use client';
-
 // Base unstyled (only functional) building block for file drop areas.
 
 import { PropsMap, WithDataSpace } from '@/types/react';

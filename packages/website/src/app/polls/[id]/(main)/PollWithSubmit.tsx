@@ -1,5 +1,3 @@
-'use client';
-
 import { submitPoll } from '@/api/polls/client';
 import { Poll } from '@shared/api/polls/types';
 import { Button } from '@/components/Button';
@@ -10,10 +8,10 @@ import {
   QuestionType,
 } from '@/components/PollQuestion';
 import { PollQuestionList } from '@/components/PollQuestionList';
-import { useRouter } from 'next/navigation';
 import { useState, useMemo, useCallback } from 'react';
 
 import styles from './PollWithSubmit.module.scss';
+import { useNavigate } from 'react-router';
 
 export type PollWithSubmitProps = {
   id: string;
@@ -71,7 +69,7 @@ export function PollWithSubmit({ id, questions }: PollWithSubmitProps) {
   });
 
   const notification = useNotification();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const pollItems = useMemo(() => {
     return questions.map((question) => ({
@@ -97,7 +95,7 @@ export function PollWithSubmit({ id, questions }: PollWithSubmitProps) {
 
     submitPoll(id, { answers })
       .then(() => {
-        router.push('/polls');
+        void navigate('/polls');
 
         notification.show('Ваш відповіді зараховані', 'plain');
       })
@@ -106,7 +104,7 @@ export function PollWithSubmit({ id, questions }: PollWithSubmitProps) {
 
         notification.show('Сталася помилка', 'error');
       });
-  }, [answers, id, notification, router]);
+  }, [answers, id, notification, navigate]);
 
   return (
     <div className={styles.content}>

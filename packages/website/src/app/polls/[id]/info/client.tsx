@@ -1,5 +1,3 @@
-'use client';
-
 import { Typography } from '@/components/Typography';
 import styles from './page.module.scss';
 import { Button } from '@/components/Button';
@@ -12,6 +10,7 @@ import { Tab } from '@/components/Tab';
 import { ResultsTab } from './tabs/results';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { UserRole } from '@shared/api/user/types';
+import { Title } from '@/components/Title';
 
 export type PollInfo = {
   id: string;
@@ -32,6 +31,8 @@ export function ClientComponent({ poll }: ClientComponentProps) {
 
   return (
     <div className={styles.content}>
+      <Title>{`${poll.title} | Інформація`}</Title>
+
       <div className={styles.header}>
         <Typography variant="h5">{poll.title}</Typography>
 

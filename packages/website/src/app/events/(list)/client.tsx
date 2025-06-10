@@ -1,8 +1,6 @@
-'use client';
-
 import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
-import { getMediaFileUrl } from '@shared/api/media';
+import { getMediaFileUrl } from '@/api/media';
 import { RichTextString } from '@shared/richText/types';
 import { EventListItem } from '@/components/EventListItem';
 import { List } from '@/components/List';
@@ -38,7 +36,7 @@ export function ClientComponent({
   return (
     <div className={styles.root}>
       {canAddEvent && (
-        <LinkButton hasIcon className={styles['add-event']} href="/events/+">
+        <LinkButton hasIcon className={styles['add-event']} to="/events/+">
           <PlusIcon aria-hidden />
           Додати
         </LinkButton>

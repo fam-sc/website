@@ -1,13 +1,14 @@
 import { Repository } from '@data/repo';
 import { ClientComponent, ClientEvent } from './client';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
-import { PageProps } from '@/types/next';
-import { redirect } from 'next/navigation';
-import { Metadata } from 'next';
+import { redirect } from 'react-router';
+import { Route } from './+types/page';
 
-async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
+async function getClientEvent(
+  repo: Repository,
+  id: string
+): Promise<ClientEvent | undefined> {
   try {
-    await using repo = await Repository.openConnection();
     const editEvent = await repo.events().findById(id);
 
     return editEvent
@@ -15,7 +16,9 @@ async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
           id,
           title: editEvent.title,
           date: editEvent.date,
-          description: richTextToHtml(editEvent.description),
+          description: richTextToHtml(editEvent.description, {
+            mediaUrl: import.meta.env.VITE_MEDIA_URL,
+          }),
         }
       : undefined;
   } catch {
@@ -23,26 +26,21 @@ async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   }
 }
 
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const { edit } = await searchParams;
+export async function loader({ request }: Route.LoaderArgs) {
+  const { searchParams } = new URL(request.url);
+  const editEventId = searchParams.get('edit');
 
-  const title = edit === undefined ? 'Редагування події' : 'Додати подію';
-
-  return { title };
-}
-
-export default async function Page({ searchParams }: PageProps) {
-  const { edit: editEventId } = await searchParams;
+  await using repo = await Repository.openConnection();
   const event =
-    typeof editEventId === 'string'
-      ? await getClientEvent(editEventId)
-      : undefined;
+    editEventId !== null ? await getClientEvent(repo, editEventId) : undefined;
 
-  if (event === undefined && typeof editEventId === 'string') {
-    redirect('/events/+');
+  if (event === undefined) {
+    return redirect('/events/+');
   }
 
+  return { event };
+}
+
+export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   return <ClientComponent event={event} />;
 }

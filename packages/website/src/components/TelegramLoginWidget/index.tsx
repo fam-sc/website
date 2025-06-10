@@ -1,5 +1,4 @@
 /* eslint-disable unicorn/prefer-dom-node-dataset */
-'use client';
 
 import { useEffect, useRef } from 'react';
 

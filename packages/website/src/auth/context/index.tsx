@@ -1,5 +1,3 @@
-'use client';
-
 import { UserWithRoleAndAvatar } from '@shared/api/user/types';
 import { createContext, ReactNode, useContext } from 'react';
 

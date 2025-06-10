@@ -9,8 +9,8 @@
     "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
   },
   "dependencies": {
-    "mongodb": "6.15.0",
-    "wrangler": "4.14.3"
+    "mongodb": "6.17.0",
+    "wrangler": "4.19.1"
   },
   "devDependencies": {
     "@types/node": "22.15.14",

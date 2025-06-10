@@ -1,11 +1,5 @@
-import { Metadata } from 'next';
-
 import { PrivacyPolicyComponent } from './privacy-policy';
 
-export const metadata: Metadata = {
-  title: 'Політика конфіденційності',
-};
-
-export default function PrivacyPolicyPage() {
+export default function Page() {
   return <PrivacyPolicyComponent />;
 }

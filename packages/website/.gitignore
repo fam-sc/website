@@ -2,3 +2,5 @@ storybook-static
 .dev.vars
 .open-next
 .wrangler
+.react-router
+build

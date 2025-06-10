@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router';
 import {
   IconComponentBase,
   IconComponentBaseProps,
@@ -10,6 +10,6 @@ type IconLinkButtonProps = Omit<
   'as'
 >;
 
-export function IconLinkButton({ href, ...rest }: IconLinkButtonProps) {
-  return <IconComponentBase<typeof Link> as={Link} href={href} {...rest} />;
+export function IconLinkButton({ to, ...rest }: IconLinkButtonProps) {
+  return <IconComponentBase<typeof Link> as={Link} to={to} {...rest} />;
 }
