@@ -41,10 +41,24 @@
   }
 }
 
-.linkWithIcon {
+.link-with-icon {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  --icon-size: 24px;
+
+  &-small {
+    --icon-size: 16px;
+  }
+
+  svg {
+    width: var(--icon-size);
+    height: var(--icon-size);
+
+    fill: var(--color-text-on-background);
+    stroke: var(--color-text-on-background);
+  }
 }
 
 .icons {
@@ -52,11 +66,9 @@
   gap: 1rem;
   margin-top: 0.5rem;
 
-  // --- Мобільні стилі ---
   @media (max-width: 768px) {
-    justify-content: center; // Центруємо іконки
-    width: 100%; // Робимо на всю ширину
+    justify-content: center; 
+    width: 100%;
   }
 }
 
-// ... інші стилі
