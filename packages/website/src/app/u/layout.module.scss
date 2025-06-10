@@ -1,4 +1,4 @@
-@use '../../../theme/breakpoints' as *;
+@use '../../theme/breakpoints' as *;
 
 @mixin desktop-view() {
   @include breakpoint-up('md') {

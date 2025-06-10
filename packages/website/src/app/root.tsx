@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from 'react-router';
 
 import type { Route } from './+types/root';
@@ -15,6 +16,9 @@ import { NotificationWrapper } from '@/components/Notification';
 import { backgroundColor } from '@/theme';
 
 import '@/theme/global.scss';
+import { UserWithRoleAndAvatar } from '@shared/api/user/types';
+import { Repository } from '@data/repo';
+import { getSessionIdNumber } from '@shared/api/auth';
 
 export const links: Route.LinksFunction = () => [
   {
@@ -24,12 +28,30 @@ export const links: Route.LinksFunction = () => [
     sizes: '96x96',
   },
   { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '16x16' },
   { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
 ];
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const sessionId = getSessionIdNumber(request);
+  let user: UserWithRoleAndAvatar | null = null;
+
+  if (sessionId !== undefined) {
+    await using repo = await Repository.openConnection();
+
+    user = await repo.sessions().getUserWithRole(sessionId);
+  }
+
+  return { user };
+}
 
 export function Layout({
   children,
 }: Route.ComponentProps & { children: React.ReactNode }) {
+  console.log('layout');
+  const { user } = useLoaderData();
+  console.log(user);
+
   return (
     <html lang="en">
       <head>
@@ -44,7 +66,7 @@ export function Layout({
       </head>
       <body>
         <NotificationWrapper>
-          <AuthProvider value={{ user: null }}>
+          <AuthProvider value={{ user }}>
             <Header />
             <main>{children}</main>
 

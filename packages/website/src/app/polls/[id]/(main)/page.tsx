@@ -1,5 +1,3 @@
-import { Repository } from '@data/repo';
-import { getCurrentUserInfo } from '@/api/users/client';
 import { IconLinkButton } from '@/components/IconLinkButton';
 import { Typography } from '@/components/Typography';
 import { InfoIcon } from '@/icons/InfoIcon';
@@ -7,13 +5,15 @@ import { UserRole } from '@shared/api/user/types';
 
 import styles from './page.module.scss';
 import { PollWithSubmit } from './PollWithSubmit';
-import { cache, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { redirect } from 'react-router';
 import { notFound } from '@shared/responses';
 
 import { Route } from './+types/page';
 import { omitProperty } from '@/utils/object/omit';
 import { Title } from '@/components/Title';
+import { Repository } from '@data/repo';
+import { getSessionIdNumber } from '@shared/api/auth';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (
@@ -23,19 +23,20 @@ function ErrorMessage({ children }: PropsWithChildren) {
   );
 }
 
-const getPoll = cache(async (id: string) => {
+export async function loader({ request, params }: Route.LoaderArgs) {
+  const sessionId = getSessionIdNumber(request);
+  if (sessionId === undefined) {
+    return redirect('/polls');
+  }
+
   await using repo = await Repository.openConnection();
+  const userInfo = await repo.sessions().getUserWithRole(sessionId);
 
-  return await repo.polls().findById(id);
-});
-
-export async function loader({ params }: Route.LoaderArgs) {
-  const userInfo = await getCurrentUserInfo();
   if (userInfo === null || userInfo.role < UserRole.STUDENT) {
     return redirect('/polls');
   }
 
-  const poll = await getPoll(params.id);
+  const poll = await repo.polls().findById(params.id);
   if (poll === null) {
     return notFound();
   }

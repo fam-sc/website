@@ -2,23 +2,19 @@ import { Pagination } from '@/components/Pagination';
 import { ShortPollInfoList } from '@/components/ShortPollInfoList';
 import { coerce } from '@shared/math';
 import { parseInt } from '@shared/parseInt';
-import { Repository } from '@data/repo';
 import styles from './page.module.scss';
-import { getCurrentUserInfo } from '@/api/users/client';
 import { UserRole } from '@shared/api/user/types';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
 import { Title } from '@/components/Title';
+import { useAuthInfo } from '@/auth/context';
+import { Repository } from '@data/repo';
 
 const ITEMS_PER_PAGE = 20;
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const userInfo = await getCurrentUserInfo();
-  const canVisitPoll = userInfo !== null && userInfo.role >= UserRole.STUDENT;
-  const canAddPoll = userInfo !== null && userInfo.role >= UserRole.ADMIN;
-
   const { searchParams } = new URL(request.url);
 
   const rawPage = searchParams.get('page');
@@ -39,8 +35,6 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   return {
-    canAddPoll,
-    canVisitPoll,
     items: items.map(({ _id, title }) => ({
       id: _id.toString(),
       title,
@@ -51,8 +45,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Page({
-  loaderData: { canAddPoll, canVisitPoll, items, page, totalPages },
+  loaderData: { items, page, totalPages },
 }: Route.ComponentProps) {
+  const { user } = useAuthInfo();
+
+  const canVisitPoll = user !== null && user.role >= UserRole.STUDENT;
+  const canAddPoll = user !== null && user.role >= UserRole.ADMIN;
+
   return (
     <div className={styles.root}>
       <Title>Опитування</Title>

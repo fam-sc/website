@@ -1,4 +1,3 @@
-import { Repository } from '@data/repo';
 import { ClientComponent } from './client';
 import { formatDateTime } from '@shared/date';
 import { shortenRichText } from '@shared/richText/short';
@@ -6,6 +5,7 @@ import { WithId } from 'mongodb';
 import { ClientEvent } from '../events/(list)/client';
 import { Event } from '@data/types';
 import { Route } from './+types/page';
+import { Repository } from '@data/repo';
 
 function toClientEvent(event: WithId<Event>): ClientEvent {
   return {

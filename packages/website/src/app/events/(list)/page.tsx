@@ -1,4 +1,3 @@
-import { Repository } from '@data/repo';
 import { coerce } from '@shared/math';
 import { ClientComponent, ClientEvent } from './client';
 import { WithId } from 'mongodb';
@@ -8,6 +7,7 @@ import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@shared/parseInt';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
+import { Repository } from '@data/repo';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -22,26 +22,7 @@ function toClientEvent(event: WithId<Event>): ClientEvent {
   };
 }
 
-/*
-export async function generateMetadata({
-  searchParams,
-}: PageProps): Promise<Metadata> {
-  const { page: rawPage } = await searchParams;
-  const page = parseInt(rawPage) ?? 1;
-  const description = `Сторінка ${page}`;
-
-  return {
-    title: 'Події',
-    description,
-    openGraph: {
-      description,
-    },
-  };
-}
-*/
-
 export async function loader({ request }: Route.LoaderArgs) {
-  //const { page: rawPage } = await searchParams;
   const { searchParams } = new URL(request.url);
   const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;

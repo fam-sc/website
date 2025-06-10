@@ -24,12 +24,12 @@ export default [
     index('polls/(list)/page.tsx'),
   ]),
   ...prefix('u', [
-    layout('u/(default-layout)/layout.tsx', [
-      route('approve', 'u/(default-layout)/approve/page.tsx'),
-      route('info', 'u/(default-layout)/info/page.tsx'),
-      route('password', 'u/(default-layout)/password/page.tsx'),
-      route('roles', 'u/(default-layout)/roles/page.tsx'),
-      route('telegram-auth', 'u/(default-layout)/telegram-auth/page.tsx'),
+    layout('u/layout.tsx', [
+      route('approve', 'u/approve/page.tsx'),
+      route('info', 'u/info/page.tsx'),
+      route('password', 'u/password/page.tsx'),
+      route('roles', 'u/roles/page.tsx'),
+      route('telegram-auth', 'u/telegram-auth/page.tsx'),
     ]),
     route('finish-sign-up', 'u/finish-sign-up/page.tsx'),
   ]),

@@ -7,8 +7,8 @@ import { getApiFacultyGroups } from './faculty';
 const GROUP_INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;
 
 abstract class BaseExternalApi<T> extends CachedExternalApi<T, Group[]> {
-  constructor() {
-    super('groups', GROUP_INVALIDATE_TIME);
+  constructor(repo?: Repository) {
+    super('groups', GROUP_INVALIDATE_TIME, repo);
   }
 
   protected fetchFromExternalApi(): Promise<Group[]> {
@@ -23,8 +23,8 @@ abstract class BaseExternalApi<T> extends CachedExternalApi<T, Group[]> {
 class GetFacultyGroupByIdExternalApi extends BaseExternalApi<Group | null> {
   private groupId: string;
 
-  constructor(groupId: string) {
-    super();
+  constructor(groupId: string, repo?: Repository) {
+    super(repo);
     this.groupId = groupId;
   }
 
@@ -40,8 +40,8 @@ class GetFacultyGroupByIdExternalApi extends BaseExternalApi<Group | null> {
 class GetFacultyGroupListByIdExternalApi extends BaseExternalApi<Group[]> {
   private groupIds: Set<string>;
 
-  constructor(groupIds: Set<string>) {
-    super();
+  constructor(groupIds: Set<string>, repo?: Repository) {
+    super(repo);
 
     this.groupIds = groupIds;
   }
@@ -64,8 +64,8 @@ class GetFacultyGroupsExternalApi extends BaseExternalApi<Group[]> {
 class GroupExistsExternalApi extends BaseExternalApi<boolean> {
   private groupId: string;
 
-  constructor(groupId: string) {
-    super();
+  constructor(groupId: string, repo?: Repository) {
+    super(repo);
     this.groupId = groupId;
   }
 

@@ -1,8 +1,8 @@
-import { Repository } from '@data/repo';
 import { ClientComponent } from './client';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
 import { getSessionIdNumber } from '@shared/api/auth';
+import { Repository } from '@data/repo';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const sessionId = getSessionIdNumber(request);
@@ -16,9 +16,9 @@ export async function loader({ request }: Route.LoaderArgs) {
     return redirect('/');
   }
 
-  return pi;
+  return { pi };
 }
 
-export default function Page({ loaderData }: Route.ComponentProps) {
-  return <ClientComponent personalInfo={loaderData} />;
+export default function Page({ loaderData: { pi } }: Route.ComponentProps) {
+  return <ClientComponent personalInfo={pi} />;
 }

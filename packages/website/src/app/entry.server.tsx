@@ -14,8 +14,6 @@ async function handleApiRequest(request: Request, loadContext: AppLoadContext) {
   let env: Env;
   if (import.meta.env.PROD) {
     env = loadContext.cloudflare.env;
-
-    Repository.setDefaultConnectionString(env.MONGO_CONNECTION_STRING);
   } else {
     const { ApiR2Bucket } = await import('@shared/r2/api');
     const bucket = new ApiR2Bucket(
@@ -42,6 +40,12 @@ export default async function handleRequest(
   routerContext: EntryContext,
   loadContext: AppLoadContext
 ) {
+  if (import.meta.env.PROD) {
+    Repository.setDefaultConnectionString(
+      loadContext.cloudflare.env.MONGO_CONNECTION_STRING
+    );
+  }
+
   const { pathname } = new URL(request.url);
   if (pathname.startsWith('/api')) {
     return handleApiRequest(request, loadContext);

@@ -16,7 +16,7 @@ function atomNode(node: RichTextAtomNode, options: HtmlBuilderOptions) {
   }
 
   if (node.name === '#image') {
-    return `<img src="${options.mediaUrl}${node.filePath}}" width="${node.width}" height="${node.height}"/>`;
+    return `<img src="${options.mediaUrl}${node.filePath}" width="${node.width}" height="${node.height}"/>`;
   }
 
   const { name, attrs, children } = node;

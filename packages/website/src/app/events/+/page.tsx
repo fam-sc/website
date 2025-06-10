@@ -4,9 +4,11 @@ import { richTextToHtml } from '@shared/richText/htmlBuilder';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
 
-async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
+async function getClientEvent(
+  repo: Repository,
+  id: string
+): Promise<ClientEvent | undefined> {
   try {
-    await using repo = await Repository.openConnection();
     const editEvent = await repo.events().findById(id);
 
     return editEvent
@@ -24,14 +26,15 @@ async function getClientEvent(id: string): Promise<ClientEvent | undefined> {
   }
 }
 
-export async function loader() {
-  const editEventId = '1';
-  const event =
-    typeof editEventId === 'string'
-      ? await getClientEvent(editEventId)
-      : undefined;
+export async function loader({ request }: Route.LoaderArgs) {
+  const { searchParams } = new URL(request.url);
+  const editEventId = searchParams.get('edit');
 
-  if (event === undefined && typeof editEventId === 'string') {
+  await using repo = await Repository.openConnection();
+  const event =
+    editEventId !== null ? await getClientEvent(repo, editEventId) : undefined;
+
+  if (event === undefined) {
     return redirect('/events/+');
   }
 

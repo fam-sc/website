@@ -1,19 +1,27 @@
 import { ClientComponent } from './client';
-import { Repository } from '@data/repo';
 import { formatDateTime } from '@shared/date';
-import { cache } from 'react';
 import { notFound } from '@shared/responses';
 import { Route } from './+types/page';
 import { omitProperty } from '@/utils/object/omit';
+import { Repository } from '@data/repo';
+import { UserRole } from '@shared/api/user/types';
+import { redirect } from 'react-router';
+import { getSessionIdNumber } from '@shared/api/auth';
 
-const getPoll = cache(async (id: string) => {
+export async function loader({ request, params }: Route.LoaderArgs) {
+  const sessionId = getSessionIdNumber(request);
+  if (sessionId === undefined) {
+    return redirect('/polls');
+  }
+
   await using repo = await Repository.openConnection();
+  const userInfo = await repo.sessions().getUserWithRole(sessionId);
 
-  return await repo.polls().findShortPoll(id);
-});
+  if (userInfo === null || userInfo.role < UserRole.STUDENT) {
+    return redirect('/polls');
+  }
 
-export async function loader({ params }: Route.LoaderArgs) {
-  const poll = await getPoll(params.id);
+  const poll = await repo.polls().findShortPoll(params.id);
 
   if (poll === null) {
     return notFound();
