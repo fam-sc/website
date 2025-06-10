@@ -1,6 +1,5 @@
 import { UserInfo, UserPersonalInfo } from '@shared/api/user/types';
 import {
-  ChangePasswordPayload,
   UserSelfInfo,
   UserInfoWithRole,
   UserRole,
@@ -11,7 +10,8 @@ import {
   apiFetchObject,
   getApiErrorFromResponse,
 } from '../fetch';
-import { SignInData, SignUpData } from '@shared/api/auth/types';
+import type { SignInData, SignUpData } from '@shared/api/auth/types';
+import type { ChangePasswordPayload } from '@shared/api/user/payloads';
 
 export function uploadUserAvatar(body: BodyInit) {
   return apiCheckedFetch(`/api/users/avatar`, {

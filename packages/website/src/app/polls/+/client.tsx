@@ -9,7 +9,7 @@ import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
 import { addPoll } from '@/api/polls/client';
 import { TextInput } from '@/components/TextInput';
-import { AddPollPayload } from '@shared/api/polls/types';
+import type { AddPollPayload } from '@shared/api/polls/types';
 import { UserRole } from '@shared/api/user/types';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { useNavigate } from 'react-router';

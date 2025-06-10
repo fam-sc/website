@@ -1,5 +1,5 @@
 import { submitPoll } from '@/api/polls/client';
-import { Poll } from '@shared/api/polls/types';
+import type { Poll } from '@shared/api/polls/types';
 import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
 import {

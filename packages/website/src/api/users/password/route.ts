@@ -1,6 +1,6 @@
 import { ApiErrorCode } from '@shared/api/errorCodes';
 import { badRequest, unauthrorized } from '@shared/responses';
-import { changePasswordPayload } from '@shared/api/user/types';
+import { changePasswordPayload } from '@shared/api/user/payloads';
 import { hashPassword, verifyPassword } from '@shared/api/auth/password';
 import { getSessionIdNumber } from '@shared/api/auth';
 import { Repository } from '@data/repo';
