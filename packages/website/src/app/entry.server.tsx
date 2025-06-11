@@ -1,5 +1,5 @@
 import type { EntryContext } from 'react-router';
-import { ServerRouter } from 'react-router';
+import { redirect, ServerRouter } from 'react-router';
 import { isbot } from 'isbot';
 
 import { app } from '@/api/app';
@@ -9,6 +9,7 @@ import { renderToReadableStream } from 'react-dom/server.edge';
 import { AppLoadContext } from 'react-router';
 import { Repository } from '@data/repo';
 import { getEnvChecked } from '@shared/env';
+import { redirects } from './redirects';
 
 async function handleApiRequest(request: Request, loadContext: AppLoadContext) {
   let env: Env;
@@ -49,6 +50,11 @@ export default async function handleRequest(
   const { pathname } = new URL(request.url);
   if (pathname.startsWith('/api')) {
     return handleApiRequest(request, loadContext);
+  }
+
+  const targetRedirect = redirects[pathname];
+  if (targetRedirect !== undefined) {
+    return redirect(targetRedirect);
   }
 
   let shellRendered = false;

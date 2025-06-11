@@ -21,7 +21,7 @@ export interface UserInfoWithRole extends UserInfo {
 export type UserPersonalInfo = {
   firstName: string;
   lastName: string;
-  parentName?: string;
+  parentName: string | null;
 };
 
 export interface UserWithRoleAndAvatar {
@@ -43,4 +43,3 @@ export type UserSelfInfo = {
   role: UserRole;
   hasAvatar: boolean;
 };
-

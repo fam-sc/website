@@ -48,9 +48,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export function Layout({
   children,
 }: Route.ComponentProps & { children: React.ReactNode }) {
-  console.log('layout');
   const { user } = useLoaderData();
-  console.log(user);
 
   return (
     <html lang="en">

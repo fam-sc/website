@@ -2,21 +2,16 @@ import styles from './layout.module.scss';
 import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
 import { ReactNode } from 'react';
-import { redirect, useLoaderData } from 'react-router';
+import { redirect } from 'react-router';
 import { getSessionIdNumber } from '@shared/api/auth';
-import { TabInfo, tabs } from './tabs';
+import { tabs } from './tabs';
 import { Repository } from '@data/repo';
 import { Route } from './+types/layout';
+import { Outlet } from 'react-router';
 
 export interface UserLayoutProps {
   children: ReactNode;
 }
-
-type UserLayoutData = {
-  tabs: TabInfo[];
-  userId: string;
-  avatarExists: boolean;
-};
 
 export async function loader({ request }: Route.LoaderArgs) {
   const sessionId = getSessionIdNumber(request);
@@ -44,10 +39,10 @@ export async function loader({ request }: Route.LoaderArgs) {
   };
 }
 
-export default function Layout({ children }: UserLayoutProps) {
+export default function Layout({ loaderData }: Route.ComponentProps) {
   const {
     user: { userId, avatarExists, tabs },
-  } = useLoaderData<{ user: UserLayoutData }>();
+  } = loaderData;
 
   return (
     <div className={styles.root}>
@@ -61,7 +56,9 @@ export default function Layout({ children }: UserLayoutProps) {
         <UserLayoutNavigation tabs={tabs} />
       </div>
 
-      <div className={styles['tab-content']}>{children}</div>
+      <div className={styles['tab-content']}>
+        <Outlet />
+      </div>
     </div>
   );
 }
