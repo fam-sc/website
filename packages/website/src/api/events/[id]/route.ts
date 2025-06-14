@@ -10,6 +10,8 @@ import { notFound, ok } from '@shared/responses';
 import { Event } from '@shared/api/events/types';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
 import { creatMediaServerParseContext } from '@/api/media/richText';
+import { resolveImageSizes } from '@shared/image/breakpoints';
+import { putMultipleSizedImages } from '@/api/media/multiple';
 
 app.get('/events/:id', async (_request, { params: { id } }) => {
   await using repo = await Repository.openConnection();
@@ -32,51 +34,54 @@ app.get('/events/:id', async (_request, { params: { id } }) => {
   return ok(responseData);
 });
 
-app.put(
-  '/events/:id',
-  async (request, { env: { MEDIA_BUCKET }, params: { id } }) => {
-    const formData = await request.formData();
-    const { title, description, date, image, status } =
-      parseEditEventPayload(formData);
+app.put('/events/:id', async (request, { env, params: { id } }) => {
+  const formData = await request.formData();
+  const { title, description, date, image, status } =
+    parseEditEventPayload(formData);
 
-    const imageBuffer = await image?.bytes();
-    const imageSize = imageBuffer ? getImageSize(imageBuffer) : undefined;
+  const imageBuffer = await image?.bytes();
+  const imageSize = imageBuffer ? getImageSize(imageBuffer) : undefined;
 
-    // Use media and repo transactions here to ensure consistency if an error happens somewhere.
-    await using mediaTransaction = new MediaTransaction(MEDIA_BUCKET);
+  // Use media and repo transactions here to ensure consistency if an error happens somewhere.
+  await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
-    const richTextDescription = await parseHtmlToRichText(
-      description,
-      creatMediaServerParseContext((path, body) => {
-        mediaTransaction.put(path, body);
-      })
-    );
+  const richTextDescription = await parseHtmlToRichText(
+    description,
+    creatMediaServerParseContext(mediaTransaction)
+  );
 
-    return await authRoute(request, UserRole.ADMIN, async (repo) => {
-      await repo.transaction(async (trepo) => {
-        const result = await trepo.events().update(id, {
-          date,
-          title,
-          status,
-          description: richTextDescription,
-          image: imageSize,
-        });
+  return await authRoute(request, UserRole.ADMIN, async (repo) => {
+    await repo.transaction(async (trepo) => {
+      const sizes = imageSize && resolveImageSizes(imageSize);
 
-        if (result.matchedCount === 0) {
-          throw new Error("Specified event doesn't exist");
-        }
-
-        if (image !== undefined) {
-          mediaTransaction.put(`events/${id}`, image.stream());
-        }
+      const result = await trepo.events().update(id, {
+        date,
+        title,
+        status,
+        description: richTextDescription,
+        images: sizes,
       });
 
-      await mediaTransaction.commit();
+      if (result.matchedCount === 0) {
+        throw new Error("Specified event doesn't exist");
+      }
 
-      return new Response();
+      if (imageBuffer && sizes) {
+        await putMultipleSizedImages(
+          env,
+          `events/${id}`,
+          imageBuffer,
+          sizes,
+          mediaTransaction
+        );
+      }
     });
-  }
-);
+
+    await mediaTransaction.commit();
+
+    return new Response();
+  });
+});
 
 app.delete(
   '/events/:id',

@@ -1,7 +1,7 @@
 import { fetchGalleryImage, deleteGalleryImage } from '@/api/gallery/client';
 import {
   GalleryImageWithEvent,
-  GalleryImageWithSize,
+  GalleryImageWithSizes,
 } from '@shared/api/gallery/types';
 import { getMediaFileUrl } from '@/api/media';
 import { IconButton } from '@/components/IconButton';
@@ -16,9 +16,10 @@ import { useState, useEffect, useCallback } from 'react';
 
 import styles from './dialog.module.scss';
 import { InlineQuestion } from '@/components/InlineQuestion';
+import { Image } from '@/components/Image';
 
 export type GalleryImageInfoDialogProps = {
-  info: GalleryImageWithSize;
+  info: GalleryImageWithSizes;
   canModify: boolean;
   onClose: () => void;
 };
@@ -70,11 +71,13 @@ export function GalleryImageInfoDialog({
       </IconButton>
 
       <div className={styles.content}>
-        <img
-          src={getMediaFileUrl(`gallery/${info.id}`)}
-          alt=""
-          width={info.width ?? 0}
-          height={info.height ?? 0}
+        <Image
+          multiple={info.sizes.map(({ width, height }) => ({
+            src: getMediaFileUrl(`gallery/${info.id}/${width}`),
+            width,
+            height,
+          }))}
+          sizes={{ 900: '100vw', default: '60vw' }}
         />
 
         <div className={styles['info-side']}>

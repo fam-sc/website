@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { InlineImageDropArea, InlineImageDropAreaProps } from '.';
-import { useObjectUrl } from '@/hooks/useObjectUrl';
+import { useState } from 'react';
 
 function Component(props: InlineImageDropAreaProps) {
-  const [image, setImage] = useObjectUrl();
+  const [image, setImage] = useState<string>();
 
   return (
     <InlineImageDropArea
       {...props}
-      imageSrc={image}
+      image={image}
       onFile={(file) => {
-        setImage(file && { url: URL.createObjectURL(file), type: 'object' });
+        setImage(file && URL.createObjectURL(file));
       }}
     />
   );

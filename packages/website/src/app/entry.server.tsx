@@ -11,12 +11,6 @@ import { AppLoadContext } from 'react-router';
 import { Repository } from '@data/repo';
 import { redirects } from './redirects';
 
-async function handleApiRequest(request: Request, loadContext: AppLoadContext) {
-  const env = getApiEnv(loadContext);
-
-  return app.handleRequest(request, env);
-}
-
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -24,6 +18,14 @@ export default async function handleRequest(
   routerContext: EntryContext,
   loadContext: AppLoadContext
 ) {
+  loadContext = {
+    ...loadContext,
+    cloudflare: {
+      ...loadContext.cloudflare,
+      env: getApiEnv(loadContext),
+    },
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (import.meta.env.PROD && loadContext.cloudflare !== undefined) {
     Repository.setDefaultConnectionString(
@@ -33,7 +35,7 @@ export default async function handleRequest(
 
   const { pathname } = new URL(request.url);
   if (pathname.startsWith('/api')) {
-    return handleApiRequest(request, loadContext);
+    return app.handleRequest(request, loadContext.cloudflare.env);
   }
 
   const targetRedirect = redirects[pathname];

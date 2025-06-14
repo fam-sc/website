@@ -14,11 +14,12 @@ export class MediaTransaction implements AsyncDisposable {
 
   put(
     path: string,
-    body: ReadableStream | ArrayBuffer | ArrayBufferView | string | null | Blob
+    body: ReadableStream | ArrayBuffer | ArrayBufferView | string | null,
+    options?: R2PutOptions
   ) {
     this.ops.push({
       run: () => {
-        return this.bucket.put(path, body);
+        return this.bucket.put(path, body, options);
       },
       revert: () => {
         return this.bucket.delete(path);

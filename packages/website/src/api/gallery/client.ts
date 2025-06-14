@@ -1,13 +1,13 @@
 import { UploadGalleryImagesPayload } from '@shared/api/gallery/payloads';
 import {
   GalleryImageWithEvent,
-  GalleryImageWithSize,
+  GalleryImageWithSizes,
 } from '@shared/api/gallery/types';
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function fetchGalleryPage(
   page: number
-): Promise<GalleryImageWithSize[]> {
+): Promise<GalleryImageWithSizes[]> {
   return apiFetchObject(`/api/gallery?page=${page}`);
 }
 

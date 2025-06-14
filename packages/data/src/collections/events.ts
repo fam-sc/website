@@ -10,7 +10,7 @@ export class EventCollection extends EntityCollection<Event> {
     super(client, session, 'events');
   }
 
-  update(id: string, value: Event): Promise<UpdateResult> {
+  update(id: string, value: Partial<Event>): Promise<UpdateResult> {
     return this.updateById(id, { $set: value });
   }
 

@@ -19,6 +19,7 @@ import { Link, useNavigate } from 'react-router';
 import { richTextToPlainText } from '@shared/richText/plainTransform';
 import { shortenByWord } from '@shared/string/shortenByWord';
 import { Title } from '@/components/Title';
+import { Image } from '@/components/Image';
 
 export type ClientComponentProps = {
   event: {
@@ -27,7 +28,7 @@ export type ClientComponentProps = {
     status: 'pending' | 'ended';
     date: Date;
     description: RichTextString;
-    image?: ImageSize;
+    images: ImageSize[];
   };
 };
 
@@ -120,12 +121,13 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
       <EventStatusMarker className={styles.status} status={event.status} />
 
-      <img
+      <Image
         className={styles.image}
-        src={getMediaFileUrl(`events/${event.id}`)}
-        alt=""
-        width={event.image?.width}
-        height={event.image?.height}
+        multiple={event.images.map(({ width, height }) => ({
+          src: getMediaFileUrl(`events/${event.id}/${width}`),
+          width,
+          height,
+        }))}
       />
 
       <RichText text={event.description} />

@@ -167,7 +167,7 @@ export interface R2HTTPMetadata {
   cacheControl?: string;
   cacheExpiry?: Date;
 }
-type R2Objects = {
+export type R2Objects = {
   objects: R2Object[];
   delimitedPrefixes: string[];
 } & (

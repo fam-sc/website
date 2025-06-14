@@ -7,8 +7,7 @@ export type GalleryImageWithEvent = {
   } | null;
 };
 
-export type GalleryImageWithSize = {
+export type GalleryImageWithSizes = {
   id: string;
-  width?: number;
-  height?: number;
+  sizes: { width: number; height: number }[];
 };

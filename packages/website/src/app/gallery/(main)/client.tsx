@@ -3,21 +3,21 @@ import styles from './page.module.scss';
 import { fetchGalleryPage } from '@/api/gallery/client';
 import { getMediaFileUrl } from '@/api/media';
 import { UploadIcon } from '@/icons/UploadIcon';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { GalleryImageInfoDialog } from './dialog';
-import { GalleryImageWithSize } from '@shared/api/gallery/types';
+import { GalleryImageWithSizes } from '@shared/api/gallery/types';
 import { useAuthInfo } from '@/auth/context';
 import { UserRole } from '@shared/api/user/types';
 import { Link, useNavigate } from 'react-router';
 
 export type ClientComponentProps = {
-  selected: GalleryImageWithSize | null;
+  selected: GalleryImageWithSizes | null;
 };
 
 export function ClientComponent({
   selected: initialSelected,
 }: ClientComponentProps) {
-  const [selectedId, setSelectedId] = useState<GalleryImageWithSize | null>(
+  const [selectedId, setSelectedId] = useState<GalleryImageWithSizes | null>(
     initialSelected
   );
 
@@ -25,6 +25,24 @@ export function ClientComponent({
 
   const { user } = useAuthInfo();
   const canModify = user !== null && user.role >= UserRole.ADMIN;
+
+  const getImageInfo = useCallback(
+    ({ id, sizes }: GalleryImageWithSizes) =>
+      sizes.map(({ width, height }) => ({
+        src: getMediaFileUrl(`gallery/${id}/${width}`),
+        width,
+        height,
+      })),
+    []
+  );
+
+  const onImageClick = useCallback(
+    (item: GalleryImageWithSizes) => {
+      void navigate(`/gallery?id=${item.id}`, { replace: true });
+      setSelectedId(item);
+    },
+    [navigate]
+  );
 
   const onClose = useCallback(() => {
     setSelectedId(null);
@@ -42,18 +60,10 @@ export function ClientComponent({
 
       <LazyImageScroll
         className={styles['image-scroll']}
+        sizes={useMemo(() => ({ default: '30vw' }), [])}
         requestPage={fetchGalleryPage}
-        getImageInfo={useCallback(
-          ({ id }: GalleryImageWithSize) => getMediaFileUrl(`gallery/${id}`),
-          []
-        )}
-        onImageClick={useCallback(
-          (item: GalleryImageWithSize) => {
-            void navigate(`/gallery?id=${item.id}`, { replace: true });
-            setSelectedId(item);
-          },
-          [navigate]
-        )}
+        getImageInfo={getImageInfo}
+        onImageClick={onImageClick}
       />
       {selectedId && (
         <GalleryImageInfoDialog

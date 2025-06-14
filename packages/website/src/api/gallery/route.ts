@@ -7,6 +7,8 @@ import { UserRole } from '@shared/api/user/types';
 import { ObjectId } from 'mongodb';
 import { parseInt } from '@shared/parseInt';
 import { app } from '@/api/app';
+import { resolveImageSizes } from '@shared/image/breakpoints';
+import { putMultipleSizedImages } from '../media/multiple';
 
 const PAGE_SIZE = 20;
 const EVENT_NOT_EXIST_MESSAGE = "Specified event doesn't exist";
@@ -30,7 +32,7 @@ app.get('/gallery', async (request) => {
   return ok(images);
 });
 
-app.post('/gallery', async (request, { env: { MEDIA_BUCKET } }) => {
+app.post('/gallery', async (request, { env }) => {
   const formData = await request.formData();
 
   const eventId = formData.get('eventId');
@@ -56,7 +58,7 @@ app.post('/gallery', async (request, { env: { MEDIA_BUCKET } }) => {
     files.map(async (file) => {
       const content = await file.bytes();
 
-      return { content, size: getImageSize(content) };
+      return { content, sizes: resolveImageSizes(getImageSize(content)) };
     })
   );
 
@@ -86,22 +88,29 @@ app.post('/gallery', async (request, { env: { MEDIA_BUCKET } }) => {
       }
 
       const { insertedIds } = await trepo.galleryImages().insertMany(
-        filesWithSize.map(({ size }, i) => ({
+        filesWithSize.map(({ sizes }, i) => ({
           eventId,
           date,
           order: i,
-          image: size,
+          images: sizes,
         }))
       );
 
-      await using mediaTransaction = new MediaTransaction(MEDIA_BUCKET);
+      await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
-      // eslint-disable-next-line unicorn/no-for-loop
-      for (let i = 0; i < filesWithSize.length; i++) {
-        const id = insertedIds[i];
+      await Promise.all(
+        filesWithSize.map(({ content, sizes }, i) => {
+          const id = insertedIds[i];
 
-        mediaTransaction.put(`gallery/${id}`, filesWithSize[i].content);
-      }
+          return putMultipleSizedImages(
+            env,
+            `gallery/${id}`,
+            content,
+            sizes,
+            mediaTransaction
+          );
+        })
+      );
 
       await mediaTransaction.commit();
 

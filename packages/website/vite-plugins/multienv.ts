@@ -6,6 +6,7 @@ type VirtualModule = { name: string; type: 'ts' | 'tsx' };
 const virtualModules: VirtualModule[] = [
   { name: 'utils/reactDomEnv', type: 'tsx' },
   { name: 'utils/apiEnv', type: 'ts' },
+  { name: 'api/media/resize', type: 'ts' },
 ];
 
 export function multienvPlugin(): Plugin {

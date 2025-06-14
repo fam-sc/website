@@ -1,3 +1,7 @@
-export type ImageSizes = Record<number | 'default', string>;
+import { ImageSize } from '@shared/image/types';
 
-export type ImageInfo = { src: string; width: number; height: number };
+export type ImageSizes = Record<number | 'default', `${number}vw`>;
+
+export interface ImageInfo extends ImageSize {
+  src: string;
+}

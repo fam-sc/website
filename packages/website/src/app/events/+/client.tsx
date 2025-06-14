@@ -14,16 +14,18 @@ import { OptionSwitch } from '@/components/OptionSwitch';
 import { Labeled } from '@/components/Labeled';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { UserRole } from '@shared/api/user/types';
-import { useObjectUrl } from '@/hooks/useObjectUrl';
 import { EventStatus } from '@shared/api/events/types';
 import { useNavigate } from 'react-router';
 import { Title } from '@/components/Title';
+import { ImageSize } from '@shared/image/types';
+import { ImageInfo } from '@/utils/image/types';
 
 export type ClientEvent = {
   id: string;
   title: string;
   date: Date;
   description: string;
+  images: ImageSize[];
 };
 
 export type ClientComponentProps = {
@@ -35,8 +37,12 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
   const errorAlert = useNotification();
 
-  const [image, setImage] = useObjectUrl(
-    event && getMediaFileUrl(`events/${event.id}`)
+  const [image, setImage] = useState<ImageInfo[] | string | undefined>(() =>
+    event?.images.map(({ width, height }) => ({
+      src: getMediaFileUrl(`events/${event.id}/${width}`),
+      width,
+      height,
+    }))
   );
   const imageFileRef = useRef<File>(undefined);
 
@@ -71,14 +77,18 @@ export function ClientComponent({ event }: ClientComponentProps) {
         <InlineImageDropArea
           disabled={actionPending}
           className={styles.image}
-          imageSrc={image}
+          image={image}
           onFile={useCallback(
             (file) => {
               imageFileRef.current = file;
 
-              setImage(
-                file && { url: URL.createObjectURL(file), type: 'object' }
-              );
+              setImage((prev) => {
+                if (typeof prev === 'string') {
+                  URL.revokeObjectURL(prev);
+                }
+
+                return file && URL.createObjectURL(file);
+              });
             },
             [setImage]
           )}

@@ -4,13 +4,25 @@ import {
   GetObjectCommand,
   HeadObjectCommand,
   HeadObjectOutput,
+  ListObjectsCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { R2Bucket, R2Object, R2ObjectBody } from './types';
+import {
+  R2Bucket,
+  R2Checksums,
+  R2ListOptions,
+  R2Object,
+  R2ObjectBody,
+  R2Objects,
+} from './types';
 
 function notImplemented(): never {
   throw new Error('Method not implemented.');
+}
+
+function emptyChecksums(): R2Checksums {
+  return { toJSON: () => ({}) };
 }
 
 export class ApiR2Bucket implements R2Bucket, Disposable {
@@ -27,6 +39,7 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
 
     this.client = new S3Client({
       endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+      region: 'auto',
       credentials: {
         accessKeyId,
         secretAccessKey,
@@ -46,7 +59,7 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
     >
   ) {
     return {
-      checksums: { toJSON: () => ({}) },
+      checksums: emptyChecksums(),
       etag: result.ETag ?? '',
       httpEtag: result.ETag ?? '',
       key,
@@ -75,13 +88,29 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
 
     return body
       ? {
-          body: body.transformToWebStream(),
           bodyUsed: false,
+          get body() {
+            return body.transformToWebStream();
+          },
+
           arrayBuffer: notImplemented,
-          bytes: notImplemented,
-          text: notImplemented,
-          json: notImplemented,
-          blob: notImplemented,
+          bytes() {
+            return body.transformToByteArray();
+          },
+          text() {
+            return body.transformToString('utf8');
+          },
+          async json() {
+            const result = await body.transformToString('utf8');
+
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return JSON.parse(result);
+          },
+          async blob() {
+            const result = await body.transformToByteArray();
+
+            return new Blob([result]);
+          },
           ...this.getR2Object(key, result),
         }
       : null;
@@ -92,19 +121,40 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
     value: ReadableStream | ArrayBuffer | ArrayBufferView | string | null | Blob
   ): Promise<R2Object> {
     if (value !== null) {
-      if (ArrayBuffer.isView(value) || value instanceof ArrayBuffer) {
-        notImplemented();
+      let body: unknown = value;
+
+      if (!(value instanceof Uint8Array)) {
+        if (ArrayBuffer.isView(value)) {
+          body = value.buffer.slice(
+            value.byteOffset,
+            value.byteOffset + value.byteLength
+          );
+        }
+
+        if (value instanceof ArrayBuffer) {
+          body = new Uint8Array(value);
+        }
       }
 
       const result = await this.client.send(
         new PutObjectCommand({
           Bucket: this.bucketName,
           Key: key,
-          Body: value,
+          Body: body as string | ReadableStream | Uint8Array,
         })
       );
 
-      return this.getR2Object(key, result);
+      return {
+        key,
+        checksums: emptyChecksums(),
+        etag: result.ETag ?? '',
+        httpEtag: result.ETag ?? '',
+        size: result.Size ?? 0,
+        storageClass: '',
+        uploaded: new Date(),
+        version: '',
+        writeHttpMetadata: () => {},
+      };
     }
 
     throw new Error('value is null');
@@ -123,7 +173,33 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
         ));
   }
 
+  async list(options?: R2ListOptions): Promise<R2Objects> {
+    const result = await this.client.send(
+      new ListObjectsCommand({
+        Bucket: this.bucketName,
+        Prefix: options?.prefix,
+        Delimiter: options?.delimiter,
+      })
+    );
+
+    return {
+      objects:
+        result.Contents?.map((content) => ({
+          key: content.Key ?? '',
+          checksums: { toJSON: () => ({}) },
+          etag: content.ETag ?? '',
+          size: content.Size ?? 0,
+          httpEtag: content.ETag ?? '',
+          storageClass: content.StorageClass ?? '',
+          uploaded: new Date(),
+          version: '',
+          writeHttpMetadata: () => {},
+        })) ?? [],
+      delimitedPrefixes: [],
+      truncated: false,
+    };
+  }
+
   createMultipartUpload = notImplemented;
   resumeMultipartUpload = notImplemented;
-  list = notImplemented;
 }

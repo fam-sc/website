@@ -24,7 +24,7 @@ type ImageInfo = {
 };
 
 export interface ParserContext {
-  parseImageToPath(dataUrl: string): Promise<ImageInfo>;
+  parseImageToPath(dataUrl: string): ImageInfo | Promise<ImageInfo>;
 }
 
 type NodeOrFragment = ChildNode | DocumentFragment;

@@ -2,20 +2,21 @@ import { ObjectId } from 'mongodb';
 
 import { RichTextString } from '@shared/richText/types';
 import { UserRole } from '@shared/api/user/types';
+import { ImageSize } from '@shared/image/types';
 
 export type Event = {
   title: string;
   status: 'pending' | 'ended';
   date: Date;
   description: RichTextString;
-  image?: ImageInfo;
+  images: ImageSize[];
 };
 
 export type GalleryImage = {
   date: Date;
   order: number;
   eventId: string | null;
-  image?: ImageInfo;
+  images: ImageSize[];
 };
 
 export type AuthSession = {
@@ -32,9 +33,4 @@ export type AuthSessionWithRole = {
 export type Group = {
   campusId: string;
   name: string;
-};
-
-export type ImageInfo = {
-  width: number;
-  height: number;
 };

@@ -17,7 +17,7 @@ export type ClientEvent = {
   title: string;
   date: string;
   description: RichTextString;
-  image?: ImageSize;
+  images: ImageSize[];
 };
 
 export type ClientComponentProps = {
@@ -48,16 +48,16 @@ export function ClientComponent({
       )}
 
       <List className={styles.list}>
-        {items.map(({ id, image, ...rest }) => (
+        {items.map(({ id, images, ...rest }) => (
           <li key={id}>
             <EventListItem
               {...rest}
               id={id}
-              image={{
-                src: getMediaFileUrl(`events/${id}`),
-                width: image?.width ?? 0,
-                height: image?.height ?? 0,
-              }}
+              images={images.map(({ width, height }) => ({
+                src: getMediaFileUrl(`events/${id}/${width}`),
+                width,
+                height,
+              }))}
             />
           </li>
         ))}

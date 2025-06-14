@@ -15,6 +15,7 @@ export default defineConfig((env) => ({
   },
   ssr: {
     noExternal: true,
+    external: ['sharp'],
   },
   esbuild: {
     target: 'es2022',

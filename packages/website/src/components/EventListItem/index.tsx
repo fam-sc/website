@@ -7,6 +7,7 @@ import { RichTextString } from '@shared/richText/types';
 import { EventStatus } from '@shared/api/events/types';
 import { ImageSize } from '@shared/image/types';
 import { Link } from 'react-router';
+import { Image } from '../Image';
 
 export type EventListItemProps = {
   id: string;
@@ -14,14 +15,14 @@ export type EventListItemProps = {
   title: string;
   date: string;
   description: RichTextString;
-  image: ImageSize & {
+  images: (ImageSize & {
     src: string;
-  };
+  })[];
 };
 
 export function EventListItem({
   id,
-  image,
+  images,
   status,
   title,
   date,
@@ -29,7 +30,7 @@ export function EventListItem({
 }: EventListItemProps) {
   return (
     <Link className={styles.root} to={`/events/${id}`}>
-      <img src={image.src} alt="" width={image.width} height={image.height} />
+      <Image multiple={images} sizes={{ default: '20vw' }} />
 
       <Typography className={styles.title} variant="h5">
         {title}

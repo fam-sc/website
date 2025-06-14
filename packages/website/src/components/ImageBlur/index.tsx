@@ -1,24 +1,13 @@
 import { classNames } from '@/utils/classNames';
 
 import styles from './index.module.scss';
-import { PropsMap } from '@/types/react';
+import { VarImage, VarImageProps } from '../VarImage';
 
-type ImageProps = PropsMap['img'];
-
-export function ImageBlur({
-  src,
-  alt,
-  width,
-  height,
-  className,
-  ...rest
-}: ImageProps) {
-  const imageProps = { src, alt, width, height };
-
+export function ImageBlur({ image, className, ...rest }: VarImageProps) {
   return (
     <div className={classNames(styles.root, className)} {...rest}>
-      <img className={styles.main} {...imageProps} />
-      <img className={styles.background} {...imageProps} />
+      <VarImage className={styles.main} image={image} />
+      <VarImage className={styles.background} image={image} />
     </div>
   );
 }

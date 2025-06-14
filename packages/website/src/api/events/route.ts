@@ -9,6 +9,8 @@ import { authRoute } from '@/api/authRoute';
 import { UserRole } from '@shared/api/user/types';
 import { app } from '@/api/app';
 import { creatMediaServerParseContext } from '@/api/media/richText';
+import { resolveImageSizes } from '@shared/image/breakpoints';
+import { putMultipleSizedImages } from '../media/multiple';
 
 app.get('/events', async (request) => {
   const url = new URL(request.url);
@@ -30,19 +32,17 @@ app.get('/events', async (request) => {
   return ok(result);
 });
 
-app.post('/events', async (request, { env: { MEDIA_BUCKET } }) => {
+app.post('/events', async (request, { env }) => {
   const formData = await request.formData();
   const { title, description, date, image, status } =
     parseAddEventPayload(formData);
 
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
-  await using mediaTransaction = new MediaTransaction(MEDIA_BUCKET);
+  await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
   const richTextDescription = await parseHtmlToRichText(
     description,
-    creatMediaServerParseContext((path, body) => {
-      mediaTransaction.put(path, body);
-    })
+    creatMediaServerParseContext(mediaTransaction)
   );
 
   const imageBuffer = await image.bytes();
@@ -50,15 +50,23 @@ app.post('/events', async (request, { env: { MEDIA_BUCKET } }) => {
 
   return await authRoute(request, UserRole.ADMIN, async (repo) => {
     return await repo.transaction(async (trepo) => {
+      const sizes = resolveImageSizes(imageSize);
+
       const { insertedId } = await trepo.events().insert({
         date,
         status,
         title,
         description: richTextDescription,
-        image: imageSize,
+        images: sizes,
       });
 
-      mediaTransaction.put(`events/${insertedId}`, imageBuffer);
+      await putMultipleSizedImages(
+        env,
+        `events/${insertedId}`,
+        imageBuffer,
+        sizes,
+        mediaTransaction
+      );
 
       await mediaTransaction.commit();
 

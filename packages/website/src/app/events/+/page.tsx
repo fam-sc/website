@@ -16,6 +16,7 @@ async function getClientEvent(
           id,
           title: editEvent.title,
           date: editEvent.date,
+          images: editEvent.images,
           description: richTextToHtml(editEvent.description, {
             mediaUrl: import.meta.env.VITE_MEDIA_URL,
           }),

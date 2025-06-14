@@ -4,19 +4,22 @@ import { usePageFetcher } from '@/hooks/usePageFetcher';
 import { useNotification } from '../Notification';
 import { List } from '../List';
 import { useCallback } from 'react';
+import { VarImage } from '../VarImage';
+import { ImageInfo, ImageSizes } from '@/utils/image/types';
 
 export type LazyImageScrollProps<T> = {
   className?: string;
+  sizes?: ImageSizes;
+
   requestPage: (page: number) => Promise<T[]>;
-  getImageInfo: (
-    value: T
-  ) => string | { src: string; width: number; height: number };
+  getImageInfo: (value: T) => string | ImageInfo | ImageInfo[];
 
   onImageClick: (value: T) => void;
 };
 
 export function LazyImageScroll<T>({
   className,
+  sizes,
   requestPage,
   getImageInfo,
   onImageClick,
@@ -40,8 +43,6 @@ export function LazyImageScroll<T>({
     >
       <List className={styles.content}>
         {items.map((value, index) => {
-          const imageInfo = getImageInfo(value);
-
           return (
             <div
               key={`${value}-${index}`}
@@ -49,16 +50,7 @@ export function LazyImageScroll<T>({
                 onImageClick(value);
               }}
             >
-              {typeof imageInfo === 'string' ? (
-                <img src={imageInfo} alt="" width={0} height={0} />
-              ) : (
-                <img
-                  src={imageInfo.src}
-                  alt=""
-                  width={imageInfo.width}
-                  height={imageInfo.height}
-                />
-              )}
+              <VarImage image={getImageInfo(value)} sizes={sizes} />
               <span />
             </div>
           );

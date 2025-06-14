@@ -1,5 +1,5 @@
 import { getEnvChecked } from '@shared/env';
-import { ApiR2Bucket } from '@shared/r2/api';
+import { ApiR2Bucket } from '@shared/cloudflare/r2/api';
 
 export function getApiEnv(): Env {
   const bucket = new ApiR2Bucket(
@@ -13,5 +13,6 @@ export function getApiEnv(): Env {
     MONGO_CONNECTION_STRING: getEnvChecked('MONGO_CONNECTION_STRING'),
     RESEND_API_KEY: getEnvChecked('RESEND_API_KEY'),
     MEDIA_BUCKET: bucket,
+    IMAGES: {} as ImagesBinding,
   };
 }

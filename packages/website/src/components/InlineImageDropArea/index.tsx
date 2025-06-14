@@ -5,12 +5,13 @@ import { classNames } from '@/utils/classNames';
 import styles from './index.module.scss';
 import { ImageBlur } from '../ImageBlur';
 import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
+import { VarImageType } from '../VarImage';
 
 type DivProps = PropsMap['div'];
 
 export interface InlineImageDropAreaProps extends DivProps {
   disabled?: boolean;
-  imageSrc?: string;
+  image?: VarImageType;
   onFile: (file: File | undefined) => void;
 }
 
@@ -18,7 +19,7 @@ export function InlineImageDropArea({
   className,
   disabled,
   onFile,
-  imageSrc,
+  image,
   ...rest
 }: InlineImageDropAreaProps) {
   function selectSingleFile(files: FileList) {
@@ -33,7 +34,7 @@ export function InlineImageDropArea({
       data-disabled={disabled}
       {...rest}
     >
-      {imageSrc === undefined ? (
+      {image === undefined ? (
         <BaseFileDropArea
           disabled={disabled}
           onFiles={selectSingleFile}
@@ -47,7 +48,7 @@ export function InlineImageDropArea({
             onFile(undefined);
           }}
         >
-          <ImageBlur src={imageSrc} alt="" width={0} height={0} />
+          <ImageBlur image={image} />
         </DeleteButtonWrapper>
       )}
     </div>

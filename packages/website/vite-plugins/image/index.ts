@@ -1,14 +1,12 @@
 import { Plugin, ResolvedConfig } from 'vite';
-import { FormatEnum } from 'sharp';
+import sharp, { FormatEnum } from 'sharp';
 import type { ImageSize } from '@shared/image/types';
 import path from 'node:path';
+import { MetaEntry, withWidth } from './utils';
 import {
-  withWidth,
-  MetaEntry,
   getTargetSize,
-  getFileMetadata,
-  resolveImageSizes,
-} from './utils';
+  resolveImageWidths,
+} from '../../../shared/src/image/breakpoints';
 import { CachedResizer } from './cache';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -168,10 +166,10 @@ export function imagePlugin(): Plugin[] {
 
         id = parseResult.id;
 
-        const meta = await getFileMetadata(id);
+        const meta = await sharp(id).metadata();
 
         if (parseResult.type == 'multiple') {
-          const sizes = resolveImageSizes(meta.width);
+          const sizes = resolveImageWidths(meta.width);
 
           const parts = await Promise.all(
             sizes.map((targetWidth) =>

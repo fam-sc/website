@@ -11,6 +11,7 @@ import {
 } from '@shared/richText/types';
 import { classNames } from '@/utils/classNames';
 import { Link } from 'react-router';
+import { MediaPath } from '@/api/media';
 
 export type RichTextProps = {
   className?: string;
@@ -48,7 +49,7 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
   if (node.name === '#image') {
     return (
       <img
-        src={getMediaFileUrl(node.filePath)}
+        src={getMediaFileUrl(node.filePath as MediaPath)}
         width={node.width}
         height={node.height}
       />
