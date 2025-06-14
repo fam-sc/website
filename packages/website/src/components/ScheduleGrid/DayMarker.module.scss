@@ -3,11 +3,11 @@
 .root {
   $day: calc(var(--day) + 1);
 
-  grid-column: $day/$day;
+  grid-column: $day / $day;
   grid-row: 1/1;
 
   text-align: center;
-  margin: 0.5em 0.5em;
+  margin: 0.5em;
 
   font-weight: 700 !important;
 

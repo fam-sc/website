@@ -27,7 +27,7 @@
 
   z-index: 100;
 
-  @include desktop-view() {
+  @include desktop-view {
     padding: 16px;
 
     min-width: 50%;

@@ -21,7 +21,7 @@
 
   border-bottom: 3px solid var(--color-primary);
 
-  @include desktop-view() {
+  @include desktop-view {
     margin: 0 40px;
     padding: 10px 0;
   }
@@ -46,7 +46,7 @@
     font-weight: 600 !important;
   }
 
-  @include desktop-view() {
+  @include desktop-view {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -57,7 +57,7 @@
   display: none;
   gap: 30px;
 
-  @include desktop-view() {
+  @include desktop-view {
     display: flex;
     gap: 20px;
   }
@@ -84,7 +84,7 @@
     }
   }
 
-  @include desktop-view() {
+  @include desktop-view {
     display: block;
   }
 }
@@ -95,7 +95,7 @@
 
   @include size(40px);
 
-  @include desktop-view() {
+  @include desktop-view {
     display: none !important;
   }
 }
@@ -148,7 +148,7 @@
     margin-bottom: 30px;
   }
 
-  @include desktop-view() {
+  @include desktop-view {
     display: none;
   }
 }

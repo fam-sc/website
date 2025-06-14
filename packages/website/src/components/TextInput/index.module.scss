@@ -5,6 +5,7 @@
 .input {
   --border-color: var(--color-text-on-background);
   --border-color-hover: var(--color-text-on-background-dark);
+
   $border-decl: 2px solid var(--border-color);
 
   transition: border-color 0.1s linear;

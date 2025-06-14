@@ -16,7 +16,7 @@
   height: 100%;
   margin-bottom: 1em;
 
-  @include desktop-view() {
+  @include desktop-view {
     @include px(3em);
 
     flex-direction: row;
@@ -26,8 +26,7 @@
 .images {
   $border: 2px solid var(--color-background-dark);
 
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden scroll;
 
   max-height: 80dvh;
 
@@ -36,7 +35,7 @@
   padding-bottom: 1em;
   margin-bottom: 1em;
 
-  @include desktop-view() {
+  @include desktop-view {
     width: 70%;
 
     border-bottom: none;

@@ -12,7 +12,7 @@
 
   flex-grow: 1;
 
-  @include desktop-view() {
+  @include desktop-view {
     flex-direction: row;
 
     margin: 0 2em;
@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column;
 
-  @include desktop-view() {
+  @include desktop-view {
     width: 20%;
   }
 }
@@ -37,7 +37,7 @@
   width: 80%;
   align-self: center;
 
-  @include desktop-view() {
+  @include desktop-view {
     width: 100%;
   }
 

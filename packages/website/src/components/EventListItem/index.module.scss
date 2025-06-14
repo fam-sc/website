@@ -19,7 +19,7 @@
 
   row-gap: 1em;
 
-  @include desktop-view() {
+  @include desktop-view {
     grid-template-columns: 20% 1fr;
     grid-template-rows: fit-content(2em) 1fr fit-content(1em) fit-content(1em);
 
@@ -39,7 +39,7 @@
 
     max-height: 250px;
 
-    @include desktop-view() {
+    @include desktop-view {
       grid-row: 1 / 6;
     }
   }
@@ -52,7 +52,7 @@
   grid-column: 1;
   grid-row: var(--position);
 
-  @include desktop-view() {
+  @include desktop-view {
     grid-row: calc(var(--position) - 1);
     grid-column: 2;
   }

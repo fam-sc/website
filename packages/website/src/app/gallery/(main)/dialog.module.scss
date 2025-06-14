@@ -33,7 +33,7 @@
 
   animation: scale-intro 0.1s ease-in 0s;
 
-  @include desktop-view() {
+  @include desktop-view {
     flex-direction: row;
     width: 90%;
     height: 80%;
@@ -51,7 +51,7 @@
 
     border-right: 2px solid var(--color-background);
 
-    @include desktop-view() {
+    @include desktop-view {
       width: 60%;
       height: 100%;
     }
@@ -79,7 +79,7 @@
 
   margin: 1em 0;
 
-  @include desktop-view() {
+  @include desktop-view {
     margin: 0;
     padding: 0.75em;
   }

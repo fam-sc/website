@@ -32,7 +32,6 @@ $color-map: (
     ),
   ),
 );
-
 $variants: ('solid', 'outlined', 'flat');
 
 @function get-color($colors, $names...) {

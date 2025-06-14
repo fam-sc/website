@@ -47,7 +47,6 @@ $variants: (
     letter-spacing: 0.15,
   ),
 );
-
 $font: var(--font-murs-gothic);
 
 @function map-px-to-rem($options, $key) {

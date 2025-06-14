@@ -8,10 +8,10 @@
 }
 
 .image-swiper {
-  margin: 1em 0.5em 0 0.5em;
+  margin: 1em 0.5em 0;
 
-  @include desktop-view() {
-    margin: 4em 0 0 0;
+  @include desktop-view {
+    margin: 4em 0 0;
   }
 }
 
@@ -19,7 +19,7 @@
   margin: 2em 1.75em;
   text-align: justify;
 
-  @include desktop-view() {
+  @include desktop-view {
     margin: 6em 5em;
   }
 }
@@ -31,9 +31,9 @@
 }
 
 .invitation {
-  margin: 0 1em 3em 1em;
+  margin: 0 1em 3em;
 
-  @include desktop-view() {
-    margin: 0 6em 3em 6em;
+  @include desktop-view {
+    margin: 0 6em 3em;
   }
 }
