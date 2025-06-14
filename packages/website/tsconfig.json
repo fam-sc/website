@@ -11,18 +11,18 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "checkJs": false,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "incremental": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "rootDirs": [".", "./.react-router/types"],
-    "types": ["vite/client", "./worker-configuration.d.ts"],
+    "types": [
+      "vite/client",
+       "./worker-configuration.d.ts", 
+       "./src/types/img-multiple.d.ts", 
+       "./src/types/img-w.d.ts"
+    ],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
