@@ -1,16 +1,17 @@
-import InvitationImage from '@/images/logo-2.png';
+import InvitationImage from '@/images/logo-2.png?multiple';
 
 import { ColumnText } from '@/components/ColumnText';
 import { Swiper } from '@/components/Swiper';
 import { TextWithImage } from '@/components/TextWithImage';
 import { Typography } from '@/components/Typography';
 
-import SwiperImage1 from '@/images/swiper/1.jpg';
-import SwiperImage2 from '@/images/swiper/2.jpg';
-import SwiperImage3 from '@/images/swiper/3.png';
+import SwiperImage1 from '@/images/swiper/1.jpg?multiple';
+import SwiperImage2 from '@/images/swiper/2.jpg?multiple';
+import SwiperImage3 from '@/images/swiper/3.png?multiple';
 
 import styles from './page.module.scss';
 import { Title } from '@/components/Title';
+import { Image } from '@/components/Image';
 
 const greetingText = `Студентська рада факультету прикладної математики - це живе серце студентського життя,
  де майбутні математики, програмісти та аналітики об'єднуються для самореалізації та росту. 
@@ -45,10 +46,18 @@ export function ClientComponent() {
 
       <Swiper
         className={styles['image-swiper']}
-        slides={[SwiperImage1, SwiperImage2, SwiperImage3].map((id) => ({
-          id,
+        slides={[SwiperImage1, SwiperImage2, SwiperImage3].map((images) => ({
+          id: images[0].src,
+          images,
         }))}
-        renderSlide={({ id }) => <img src={id} alt="" draggable={false} />}
+        renderSlide={({ images }) => (
+          <Image
+            multiple={images}
+            sizes={{ default: '30vw' }}
+            alt=""
+            draggable={false}
+          />
+        )}
       />
 
       <GreetingText />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Logo from '@/images/logo.png';
+import Logo from '@/images/logo.png?w=100!';
 
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';

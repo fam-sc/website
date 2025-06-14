@@ -1,35 +1,18 @@
 import type { EntryContext } from 'react-router';
-import { redirect, ServerRouter } from 'react-router';
-import { isbot } from 'isbot';
+import { redirect } from 'react-router';
 
 import { app } from '@/api/app';
 import '@/api/routes';
 
-import { renderToReadableStream } from 'react-dom/server.edge';
+import { renderResponse } from 'virtual:utils/reactDomEnv';
+import { getApiEnv } from 'virtual:utils/apiEnv';
+
 import { AppLoadContext } from 'react-router';
 import { Repository } from '@data/repo';
-import { getEnvChecked } from '@shared/env';
 import { redirects } from './redirects';
 
 async function handleApiRequest(request: Request, loadContext: AppLoadContext) {
-  let env: Env;
-  if (import.meta.env.PROD) {
-    env = loadContext.cloudflare.env;
-  } else {
-    const { ApiR2Bucket } = await import('@shared/r2/api');
-    const bucket = new ApiR2Bucket(
-      getEnvChecked('MEDIA_ACCOUNT_ID'),
-      getEnvChecked('MEDIA_ACCESS_KEY_ID'),
-      getEnvChecked('MEDIA_SECRET_ACCESS_KEY'),
-      getEnvChecked('MEDIA_BUCKET_NAME')
-    );
-
-    env = {
-      MONGO_CONNECTION_STRING: getEnvChecked('MONGO_CONNECTION_STRING'),
-      RESEND_API_KEY: getEnvChecked('RESEND_API_KEY'),
-      MEDIA_BUCKET: bucket,
-    };
-  }
+  const env = getApiEnv(loadContext);
 
   return app.handleRequest(request, env);
 }
@@ -41,7 +24,8 @@ export default async function handleRequest(
   routerContext: EntryContext,
   loadContext: AppLoadContext
 ) {
-  if (import.meta.env.PROD) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (import.meta.env.PROD && loadContext.cloudflare !== undefined) {
     Repository.setDefaultConnectionString(
       loadContext.cloudflare.env.MONGO_CONNECTION_STRING
     );
@@ -57,34 +41,10 @@ export default async function handleRequest(
     return redirect(targetRedirect);
   }
 
-  let shellRendered = false;
-  const userAgent = request.headers.get('user-agent');
-
-  const body = await renderToReadableStream(
-    <ServerRouter context={routerContext} url={request.url} />,
-    {
-      onError(error: unknown) {
-        responseStatusCode = 500;
-        // Log streaming rendering errors from inside the shell.  Don't log
-        // errors encountered during initial shell rendering since they'll
-        // reject and get logged in handleDocumentRequest.
-        if (shellRendered) {
-          console.error(error);
-        }
-      },
-    }
+  return renderResponse(
+    request,
+    routerContext,
+    responseStatusCode,
+    responseHeaders
   );
-  shellRendered = true;
-
-  // Ensure requests from bots and SPA Mode renders wait for all content to load before responding
-  // https://react.dev/reference/react-dom/server/renderToPipeableStream#waiting-for-all-content-to-load-for-crawlers-and-static-generation
-  if ((userAgent && isbot(userAgent)) || routerContext.isSpaMode) {
-    await body.allReady;
-  }
-
-  responseHeaders.set('Content-Type', 'text/html');
-  return new Response(body, {
-    headers: responseHeaders,
-    status: responseStatusCode,
-  });
 }

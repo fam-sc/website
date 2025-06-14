@@ -5,5 +5,6 @@ interface ImportMetaEnv {
 }
 
 interface ImportMeta {
+  readonly HOST: 'node' | 'cf';
   readonly env: ImportMetaEnv;
 }

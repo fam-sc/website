@@ -15,7 +15,6 @@ export const Primary: Story = {
       'Заповни цю коротку форму та очікуй на фідбек, щоб стати частиною нашої команди;)',
     image: {
       src: 'https://i.imgur.com/XbYCFta.png',
-      alt: '',
       width: 1820,
       height: 1956,
     },
