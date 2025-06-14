@@ -6,6 +6,18 @@
   }
 
   /**
+   * Remove the gray background on active links in IE 10.
+   */
+
+  a {
+    background: transparent;
+    text-decoration: underline;
+    text-underline-position: under;
+    word-break: normal !important;
+    color: unset;
+  }
+
+  /**
    * Correct the font size and margin on `h1` elements within `section` and
    * `article` contexts in Chrome, Firefox, and Safari.
    */
@@ -48,21 +60,6 @@
   pre {
     font-family: monospace;
     font-size: 1em;
-  }
-
-  /* Text-level semantics
- ========================================================================== */
-
-  /**
-   * Remove the gray background on active links in IE 10.
-   */
-
-  a {
-    background: transparent;
-    text-decoration: underline;
-    text-underline-position: under;
-    word-break: normal !important;
-    color: unset;
   }
 
   /**
@@ -186,17 +183,17 @@
     margin: 1.5em 0;
   }
 
+  ul,
+  li {
+    text-align: start;
+  }
+
   ul {
     list-style-position: outside;
 
     li {
       margin-left: 4;
     }
-  }
-
-  ul,
-  li {
-    text-align: start;
   }
 
   table {

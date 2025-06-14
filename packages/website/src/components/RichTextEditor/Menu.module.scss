@@ -4,8 +4,7 @@
   margin-bottom: 4px;
 
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 }
 
 .save-button {

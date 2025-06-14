@@ -17,11 +17,11 @@
   margin: 0 auto;
   width: 80%;
 
-  @include tablet-view() {
+  @include tablet-view {
     width: 50%;
   }
 
-  @include desktop-view() {
+  @include desktop-view {
     width: fit-content;
   }
 }
@@ -30,7 +30,7 @@
   width: 80%;
   margin: 1em auto;
 
-  @include tablet-view() {
+  @include tablet-view {
     width: 15%;
   }
 }

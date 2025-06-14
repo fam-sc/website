@@ -4,6 +4,10 @@
 
   border-collapse: collapse;
 
+  thead tr {
+    border-bottom: $border;
+  }
+
   tr {
     &:not(:last-child) {
       border-bottom: $border;
@@ -16,9 +20,5 @@
         border-right: $border;
       }
     }
-  }
-
-  thead tr {
-    border-bottom: $border;
   }
 }

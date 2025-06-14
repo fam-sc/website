@@ -21,19 +21,6 @@
     display: flex;
     align-items: center;
 
-    &:disabled {
-      color: $text-color-disabled;
-      border-color: $text-color-disabled;
-
-      svg {
-        fill: $text-color-disabled;
-      }
-
-      p {
-        color: $text-color-disabled;
-      }
-    }
-
     p {
       flex-grow: 1;
 
@@ -54,6 +41,19 @@
       fill: $text-color;
 
       transition: transform 0.1s linear;
+    }
+
+    &:disabled {
+      color: $text-color-disabled;
+      border-color: $text-color-disabled;
+
+      svg {
+        fill: $text-color-disabled;
+      }
+
+      p {
+        color: $text-color-disabled;
+      }
     }
   }
 

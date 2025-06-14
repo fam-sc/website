@@ -8,13 +8,12 @@ $breakpoints: (
   lg: 1200px,
   xl: 1536px,
 );
-
 $breakpoint-list: (0px, 600px, 900px, 1200px, 1536px);
 
 @function get-breakpoint($name) {
   $value: map.get($breakpoints, $name);
 
-  @if $value == null {
+  @if not $value {
     @error "Given breakpoint does not exist";
   }
 
@@ -44,7 +43,7 @@ $breakpoint-list: (0px, 600px, 900px, 1200px, 1536px);
   $min-value: get-breakpoint($name);
   $max-value: next-breakpoint-value($name);
 
-  @if $max-value == null {
+  @if not $max-value {
     @include breakpoint-up($min-value) {
       @content;
     }

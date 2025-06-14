@@ -6,8 +6,7 @@
 
 .error,
 .progress {
-  align-self: center;
-  justify-self: center;
+  place-self: center center;
 
   @include mx(auto);
 }

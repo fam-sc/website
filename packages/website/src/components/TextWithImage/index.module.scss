@@ -16,7 +16,7 @@
   padding: 10px;
   padding-bottom: 30px;
 
-  @include column-breakpoint() {
+  @include column-breakpoint {
     grid-template-columns: 40% 1fr;
 
     padding: 20px 60px;
@@ -27,7 +27,7 @@
   float: right;
   height: 20em;
 
-  @include column-breakpoint() {
+  @include column-breakpoint {
     grid-column: 2/2;
     grid-row: 1/1;
   }
@@ -54,7 +54,7 @@
     width: fit-content;
     text-align: center;
 
-    @include column-breakpoint() {
+    @include column-breakpoint {
       text-align: start;
     }
   }
@@ -63,7 +63,7 @@
     margin-top: 15px;
   }
 
-  @include column-breakpoint() {
+  @include column-breakpoint {
     align-items: start;
 
     grid-row: 1/1;

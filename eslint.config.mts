@@ -17,7 +17,6 @@ export default tseslint.config(
       '*/**/vite.config.ts',
       'node_modules',
       'eslint.config.mts',
-      'prettier.config.mjs',
       'vitest.config.ts',
     ],
   },
