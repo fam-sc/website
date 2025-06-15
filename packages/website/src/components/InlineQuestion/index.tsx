@@ -51,8 +51,10 @@ export function InlineQuestion({
       })}
       {isShown && (
         <div
-          data-position={position ?? 'left'}
-          className={styles.question}
+          className={classNames(
+            styles.question,
+            styles[`question-${position}`]
+          )}
           ref={questionRef}
           onClickCapture={(e) => {
             if ((e.target as HTMLElement).nodeName.toLowerCase() !== 'button') {

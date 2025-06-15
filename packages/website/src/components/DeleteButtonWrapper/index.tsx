@@ -20,8 +20,11 @@ export function DeleteButtonWrapper({
 }: DeleteButtonWrapperProps) {
   return (
     <div
-      data-disabled={disabled}
-      className={classNames(styles.root, className)}
+      className={classNames(
+        styles.root,
+        disabled && styles['root-disabled'],
+        className
+      )}
       {...rest}
     >
       {children}

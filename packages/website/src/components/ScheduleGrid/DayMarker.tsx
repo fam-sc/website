@@ -1,6 +1,7 @@
 import { Day } from '@shared/api/schedule/types';
 import { Typography } from '../Typography';
 import styles from './DayMarker.module.scss';
+import { classNames } from '@/utils/classNames';
 
 const days = [
   'Понеділок',
@@ -14,9 +15,8 @@ const days = [
 export function DayMarker({ day, isEmpty }: { day: Day; isEmpty: boolean }) {
   return (
     <Typography
-      className={styles.root}
+      className={classNames(styles.root, isEmpty && styles['root-empty'])}
       style={{ '--day': day }}
-      data-is-empty={isEmpty}
     >
       {days[day - 1]}
     </Typography>

@@ -23,7 +23,7 @@ type PageItemProps = {
 
 function PageItem({ page, href, current }: PageItemProps) {
   return (
-    <li data-current={current}>
+    <li className={classNames(current && styles['item-current'])}>
       {current ? (
         <Typography
           aria-label={`Поточна сторінка, сторінка ${page}`}

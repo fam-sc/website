@@ -44,7 +44,9 @@ export function ScheduleTile({
   return (
     <div className={classNames(styles.root, className)} {...rest}>
       <div className={styles.header}>
-        <Typography className={styles.type} data-type={lesson.type}>
+        <Typography
+          className={classNames(styles.type, styles[`type-${lesson.type}`])}
+        >
           {lessonTypeTextMap[lesson.type]}
         </Typography>
 

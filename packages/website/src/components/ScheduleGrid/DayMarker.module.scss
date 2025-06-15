@@ -11,12 +11,12 @@
 
   font-weight: 700 !important;
 
-  &[data-is-empty='true'] {
+  &-empty {
     display: none;
   }
 
   @include breakpoint-up('lg') {
-    &[data-is-empty='true'] {
+    &-empty {
       display: block;
     }
   }

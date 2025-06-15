@@ -8,7 +8,7 @@
   a {
     display: block;
 
-    &[data-current='true'] {
+    &.link-active {
       background: var(--color-background-dark);
     }
   }

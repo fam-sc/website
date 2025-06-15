@@ -105,8 +105,11 @@ export function RichTextEditor({
       <EditorContext.Provider value={{ editor }}>
         <Menu options={menuOptions} />
         <EditorContent
-          data-variant="body"
-          className={classNames(typographyStyles.root, richTextStyles.root)}
+          className={classNames(
+            typographyStyles.root,
+            typographyStyles['root-variant-body'],
+            richTextStyles.root
+          )}
           editor={editor}
         />
       </EditorContext.Provider>

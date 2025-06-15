@@ -43,7 +43,7 @@
         user-select: none;
       }
 
-      &[data-current='true'] {
+      &.item-current {
         $color: var(--color-text-on-background-dark);
 
         border-color: $color;

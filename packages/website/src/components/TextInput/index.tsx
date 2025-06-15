@@ -22,7 +22,7 @@ export function TextInput({
   className,
   error,
   disabled,
-  variant,
+  variant = 'bordered',
   endContent,
   ref,
   onChange,
@@ -32,10 +32,12 @@ export function TextInput({
   return (
     <div className={classNames(styles.root, className)}>
       <div
-        className={styles.input}
-        data-variant={variant ?? 'bordered'}
-        data-state={error ? 'error' : undefined}
-        data-disabled={disabled}
+        className={classNames(
+          styles.input,
+          styles[`input-variant-${variant}`],
+          error && styles['input-error'],
+          disabled && styles['input-disabled']
+        )}
       >
         <Typography
           as="input"

@@ -46,7 +46,7 @@ $type-gradient-map: (
   background-image: linear-gradient(0.25turn, var(--start), var(--end));
 
   @each $key, $value in $type-gradient-map {
-    &[data-type='#{$key}'] {
+    &-#{$key} {
       --start: #{list.nth($value, 1)};
       --end: #{list.nth($value, 2)};
     }

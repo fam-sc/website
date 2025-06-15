@@ -10,22 +10,21 @@
 
   box-shadow: 0 1px 2px #000;
   border-radius: 0.5em;
+  list-style: none;
 
-  &[data-position='left'] {
+  &-position-left {
     top: 0;
     left: -100%;
   }
 
-  &[data-position='right'] {
+  &-position-right {
     top: 0;
     left: 100%;
   }
 
-  &[data-position='top'] {
+  &-position-top {
     bottom: 100%;
   }
-
-  list-style: none;
 
   > li {
     padding: 1em 1.25em;

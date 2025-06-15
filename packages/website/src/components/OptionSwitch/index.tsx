@@ -42,8 +42,11 @@ export function OptionSwitch<const Opts extends OptionArray>({
       aria-multiselectable="false"
       aria-disabled={disabled}
       aria-activedescendant={`${globalId}-${selectedIndex}`}
-      className={classNames(styles.root, className)}
-      data-selected={selectedIndex}
+      className={classNames(
+        styles.root,
+        selectedIndex === 1 && styles[`root-second`],
+        className
+      )}
       {...rest}
     >
       {options.map((option, index) => (

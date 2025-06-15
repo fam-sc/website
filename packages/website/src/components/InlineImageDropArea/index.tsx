@@ -29,11 +29,7 @@ export function InlineImageDropArea({
   }
 
   return (
-    <div
-      className={classNames(styles.root, className)}
-      data-disabled={disabled}
-      {...rest}
-    >
+    <div className={classNames(styles.root, className)} {...rest}>
       {image === undefined ? (
         <BaseFileDropArea
           disabled={disabled}

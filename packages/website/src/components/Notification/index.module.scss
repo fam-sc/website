@@ -24,20 +24,20 @@
 
     animation: 0.2s ease-out 0s push;
 
-    &[data-type='error'] {
+    &.text-type-error {
       --color: var(--color-danger);
       --shadow-inner: 2px;
       --shadow-outer: 8px;
     }
 
-    &[data-type='plain'] {
+    &.text-type-plain {
       --color: var(--color-text-on-background-dark);
       --shadow-inner: 1px;
       --shadow-outer: 2px;
     }
   }
 
-  &[data-visible='false'] p {
+  &-invisible p {
     transform: translate(0, 150%);
     animation: 0.25s ease-in 0s pull;
   }

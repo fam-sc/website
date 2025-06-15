@@ -13,21 +13,21 @@
   display: flex;
   flex-direction: row;
 
-  &[data-variant='bordered'] {
+  &-variant-bordered {
     border: $border-decl;
     border-radius: 0.5em;
   }
 
-  &[data-variant='underline'] {
+  &-variant-underline {
     border-bottom: $border-decl;
   }
 
-  &[data-state='error'] {
+  &-error {
     --border-color: var(--color-danger);
     --border-color-hover: var(--color-danger-dark);
   }
 
-  &[data-disabled='true'] {
+  &-disabled {
     border-color: var(--color-text-on-background-dark);
   }
 

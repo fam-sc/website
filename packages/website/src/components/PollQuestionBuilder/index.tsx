@@ -116,7 +116,13 @@ export function PollQuestionBuilder({
     : null;
 
   return (
-    <div className={classNames(styles.root, className)} data-error={isError}>
+    <div
+      className={classNames(
+        styles.root,
+        isError && styles[`root-error`],
+        className
+      )}
+    >
       <div className={styles.header}>
         <TextInput
           variant="underline"

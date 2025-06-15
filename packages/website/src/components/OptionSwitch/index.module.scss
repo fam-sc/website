@@ -26,7 +26,7 @@
     clip-path: inset(0 50% 0 0 round $round-radius);
   }
 
-  &[data-selected='1']::before {
+  &-second::before {
     clip-path: inset(0 0 0 50% round $round-radius);
   }
 

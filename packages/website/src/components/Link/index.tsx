@@ -4,25 +4,24 @@ import { Typography, TypographyProps } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 import { ComponentProps } from 'react';
 
 type AnchorProps = ComponentProps<typeof RouterLink>;
 
-export interface LinkProps
-  extends TypographyProps,
-    AnchorProps,
-    WithDataSpace<'link-variant'> {
+export interface LinkProps extends TypographyProps, AnchorProps {
   linkVariant?: 'clean' | 'underline';
 }
 
-export function Link({ linkVariant, className, ...rest }: LinkProps) {
+export function Link({ linkVariant = 'clean', className, ...rest }: LinkProps) {
   return (
     <Typography
-      data-link-variant={linkVariant}
       as={RouterLink}
-      className={classNames(styles.root, className)}
+      className={classNames(
+        styles.root,
+        styles[`root-variant-${linkVariant}`],
+        className
+      )}
       {...rest}
     />
   );

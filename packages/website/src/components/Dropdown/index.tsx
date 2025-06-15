@@ -35,7 +35,7 @@ export type DropdownProps<T extends { id: Key }> = {
 
 export function Dropdown<T extends { id: Key }>({
   items,
-  position,
+  position = 'bottom',
   className,
   style,
   renderItem,
@@ -71,8 +71,10 @@ export function Dropdown<T extends { id: Key }>({
       {isOpen && (
         <ul
           role="menu"
-          className={styles.menu}
-          data-position={position ?? 'bottom'}
+          className={classNames(
+            styles.menu,
+            styles[`menu-position-${position}`]
+          )}
         >
           {items.map((item) => (
             <Typography

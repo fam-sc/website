@@ -6,16 +6,3 @@
   display: flex;
   flex-flow: row wrap;
 }
-
-.save-button {
-  @include size(32px);
-
-  transform: scale(1);
-  transition: transform 0.05s linear;
-
-  margin-left: auto;
-
-  &[data-active='false'] {
-    transform: scale(0);
-  }
-}

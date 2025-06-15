@@ -41,8 +41,11 @@ export function Select<T extends string>({
   return (
     <div
       aria-disabled={disabled}
-      data-open={isOpen}
-      className={classNames(styles.root, className)}
+      className={classNames(
+        styles.root,
+        isOpen && styles[`root-open`],
+        className
+      )}
       onBlur={() => {
         setTimeout(() => {
           setIsOpen(false);

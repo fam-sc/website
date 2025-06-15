@@ -5,6 +5,7 @@ import { Button } from '@/components/Button';
 import { logOut } from '@/api/users/client';
 import styles from './nav.module.scss';
 import { useLocation } from 'react-router';
+import { classNames } from '@/utils/classNames';
 
 type UserLayoutNavigationProps = {
   tabs: TabInfo[];
@@ -18,7 +19,10 @@ export function UserLayoutNavigation({ tabs }: UserLayoutNavigationProps) {
       <List>
         {tabs.map(({ href, title }) => (
           <li key={href}>
-            <LinkButton to={href} data-current={pathname === href}>
+            <LinkButton
+              to={href}
+              className={classNames(pathname === href && styles['link-active'])}
+            >
               {title}
             </LinkButton>
           </li>

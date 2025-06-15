@@ -7,7 +7,7 @@
 
   transition: box-shadow 0.1s linear;
 
-  &[data-error='true'] {
+  &-error {
     box-shadow: 0 0 8px var(--color-danger);
   }
 }

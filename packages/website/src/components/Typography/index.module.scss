@@ -3,7 +3,7 @@
 .root {
   font-family: var(--font-murs-gothic);
 
-  &[data-has-icon='true'] {
+  &-has-icon {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -15,12 +15,12 @@
   }
 
   @each $variant, $options in $variants {
-    &[data-variant='#{$variant}'] {
+    &-variant-#{$variant} {
       @include variant-body($options);
     }
   }
 
-  &[data-weight='bold'] {
+  &-weight-bold {
     font-weight: 700 !important;
   }
 }

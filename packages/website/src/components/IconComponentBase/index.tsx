@@ -2,12 +2,11 @@ import { ReactNode } from 'react';
 
 import styles from './index.module.scss';
 
-import { WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
 import React from 'react';
 
-export type IconComponentBaseProps = WithDataSpace<'rounding' | 'hover'> & {
+export type IconComponentBaseProps = {
   className?: string;
   rounding?: 'none' | 'rounded' | 'circle';
   hover?: 'background' | 'fill';
@@ -18,15 +17,28 @@ export type IconComponentBaseProps = WithDataSpace<'rounding' | 'hover'> & {
 export const IconComponentBase = impersonatedComponent<
   IconComponentBaseProps,
   'button'
->('button', ({ as, rounding, hover, className, children, ...rest }) => {
-  return React.createElement(
+>(
+  'button',
+  ({
     as,
-    {
-      ...rest,
-      className: classNames(styles.root, className),
-      'data-rounding': rounding ?? 'rounded',
-      'data-hover': hover ?? 'background',
-    },
-    children
-  );
-});
+    rounding = 'rounded',
+    hover = 'background',
+    className,
+    children,
+    ...rest
+  }) => {
+    return React.createElement(
+      as,
+      {
+        ...rest,
+        className: classNames(
+          styles.root,
+          styles[`root-rounding-${rounding}`],
+          styles[`root-hover-${hover}`],
+          className
+        ),
+      },
+      children
+    );
+  }
+);

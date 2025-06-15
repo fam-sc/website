@@ -1,3 +1,4 @@
+import { classNames } from '@/utils/classNames';
 import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
@@ -25,8 +26,14 @@ export const NotificationContext = createContext<
 
 export function Notification({ message, type, isVisible }: NotificationProps) {
   return (
-    <div className={styles.root} data-visible={isVisible} role="alert">
-      <Typography data-type={type}>{message}</Typography>
+    <div
+      className={classNames(
+        styles.root,
+        !isVisible && styles['root-invisible']
+      )}
+      role="alert"
+    >
+      <Typography className={styles[`text-type-${type}`]}>{message}</Typography>
     </div>
   );
 }

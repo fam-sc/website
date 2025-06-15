@@ -1,10 +1,9 @@
 import { ReactNode } from 'react';
 import styles from './index.module.scss';
-import { WithDataSpace } from '@/types/react';
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { classNames } from '@/utils/classNames';
 
-export interface ModalOverlayProps extends WithDataSpace<'effect'> {
+export interface ModalOverlayProps {
   className?: string;
   effect?: 'tint' | 'blur';
   children?: ReactNode;
@@ -18,7 +17,13 @@ export function ModalOverlay({
   useScrollbar(false);
 
   return (
-    <div className={classNames(styles.root, className)} data-effect={effect}>
+    <div
+      className={classNames(
+        styles.root,
+        styles[`root-effect-${effect}`],
+        className
+      )}
+    >
       {children}
     </div>
   );
