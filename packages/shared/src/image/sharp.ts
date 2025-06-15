@@ -35,7 +35,7 @@ export function resizeImage(
   format: keyof FormatEnum
 ): Promise<Buffer> {
   return outputFormat(
-    sharp(input).resize(size.width, size.height, { kernel: 'mitchell' }),
+    sharp(input).resize(size.width, size.height, { kernel: 'lanczos3' }),
     format,
     {
       quality: 70,
