@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
 import { navigationMainRoutes } from '@/constants/navigation';
 
-import logo from '@/images/logo.png';
+import logo from '@/images/logo.png?w=20!';
 import { InstagramIcon } from '@/icons/InstagramIcon';
 import { TelegramIcon } from '@/icons/TelegramIcon';
 import { TikTokIcon } from '@/icons/TikTokIcon';
