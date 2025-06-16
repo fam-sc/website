@@ -23,7 +23,7 @@ export function handleRoute<Env>(
 
     return handler
       ? handler(request, env)
-      : Promise.resolve(methodNotAllowed(Object.keys(request.method)));
+      : Promise.resolve(methodNotAllowed(Object.keys(route)));
   }
 
   return Promise.resolve(notFound());
