@@ -4,6 +4,7 @@ import { Event } from '../types';
 
 import { EntityCollection } from './base';
 import { pagination } from '../misc/pagination';
+import { RichTextString } from '@shared/richText/types';
 
 export class EventCollection extends EntityCollection<Event> {
   constructor(client: MongoClient, session?: ClientSession) {
@@ -12,6 +13,12 @@ export class EventCollection extends EntityCollection<Event> {
 
   update(id: string, value: Partial<Event>): Promise<UpdateResult> {
     return this.updateById(id, { $set: value });
+  }
+
+  async getDescriptionById(id: string): Promise<RichTextString | null> {
+    const result = await this.findById(id, { projection: { description: 1 } });
+
+    return result?.description ?? null;
   }
 
   async getLatestEvents(n: number): Promise<WithId<Event>[]> {

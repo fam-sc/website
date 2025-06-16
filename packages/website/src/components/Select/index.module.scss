@@ -8,6 +8,12 @@
 
   cursor: pointer;
 
+  &-open {
+    .header svg {
+      transform: rotateX(180deg);
+    }
+  }
+
   .header {
     padding: 0.75em 0;
 
@@ -87,12 +93,6 @@
       &:focus {
         background: var(--color-background-dark);
       }
-    }
-  }
-
-  &-open {
-    .header svg {
-      transform: rotateX(180deg);
     }
   }
 }

@@ -13,10 +13,12 @@ export default defineConfig((env) => ({
     outDir: 'build',
     minify: 'esbuild',
   },
-  ssr: {
-    noExternal: true,
-    external: ['sharp'],
-  },
+  ssr: (
+    env.command === 'build' ? {
+      noExternal: true,
+      external: ['sharp'],
+    } : undefined
+  ),
   esbuild: {
     target: 'es2022',
   },

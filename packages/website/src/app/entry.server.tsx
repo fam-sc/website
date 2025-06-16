@@ -10,6 +10,7 @@ import { getApiEnv } from 'virtual:utils/apiEnv';
 import { AppLoadContext } from 'react-router';
 import { Repository } from '@data/repo';
 import { redirects } from './redirects';
+import { internalServerError } from '@shared/responses';
 
 export default async function handleRequest(
   request: Request,
@@ -34,8 +35,15 @@ export default async function handleRequest(
   }
 
   const { pathname } = new URL(request.url);
+
   if (pathname.startsWith('/api')) {
-    return app.handleRequest(request, loadContext.cloudflare.env);
+    try {
+      return await app.handleRequest(request, loadContext.cloudflare.env);
+    } catch (error) {
+      console.error(error);
+
+      return internalServerError();
+    }
   }
 
   const targetRedirect = redirects[pathname];

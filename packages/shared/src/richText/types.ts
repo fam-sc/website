@@ -1,3 +1,5 @@
+import { ImageSize } from '../image/types';
+
 export type RichTextPlainNode = string;
 
 export const supportedRichTextTags = [
@@ -23,7 +25,6 @@ export const supportedRichTextTags = [
   'blockquote',
   'iframe',
   'div',
-  'img',
   'li',
   'ul',
   'ol',
@@ -44,17 +45,30 @@ export interface RichTextElementNode {
   children?: RichTextAtomNode[];
 }
 
+export type FilePath = `rich-text-image/${string}`;
+
+export interface RichTextPlaceholderImageNode {
+  name: '#placeholder-image';
+  id: number;
+}
+
+export interface RicHTextUnsizedImageNode {
+  name: '#unsized-image';
+  filePath: FilePath;
+}
+
 export interface RichTextImageNode {
   name: '#image';
-  filePath: string;
-  width: number;
-  height: number;
+  filePath: FilePath;
+  sizes: ImageSize[];
 }
 
 export type RichTextAtomNode =
   | RichTextPlainNode
-  | RichTextElementNode
-  | RichTextImageNode;
+  | RichTextPlaceholderImageNode
+  | RichTextImageNode
+  | RicHTextUnsizedImageNode
+  | RichTextElementNode;
 
 export type RichTextNode = RichTextAtomNode | RichTextAtomNode[];
 export type RichTextString = RichTextNode;

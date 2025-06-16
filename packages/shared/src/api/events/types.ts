@@ -9,5 +9,5 @@ export type Event = {
   title: string;
   date: string;
   description: RichTextString;
-  image?: ImageSize;
+  images?: ImageSize[];
 };

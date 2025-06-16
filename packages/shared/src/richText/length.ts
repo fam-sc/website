@@ -13,7 +13,14 @@ export function richTextCharacterLength(value: RichTextString): number {
     return result;
   }
 
-  return value.name !== '#image' && value.children
-    ? richTextCharacterLength(value.children)
-    : 0;
+  switch (value.name) {
+    case '#image':
+    case '#placeholder-image':
+    case '#unsized-image': {
+      return 0;
+    }
+    default: {
+      return value.children ? richTextCharacterLength(value.children) : 0;
+    }
+  }
 }

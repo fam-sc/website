@@ -19,12 +19,12 @@ export async function getApiErrorFromResponse(
     : new Error(text);
 }
 
-export async function apiFetch(url: string | URL, init?: ExtendedRequestInit) {
-  return fetch(url, encodeInitBodyToJson(init));
+export async function apiFetch(url: string, init?: ExtendedRequestInit) {
+  return fetch(`/api${url}`, encodeInitBodyToJson(init));
 }
 
 export async function apiCheckedFetch(
-  url: string | URL,
+  url: string,
   init?: ExtendedRequestInit
 ): Promise<Response> {
   const response = await apiFetch(url, init);
@@ -36,7 +36,7 @@ export async function apiCheckedFetch(
 }
 
 export async function apiFetchObject<T>(
-  url: string | URL,
+  url: string,
   init?: ExtendedRequestInit
 ): Promise<T> {
   const response = await apiCheckedFetch(url, init);

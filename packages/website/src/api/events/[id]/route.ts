@@ -1,17 +1,17 @@
 import { parseEditEventPayload } from '@shared/api/events/payloads';
 import { MediaTransaction } from '@/api/media/transaction';
-import { parseHtmlToRichText } from '@shared/richText/parser';
 import { getImageSize } from '@shared/image/size';
 import { authRoute } from '@/api/authRoute';
 import { UserRole } from '@shared/api/user/types';
 import { app } from '@/api/app';
 import { Repository } from '@data/repo';
 import { notFound, ok } from '@shared/responses';
-import { Event } from '@shared/api/events/types';
+import { Event as ResponseEvent } from '@shared/api/events/types';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
-import { creatMediaServerParseContext } from '@/api/media/richText';
 import { resolveImageSizes } from '@shared/image/breakpoints';
 import { putMultipleSizedImages } from '@/api/media/multiple';
+import { hydrateRichText } from '@/api/richText/hydration';
+import { Event } from '@data/types';
 
 app.get('/events/:id', async (_request, { params: { id } }) => {
   await using repo = await Repository.openConnection();
@@ -21,7 +21,7 @@ app.get('/events/:id', async (_request, { params: { id } }) => {
     return notFound();
   }
 
-  const responseData: Event = {
+  const responseData: ResponseEvent = {
     id,
     status: event.status,
     title: event.title,
@@ -36,7 +36,7 @@ app.get('/events/:id', async (_request, { params: { id } }) => {
 
 app.put('/events/:id', async (request, { env, params: { id } }) => {
   const formData = await request.formData();
-  const { title, description, date, image, status } =
+  const { title, description, descriptionFiles, date, image, status } =
     parseEditEventPayload(formData);
 
   const imageBuffer = await image?.bytes();
@@ -45,26 +45,34 @@ app.put('/events/:id', async (request, { env, params: { id } }) => {
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
   await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
-  const richTextDescription = await parseHtmlToRichText(
-    description,
-    creatMediaServerParseContext(mediaTransaction)
-  );
-
   return await authRoute(request, UserRole.ADMIN, async (repo) => {
     await repo.transaction(async (trepo) => {
       const sizes = imageSize && resolveImageSizes(imageSize);
 
-      const result = await trepo.events().update(id, {
+      const prevDescription = await trepo.events().getDescriptionById(id);
+      if (prevDescription === null) {
+        return notFound();
+      }
+
+      const hydratedDescription = await hydrateRichText(description, {
+        env,
+        mediaTransaction,
+        files: descriptionFiles,
+        previous: prevDescription,
+      });
+
+      const newEvent: Partial<Event> = {
         date,
         title,
         status,
-        description: richTextDescription,
-        images: sizes,
-      });
+        description: hydratedDescription,
+      };
 
-      if (result.matchedCount === 0) {
-        throw new Error("Specified event doesn't exist");
+      if (sizes) {
+        newEvent.images = sizes;
       }
+
+      await trepo.events().update(id, newEvent);
 
       if (imageBuffer && sizes) {
         await putMultipleSizedImages(

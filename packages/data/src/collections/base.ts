@@ -136,6 +136,17 @@ export class EntityCollection<T extends Document> {
     });
   }
 
+  protected updateMany(
+    filter: Filter<T>,
+    update: UpdateFilter<T> | Document[],
+    options?: UpdateOptions
+  ) {
+    return this.collection().updateMany(filter, update, {
+      ...options,
+      session: this.session,
+    });
+  }
+
   protected updateById(
     id: string | ObjectId,
     update: UpdateFilter<T> | Document[],

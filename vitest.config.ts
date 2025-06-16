@@ -4,14 +4,16 @@ import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { loadEnv } from 'vite';
 
+const env = loadEnv('', './packages/website', '');
+
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
     pool: 'threads',
-    env: loadEnv('', './packages/website', ''),
     projects: [
       {
         plugins: [react(), tsconfigPaths()],
+        env,
         test: {
           include: ['**/*.test.ts'],
           name: 'unit',
@@ -23,6 +25,7 @@ export default defineConfig({
         test: {
           include: ['**/*.btest.ts'],
           name: 'browser',
+          env,
           browser: {
             enabled: true,
             headless: true,

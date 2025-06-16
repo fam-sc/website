@@ -152,19 +152,30 @@ export function ClientComponent({ event }: ClientComponentProps) {
 
           let promise: Promise<void> | undefined;
 
-          const description = descriptionRef.current?.getHTMLText() ?? '';
+          const description = descriptionRef.current?.getRichText();
+          if (!description) {
+            throw new Error('Description is null');
+          }
 
           if (event === undefined) {
             if (image !== undefined) {
-              promise = addEvent({ title, date, image, description, status });
+              promise = addEvent({
+                title,
+                date,
+                image,
+                status,
+                description: description.value,
+                descriptionFiles: description.files,
+              });
             }
           } else {
             promise = editEvent(event.id, {
               title,
               date,
               image,
-              description,
               status,
+              description: description.value,
+              descriptionFiles: description.files,
             });
           }
 

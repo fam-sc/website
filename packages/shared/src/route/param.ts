@@ -35,21 +35,8 @@ interface HandlerPathNode<Env> extends BasePathNode<Env> {
 
 type PathNode<Env> = BasePathNode<Env> | HandlerPathNode<Env>;
 
-function handleRequestMethod<Env, P extends string[]>(
-  map: HandlerMap<Env, P>,
-  request: Request,
-  env: Env,
-  params: Params<P>
-) {
-  const handler = map[request.method as HttpMethod];
-
-  return handler
-    ? handler(request, { env, params })
-    : Promise.resolve(methodNotAllowed(Object.keys(request.method)));
-}
-
 export class ParamRouter<Env> {
-  private paths: Record<string, PathNode<Env> | undefined> = {};
+  private rootNode: BasePathNode<Env> = { children: {} };
   private prefix: string;
 
   get = this.createPathHandler('GET');
@@ -72,32 +59,13 @@ export class ParamRouter<Env> {
   }
 
   private addPath(path: string, method: HttpMethod, handler: Handler<Env>) {
-    const [firstPart, ...restParts] = path.slice(1).split('/');
-    if (firstPart.startsWith(':')) {
-      throw new Error('First path part cannot be param');
-    }
+    const parts = path.slice(1).split('/');
 
-    let currentNode = this.paths[firstPart];
-    if (currentNode === undefined) {
-      currentNode = { children: {} };
-
-      this.paths[firstPart] = currentNode;
-    }
-
-    if (restParts.length === 0) {
-      const currentHandlerNode = currentNode as HandlerPathNode<Env>;
-
-      currentHandlerNode.handlers = {
-        ...currentHandlerNode.handlers,
-        [method]: handler,
-      };
-    } else {
-      this.addPathPart(currentNode, restParts, method, handler);
-    }
+    this.addPathPart(this.rootNode, parts, method, handler);
   }
 
   private addPathPart(
-    node: PathNode<Env>,
+    parent: PathNode<Env>,
     parts: string[],
     method: HttpMethod,
     handler: Handler<Env>
@@ -106,12 +74,12 @@ export class ParamRouter<Env> {
     const isParam = firstPart.startsWith(':');
     const name = isParam ? firstPart.slice(1) : firstPart;
 
-    let currentNode = node.children[name];
+    let currentNode = isParam ? parent.paramNode?.value : parent.children[name];
     if (currentNode === undefined) {
       if (
         isParam &&
-        node.paramNode !== undefined &&
-        node.paramNode.name !== name
+        parent.paramNode !== undefined &&
+        parent.paramNode.name !== name
       ) {
         throw new Error('Already have param route');
       }
@@ -119,9 +87,9 @@ export class ParamRouter<Env> {
       currentNode = { children: {} };
 
       if (isParam) {
-        node.paramNode = { name, value: currentNode };
+        parent.paramNode = { name, value: currentNode };
       } else {
-        node.children[name] = currentNode;
+        parent.children[name] = currentNode;
       }
     }
 
@@ -139,17 +107,12 @@ export class ParamRouter<Env> {
   }
 
   handleRequest(request: Request, env: Env) {
-    let { pathname } = new URL(request.url);
+    const { pathname } = new URL(request.url);
 
     if (pathname.startsWith(this.prefix)) {
-      pathname = pathname.slice(this.prefix.length);
+      const parts = pathname.slice(this.prefix.length + 1).split('/');
 
-      const [firstPart, ...parts] = pathname.slice(1).split('/');
-
-      const node = this.paths[firstPart];
-      if (node !== undefined) {
-        return this.handleRequestByParts(parts, node, request, env, {});
-      }
+      return this.handleRequestByParts(parts, this.rootNode, request, env, {});
     }
 
     return Promise.resolve(notFound());
@@ -186,7 +149,12 @@ export class ParamRouter<Env> {
         );
       }
     } else if ('handlers' in node && node.handlers !== undefined) {
-      return handleRequestMethod(node.handlers, request, env, params);
+      const { handlers } = node;
+      const handler = handlers[request.method as HttpMethod];
+
+      return handler
+        ? handler(request, { env, params })
+        : Promise.resolve(methodNotAllowed(Object.keys(handlers)));
     }
 
     return Promise.resolve(notFound());

@@ -20,7 +20,17 @@ test.each<[RichTextString, RichTextString]>([
     ],
     ['012345678912345', { name: 'i', children: ['styledstyled'] }],
   ],
-  [['123', { name: '#image', filePath: '/123', width: 0, height: 0 }], ['123']],
+  [
+    [
+      '123',
+      {
+        name: '#image',
+        filePath: 'rich-text-image/123',
+        sizes: [{ width: 0, height: 0 }],
+      },
+    ],
+    ['123'],
+  ],
 ])('shortenRichText', (input, expected) => {
   const actual = shortenRichText(input, MAX_LENGTH);
 

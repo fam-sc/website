@@ -126,3 +126,20 @@ test('method not allowed', async () => {
 
   expect(response.status).toBe(405);
 });
+
+test('events test', async () => {
+  const vhandler = vi.fn(handler);
+
+  const app = new ParamRouter();
+  app.get('/api/events/:id', handler);
+  app.put('/api/events/:id', vhandler);
+  app.delete('/api/events/:id', handler);
+
+  const req = request('/api/events/123', 'PUT');
+
+  await app.handleRequest(req, null);
+  expect(vhandler).toHaveBeenCalledWith(req, {
+    env: null,
+    params: { id: '123' },
+  });
+});

@@ -1,7 +1,11 @@
 import { ZodMiniType } from 'zod/v4-mini';
 
-type FormDataValue = string | number | Date | Blob;
-type FormDataObject = Record<string, FormDataValue | undefined>;
+type MaybeArray<T> = T | T[];
+type FormDataAtom = string | number | Date | Blob;
+export type FormDataObject = Record<
+  string,
+  MaybeArray<FormDataAtom> | undefined
+>;
 
 export function parseFormDataToRawObject(
   data: FormData
@@ -22,7 +26,7 @@ export function parseFormDataToObject<T>(
   return schema.parse(parseFormDataToRawObject(data));
 }
 
-function formDataValueToStringOrFile(value: FormDataValue): string | Blob {
+function formDataValueToStringOrFile(value: FormDataAtom): string | Blob {
   if (typeof value === 'number') {
     return value.toString();
   } else if (value instanceof Date) {
@@ -39,9 +43,27 @@ export function objectToFormData(value: FormDataObject): FormData {
     const property = value[key];
 
     if (property !== undefined) {
-      result.set(key, formDataValueToStringOrFile(property));
+      if (Array.isArray(property)) {
+        for (const item of property) {
+          result.append(key, formDataValueToStringOrFile(item));
+        }
+      } else {
+        result.set(key, formDataValueToStringOrFile(property));
+      }
     }
   }
 
   return result;
+}
+
+export function getAllFiles(formData: FormData, key: string): File[] {
+  const result = formData.getAll(key);
+
+  for (const file of result) {
+    if (!(file instanceof File)) {
+      throw new TypeError(`Value in ${key} is not file`);
+    }
+  }
+
+  return result as File[];
 }

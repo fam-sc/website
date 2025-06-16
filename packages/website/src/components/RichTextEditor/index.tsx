@@ -1,24 +1,6 @@
-import { Ref, useEffect, useImperativeHandle } from 'react';
-import Blockquote from '@tiptap/extension-blockquote';
-import Bold from '@tiptap/extension-bold';
-import Document from '@tiptap/extension-document';
-import Heading from '@tiptap/extension-heading';
-import ImageExtension from '@tiptap/extension-image';
-import Italic from '@tiptap/extension-italic';
-import Link from '@tiptap/extension-link';
-import Paragraph from '@tiptap/extension-paragraph';
-import Strike from '@tiptap/extension-strike';
-import Subscript from '@tiptap/extension-subscript';
-import Superscript from '@tiptap/extension-superscript';
-import Text from '@tiptap/extension-text';
-import TextAlign from '@tiptap/extension-text-align';
-import Underline from '@tiptap/extension-underline';
-import {
-  EditorContent,
-  EditorContext,
-  Extensions,
-  useEditor,
-} from '@tiptap/react';
+import { Ref, useEffect, useImperativeHandle, useMemo } from 'react';
+
+import { EditorContent, EditorContext, useEditor } from '@tiptap/react';
 
 import richTextStyles from '../RichText/index.module.scss';
 import typographyStyles from '../Typography/index.module.scss';
@@ -26,30 +8,15 @@ import styles from './index.module.scss';
 
 import { classNames } from '@/utils/classNames';
 import { Menu, useMenuOptions } from './Menu';
-
-const extensions: Extensions = [
-  Document,
-  Text,
-  Paragraph,
-  Bold,
-  Italic,
-  Strike,
-  Blockquote,
-  Heading,
-  Underline,
-  Subscript,
-  Superscript,
-  TextAlign.configure({
-    types: ['heading', 'paragraph'],
-  }),
-  Link,
-  ImageExtension.configure({
-    allowBase64: true,
-  }),
-];
+import { extensions } from './extensions';
+import {
+  SerializeResultWithFiles,
+  tiptapTextToRichText,
+} from '@/utils/tiptap/serializer';
+import { ObjectUrlManager } from '@/utils/objectUrlManager';
 
 export type RichTextEditorRef = {
-  getHTMLText(): string;
+  getRichText(): SerializeResultWithFiles | null;
 };
 
 type RichTextEditorProps = {
@@ -83,12 +50,22 @@ export function RichTextEditor({
     },
   });
 
+  const urlManager = useMemo(() => new ObjectUrlManager(), []);
+
   useImperativeHandle(
     ref,
     () => ({
-      getHTMLText: () => editor?.getHTML() ?? '',
+      getRichText: () => {
+        if (editor) {
+          return tiptapTextToRichText(editor.state.doc.content, editor.schema, {
+            files: urlManager.filesMap,
+          });
+        }
+
+        return null;
+      },
     }),
-    [editor]
+    [editor, urlManager.filesMap]
   );
 
   useEffect(() => {
@@ -103,7 +80,7 @@ export function RichTextEditor({
       aria-disabled={disabled}
     >
       <EditorContext.Provider value={{ editor }}>
-        <Menu options={menuOptions} />
+        <Menu urlManager={urlManager} options={menuOptions} />
         <EditorContent
           className={classNames(
             typographyStyles.root,

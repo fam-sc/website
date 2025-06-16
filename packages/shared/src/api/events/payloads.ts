@@ -1,31 +1,60 @@
-import { parseFormDataToObject } from '../../formData';
-import { z } from 'zod/v4-mini';
+import { getAllFiles } from '../../formData';
+import { coerce, object, pipe, string, z } from 'zod/v4-mini';
+import { richText } from '../../richText/zod';
 
 const status = z.enum(['pending', 'ended']);
 
-export const addEventPayload = z.object({
-  image: z.instanceof(File),
+const payloadSchema = object({
   status,
-  title: z.string(),
-  date: z.date(),
-  description: z.string(),
+  title: string(),
+  date: pipe(string(), coerce.date()),
+  description: richText,
 });
 
-export const editEventPayload = z.object({
-  image: z.optional(z.instanceof(File)),
-  status,
-  title: z.string(),
-  date: z.date(),
-  description: z.string(),
-});
+type WithDescriptionFiles<Image extends File | undefined> = z.infer<
+  typeof payloadSchema
+> & {
+  image: Image;
+  descriptionFiles: File[];
+};
 
-export type AddEventPayload = z.infer<typeof addEventPayload>;
-export type EditEventPayload = z.infer<typeof editEventPayload>;
+export type AddEventPayload = WithDescriptionFiles<File>;
+
+export type EditEventPayload = WithDescriptionFiles<File | undefined>;
+
+function parseAbstractPayload<Image extends File | undefined>(
+  formData: FormData,
+  requireImage: boolean
+): WithDescriptionFiles<Image> {
+  const info = formData.get('info');
+  if (info === null || typeof info !== 'string') {
+    throw new Error('Info is not string');
+  }
+
+  const image = formData.get('image');
+  if (image === null) {
+    if (requireImage) {
+      throw new Error('Image is null');
+    }
+  } else if (!(image instanceof File)) {
+    throw new TypeError('Image is not file');
+  }
+
+  const descriptionFiles = getAllFiles(formData, 'descriptionFiles');
+
+  const rest = payloadSchema.parse(JSON.parse(info));
+
+  return {
+    image: image as Image,
+    descriptionFiles,
+    ...rest,
+  };
+}
 
 export function parseAddEventPayload(formData: FormData): AddEventPayload {
-  return parseFormDataToObject(formData, addEventPayload);
+  return parseAbstractPayload(formData, true);
 }
 
 export function parseEditEventPayload(formData: FormData): EditEventPayload {
-  return parseFormDataToObject(formData, editEventPayload);
+  return parseAbstractPayload(formData, false);
 }

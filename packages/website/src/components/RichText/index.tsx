@@ -11,7 +11,8 @@ import {
 } from '@shared/richText/types';
 import { classNames } from '@/utils/classNames';
 import { Link } from 'react-router';
-import { MediaPath } from '@/api/media';
+import { MediaFilePath } from '@/api/media';
+import { Image } from '../Image';
 
 export type RichTextProps = {
   className?: string;
@@ -46,17 +47,26 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
     return node;
   }
 
-  if (node.name === '#image') {
-    return (
-      <img
-        src={getMediaFileUrl(node.filePath as MediaPath)}
-        width={node.width}
-        height={node.height}
-      />
-    );
+  switch (node.name) {
+    case '#image': {
+      return (
+        <Image
+          multiple={node.sizes.map(({ width, height }) => ({
+            src: getMediaFileUrl(`${node.filePath}/${width}` as MediaFilePath),
+            width,
+            height,
+          }))}
+        />
+      );
+    }
+    case '#placeholder-image':
+    case '#unsized-image': {
+      throw new Error('Unexpected node type');
+    }
+    default: {
+      return renderElementNode(node);
+    }
   }
-
-  return renderElementNode(node);
 }
 
 export function RichText({ className, text }: RichTextProps) {

@@ -50,15 +50,21 @@ export function shortenRichText(
     return result;
   }
 
-  if (value.name === '#image') {
-    return '';
+  const { name } = value;
+  switch (name) {
+    case '#image':
+    case '#placeholder-image':
+    case '#unsized-image': {
+      return '';
+    }
+    default: {
+      return {
+        name,
+        attrs: value.attrs,
+        children: value.children
+          ? shortenRichText(value.children, limit, ending)
+          : undefined,
+      };
+    }
   }
-
-  return {
-    name: value.name,
-    attrs: value.attrs,
-    children: value.children
-      ? shortenRichText(value.children, limit, ending)
-      : undefined,
-  };
 }

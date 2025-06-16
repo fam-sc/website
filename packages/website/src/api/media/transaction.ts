@@ -1,3 +1,5 @@
+import { MediaFilePath } from '.';
+
 type TransactionOperation = {
   run: () => Promise<unknown>;
   revert: () => Promise<unknown>;
@@ -13,7 +15,7 @@ export class MediaTransaction implements AsyncDisposable {
   }
 
   put(
-    path: string,
+    path: MediaFilePath,
     body: ReadableStream | ArrayBuffer | ArrayBufferView | string | null,
     options?: R2PutOptions
   ) {
@@ -28,6 +30,7 @@ export class MediaTransaction implements AsyncDisposable {
   }
 
   async commit() {
+    console.log('commit');
     await Promise.all(this.ops.map((op) => op.run()));
 
     this.runSucessful = true;

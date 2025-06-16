@@ -15,17 +15,34 @@ function atomNode(node: RichTextAtomNode, options: HtmlBuilderOptions) {
     return node;
   }
 
-  if (node.name === '#image') {
-    return `<img src="${options.mediaUrl}/${node.filePath}" width="${node.width}" height="${node.height}"/>`;
+  switch (node.name) {
+    case '#image': {
+      const { filePath, sizes } = node;
+      const lastSize = sizes.at(-1);
+
+      const src = `${options.mediaUrl}/${filePath}`;
+      const srcset = sizes
+        .map(({ width }) => `${src}/${width} ${width}w`)
+        .join(',');
+
+      return lastSize
+        ? `<img src="${src}/${lastSize.width}" srcset="${srcset}" width="${lastSize.width}" height="${lastSize.height}"/>`
+        : `<img src="${src}"/>`;
+    }
+    case '#placeholder-image':
+    case '#unsized-image': {
+      throw new Error(`Unexpected node type: ${node.name}`);
+    }
+    default: {
+      const { name, attrs, children } = node;
+
+      const tag = attrs ? `${name} ${attributesToString(attrs)}` : name;
+
+      return children !== undefined && children.length > 0
+        ? `<${tag}>${richTextToHtml(children, options)}</${name}>`
+        : `<${tag}/>`;
+    }
   }
-
-  const { name, attrs, children } = node;
-
-  const attrString = attrs ? ` ${attributesToString(attrs)}` : '';
-
-  return children !== undefined && children.length > 0
-    ? `<${name}${attrString}>${richTextToHtml(children, options)}</${name}>`
-    : `<${name}${attrString}/>`;
 }
 
 export function richTextToHtml(

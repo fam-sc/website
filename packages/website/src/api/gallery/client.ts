@@ -8,7 +8,7 @@ import { apiCheckedFetch, apiFetchObject } from '../fetch';
 export function fetchGalleryPage(
   page: number
 ): Promise<GalleryImageWithSizes[]> {
-  return apiFetchObject(`/api/gallery?page=${page}`);
+  return apiFetchObject(`/gallery?page=${page}`);
 }
 
 export function uploadGalleryImages(payload: UploadGalleryImagesPayload) {

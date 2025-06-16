@@ -17,8 +17,15 @@ test.each<[RichTextString, string]>([
     '<p><span>text</span></p>',
   ],
   [
-    { name: '#image', filePath: '123', width: 100, height: 100 },
-    `<img src="https://media.sc-fam.org/123" width="100" height="100"/>`,
+    {
+      name: '#image',
+      filePath: 'rich-text-image/123',
+      sizes: [
+        { width: 100, height: 100 },
+        { width: 200, height: 200 },
+      ],
+    },
+    `<img src="https://media.sc-fam.org/rich-text-image/123/200" srcset="https://media.sc-fam.org/rich-text-image/123/100 100w,https://media.sc-fam.org/rich-text-image/123/200 200w" width="200" height="200"/>`,
   ],
 ])('richTextToHtml', (input, expected) => {
   const actual = richTextToHtml(input, {

@@ -17,6 +17,7 @@ import { InsertImageButton } from './InsertImageButton';
 import { LinkButton } from './LinkButton';
 import { Editor } from '@tiptap/core';
 import { useEditorState } from '@tiptap/react';
+import { ObjectUrlManager } from '@/utils/objectUrlManager';
 
 type Alignment = 'left' | 'center' | 'right' | 'justify';
 
@@ -101,9 +102,10 @@ export function useMenuOptions(editor: Editor | null): MenuOptions {
 
 export type MenuProps = {
   options: MenuOptions;
+  urlManager: ObjectUrlManager;
 };
 
-export function Menu({ options }: MenuProps) {
+export function Menu({ options, urlManager }: MenuProps) {
   return (
     <div className={styles.root}>
       <ToggleButton
@@ -186,7 +188,7 @@ export function Menu({ options }: MenuProps) {
 
       <LinkButton isActive={options.link} />
 
-      <InsertImageButton />
+      <InsertImageButton urlManager={urlManager} />
     </div>
   );
 }

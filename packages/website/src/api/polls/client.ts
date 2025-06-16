@@ -6,7 +6,7 @@ import type {
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function addPoll(payload: AddPollPayload) {
-  return apiCheckedFetch(`/api/polls`, {
+  return apiCheckedFetch(`/polls`, {
     method: 'POST',
     body: payload,
     json: true,
@@ -14,7 +14,7 @@ export function addPoll(payload: AddPollPayload) {
 }
 
 export function submitPoll(id: string, payload: SubmitPollPayload) {
-  return apiCheckedFetch(`/api/polls/${id}`, {
+  return apiCheckedFetch(`/polls/${id}`, {
     method: 'POST',
     body: payload,
     json: true,
@@ -22,11 +22,11 @@ export function submitPoll(id: string, payload: SubmitPollPayload) {
 }
 
 export function closePoll(id: string) {
-  return apiCheckedFetch(`/api/polls/${id}/close`, {
+  return apiCheckedFetch(`/polls/${id}/close`, {
     method: 'POST',
   });
 }
 
 export function fetchPollResultsTable(id: string) {
-  return apiFetchObject<PollResultsTable>(`/api/polls/${id}/table`);
+  return apiFetchObject<PollResultsTable>(`/polls/${id}/table`);
 }

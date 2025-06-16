@@ -40,6 +40,7 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
     this.client = new S3Client({
       endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
       region: 'auto',
+      requestStreamBufferSize: 0,
       credentials: {
         accessKeyId,
         secretAccessKey,
@@ -141,6 +142,7 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
           Bucket: this.bucketName,
           Key: key,
           Body: body as string | ReadableStream | Uint8Array,
+          ChecksumAlgorithm: 'CRC32',
         })
       );
 

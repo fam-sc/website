@@ -35,7 +35,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const event =
     editEventId !== null ? await getClientEvent(repo, editEventId) : undefined;
 
-  if (event === undefined) {
+  if (event === undefined && editEventId !== null) {
     return redirect('/events/+');
   }
 
