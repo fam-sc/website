@@ -7,7 +7,7 @@ import { startTransition, useCallback, useOptimistic } from 'react';
 
 import styles from './page.module.scss';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { useNavigate } from 'react-router';
 import { Title } from '@/components/Title';
 

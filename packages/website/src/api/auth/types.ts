@@ -1,4 +1,4 @@
-import { emailRegex, telnumRegex } from '../../string/regex';
+import { emailRegex, telnumRegex } from '@shared/string/regex';
 import { nullable, regex, string, z } from 'zod/v4-mini';
 
 export const SignInDataSchema = z.object({

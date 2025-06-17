@@ -4,12 +4,12 @@ import { AuthSession } from '../types';
 import {
   User,
   UserPersonalInfo,
+  UserRole,
   UserWithPassword,
   UserWithRoleAndAvatar,
 } from '../types/user';
 
 import { EntityCollection } from './base';
-import { UserRole } from '@shared/api/user/types';
 
 type UserProjection = Partial<Record<`user.${keyof User | '_id'}`, -1 | 0 | 1>>;
 

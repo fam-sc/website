@@ -5,7 +5,7 @@ import {
   dataScheduleToApiSchedule,
   getUniqueTeachers,
 } from './transform';
-import { Schedule as ApiSchedule } from '@shared/api/schedule/types';
+import { Schedule as ApiSchedule } from '@/api/schedule/types';
 
 import { CachedExternalApi } from '@data/cache';
 import { Repository } from '@data/repo';

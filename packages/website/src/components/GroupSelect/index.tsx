@@ -1,7 +1,7 @@
 import { Select } from '../Select';
 
 import { getGroups } from '@/api/groups/client';
-import { Group } from '@shared/api/groups/types';
+import { Group } from '@/api/groups/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
 import { shortenGuid } from '@shared/guid';
 import { useEffect, useMemo } from 'react';

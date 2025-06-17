@@ -1,4 +1,4 @@
-import { Group } from '@shared/api/groups/types';
+import { Group } from '@/api/groups/types';
 import { apiFetch, apiFetchObject, getApiErrorFromResponse } from '../fetch';
 
 export function getGroups(): Promise<Group[]> {

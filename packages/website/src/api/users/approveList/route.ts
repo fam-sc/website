@@ -1,9 +1,9 @@
 import { ok, unauthrorized } from '@shared/responses';
-import { UserInfo } from '@shared/api/user/types';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { UserInfo } from '@/api/users/types';
+import { getSessionIdNumber } from '@/api/auth';
 import { formPersonName } from '@shared/person';
 import { Repository } from '@data/repo';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { getFacultyGroupMapById } from '@/api/groups/utils';
 import { app } from '@/api/app';
 

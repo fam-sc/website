@@ -1,11 +1,7 @@
 import { badRequest, unauthrorized } from '@shared/responses';
-import { verifyPassword } from '@shared/api/auth/password';
-import {
-  getSessionIdNumber,
-  newSessionId,
-  setSessionId,
-} from '@shared/api/auth';
-import { SignInDataSchema } from '@shared/api/auth/types';
+import { verifyPassword } from '@/api/auth/password';
+import { getSessionIdNumber, newSessionId, setSessionId } from '@/api/auth';
+import { SignInDataSchema } from '@/api/auth/types';
 import { Repository } from '@data/repo';
 import { app } from '@/api/app';
 

@@ -3,7 +3,7 @@ import { MediaTransaction } from '@/api/media/transaction';
 import { badRequest, ok } from '@shared/responses';
 import { getImageSize } from '@shared/image/size';
 import { Repository } from '@data/repo';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { ObjectId } from 'mongodb';
 import { parseInt } from '@shared/parseInt';
 import { app } from '@/api/app';

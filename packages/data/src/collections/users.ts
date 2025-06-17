@@ -1,11 +1,10 @@
 import { Binary, ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
 
-import { ShortUser, User, UserPersonalInfo } from '../types/user';
+import { ShortUser, User, UserPersonalInfo, UserRole } from '../types/user';
 
 import { EntityCollection } from './base';
 
 import { deleteUndefined } from '@shared/deleteUndefined';
-import { UserRole } from '@shared/api/user/types';
 
 export class UserCollection extends EntityCollection<User> {
   constructor(client: MongoClient, session?: ClientSession) {

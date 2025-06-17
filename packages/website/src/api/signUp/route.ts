@@ -1,8 +1,8 @@
 import { Binary, ObjectId } from 'mongodb';
 import { badRequest, conflict, internalServerError } from '@shared/responses';
-import { hashPassword } from '@shared/api/auth/password';
-import { newSessionId, setSessionId } from '@shared/api/auth';
-import { SignUpDataSchema } from '@shared/api/auth/types';
+import { hashPassword } from '@/api/auth/password';
+import { newSessionId, setSessionId } from '@/api/auth';
+import { SignUpDataSchema } from '@/api/auth/types';
 import { Repository } from '@data/repo';
 import { isDuplicateKeyError } from '@shared/errors/mongo';
 import { randomBytes } from '@shared/crypto/random';

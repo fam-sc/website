@@ -1,8 +1,8 @@
-import { UploadGalleryImagesPayload } from '@shared/api/gallery/payloads';
+import { UploadGalleryImagesPayload } from '@/api/gallery/payloads';
 import {
   GalleryImageWithEvent,
   GalleryImageWithSizes,
-} from '@shared/api/gallery/types';
+} from '@/api/gallery/types';
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function fetchGalleryPage(

@@ -2,9 +2,9 @@ import { badRequest, conflict } from '@shared/responses';
 import { Repository } from '@data/repo';
 import { Binary, ObjectId } from 'mongodb';
 import { parseHexString } from '@shared/string/hex';
-import { newSessionId, setSessionId } from '@shared/api/auth';
+import { newSessionId, setSessionId } from '@/api/auth';
 import { isDuplicateKeyError } from '@shared/errors/mongo';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
 
 app.post('/signUp/finish', async (request) => {

@@ -5,9 +5,9 @@ import { getMediaFileUrl } from '@/api/media';
 import { UploadIcon } from '@/icons/UploadIcon';
 import { useCallback, useMemo, useState } from 'react';
 import { GalleryImageInfoDialog } from './dialog';
-import { GalleryImageWithSizes } from '@shared/api/gallery/types';
+import { GalleryImageWithSizes } from '@/api/gallery/types';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { Link, useNavigate } from 'react-router';
 
 export type ClientComponentProps = {

@@ -1,4 +1,4 @@
-import { Schedule } from '@shared/api/schedule/types';
+import { Schedule } from '@/api/schedule/types';
 import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';
 
 import { getSchedule } from '@/api/schedule/client';

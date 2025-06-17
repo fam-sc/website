@@ -1,7 +1,7 @@
 import { badRequest, unauthrorized } from '@shared/responses';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 import { Repository } from '@data/repo';
-import { userPersonalInfo } from '@shared/api/user/payloads';
+import { userPersonalInfo } from '@/api/users/payloads';
 import { app } from '@/api/app';
 
 app.put('/users/personal', async (request) => {

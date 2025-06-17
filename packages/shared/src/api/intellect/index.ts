@@ -4,8 +4,7 @@ import querystring from 'node:querystring';
 import { z, ZodMiniType } from 'zod/v4-mini';
 
 import { ApiResponse, Lecturer, lecturer } from './types';
-
-import { fetchObject } from '@shared/fetch';
+import { fetchObject } from '../../fetch';
 
 async function apiRequest<T>(path: string, schema: ZodMiniType<T>): Promise<T> {
   const response = await fetchObject<ApiResponse<T>>(

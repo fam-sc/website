@@ -1,9 +1,9 @@
-import { Time } from '../campus/types';
+import { Time } from '../../../../shared/src/api/campus/types';
 
 import { z } from 'zod/v4-mini';
 
-export type { Time } from '../campus/types';
-export { timeBreakpoints } from '../campus/types';
+export type { Time } from '../../../../shared/src/api/campus/types';
+export { timeBreakpoints } from '../../../../shared/src/api/campus/types';
 
 export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 

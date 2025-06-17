@@ -9,7 +9,7 @@ import { Tabs } from '@/components/Tabs';
 import { Tab } from '@/components/Tab';
 import { ResultsTab } from './tabs/results';
 import { useCheckUserRole } from '@/hooks/useCheckUserRole';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { Title } from '@/components/Title';
 
 export type PollInfo = {

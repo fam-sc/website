@@ -1,5 +1,5 @@
 import { unauthrorized } from '@shared/responses';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { app } from '@/api/app';
 

@@ -1,5 +1,5 @@
-import { ApiError } from '@shared/api/error';
-import { ApiErrorCode } from '@shared/api/errorCodes';
+import { ApiError } from '@/api/error';
+import { ApiErrorCode } from '@/api/errorCodes';
 import { changePassword } from '@/api/users/client';
 import { Button } from '@/components/Button';
 import { ErrorBoard } from '@/components/ErrorBoard';

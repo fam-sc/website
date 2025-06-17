@@ -1,8 +1,10 @@
 import { ObjectId } from 'mongodb';
 
 import { RichTextString } from '@shared/richText/types';
-import { UserRole } from '@shared/api/user/types';
 import { ImageSize } from '@shared/image/types';
+import { UserRole } from './user';
+
+export type EventStatus = 'pending' | 'ended';
 
 export type Event = {
   title: string;

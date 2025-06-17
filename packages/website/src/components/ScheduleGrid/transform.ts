@@ -4,7 +4,7 @@ import {
   Lesson,
   Time,
   timeBreakpoints,
-} from '@shared/api/schedule/types';
+} from '@/api/schedule/types';
 
 export type IndexedLesson = { index: number; value: Lesson };
 

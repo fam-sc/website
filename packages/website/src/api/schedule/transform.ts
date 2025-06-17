@@ -8,7 +8,7 @@ import { TeacherMap } from './teachers';
 import {
   DaySchedule as ApiDaySchedule,
   Schedule as ApiSchedule,
-} from '@shared/api/schedule/types';
+} from '@/api/schedule/types';
 
 import {
   Day,

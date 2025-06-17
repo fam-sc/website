@@ -1,9 +1,9 @@
 import { authRoute } from '@/api/authRoute';
-import { ApiErrorCode } from '@shared/api/errorCodes';
+import { ApiErrorCode } from '@/api/errorCodes';
 import { badRequest, notFound } from '@shared/responses';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { ObjectId } from 'mongodb';
-import { submitPollPayload } from '@shared/api/polls/types';
+import { submitPollPayload } from '@/api/polls/types';
 import { app } from '@/api/app';
 import { isValidAnswers } from './validation';
 

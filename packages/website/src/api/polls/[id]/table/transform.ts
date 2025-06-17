@@ -1,4 +1,4 @@
-import { PollResultsTable } from '@shared/api/polls/types';
+import { PollResultsTable } from '@/api/polls/types';
 import {
   PollQuestion,
   PollRespondent,

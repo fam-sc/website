@@ -1,7 +1,7 @@
-import { UserInfoWithRole } from '@shared/api/user/types';
+import { UserInfoWithRole } from '@/api/users/types';
 import { classNames } from '@/utils/classNames';
 import { UserRoleItem } from '../UserRoleItem';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { List } from '../List';
 import styles from './index.module.scss';
 

@@ -6,7 +6,7 @@ import {
   Lesson,
   Time,
   timeBreakpoints,
-} from '@shared/api/schedule/types';
+} from '@/api/schedule/types';
 import { classNames } from '@/utils/classNames';
 import { DayMarker } from './DayMarker';
 import { TimeMarkers } from './TimeMarkers';

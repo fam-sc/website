@@ -36,6 +36,8 @@
     "**/.server/**/*",
     "**/.client/**/*",
     "./.storybook/**/*",
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "../shared/src/api/campus",
+    "../shared/src/api/intellect"
   ]
 }

@@ -1,7 +1,7 @@
 import { ClientComponent } from './client';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 import { Repository } from '@data/repo';
 
 export async function loader({ request }: Route.LoaderArgs) {

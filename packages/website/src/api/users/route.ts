@@ -3,8 +3,9 @@ import { getFacultyGroupMapById } from '@/api/groups/utils';
 import { badRequest, ok } from '@shared/responses';
 import { parseInt } from '@shared/parseInt';
 import { formPersonName } from '@shared/person';
-import { UserInfoWithRole, UserRole } from '@shared/api/user/types';
+import { UserInfoWithRole } from '@/api/users/types';
 import { app } from '@/api/app';
+import { UserRole } from '@data/types/user';
 
 const PAGE_SIZE = 20;
 

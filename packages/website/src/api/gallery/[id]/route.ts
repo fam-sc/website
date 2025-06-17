@@ -1,10 +1,10 @@
-import { GalleryImageWithEvent } from '@shared/api/gallery/types';
+import { GalleryImageWithEvent } from '@/api/gallery/types';
 import { notFound, ok } from '@shared/responses';
 import { Repository } from '@data/repo';
 import { formatDateTime } from '@shared/date';
 import { ObjectId } from 'mongodb';
 import { authRoute } from '@/api/authRoute';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
 
 app.get('/gallery/:id', async (_request, { params: { id } }) => {

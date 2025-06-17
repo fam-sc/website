@@ -1,5 +1,5 @@
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { useNavigate } from 'react-router';
 
 export function useCheckUserRole(minRole: UserRole) {

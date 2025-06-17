@@ -1,6 +1,6 @@
 import { authRoute } from '@/api/authRoute';
 import { notFound, ok } from '@shared/responses';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { pollResultsToTable } from './transform';
 import { app } from '@/api/app';
 

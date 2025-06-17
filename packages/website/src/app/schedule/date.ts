@@ -1,6 +1,6 @@
 import { Time, timeBreakpoints } from '@shared/api/campus/types';
 import { CurrentLesson } from '@/components/ScheduleGrid';
-import { Day } from '@shared/api/schedule/types';
+import { Day } from '@/api/schedule/types';
 
 const LESSON_MINUTES = 90;
 

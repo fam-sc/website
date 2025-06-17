@@ -1,6 +1,6 @@
-import { getAllFiles } from '../../formData';
+import { getAllFiles } from '@shared/formData';
 import { coerce, object, pipe, string, z } from 'zod/v4-mini';
-import { richText } from '../../richText/zod';
+import { richText } from '@shared/richText/zod';
 
 const status = z.enum(['pending', 'ended']);
 

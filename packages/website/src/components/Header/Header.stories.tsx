@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Header } from '.';
 import { AuthProvider } from '@/auth/context';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 
 export default {
   component: Header,

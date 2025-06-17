@@ -1,9 +1,4 @@
-export const enum UserRole {
-  STUDENT_NON_APPROVED = -1,
-  STUDENT = 0,
-  GROUP_HEAD = 1,
-  ADMIN = 2,
-}
+import { UserRole } from '@data/types/user';
 
 export interface UserInfo {
   id: string;

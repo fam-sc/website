@@ -1,5 +1,5 @@
-import { randomBytes } from '../../crypto/random';
-import { getCookieValue, setCookie } from '../cookies';
+import { randomBytes } from '@shared/crypto/random';
+import { getCookieValue, setCookie } from '@shared/cookies';
 
 export const SESSION_ID_COOKIE = 'sid';
 

@@ -5,7 +5,7 @@ import { RichTextString } from '@shared/richText/types';
 import { EventListItem } from '@/components/EventListItem';
 import { List } from '@/components/List';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { LinkButton } from '@/components/LinkButton';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { ImageSize } from '@shared/image/types';

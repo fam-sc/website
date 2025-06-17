@@ -2,7 +2,7 @@ import { badRequest, notFound, ok } from '@shared/responses';
 import { getScheduleForGroup } from './get';
 import { normalizeGuid } from '@shared/guid';
 import { authRoute } from '@/api/authRoute';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { isValidPayload } from './links';
 import { app } from '@/api/app';
 

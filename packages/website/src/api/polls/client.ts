@@ -2,7 +2,7 @@ import type {
   AddPollPayload,
   PollResultsTable,
   SubmitPollPayload,
-} from '@shared/api/polls/types';
+} from '@/api/polls/types';
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function addPoll(payload: AddPollPayload) {

@@ -4,10 +4,10 @@ import { EventIcon } from '@/icons/EventIcon';
 import { RichText } from '@/components/RichText';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { RichTextString } from '@shared/richText/types';
-import { EventStatus } from '@shared/api/events/types';
 import { ImageSize } from '@shared/image/types';
 import { Link } from 'react-router';
 import { Image } from '../Image';
+import { EventStatus } from '@data/types';
 
 export type EventListItemProps = {
   id: string;

@@ -1,7 +1,7 @@
 import { app } from '@/api/app';
 import { Repository } from '@data/repo';
-import { getSessionIdNumber } from '@shared/api/auth';
-import { UserSelfInfo } from '@shared/api/user/types';
+import { getSessionIdNumber } from '@/api/auth';
+import { UserSelfInfo } from '@/api/users/types';
 import { ok, unauthrorized } from '@shared/responses';
 
 app.get('/users/me', async (request) => {

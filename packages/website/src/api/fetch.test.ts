@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import { apiCheckedFetch } from './fetch';
-import { ApiErrorCode } from '@shared/api/errorCodes';
-import { ApiError } from '@shared/api/error';
+import { ApiErrorCode } from '@/api/errorCodes';
+import { ApiError } from '@/api/error';
 
 function callApiCheckedFetchWithFakeResponse(
   result: Response

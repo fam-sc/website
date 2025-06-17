@@ -1,8 +1,8 @@
-import { ApiErrorCode } from '@shared/api/errorCodes';
+import { ApiErrorCode } from '@/api/errorCodes';
 import { badRequest, unauthrorized } from '@shared/responses';
-import { changePasswordPayload } from '@shared/api/user/payloads';
-import { hashPassword, verifyPassword } from '@shared/api/auth/password';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { changePasswordPayload } from '@/api/users/payloads';
+import { hashPassword, verifyPassword } from '@/api/auth/password';
+import { getSessionIdNumber } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { Binary } from 'mongodb';
 import { app } from '@/api/app';

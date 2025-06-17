@@ -1,7 +1,7 @@
 import { IconLinkButton } from '@/components/IconLinkButton';
 import { Typography } from '@/components/Typography';
 import { InfoIcon } from '@/icons/InfoIcon';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 
 import styles from './page.module.scss';
 import { PollWithSubmit } from './PollWithSubmit';
@@ -13,7 +13,7 @@ import { Route } from './+types/page';
 import { omitProperty } from '@/utils/object/omit';
 import { Title } from '@/components/Title';
 import { Repository } from '@data/repo';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (

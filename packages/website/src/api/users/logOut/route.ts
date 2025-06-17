@@ -1,4 +1,4 @@
-import { getSessionIdNumber, SESSION_ID_COOKIE } from '@shared/api/auth';
+import { getSessionIdNumber, SESSION_ID_COOKIE } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { app } from '@/api/app';
 

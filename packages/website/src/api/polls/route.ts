@@ -1,8 +1,8 @@
 import { authRoute } from '@/api/authRoute';
 import { badRequest } from '@shared/responses';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
-import { addPollPayload } from '@shared/api/polls/types';
+import { addPollPayload } from '@/api/polls/types';
 
 app.post('/polls', async (request) => {
   const rawPayload = await request.json();

@@ -1,4 +1,4 @@
-import { AddEventPayload, EditEventPayload } from '@shared/api/events/payloads';
+import { AddEventPayload, EditEventPayload } from '@/api/events/payloads';
 import { ShortEvent } from './types';
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 

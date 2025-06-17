@@ -1,5 +1,5 @@
-import { Schedule } from '@shared/api/schedule/types';
-import { UpdateScheduleLinksPayload } from '@shared/api/schedule/payloads';
+import { Schedule } from '@/api/schedule/types';
+import { UpdateScheduleLinksPayload } from '@/api/schedule/payloads';
 
 export function scheduleToUpdateLinksPayload(
   value: Schedule

@@ -1,6 +1,6 @@
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 import { Repository } from '@data/repo';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { unauthrorized } from '@shared/responses';
 
 export async function authRoute(

@@ -3,7 +3,7 @@ import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
 import { ReactNode } from 'react';
 import { redirect } from 'react-router';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 import { tabs } from './tabs';
 import { Repository } from '@data/repo';
 import { Route } from './+types/layout';

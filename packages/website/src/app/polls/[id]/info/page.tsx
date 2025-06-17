@@ -4,9 +4,9 @@ import { notFound } from '@shared/responses';
 import { Route } from './+types/page';
 import { omitProperty } from '@/utils/object/omit';
 import { Repository } from '@data/repo';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { redirect } from 'react-router';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const sessionId = getSessionIdNumber(request);

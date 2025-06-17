@@ -16,9 +16,9 @@ import { NotificationWrapper } from '@/components/Notification';
 import { backgroundColor } from '@/theme';
 
 import '@/theme/global.scss';
-import type { UserWithRoleAndAvatar } from '@shared/api/user/types';
+import type { UserWithRoleAndAvatar } from '@/api/users/types';
 import { Repository } from '@data/repo';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 
 export const links: Route.LinksFunction = () => [
   {

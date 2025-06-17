@@ -1,15 +1,15 @@
-import { parseAddEventPayload } from '@shared/api/events/payloads';
+import { parseAddEventPayload } from '@/api/events/payloads';
 import { MediaTransaction } from '@/api/media/transaction';
 import { badRequest, ok } from '@shared/responses';
 import { Repository } from '@data/repo';
 import { ObjectId } from 'mongodb';
 import { getImageSize } from '@shared/image/size';
 import { authRoute } from '@/api/authRoute';
-import { UserRole } from '@shared/api/user/types';
 import { app } from '@/api/app';
 import { resolveImageSizes } from '@shared/image/breakpoints';
 import { putMultipleSizedImages } from '../media/multiple';
 import { hydrateRichText } from '../richText/hydration';
+import { UserRole } from '@data/types/user';
 
 app.get('/events', async (request) => {
   const url = new URL(request.url);

@@ -1,6 +1,6 @@
 import { authRoute } from '@/api/authRoute';
 import { notFound } from '@shared/responses';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
 
 app.post('/polls/:id/close', async (request, { params: { id } }) => {

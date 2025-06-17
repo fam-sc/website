@@ -1,4 +1,4 @@
-import { DaySchedule, Lesson, Schedule } from '@shared/api/schedule/types';
+import { DaySchedule, Lesson, Schedule } from '@/api/schedule/types';
 
 function broadcastUpdatedLessonToDay(
   value: DaySchedule,

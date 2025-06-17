@@ -12,7 +12,7 @@ import { deleteEvent } from '@/api/events/client';
 import { useNotification } from '@/components/Notification';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { RichTextString } from '@shared/richText/types';
 import { ImageSize } from '@shared/image/types';
 import { Link, useNavigate } from 'react-router';

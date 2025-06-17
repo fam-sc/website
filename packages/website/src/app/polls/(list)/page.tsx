@@ -3,7 +3,7 @@ import { ShortPollInfoList } from '@/components/ShortPollInfoList';
 import { coerce } from '@shared/math';
 import { parseInt } from '@shared/parseInt';
 import styles from './page.module.scss';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { LinkButton } from '@/components/LinkButton';
 import { redirect } from 'react-router';

@@ -1,5 +1,5 @@
 import { z, ZodMiniType } from 'zod/v4-mini';
-
+import { fetchObject } from '../../fetch';
 import {
   CurrentTime,
   currentTime,
@@ -8,8 +8,6 @@ import {
   LessonSchedule,
   lessonSchedule,
 } from './types';
-
-import { fetchObject } from '../../fetch';
 
 async function apiRequest<T>(path: string, schema: ZodMiniType<T>): Promise<T> {
   const result = await fetchObject(`https://api.campus.kpi.ua${path}`);

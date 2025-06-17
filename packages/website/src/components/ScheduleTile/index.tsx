@@ -3,7 +3,7 @@ import { Typography } from '../Typography';
 
 import styles from './index.module.scss';
 
-import { Lesson } from '@shared/api/schedule/types';
+import { Lesson } from '@/api/schedule/types';
 import { PlaceIcon } from '@/icons/PlaceIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
 import { PropsMap } from '@/types/react';

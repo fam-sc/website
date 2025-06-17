@@ -1,7 +1,7 @@
 import { notFound, unauthrorized } from '@shared/responses';
-import { getSessionIdNumber } from '@shared/api/auth';
+import { getSessionIdNumber } from '@/api/auth';
 import { Repository } from '@data/repo';
-import { UserRole } from '@shared/api/user/types';
+import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
 
 app.post(
