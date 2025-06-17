@@ -5,6 +5,7 @@ import { cloudflare } from '@cloudflare/vite-plugin';
 import { manifestPlugin } from './vite-plugins/manifest';
 import { imagePlugin } from './vite-plugins/image';
 import { multienvPlugin } from './vite-plugins/multienv';
+import { htmlPlugin } from './vite-plugins/html';
 
 const isLocal = process.env.LOCAL === '1';
 
@@ -14,7 +15,7 @@ export default defineConfig((env) => ({
     minify: 'esbuild',
   },
   ssr: (
-    env.command === 'build' ? {
+    env.command === 'build' && !isLocal ? {
       noExternal: true,
       external: ['sharp'],
     } : undefined
@@ -30,6 +31,7 @@ export default defineConfig((env) => ({
     manifestPlugin(),
     imagePlugin(),
     multienvPlugin(),
+    htmlPlugin(),
     tsconfigPaths(),
   ],
 }));

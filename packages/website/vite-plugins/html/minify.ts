@@ -1,7 +1,7 @@
 // Simple attempt at minifying HTML
 
 import { parse } from 'parse5';
-import { Element, Node, Template, TextNode } from './types';
+import { DefaultTreeAdapterTypes } from 'parse5';
 
 export function minifyInlineCss(text: string): string {
   let result = text
@@ -27,7 +27,7 @@ export function minifyInlineCss(text: string): string {
   return result;
 }
 
-function nodeToString(node: Node): string {
+function nodeToString(node: DefaultTreeAdapterTypes.Node): string {
   switch (node.nodeName) {
     case '#documentType': {
       return '<!DOCTYPE html>';
@@ -36,40 +36,40 @@ function nodeToString(node: Node): string {
       return '';
     }
     case 'template': {
-      const children = nodeToString((node as Template).content);
+      const children = nodeToString(
+        (node as DefaultTreeAdapterTypes.Template).content
+      );
       return `<template>${children}</template>`;
     }
     case '#text': {
-      return (node as TextNode).value.trim().replaceAll('\n', '');
+      return (node as DefaultTreeAdapterTypes.TextNode).value
+        .trim()
+        .replaceAll('\n', '');
     }
     case '#document': {
       return node.childNodes.map((node) => nodeToString(node)).join('');
     }
     default: {
-      const element = node as Element;
+      const element = node as DefaultTreeAdapterTypes.Element;
 
       const { nodeName } = element;
       const children = element.childNodes
         .map((node) => nodeToString(node))
         .join('');
 
-      let attrs = element.attrs
+      const attrs = element.attrs
         .map(({ name, value }) => {
-          if (name === 'style') {
-            return `${name}="${minifyInlineCss(value)}"`;
-          }
+          const valuePart = name === 'style' ? minifyInlineCss(value) : value;
 
-          return `${name}="${value}"`;
+          return `${name}="${valuePart}"`;
         })
         .join(' ');
 
-      if (attrs.length > 0) {
-        attrs = ` ${attrs}`;
-      }
+      const tag = attrs.length > 0 ? `${nodeName} ${attrs}` : nodeName;
 
       return children.length === 0
-        ? `<${nodeName}${attrs}/>`
-        : `<${nodeName}${attrs}>${children}</${nodeName}>`;
+        ? `<${tag}/>`
+        : `<${tag}>${children}</${nodeName}>`;
     }
   }
 }
