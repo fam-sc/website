@@ -8,16 +8,12 @@ import { useNotification } from '@/components/Notification';
 import { SelectEventDialog } from '@/components/SelectEventDialog';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
-import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { LinkIcon } from '@/icons/LinkIcon';
-import { UserRole } from '@data/types/user';
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import styles from './page.module.scss';
 
 export default function Page() {
-  useCheckUserRole(UserRole.ADMIN);
-
   const [files, setFiles] = useState<File[]>([]);
   const [date, setDate] = useState<Date>(() => new Date());
   const [attachedEvent, setAttachedEvent] = useState<ShortEvent>();

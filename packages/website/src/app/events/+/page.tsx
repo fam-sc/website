@@ -14,10 +14,8 @@ import { OptionSwitch } from '@/components/OptionSwitch';
 import { RichTextEditorRef, RichTextEditor } from '@/components/RichTextEditor';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
-import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { ImageInfo } from '@/utils/image/types';
 import { EventStatus } from '@data/types';
-import { UserRole } from '@data/types/user';
 import { useState, useRef, useCallback } from 'react';
 import styles from './page.module.scss';
 
@@ -57,8 +55,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Page({ loaderData: { event } }: Route.ComponentProps) {
-  useCheckUserRole(UserRole.ADMIN);
-
   const errorAlert = useNotification();
 
   const [image, setImage] = useState<ImageInfo[] | string | undefined>(() =>

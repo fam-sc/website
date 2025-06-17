@@ -14,7 +14,6 @@ import { Tab } from '@/components/Tab';
 import { Tabs } from '@/components/Tabs';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
-import { useCheckUserRole } from '@/hooks/useCheckUserRole';
 import { useState } from 'react';
 import { ResultsTab } from './tabs/results';
 import { formatDateTime } from '@shared/date';
@@ -42,8 +41,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 }
 
 export default function Page({ loaderData: { poll } }: Route.ComponentProps) {
-  useCheckUserRole(UserRole.ADMIN);
-
   const [isPollClosed, setPollClosed] = useState(poll.endDate !== null);
   const notification = useNotification();
 

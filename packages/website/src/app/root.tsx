@@ -3,6 +3,7 @@ import {
   Links,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
   useLoaderData,
@@ -19,6 +20,7 @@ import '@/theme/global.scss';
 import type { UserWithRoleAndAvatar } from '@/api/users/types';
 import { Repository } from '@data/repo';
 import { getSessionIdNumber } from '@/api/auth';
+import { getMinRoleForRoute } from './permissions';
 
 export const links: Route.LinksFunction = () => [
   {
@@ -40,6 +42,12 @@ export async function loader({ request }: Route.LoaderArgs) {
     await using repo = await Repository.openConnection();
 
     user = await repo.sessions().getUserWithRole(sessionId);
+  }
+
+  const { pathname } = new URL(request.url);
+  const minRole = getMinRoleForRoute(pathname);
+  if (minRole !== null && (user === null || user.role < minRole)) {
+    return redirect('/');
   }
 
   return { user };
