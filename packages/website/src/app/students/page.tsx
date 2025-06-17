@@ -1,13 +1,20 @@
-import { ClientComponent } from './client';
 import { formatDateTime } from '@shared/date';
 import { shortenRichText } from '@shared/richText/short';
 import { WithId } from 'mongodb';
-import { ClientEvent } from '../events/(list)/client';
 import { Event } from '@data/types';
 import { Route } from './+types/page';
 import { Repository } from '@data/repo';
+import { usefulLinks } from './usefulLinks';
+import { Typography } from '@/components/Typography';
+import { UsefulLinkList } from '@/components/UsefulLinkList';
+import { List } from '@/components/List';
+import { EventListItem } from '@/components/EventListItem';
+import { getMediaFileUrl } from '@/api/media';
+import { LinkButton } from '@/components/LinkButton';
+import { Title } from '@/components/Title';
+import styles from './page.module.scss';
 
-function toClientEvent(event: WithId<Event>): ClientEvent {
+function toClientEvent(event: WithId<Event>) {
   return {
     id: event._id.toString(),
     status: event.status,
@@ -28,5 +35,42 @@ export async function loader() {
 export default function Page({
   loaderData: { latestEvents },
 }: Route.ComponentProps) {
-  return <ClientComponent latestEvents={latestEvents} />;
+  return (
+    <>
+      <Title>Студентство</Title>
+
+      <Typography variant="h4" className={styles['useful-links-title']}>
+        Корисні джерела
+      </Typography>
+      <UsefulLinkList className={styles['useful-links']} items={usefulLinks} />
+
+      <Typography variant="h4" className={styles['events-title']}>
+        Заходи
+      </Typography>
+
+      <List className={styles.events}>
+        {latestEvents.map(({ id, images, ...rest }) => (
+          <li key={id}>
+            <EventListItem
+              {...rest}
+              id={id}
+              images={images.map(({ width, height }) => ({
+                src: getMediaFileUrl(`events/${id}/${width}`),
+                width,
+                height,
+              }))}
+            />
+          </li>
+        ))}
+      </List>
+
+      <LinkButton
+        to="/events"
+        buttonVariant="solid"
+        className={styles['events-more']}
+      >
+        Детальніше
+      </LinkButton>
+    </>
+  );
 }

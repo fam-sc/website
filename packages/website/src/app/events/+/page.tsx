@@ -1,13 +1,27 @@
 import { Repository } from '@data/repo';
-import { ClientComponent, ClientEvent } from './client';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
-import { redirect } from 'react-router';
+import { redirect, useNavigate } from 'react-router';
 import { Route } from './+types/page';
+import { addEvent, editEvent } from '@/api/events/client';
+import { getMediaFileUrl } from '@/api/media';
+import { Button } from '@/components/Button';
+import { DatePicker } from '@/components/DatePicker';
+import { ErrorBoard } from '@/components/ErrorBoard';
+import { InlineImageDropArea } from '@/components/InlineImageDropArea';
+import { Labeled } from '@/components/Labeled';
+import { useNotification } from '@/components/Notification';
+import { OptionSwitch } from '@/components/OptionSwitch';
+import { RichTextEditorRef, RichTextEditor } from '@/components/RichTextEditor';
+import { TextInput } from '@/components/TextInput';
+import { Title } from '@/components/Title';
+import { useCheckUserRole } from '@/hooks/useCheckUserRole';
+import { ImageInfo } from '@/utils/image/types';
+import { EventStatus } from '@data/types';
+import { UserRole } from '@data/types/user';
+import { useState, useRef, useCallback } from 'react';
+import styles from './page.module.scss';
 
-async function getClientEvent(
-  repo: Repository,
-  id: string
-): Promise<ClientEvent | undefined> {
+async function getClientEvent(repo: Repository, id: string) {
   try {
     const editEvent = await repo.events().findById(id);
 
@@ -43,5 +57,168 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Page({ loaderData: { event } }: Route.ComponentProps) {
-  return <ClientComponent event={event} />;
+  useCheckUserRole(UserRole.ADMIN);
+
+  const errorAlert = useNotification();
+
+  const [image, setImage] = useState<ImageInfo[] | string | undefined>(() =>
+    event?.images.map(({ width, height }) => ({
+      src: getMediaFileUrl(`events/${event.id}/${width}`),
+      width,
+      height,
+    }))
+  );
+  const imageFileRef = useRef<File>(undefined);
+
+  const [title, setTitle] = useState(event?.title ?? '');
+  const [date, setDate] = useState(event?.date ?? new Date());
+  const [status, setStatus] = useState<EventStatus>('pending');
+  const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(
+    event === undefined
+  );
+  const descriptionRef = useRef<RichTextEditorRef | null>(null);
+
+  const [actionPending, setActionPending] = useState(false);
+
+  const navigate = useNavigate();
+
+  return (
+    <div className={styles.root}>
+      <Title>
+        {event !== undefined ? 'Редагування події' : 'Додати подію'}
+      </Title>
+
+      <TextInput
+        disabled={actionPending}
+        error={title.length === 0 ? 'Пустий заголовок' : undefined}
+        className={styles.title}
+        placeholder="Заголовок"
+        value={title}
+        onTextChanged={setTitle}
+      />
+
+      <Labeled title="Картинка">
+        <InlineImageDropArea
+          disabled={actionPending}
+          className={styles.image}
+          image={image}
+          onFile={useCallback(
+            (file) => {
+              imageFileRef.current = file;
+
+              setImage((prev) => {
+                if (typeof prev === 'string') {
+                  URL.revokeObjectURL(prev);
+                }
+
+                return file && URL.createObjectURL(file);
+              });
+            },
+            [setImage]
+          )}
+        />
+      </Labeled>
+
+      <Labeled title="Дата">
+        <DatePicker
+          disabled={actionPending}
+          className={styles.date}
+          value={date}
+          onValueChanged={setDate}
+        />
+      </Labeled>
+
+      <Labeled title="Статус">
+        <OptionSwitch
+          options={['pending', 'ended']}
+          selected={status}
+          renderOption={useCallback(
+            (status: 'pending' | 'ended') =>
+              status === 'pending' ? 'Очікується' : 'Закінчилась',
+            []
+          )}
+          onOptionSelected={setStatus}
+        />
+      </Labeled>
+
+      <Labeled title="Опис">
+        <RichTextEditor
+          ref={descriptionRef}
+          disabled={actionPending}
+          className={styles.description}
+          text={event?.description ?? ''}
+          onIsEmptyChanged={setIsDescriptionEmpty}
+        />
+      </Labeled>
+
+      <ErrorBoard
+        className={styles.errors}
+        items={[
+          title.length === 0 && 'Пустий заголовок',
+          isDescriptionEmpty && 'Пустий опис',
+          image === undefined && 'Немає картинки',
+        ]}
+      />
+
+      <Button
+        className={styles['save-edit-button']}
+        disabled={
+          actionPending ||
+          title.length === 0 ||
+          isDescriptionEmpty ||
+          image === undefined
+        }
+        buttonVariant="solid"
+        onClick={() => {
+          const { current: image } = imageFileRef;
+
+          setActionPending(true);
+
+          let promise: Promise<void> | undefined;
+
+          const description = descriptionRef.current?.getRichText();
+          if (!description) {
+            throw new Error('Description is null');
+          }
+
+          if (event === undefined) {
+            if (image !== undefined) {
+              promise = addEvent({
+                title,
+                date,
+                image,
+                status,
+                description: description.value,
+                descriptionFiles: description.files,
+              });
+            }
+          } else {
+            promise = editEvent(event.id, {
+              title,
+              date,
+              image,
+              status,
+              description: description.value,
+              descriptionFiles: description.files,
+            });
+          }
+
+          if (promise) {
+            promise
+              .then(() => {
+                void navigate('/events');
+              })
+              .catch((error: unknown) => {
+                console.error(error);
+
+                errorAlert.show('Сталася помилка при збережені даних', 'error');
+                setActionPending(false);
+              });
+          }
+        }}
+      >
+        {event ? 'Зберегти' : 'Додати'}
+      </Button>
+    </div>
+  );
 }
