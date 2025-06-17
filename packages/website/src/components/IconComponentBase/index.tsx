@@ -18,9 +18,8 @@ export const IconComponentBase = impersonatedComponent<
   IconComponentBaseProps,
   'button'
 >(
-  'button',
   ({
-    as,
+    as = 'button',
     rounding = 'rounded',
     hover = 'background',
     className,

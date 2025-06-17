@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Typography } from '../Typography';
 
 import { classNames } from '@/utils/classNames';
@@ -19,16 +17,17 @@ export interface ButtonProps {
 }
 
 export const Button = impersonatedComponent<ButtonProps, 'button'>(
-  'button',
   ({
-    className,
+    as = 'button',
     buttonVariant = 'flat',
     color = 'primary',
+    className,
     disabled,
     ...rest
   }) => {
     return (
       <Typography
+        as={as}
         disabled={disabled}
         className={classNames(
           styles.root,

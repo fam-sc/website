@@ -1,4 +1,4 @@
-import React, { Attributes } from 'react';
+import React, { Attributes, ReactNode } from 'react';
 
 import styles from './index.module.scss';
 
@@ -14,6 +14,8 @@ export interface TypographyProps {
   hasIcon?: boolean;
   variant?: TypographyVariant;
   weight?: TypographyWeight;
+  className?: string;
+  children?: ReactNode;
 }
 
 function isHeader(value: TypographyVariant): value is Header {
@@ -21,9 +23,8 @@ function isHeader(value: TypographyVariant): value is Header {
 }
 
 export const Typography = impersonatedComponent<TypographyProps, 'p'>(
-  'p',
   ({
-    as: _as,
+    as = 'p',
     className,
     variant = 'body',
     weight = 'plain',
@@ -31,7 +32,7 @@ export const Typography = impersonatedComponent<TypographyProps, 'p'>(
     children,
     ...rest
   }) => {
-    const elementName = _as === 'p' && isHeader(variant) ? variant : _as;
+    const elementName = as === 'p' && isHeader(variant) ? variant : as;
 
     return React.createElement(
       elementName,
