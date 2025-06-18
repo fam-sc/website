@@ -1,10 +1,6 @@
 import { Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 
-import { EditorContent, EditorContext, useEditor } from '@tiptap/react';
-
-import richTextStyles from '../RichText/index.module.scss';
-import typographyStyles from '../Typography/index.module.scss';
-import styles from './index.module.scss';
+import { EditorContext, useEditor } from '@tiptap/react';
 
 import { classNames } from '@/utils/classNames';
 import { Menu, useMenuOptions } from './Menu';
@@ -14,6 +10,8 @@ import {
   tiptapTextToRichText,
 } from '@/utils/tiptap/serializer';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
+import styles from './index.module.scss';
+import { EditorContent } from './EditorContent';
 
 export type RichTextEditorRef = {
   getRichText(): SerializeResultWithFiles | null;
@@ -81,14 +79,8 @@ export function RichTextEditor({
     >
       <EditorContext.Provider value={{ editor }}>
         <Menu urlManager={urlManager} options={menuOptions} />
-        <EditorContent
-          className={classNames(
-            typographyStyles.root,
-            typographyStyles['root-variant-body'],
-            richTextStyles.root
-          )}
-          editor={editor}
-        />
+
+        <EditorContent urlManager={urlManager} editor={editor} />
       </EditorContext.Provider>
     </div>
   );

@@ -1,9 +1,9 @@
 // Base unstyled (only functional) building block for file drop areas.
 
 import { PropsMap, WithDataSpace } from '@/types/react';
-import { useState } from 'react';
 import { Typography } from '../Typography';
 import { UploadFileButton } from '../UploadFileButton';
+import { FileDrop } from '../FileDrop';
 
 type DivProps = PropsMap['div'];
 
@@ -25,47 +25,19 @@ export function BaseFileDropArea({
   dragText,
   ...rest
 }: BaseFileDropAreaProps) {
-  const [isOver, setOver] = useState(false);
-
-  function changeIsOver(value: boolean) {
-    if (!disabled) {
-      setOver(value);
-    }
-  }
-
   return (
-    <div
-      {...rest}
-      data-over={isOver}
-      onDragEnter={() => {
-        changeIsOver(true);
-      }}
-      onDragLeave={() => {
-        changeIsOver(false);
-      }}
-      onDragOver={(e) => {
-        e.preventDefault();
+    <FileDrop onFiles={onFiles} disabled={disabled}>
+      <div {...rest}>
+        <UploadFileButton
+          accept={accept}
+          onFiles={onFiles}
+          disabled={disabled}
+          buttonVariant="solid"
+          text={uploadText}
+        />
 
-        changeIsOver(true);
-      }}
-      onDrop={(e) => {
-        if (!disabled) {
-          e.preventDefault();
-
-          onFiles?.(e.dataTransfer.files);
-          setOver(false);
-        }
-      }}
-    >
-      <UploadFileButton
-        accept={accept}
-        onFiles={onFiles}
-        disabled={disabled}
-        buttonVariant="solid"
-        text={uploadText}
-      />
-
-      <Typography>{dragText ?? 'Або перетяніть його'}</Typography>
-    </div>
+        <Typography>{dragText ?? 'Або перетяніть його'}</Typography>
+      </div>
+    </FileDrop>
   );
 }
