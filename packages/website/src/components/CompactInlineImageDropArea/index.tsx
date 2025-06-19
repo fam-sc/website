@@ -1,9 +1,11 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useNotification } from '../Notification';
 import { classNames } from '@/utils/classNames';
 import styles from './index.module.scss';
 import { PropsMap } from '@/types/react';
 import { UploadFileButton } from '../UploadFileButton';
+import { imageFileGate } from '@/utils/fileGate';
+import { useCacheInvalidate } from '@/hooks/useCacheInvalidate';
 
 type DivProps = PropsMap['div'];
 
@@ -22,26 +24,29 @@ export function CompactInlineImageDropArea({
   onFileChanged,
   ...rest
 }: CompactInlineImageDropAreaProps) {
-  const [cacheInvalidate, setCacheInvalidate] = useState<string>();
+  const { src: updatedSrc, reload } = useCacheInvalidate(src);
   const notification = useNotification();
 
   const onFiles = useCallback(
-    (files: FileList) => {
+    async (files: FileList) => {
       if (files.length > 0) {
         const file = files[0];
 
-        onFileChanged(file)
-          .then(() => {
-            setCacheInvalidate(Date.now().toString());
-          })
-          .catch((error: unknown) => {
-            console.error(error);
+        try {
+          const isValid = await imageFileGate.accept(file);
+          if (isValid) {
+            await onFileChanged(file);
 
-            notification.show('Не вдалось завантажити зображеня', 'error');
-          });
+            reload();
+          }
+        } catch (error: unknown) {
+          console.error(error);
+
+          notification.show('Не вдалось завантажити зображеня', 'error');
+        }
       }
     },
-    [notification, onFileChanged]
+    [notification, onFileChanged, reload]
   );
 
   return (
@@ -50,18 +55,10 @@ export function CompactInlineImageDropArea({
       data-has-image={src !== undefined}
       {...rest}
     >
-      {src !== undefined && (
-        <img
-          src={
-            cacheInvalidate === undefined ? src : `${src}?${cacheInvalidate}`
-          }
-          alt={alt ?? ''}
-          width={0}
-          height={0}
-        />
-      )}
+      {updatedSrc !== undefined && <img src={updatedSrc} alt={alt ?? ''} />}
 
       <div className={styles['drop-area']}>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <UploadFileButton buttonVariant="solid" onFiles={onFiles} />
       </div>
     </div>

@@ -6,6 +6,7 @@ import styles from './index.module.scss';
 import { ImageBlur } from '../ImageBlur';
 import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
 import { VarImageType } from '../VarImage';
+import { imageFileGate } from '@/utils/fileGate';
 
 type DivProps = PropsMap['div'];
 
@@ -33,6 +34,7 @@ export function InlineImageDropArea({
       {image === undefined ? (
         <BaseFileDropArea
           disabled={disabled}
+          accept={imageFileGate}
           onFiles={selectSingleFile}
           className={styles['drop-area']}
         />

@@ -2,10 +2,11 @@ import styles from './index.module.scss';
 
 import { classNames } from '@/utils/classNames';
 import { BaseFileDropArea } from '../BaseFileDropArea';
+import { FileGate } from '@/utils/fileGate';
 
 export type FileDropAreaProps = {
   className?: string;
-  accept?: string;
+  accept?: FileGate;
   onFiles?: (files: FileList) => void;
 };
 

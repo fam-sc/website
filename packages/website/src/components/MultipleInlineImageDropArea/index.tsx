@@ -3,6 +3,7 @@ import styles from './index.module.scss';
 import { BaseFileDropArea } from '../BaseFileDropArea';
 import { classNames } from '@/utils/classNames';
 import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
+import { imageFileGate } from '@/utils/fileGate';
 
 export type MultipleInlineImageDropAreaProps = {
   className?: string;
@@ -46,10 +47,12 @@ export function MultipleInlineImageDropArea({
               onDelete={() => {
                 URL.revokeObjectURL(files[i].url);
 
-                const newFiles = [...files];
-                newFiles.splice(i, 1);
+                setFiles((files) => {
+                  const newFiles = [...files];
+                  newFiles.splice(i, 1);
 
-                setFiles(newFiles);
+                  return newFiles;
+                });
               }}
             >
               <img src={url} />
@@ -60,6 +63,7 @@ export function MultipleInlineImageDropArea({
 
       <BaseFileDropArea
         disabled={disabled}
+        accept={imageFileGate}
         className={styles['drop-area']}
         uploadText="Виберіть файли"
         dragText="Або перетягніть їх"

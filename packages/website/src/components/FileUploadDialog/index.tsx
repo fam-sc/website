@@ -5,15 +5,14 @@ import { FileDropArea } from '../FileDropArea';
 import { ModalDialog } from '../ModalDialog';
 
 import styles from './index.module.scss';
+import { FileGate } from '@/utils/fileGate';
 
 export type FileUploadDialogProps = {
   // A number between 0 and 1 that specifies
   // how much of the sumbitted file is uploaded to the media server.
   fileUploadProgress?: number;
 
-  // It only works on the file chooser. User can still select a file different than 'accept' via file drop.
-  // The logic shouldn't rely on it. Just a hint.
-  accept?: string;
+  accept?: FileGate;
 
   onSubmit?: (file: File) => void;
   onClose?: () => void;

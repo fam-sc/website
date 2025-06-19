@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FileUploadDialog } from '../FileUploadDialog';
 import { ToggleButton } from './ToggleButton';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
+import { imageFileGate } from '@/utils/fileGate';
 
 export type InsertImageButtonProps = {
   urlManager: ObjectUrlManager;
@@ -26,7 +27,7 @@ export function InsertImageButton({ urlManager }: InsertImageButtonProps) {
 
       {isOpen && (
         <FileUploadDialog
-          accept=".png, .jpeg, .jpg, .webp"
+          accept={imageFileGate}
           onClose={() => {
             setIsOpen(false);
           }}

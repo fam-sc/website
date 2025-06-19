@@ -9,6 +9,8 @@ import styles from './EditorContent.module.scss';
 
 import { classNames } from '@/utils/classNames';
 import { Typography } from '../Typography';
+import { imageFileGate, isAllFilesValid } from '@/utils/fileGate';
+import { useNotification } from '../Notification';
 
 export interface EditorContentProps {
   disabled?: boolean;
@@ -21,15 +23,23 @@ export function EditorContent({
   urlManager,
   editor,
 }: EditorContentProps) {
-  const onFiles = useCallback(
-    (files: FileList) => {
-      for (const file of files) {
-        const src = urlManager.register(file);
+  const notification = useNotification();
 
-        editor?.chain().focus().setImage({ src }).run();
+  const onFiles = useCallback(
+    async (files: FileList) => {
+      const isValid = await isAllFilesValid(imageFileGate, files);
+
+      if (isValid) {
+        for (const file of files) {
+          const src = urlManager.register(file);
+
+          editor?.chain().focus().setImage({ src }).run();
+        }
+      } else {
+        notification.show('Можна вставляти тільки картинки', 'error');
       }
     },
-    [editor, urlManager]
+    [editor, notification, urlManager]
   );
 
   return (
