@@ -1,11 +1,13 @@
-name: Deploy storybook
+name: Deploy website (staging)
 on:
   push:
+    branches:
+      - main
     paths:
-      - "./packages/website/src/components/**"
-
+      - 'packages/**'
+  
 jobs:
-  deploy:
+  deploy-website-staging:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,12 +19,10 @@ jobs:
       - name: Install dependencies
         run: yarn workspaces focus @sc-fam/website
       - name: Build
-        working-directory: ./packages/website
-        run: yarn storybook:build
+        run: yarn build --mode staging
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=sc-fam-storybook storybook-static
-          workingDirectory: ./packages/website
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            workingDirectory: ./packages/website

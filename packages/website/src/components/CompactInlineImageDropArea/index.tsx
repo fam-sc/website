@@ -58,7 +58,6 @@ export function CompactInlineImageDropArea({
       {updatedSrc !== undefined && <img src={updatedSrc} alt={alt ?? ''} />}
 
       <div className={styles['drop-area']}>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <UploadFileButton buttonVariant="solid" onFiles={onFiles} />
       </div>
     </div>

@@ -15,7 +15,7 @@ export default defineConfig((env) => ({
     minify: 'esbuild',
   },
   ssr:
-    env.command === 'build' && !isLocal
+    env.command === 'build' && isLocal
       ? {
           noExternal: true,
           external: ['sharp'],

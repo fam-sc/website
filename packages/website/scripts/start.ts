@@ -46,7 +46,6 @@ async function run() {
   app.use(mogran('tiny'));
   app.use(
     '*',
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     createRequestHandler({
       build,
       mode: process.env.NODE_ENV,

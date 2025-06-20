@@ -16,8 +16,7 @@
     align-items: center;
   }
 
-  &[data-over=true] .drop-overlay {
+  &[data-over='true'] .drop-overlay {
     display: flex;
   }
 }
-
