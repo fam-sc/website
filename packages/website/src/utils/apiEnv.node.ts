@@ -12,6 +12,7 @@ export function getApiEnv(): Env {
   return {
     MONGO_CONNECTION_STRING: getEnvChecked('MONGO_CONNECTION_STRING'),
     RESEND_API_KEY: getEnvChecked('RESEND_API_KEY'),
+    TURNSTILE_SECRET_KEY: '',
     MEDIA_BUCKET: bucket,
     IMAGES: {} as ImagesBinding,
   };

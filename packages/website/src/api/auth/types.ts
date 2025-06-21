@@ -1,15 +1,18 @@
 import { emailRegex, telnumRegex } from '@shared/string/regex';
-import { nullable, regex, string, z } from 'zod/v4-mini';
+import { nullable, object, regex, string, z } from 'zod/v4-mini';
 
-export const SignInDataSchema = z.object({
+const turnstileToken =
+  import.meta.env.VITE_HOST === 'cf' ? string() : nullable(string());
+
+export const SignInDataSchema = object({
   email: string(),
 
   // Open text password
   password: string(),
-  turnstileToken: string(),
+  turnstileToken,
 });
 
-export const SignUpDataSchema = z.object({
+export const SignUpDataSchema = object({
   firstName: string(),
   lastName: string(),
   parentName: nullable(string()),
@@ -19,7 +22,7 @@ export const SignUpDataSchema = z.object({
 
   // Open text password
   password: string(),
-  turnstileToken: string(),
+  turnstileToken,
 });
 
 export type SignInData = z.infer<typeof SignInDataSchema>;

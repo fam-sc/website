@@ -30,7 +30,11 @@ export function TurnstileWidget({ onSuccess, ...rest }: TurnstileWidgetProps) {
     });
 
     return () => {
-      turnstile.reset(`#${id}`);
+      try {
+        turnstile.reset(`#${id}`);
+      } catch (error: unknown) {
+        console.error(error);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -6,7 +6,6 @@ import { Typography } from '@/components/Typography';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import styles from './page.module.scss';
-import { TurnstileScript } from '@/components/TurnstileScript';
 
 export default function SignPage() {
   const [searchParams] = useSearchParams();
@@ -17,7 +16,6 @@ export default function SignPage() {
   return (
     <div className={styles.authWrapper}>
       <Title>{isSignIn ? 'Увійти' : 'Зареєструватися'}</Title>
-      <TurnstileScript />
 
       <div className={styles.leftSide}>
         {isSignIn ? (

@@ -9,7 +9,7 @@ import { randomBytes } from '@shared/crypto/random';
 import { sendConfirmationMail } from '@/api/mail/confirmation';
 import { checkFacultyGroupExists } from '@/api/groups/get';
 import { app } from '@/api/app';
-import { isValidTurnstileToken } from '../turnstile/verify';
+import { verifyTurnstileTokenByHost } from '../turnstile/verify';
 
 function newPendingToken(): Promise<Buffer> {
   return randomBytes(32);
@@ -26,7 +26,7 @@ app.post('/signUp', async (request, { env }) => {
   const signUpResult = SignUpDataSchema.safeParse(rawContent);
   if (signUpResult.error) {
     console.error(signUpResult.error);
-    return badRequest();
+    return badRequest({ message: 'Invalid payload' });
   }
 
   const {
@@ -40,8 +40,15 @@ app.post('/signUp', async (request, { env }) => {
     turnstileToken,
   } = signUpResult.data;
 
-  if (!(await isValidTurnstileToken(env, request, turnstileToken))) {
-    return badRequest();
+  const tokenVerification = await verifyTurnstileTokenByHost(
+    env,
+    request,
+    turnstileToken
+  );
+
+  if (!tokenVerification.success) {
+    console.error(`Token verification failed: ${tokenVerification.errorCodes}`);
+    return badRequest({ message: 'Invalid turnstile token' });
   }
 
   const passwordHash = await hashPassword(password);
@@ -51,7 +58,7 @@ app.post('/signUp', async (request, { env }) => {
   await using repo = await Repository.openConnection();
   let userId: ObjectId;
 
-  const groupExists = await checkFacultyGroupExists(academicGroup);
+  const groupExists = await checkFacultyGroupExists(academicGroup, repo);
   if (!groupExists) {
     return badRequest({ message: 'Unknown academic group' });
   }

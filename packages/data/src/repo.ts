@@ -16,6 +16,8 @@ import { PendingUserCollection } from './collections/pendingUsers';
 export class Repository implements AsyncDisposable {
   private client: MongoClient;
   private session: ClientSession | undefined;
+
+  private static globalRepo: Repository | undefined;
   private static defaultConnectionString: string | undefined;
 
   constructor(client: MongoClient, session?: ClientSession) {
@@ -47,7 +49,7 @@ export class Repository implements AsyncDisposable {
   }
 
   async [Symbol.asyncDispose](): Promise<void> {
-    await this.client.close();
+    // await this.client.close();
   }
 
   private collection<T>(
@@ -63,13 +65,20 @@ export class Repository implements AsyncDisposable {
   }
 
   static async openConnection(connectionString?: string): Promise<Repository> {
-    const client = new MongoClient(
-      connectionString ??
-        Repository.defaultConnectionString ??
-        getEnvChecked('MONGO_CONNECTION_STRING')
-    );
-    await client.connect();
+    let repo = this.globalRepo;
+    if (repo === undefined) {
+      const client = new MongoClient(
+        connectionString ??
+          Repository.defaultConnectionString ??
+          getEnvChecked('MONGO_CONNECTION_STRING')
+      );
 
-    return new Repository(client);
+      repo = new Repository(client);
+      this.globalRepo = repo;
+
+      await client.connect();
+    }
+
+    return repo;
   }
 }

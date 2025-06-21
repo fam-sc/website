@@ -4,7 +4,7 @@ import { getSessionIdNumber, newSessionId, setSessionId } from '@/api/auth';
 import { SignInDataSchema } from '@/api/auth/types';
 import { Repository } from '@data/repo';
 import { app } from '@/api/app';
-import { isValidTurnstileToken } from '../turnstile/verify';
+import { verifyTurnstileTokenByHost } from '../turnstile/verify';
 
 app.post('/signIn', async (request, { env }) => {
   const rawContent = await request.json();
@@ -12,13 +12,20 @@ app.post('/signIn', async (request, { env }) => {
   if (signInResult.error) {
     console.error(signInResult.error);
 
-    return badRequest();
+    return badRequest({ message: 'Invalid payload' });
   }
 
   const { email, password, turnstileToken } = signInResult.data;
 
-  if (!(await isValidTurnstileToken(env, request, turnstileToken))) {
-    return badRequest();
+  const tokenVerification = await verifyTurnstileTokenByHost(
+    env,
+    request,
+    turnstileToken
+  );
+
+  if (!tokenVerification.success) {
+    console.error(`Token verification failed: ${tokenVerification.errorCodes}`);
+    return badRequest({ message: 'Invalid turnstile token' });
   }
 
   await using repo = await Repository.openConnection();

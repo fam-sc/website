@@ -1,4 +1,4 @@
-const ITERATIONS = 600_000;
+const ITERATIONS = 100_000;
 const SALT_LENGTH = 16;
 
 function generateSalt(): Uint8Array {

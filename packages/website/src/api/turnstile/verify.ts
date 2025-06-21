@@ -1,12 +1,22 @@
 type SiteverifyResponse = {
   success: boolean;
+  'error-codes': string[];
 };
 
-export async function isValidTurnstileToken(
+export type TurnstileVerficationResult =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      errorCodes: string[];
+    };
+
+export async function verifyTurnstileToken(
   env: Env,
   request: Request,
   token: string
-): Promise<boolean> {
+): Promise<TurnstileVerficationResult> {
   const ip = request.headers.get('CF-Connecting-IP');
 
   const response = await fetch(
@@ -26,5 +36,25 @@ export async function isValidTurnstileToken(
 
   const outcome = await response.json<SiteverifyResponse>();
 
-  return outcome.success;
+  if (outcome.success) {
+    return { success: true };
+  }
+
+  return { success: false, errorCodes: outcome['error-codes'] };
+}
+
+export async function verifyTurnstileTokenByHost(
+  env: Env,
+  request: Request,
+  token: string | null
+): Promise<TurnstileVerficationResult> {
+  if (import.meta.env.VITE_HOST === 'cf') {
+    if (token === null) {
+      throw new Error('Token is null');
+    }
+
+    return verifyTurnstileToken(env, request, token);
+  }
+
+  return { success: true };
 }
