@@ -4,8 +4,9 @@ import { getSessionIdNumber, newSessionId, setSessionId } from '@/api/auth';
 import { SignInDataSchema } from '@/api/auth/types';
 import { Repository } from '@data/repo';
 import { app } from '@/api/app';
+import { isValidTurnstileToken } from '../turnstile/verify';
 
-app.post('/signIn', async (request) => {
+app.post('/signIn', async (request, { env }) => {
   const rawContent = await request.json();
   const signInResult = SignInDataSchema.safeParse(rawContent);
   if (signInResult.error) {
@@ -14,7 +15,11 @@ app.post('/signIn', async (request) => {
     return badRequest();
   }
 
-  const { email, password } = signInResult.data;
+  const { email, password, turnstileToken } = signInResult.data;
+
+  if (!(await isValidTurnstileToken(env, request, turnstileToken))) {
+    return badRequest();
+  }
 
   await using repo = await Repository.openConnection();
 

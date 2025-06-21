@@ -7,12 +7,15 @@ import { Link } from '../Link';
 import styles from './index.module.scss';
 import { signIn } from '@/api/users/client';
 import { useNotification } from '../Notification';
+import { TurnstileWidget } from '../TurnstileWidget';
 
 export default function SignInForm() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const [turnstileToken, setTurnstileToken] = useState<string>();
 
   const notification = useNotification();
 
@@ -27,15 +30,21 @@ export default function SignInForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    signIn({ email: formData.email, password: formData.password })
-      .then(() => {
-        // Don't use client navigation, because the auth status changed and
-        // we need to refresh the root layout
-        globalThis.location.href = '/u/info';
+    if (turnstileToken !== undefined) {
+      signIn({
+        email: formData.email,
+        password: formData.password,
+        turnstileToken,
       })
-      .catch(() => {
-        notification.show('Неправильний email або пароль', 'error');
-      });
+        .then(() => {
+          // Don't use client navigation, because the auth status changed and
+          // we need to refresh the root layout
+          globalThis.location.href = '/u/info';
+        })
+        .catch(() => {
+          notification.show('Неправильний email або пароль', 'error');
+        });
+    }
   };
 
   return (
@@ -73,8 +82,17 @@ export default function SignInForm() {
         <Link to="https://t.me/fpm_sc_bot">Забули пароль?</Link>
       </div>
 
+      <TurnstileWidget
+        className={styles['turnstile-widget']}
+        onSuccess={setTurnstileToken}
+      />
+
       <div className={styles.formGroup}>
-        <Button onClick={handleSubmit} buttonVariant="solid">
+        <Button
+          onClick={handleSubmit}
+          buttonVariant="solid"
+          disabled={turnstileToken === undefined}
+        >
           Увійти
         </Button>
       </div>
