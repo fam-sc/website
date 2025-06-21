@@ -1,0 +1,30 @@
+name: Deploy website (staging in PR)
+on:
+  pull_request:
+    branches:
+    - master
+  push:
+    paths:
+      - 'packages/**'
+  
+jobs:
+  deploy-website-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: v22.14.0
+          cache: 'npm'
+      - run: corepack enable
+      - name: Install dependencies
+        run: yarn workspaces focus @sc-fam/website
+      - name: Build
+        run: yarn build --mode staging
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            command: versions upload
+            workingDirectory: ./packages/website

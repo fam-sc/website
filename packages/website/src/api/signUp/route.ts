@@ -9,6 +9,7 @@ import { randomBytes } from '@shared/crypto/random';
 import { sendConfirmationMail } from '@/api/mail/confirmation';
 import { checkFacultyGroupExists } from '@/api/groups/get';
 import { app } from '@/api/app';
+import { isValidTurnstileToken } from '../turnstile/verify';
 
 function newPendingToken(): Promise<Buffer> {
   return randomBytes(32);
@@ -36,7 +37,12 @@ app.post('/signUp', async (request, { env }) => {
     academicGroup,
     telnum,
     password,
+    turnstileToken,
   } = signUpResult.data;
+
+  if (!(await isValidTurnstileToken(env, request, turnstileToken))) {
+    return badRequest();
+  }
 
   const passwordHash = await hashPassword(password);
 

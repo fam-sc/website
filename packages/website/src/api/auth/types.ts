@@ -6,6 +6,7 @@ export const SignInDataSchema = z.object({
 
   // Open text password
   password: string(),
+  turnstileToken: string(),
 });
 
 export const SignUpDataSchema = z.object({
@@ -18,6 +19,7 @@ export const SignUpDataSchema = z.object({
 
   // Open text password
   password: string(),
+  turnstileToken: string(),
 });
 
 export type SignInData = z.infer<typeof SignInDataSchema>;
