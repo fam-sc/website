@@ -20,7 +20,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const { total: totalItems, items } = await repo
     .polls()
     .getPage(page - 1, ITEMS_PER_PAGE);
@@ -35,8 +35,8 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   return {
-    items: items.map(({ _id, title }) => ({
-      id: _id.toString(),
+    items: items.map(({ id, title }) => ({
+      id,
       title,
     })),
     page,

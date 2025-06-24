@@ -19,7 +19,7 @@ import { backgroundColor } from '@/theme';
 import '@/theme/global.scss';
 import type { UserWithRoleAndAvatar } from '@/api/users/types';
 import { Repository } from '@data/repo';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { getMinRoleForRoute } from './permissions';
 
 export const links: Route.LinksFunction = () => [
@@ -35,11 +35,11 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
   let user: UserWithRoleAndAvatar | null = null;
 
   if (sessionId !== undefined) {
-    await using repo = await Repository.openConnection();
+    const repo = Repository.openConnection();
 
     user = await repo.sessions().getUserWithRole(sessionId);
   }

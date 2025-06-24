@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-import { Binary, ObjectId } from 'mongodb';
-
 export const enum UserRole {
   STUDENT_NON_APPROVED = -1,
   STUDENT = 0,
@@ -8,7 +6,8 @@ export const enum UserRole {
   ADMIN = 2,
 }
 
-export type User = {
+export type RawUser = {
+  id: number;
   firstName: string;
   lastName: string;
   parentName: string | null;
@@ -16,29 +15,34 @@ export type User = {
   email: string;
   telnum: string | null;
   role: UserRole;
-  hasAvatar?: boolean;
-  passwordHash: Binary;
+  hasAvatar: number;
+  passwordHash: string;
   telegramUserId: number | null;
+};
+
+export type User = Omit<RawUser, 'hasAvatar'> & {
+  hasAvatar: boolean;
 };
 
 // Info about user that has registered, but yet not clicked magic link in email.
 export type PendingUser = {
+  id: number;
   firstName: string;
   lastName: string;
   parentName: string | null;
   academicGroup: string;
   email: string;
   telnum: string | null;
-  passwordHash: Binary;
+  passwordHash: string;
 
-  createdAt: Date;
+  createdAt: number;
 
   // Token to approve the user and move it to all other users.
-  token: Binary;
+  token: string;
 };
 
 export interface UserWithRoleAndAvatar {
-  id: string;
+  id: number;
   role: UserRole;
   hasAvatar?: boolean;
 }
@@ -58,8 +62,8 @@ export interface UserPersonalInfo {
 }
 
 export interface UserWithPassword {
-  id: ObjectId;
-  passwordHash: Binary;
+  id: number;
+  passwordHash: string;
 }
 
 export function isUserRole(role: unknown): role is UserRole {

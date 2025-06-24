@@ -10,7 +10,7 @@ type Story = StoryObj<typeof UserApproveBoard>;
 
 function item(index: number, hasAvatar: boolean = true): UserApproveItemType {
   return {
-    id: index.toString(),
+    id: index,
     name: `Name ${index}`,
     group: 'КМ-23',
     email: `someemail${index}@gmail.com`,

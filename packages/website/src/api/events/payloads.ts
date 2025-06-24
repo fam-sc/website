@@ -1,8 +1,12 @@
 import { getAllFiles } from '@shared/formData';
 import { coerce, object, pipe, string, z } from 'zod/v4-mini';
 import { richText } from '@shared/richText/zod';
+import { EventStatus } from '@data/types';
 
-const status = z.enum(['pending', 'ended']);
+const status = z.union([
+  z.literal(EventStatus.PENDING),
+  z.literal(EventStatus.ENDED),
+]);
 
 const payloadSchema = object({
   status,

@@ -51,7 +51,7 @@ export function pollResultsToTable(
 ): PollResultsTable {
   const columns = ['Дата', ...questions.map(({ title }) => title)];
   const data = respondents.map((respondent) => [
-    formatDateTime(respondent.date),
+    formatDateTime(new Date(respondent.date)),
     ...respondent.answers.map((answer, i) =>
       answerToString(answer, questions[i])
     ),

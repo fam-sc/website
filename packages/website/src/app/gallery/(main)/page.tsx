@@ -11,16 +11,21 @@ import { useState, useCallback, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router';
 import { GalleryImageInfoDialog } from './dialog';
 import styles from './page.module.scss';
+import { parseInt } from '@shared/parseInt';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
-  await using repo = await Repository.openConnection();
-  const sizes =
-    id !== null ? await repo.galleryImages().getImageSizes(id) : null;
+  const numberId = parseInt(id);
+  if (numberId === undefined) {
+    return null;
+  }
 
-  return id !== null && sizes !== null ? { id, sizes } : null;
+  const repo = Repository.openConnection();
+  const sizes = await repo.galleryImages().getImageSizes(numberId);
+
+  return sizes !== null ? { id: numberId, sizes } : null;
 }
 
 export default function Page({

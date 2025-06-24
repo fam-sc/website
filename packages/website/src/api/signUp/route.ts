@@ -1,4 +1,3 @@
-import { Binary, ObjectId } from 'mongodb';
 import { badRequest, conflict, internalServerError } from '@shared/responses';
 import { hashPassword } from '@/api/auth/password';
 import { newSessionId, setSessionId } from '@/api/auth';
@@ -10,14 +9,14 @@ import { sendConfirmationMail } from '@/api/mail/confirmation';
 import { checkFacultyGroupExists } from '@/api/groups/get';
 import { app } from '@/api/app';
 
-function newPendingToken(): Promise<Buffer> {
-  return randomBytes(32);
+async function newPendingToken(): Promise<string> {
+  const buffer = await randomBytes(32);
+
+  return buffer.toString('hex');
 }
 
-function createConfirmationLink(token: Buffer): string {
-  const tokenString = token.toString('hex');
-
-  return `https://sc-fam.org/u/finish-sign-up?token=${tokenString}`;
+function createConfirmationLink(token: string): string {
+  return `https://sc-fam.org/u/finish-sign-up?token=${token}`;
 }
 
 app.post('/signUp', async (request, { env }) => {
@@ -42,28 +41,30 @@ app.post('/signUp', async (request, { env }) => {
 
   const pendingToken = await newPendingToken();
 
-  await using repo = await Repository.openConnection();
-  let userId: ObjectId;
+  const repo = Repository.openConnection();
 
   const groupExists = await checkFacultyGroupExists(academicGroup);
   if (!groupExists) {
     return badRequest({ message: 'Unknown academic group' });
   }
 
-  try {
-    const result = await repo.pendingUsers().insert({
-      email,
-      firstName,
-      lastName,
-      parentName,
-      academicGroup,
-      telnum,
-      createdAt: new Date(),
-      passwordHash: new Binary(passwordHash),
-      token: new Binary(pendingToken),
-    });
+  let userId: number;
 
-    userId = result.insertedId;
+  try {
+    userId = await repo.pendingUsers().insert(
+      {
+        email,
+        firstName,
+        lastName,
+        parentName,
+        academicGroup,
+        telnum,
+        createdAt: Date.now(),
+        passwordHash,
+        token: pendingToken,
+      },
+      'id'
+    );
   } catch (error: unknown) {
     if (isDuplicateKeyError(error)) {
       return conflict({ message: 'Email exists' });
@@ -83,7 +84,7 @@ app.post('/signUp', async (request, { env }) => {
 
   await repo.sessions().insert({ sessionId, userId });
 
-  const response = new Response(undefined, { status: 200 });
+  const response = new Response();
   setSessionId(response, sessionId);
 
   return response;

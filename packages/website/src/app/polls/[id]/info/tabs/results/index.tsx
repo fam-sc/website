@@ -6,7 +6,7 @@ import { DataLoadingContainer } from '@/components/DataLoadingContainer';
 import styles from './index.module.scss';
 
 export type ResultsTabProps = {
-  pollId: string;
+  pollId: number;
 };
 
 export function ResultsTab({ pollId }: ResultsTabProps) {

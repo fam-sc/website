@@ -10,10 +10,10 @@ import { redirect } from 'react-router';
 import { notFound } from '@shared/responses';
 
 import { Route } from './+types/page';
-import { omitProperty } from '@/utils/object/omit';
 import { Title } from '@/components/Title';
 import { Repository } from '@data/repo';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
+import { parseInt } from '@shared/parseInt';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (
@@ -24,32 +24,37 @@ function ErrorMessage({ children }: PropsWithChildren) {
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/polls');
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const userInfo = await repo.sessions().getUserWithRole(sessionId);
+  const numberId = parseInt(params.id);
 
-  if (userInfo === null || userInfo.role < UserRole.STUDENT) {
+  if (
+    userInfo === null ||
+    numberId === undefined ||
+    userInfo.role < UserRole.STUDENT
+  ) {
     return redirect('/polls');
   }
 
-  const poll = await repo.polls().findById(params.id);
+  const poll = await repo.polls().findOneWhere({ id: numberId });
   if (poll === null) {
     return notFound();
   }
 
   const userReposponded = poll.respondents.find(
-    (respondent) => respondent.userId.toString() === userInfo.id
+    (respondent) => respondent.userId === userInfo.id
   );
 
   const isPollEnded = poll.endDate !== null;
   const canViewInfo = userInfo.role >= UserRole.ADMIN;
 
   return {
-    poll: { id: poll._id.toString(), ...omitProperty(poll, '_id') },
+    poll,
     canViewInfo,
     isPollEnded,
     userReposponded,

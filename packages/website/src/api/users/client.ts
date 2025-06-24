@@ -1,11 +1,6 @@
 import { UserInfo, UserPersonalInfo } from '@/api/users/types';
-import { UserSelfInfo, UserInfoWithRole } from '@/api/users/types';
-import {
-  apiCheckedFetch,
-  apiFetch,
-  apiFetchObject,
-  getApiErrorFromResponse,
-} from '../fetch';
+import { UserInfoWithRole } from '@/api/users/types';
+import { apiCheckedFetch, apiFetchObject } from '../fetch';
 import type { SignInData, SignUpData } from '@/api/auth/types';
 import type { ChangePasswordPayload } from '@/api/users/payloads';
 import { UserRole } from '@data/types/user';
@@ -17,16 +12,16 @@ export function uploadUserAvatar(body: BodyInit) {
   });
 }
 
-export function changeUserRole(userId: string, role: UserRole) {
+export function changeUserRole(userId: number, role: UserRole) {
   return apiCheckedFetch(`/users/${userId}/role?value=${role}`, {
     method: 'POST',
   });
 }
-export function approveUser(userId: string) {
+export function approveUser(userId: number) {
   return changeUserRole(userId, UserRole.STUDENT);
 }
 
-export function disapproveUser(userId: string) {
+export function disapproveUser(userId: number) {
   return apiCheckedFetch(`/users/${userId}/disapprove`, {
     method: 'POST',
   });
@@ -82,16 +77,4 @@ export function logOut() {
   return apiCheckedFetch(`/users/logOut`, {
     method: 'POST',
   });
-}
-export async function getCurrentUserInfo(): Promise<UserSelfInfo | null> {
-  const response = await apiFetch(`/users/me`);
-
-  // Unauthorized
-  if (response.status === 401) {
-    return null;
-  } else if (!response.ok) {
-    throw await getApiErrorFromResponse(response);
-  }
-
-  return await response.json();
 }

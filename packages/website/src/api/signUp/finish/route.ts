@@ -1,9 +1,6 @@
 import { badRequest, conflict } from '@shared/responses';
 import { Repository } from '@data/repo';
-import { Binary, ObjectId } from 'mongodb';
-import { parseHexString } from '@shared/string/hex';
 import { newSessionId, setSessionId } from '@/api/auth';
-import { isDuplicateKeyError } from '@shared/errors/mongo';
 import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
 
@@ -14,25 +11,18 @@ app.post('/signUp/finish', async (request) => {
     return badRequest({ message: 'No token parameter' });
   }
 
-  let tokenBinary: Binary;
-  try {
-    tokenBinary = new Binary(parseHexString(token));
-  } catch {
+  const repo = Repository.openConnection();
+
+  const pendingUser = await repo.pendingUsers().findByToken(token);
+  if (pendingUser === null) {
     return badRequest({ message: 'Invalid token' });
   }
 
-  await using repo = await Repository.openConnection();
+  let userId: number;
 
-  return await repo.transaction(async (trepo) => {
-    const pendingUser = await trepo.pendingUsers().findByToken(tokenBinary);
-    if (pendingUser === null) {
-      return badRequest({ message: 'Invalid token' });
-    }
-
-    let userId: ObjectId;
-
-    try {
-      const result = await trepo.users().insert({
+  try {
+    userId = await repo.users().insert(
+      {
         email: pendingUser.email,
         firstName: pendingUser.firstName,
         lastName: pendingUser.lastName,
@@ -42,26 +32,20 @@ app.post('/signUp/finish', async (request) => {
         telegramUserId: null,
         role: UserRole.STUDENT_NON_APPROVED,
         passwordHash: pendingUser.passwordHash,
-      });
+      },
+      'id'
+    );
+  } catch {
+    return conflict({ message: 'Email exists' });
+  }
 
-      userId = result.insertedId;
-    } catch (error: unknown) {
-      if (isDuplicateKeyError(error)) {
-        return conflict({ message: 'Email exists' });
-      }
+  const sessionId = await newSessionId();
 
-      throw error;
-    }
+  await repo.pendingUsers().deleteWhere({ token }).get();
+  await repo.sessions().insert({ sessionId, userId });
 
-    await trepo.pendingUsers().delete(pendingUser._id);
+  const response = new Response();
+  setSessionId(response, sessionId);
 
-    const sessionId = await newSessionId();
-
-    await trepo.sessions().insert({ sessionId, userId });
-
-    const response = new Response();
-    setSessionId(response, sessionId);
-
-    return response;
-  });
+  return response;
 });

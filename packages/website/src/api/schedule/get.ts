@@ -32,14 +32,14 @@ class ScheduleExternalApi extends CachedExternalApi<DataScheduleWithTeachers> {
     const campusSchedule = await getLessons(this.groupId);
     const teachers = await getTeachers(getUniqueTeachers(campusSchedule));
 
-    return { ...campusScheduleToDataSchedule(campusSchedule), teachers };
+    return campusScheduleToDataSchedule(campusSchedule, teachers);
   }
 
-  protected async putToRepo(repo: Repository, value: DataScheduleWithTeachers) {
-    await Promise.all([
-      repo.schedule().upsertWeeks(value),
-      repo.scheduleTeachers().insertOrUpdateMany(value.teachers),
-    ]);
+  protected putToRepo(repo: Repository, value: DataScheduleWithTeachers) {
+    return [
+      ...repo.schedule().upsertWeeks(value),
+      ...repo.scheduleTeachers().insertFromSchedule(value),
+    ];
   }
 }
 
@@ -48,10 +48,11 @@ const getDataSchedule = CachedExternalApi.accessor(ScheduleExternalApi);
 export async function getScheduleForGroup(
   groupId: string
 ): Promise<ApiSchedule> {
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const dataSchedule = await getDataSchedule(groupId, repo);
   let { links } = dataSchedule;
-  if (links === null) {
+
+  if (links === undefined) {
     links = await repo.schedule().getLinks(groupId);
   }
 

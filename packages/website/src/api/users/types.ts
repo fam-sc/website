@@ -1,7 +1,7 @@
 import { UserRole } from '@data/types/user';
 
 export interface UserInfo {
-  id: string;
+  id: number;
   name: string;
   group: string;
   email: string;
@@ -20,7 +20,7 @@ export type UserPersonalInfo = {
 };
 
 export interface UserWithRoleAndAvatar {
-  id: string;
+  id: number;
   role: UserRole;
   hasAvatar?: boolean;
 }
@@ -34,7 +34,7 @@ export interface ShortUser extends UserWithRoleAndAvatar {
 }
 
 export type UserSelfInfo = {
-  id: string;
+  id: number;
   role: UserRole;
   hasAvatar: boolean;
 };

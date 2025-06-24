@@ -1,6 +1,6 @@
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { Labeled } from '@/components/Labeled';
 import { ReactNode, useState } from 'react';
@@ -12,12 +12,12 @@ import { Title } from '@/components/Title';
 import styles from './page.module.scss';
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/');
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const personalInfo = await repo.sessions().getUserPersonalInfo(sessionId);
   if (personalInfo === null) {
     return redirect('/');

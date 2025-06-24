@@ -1,4 +1,3 @@
-import { omitProperty } from '@/utils/object/omit';
 import { notFound } from '@shared/responses';
 import { Route } from './+types/page';
 import { Repository } from '@data/repo';
@@ -21,21 +20,22 @@ import { useNavigate, Link } from 'react-router';
 import { DeleteEventDialog } from './DeleteEventDialog';
 import styles from './page.module.scss';
 import { Image } from '@/components/Image';
+import { parseInt } from '@shared/parseInt';
 
 export async function loader({ params }: Route.LoaderArgs) {
-  await using repo = await Repository.openConnection();
-  const event = await repo.events().findById(params.id);
+  const id = parseInt(params.id);
+  if (id === undefined) {
+    return notFound();
+  }
+
+  const repo = Repository.openConnection();
+  const event = await repo.events().findById(id);
 
   if (event === null) {
     return notFound();
   }
 
-  return {
-    event: {
-      ...omitProperty(event, '_id'),
-      id: event._id.toString(),
-    },
-  };
+  return { event };
 }
 
 export default function Page({ loaderData: { event } }: Route.ComponentProps) {

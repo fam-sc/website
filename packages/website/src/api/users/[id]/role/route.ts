@@ -1,9 +1,10 @@
 import { badRequest, notFound, unauthrorized } from '@shared/responses';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { isUserRole } from '@data/types/user';
 import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
+import { parseInt } from '@shared/parseInt';
 
 app.post(
   '/users/:id/role',
@@ -12,17 +13,23 @@ app.post(
     const newRoleRaw = searchParams.get('value');
     const newRole = newRoleRaw ? Number.parseInt(newRoleRaw) : null;
 
-    // Noone can elevate user to admin.
-    if (!isUserRole(newRole) || newRole === UserRole.ADMIN) {
+    const numberApproveUserId = parseInt(approveUserId);
+
+    // No one can elevate user to admin.
+    if (
+      !isUserRole(newRole) ||
+      newRole === UserRole.ADMIN ||
+      numberApproveUserId === undefined
+    ) {
       return badRequest();
     }
 
-    const sessionId = getSessionIdNumber(request);
+    const sessionId = getSessionId(request);
     if (sessionId === undefined) {
       return unauthrorized();
     }
 
-    await using repo = await Repository.openConnection();
+    const repo = Repository.openConnection();
 
     const userWithRole = await repo
       .sessions()
@@ -37,7 +44,7 @@ app.post(
 
       const approveUserGroup = await repo
         .users()
-        .getUserAcademicGroup(approveUserId);
+        .getUserAcademicGroup(numberApproveUserId);
 
       if (approveUserGroup === null) {
         return notFound();
@@ -52,11 +59,11 @@ app.post(
       }
     }
 
-    const { matchedCount } = await repo
+    const { changes } = await repo
       .users()
-      .updateRole(approveUserId, newRole);
+      .updateRole(numberApproveUserId, newRole);
 
-    if (matchedCount === 0) {
+    if (changes === 0) {
       return notFound();
     }
 

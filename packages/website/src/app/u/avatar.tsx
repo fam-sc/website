@@ -8,7 +8,7 @@ export function UserAvatar({
   hasAvatar: initialHasAvatar,
   className,
 }: {
-  userId: string;
+  userId: number;
   hasAvatar: boolean;
   className?: string;
 }) {

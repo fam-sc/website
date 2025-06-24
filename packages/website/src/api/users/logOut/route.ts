@@ -1,15 +1,15 @@
-import { getSessionIdNumber, SESSION_ID_COOKIE } from '@/api/auth';
+import { getSessionId, SESSION_ID_COOKIE } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { app } from '@/api/app';
 
 app.post('/users/logOut', async (request: Request) => {
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     // We're ok with it. User is already loged out.
     return new Response();
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   await repo.sessions().deleteBySessionId(sessionId);
 
   return new Response(null, {

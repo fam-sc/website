@@ -3,7 +3,7 @@ import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
 import { ReactNode } from 'react';
 import { redirect } from 'react-router';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { tabs } from './tabs';
 import { Repository } from '@data/repo';
 import { Route } from './+types/layout';
@@ -14,13 +14,13 @@ export interface UserLayoutProps {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
 
   if (sessionId === undefined) {
     return redirect('/');
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const result = await repo.sessions().getUserWithRole(sessionId);
   if (result === null) {
     return redirect('/');

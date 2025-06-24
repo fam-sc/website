@@ -1,6 +1,5 @@
 import { coerce } from '@shared/math';
-import { WithId } from 'mongodb';
-import { Event } from '@data/types';
+import { Event, EventStatus } from '@data/types';
 import { formatDateTime } from '@shared/date';
 import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@shared/parseInt';
@@ -20,8 +19,8 @@ import { ImageSize } from '@shared/image/types';
 import { RichTextString } from '@shared/richText/types';
 
 type ClientEvent = {
-  id: string;
-  status: 'pending' | 'ended';
+  id: number;
+  status: EventStatus;
   title: string;
   date: string;
   description: RichTextString;
@@ -30,12 +29,12 @@ type ClientEvent = {
 
 const ITEMS_PER_PAGE = 5;
 
-function toClientEvent(event: WithId<Event>): ClientEvent {
+function toClientEvent(event: Event): ClientEvent {
   return {
-    id: event._id.toString(),
+    id: event.id,
     status: event.status,
     title: event.title,
-    date: formatDateTime(event.date),
+    date: formatDateTime(new Date(event.date)),
     description: shortenRichText(event.description, 200, 'ellipsis'),
     images: event.images,
   };
@@ -46,7 +45,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const { total: totalItems, items } = await repo
     .events()
     .getPage(page - 1, ITEMS_PER_PAGE);

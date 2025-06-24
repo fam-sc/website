@@ -4,7 +4,6 @@ import { badRequest, ok } from '@shared/responses';
 import { getImageSize } from '@shared/image/size';
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
-import { ObjectId } from 'mongodb';
 import { parseInt } from '@shared/parseInt';
 import { app } from '@/api/app';
 import { resolveImageSizes } from '@shared/image/breakpoints';
@@ -26,7 +25,7 @@ app.get('/gallery', async (request) => {
     return badRequest({ message: 'Invalid page format' });
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const images = await repo.galleryImages().getPage(page - 1, PAGE_SIZE);
 
   return ok(images);
@@ -46,6 +45,8 @@ app.post('/gallery', async (request, { env }) => {
     return badRequest({ message: 'Invalid arguments' });
   }
 
+  const numberEventId = eventId !== null ? parseInt(eventId) : null;
+
   if (files.length === 0) {
     return badRequest({ message: 'No files' });
   }
@@ -62,59 +63,57 @@ app.post('/gallery', async (request, { env }) => {
     })
   );
 
-  const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) {
+  const date = Date.parse(dateString);
+  if (Number.isNaN(date)) {
     return badRequest({ message: 'Invalid date format' });
   }
 
-  let eventObjectId: ObjectId | undefined;
+  let eventObjectId: number | undefined;
 
-  try {
-    if (eventId !== null) {
-      eventObjectId = new ObjectId(eventId);
+  if (eventId !== null) {
+    eventObjectId = parseInt(eventId);
+    if (eventObjectId === undefined) {
+      return badRequest({ message: 'Invalid event ID' });
     }
-  } catch {
-    return badRequest({ message: 'Invalid event ID' });
   }
 
   return authRoute(request, UserRole.ADMIN, async (repo) => {
-    return repo.transaction(async (trepo) => {
-      if (eventObjectId !== undefined) {
-        const event = await repo.events().findById(eventObjectId);
+    if (eventObjectId !== undefined) {
+      const event = await repo.events().findOneWhere({ id: eventObjectId });
 
-        if (event === null) {
-          return badRequest({ message: EVENT_NOT_EXIST_MESSAGE });
-        }
+      if (event === null) {
+        return badRequest({ message: EVENT_NOT_EXIST_MESSAGE });
       }
+    }
 
-      const { insertedIds } = await trepo.galleryImages().insertMany(
-        filesWithSize.map(({ sizes }, i) => ({
-          eventId,
-          date,
-          order: i,
-          images: sizes,
-        }))
-      );
+    const insertedIds = await repo.galleryImages().insertMany(
+      filesWithSize.map(({ sizes }, i) => ({
+        eventId: numberEventId,
+        date,
+        order: i,
+        images: JSON.stringify(sizes),
+      })),
+      'id'
+    );
 
-      await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
+    await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
-      await Promise.all(
-        filesWithSize.map(({ content, sizes }, i) => {
-          const id = insertedIds[i];
+    await Promise.all(
+      filesWithSize.map(({ content, sizes }, i) => {
+        const id = insertedIds[i];
 
-          return putMultipleSizedImages(
-            env,
-            `gallery/${id}`,
-            content,
-            sizes,
-            mediaTransaction
-          );
-        })
-      );
+        return putMultipleSizedImages(
+          env,
+          `gallery/${id}`,
+          content,
+          sizes,
+          mediaTransaction
+        );
+      })
+    );
 
-      await mediaTransaction.commit();
+    await mediaTransaction.commit();
 
-      return new Response();
-    });
+    return new Response();
   });
 });

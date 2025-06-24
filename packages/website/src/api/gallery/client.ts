@@ -29,11 +29,11 @@ export function uploadGalleryImages(payload: UploadGalleryImagesPayload) {
   });
 }
 
-export function fetchGalleryImage(id: string): Promise<GalleryImageWithEvent> {
+export function fetchGalleryImage(id: number): Promise<GalleryImageWithEvent> {
   return apiFetchObject(`/gallery/${id}`);
 }
 
-export async function deleteGalleryImage(id: string): Promise<void> {
+export async function deleteGalleryImage(id: number): Promise<void> {
   await apiCheckedFetch(`/gallery/${id}`, {
     method: 'DELETE',
   });

@@ -1,6 +1,6 @@
 import { badRequest, unauthrorized } from '@shared/responses';
 import { verifyPassword } from '@/api/auth/password';
-import { getSessionIdNumber, newSessionId, setSessionId } from '@/api/auth';
+import { getSessionId, newSessionId, setSessionId } from '@/api/auth';
 import { SignInDataSchema } from '@/api/auth/types';
 import { Repository } from '@data/repo';
 import { app } from '@/api/app';
@@ -16,9 +16,9 @@ app.post('/signIn', async (request) => {
 
   const { email, password } = signInResult.data;
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
 
-  const currentSessionId = getSessionIdNumber(request);
+  const currentSessionId = getSessionId(request);
   const currentSessionValid =
     currentSessionId !== undefined &&
     (await repo.sessions().sessionExists(currentSessionId));
@@ -34,14 +34,14 @@ app.post('/signIn', async (request) => {
     return unauthrorized();
   }
 
-  const status = await verifyPassword(user.passwordHash.buffer, password);
+  const status = await verifyPassword(user.passwordHash, password);
   if (!status) {
     return unauthrorized();
   }
 
   const sessionId = await newSessionId();
 
-  await repo.sessions().insert({ sessionId, userId: user._id });
+  await repo.sessions().insert({ sessionId, userId: user.id });
 
   const response = new Response();
   setSessionId(response, sessionId);

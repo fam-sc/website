@@ -1,5 +1,3 @@
-import { ClientSession, MongoClient } from 'mongodb';
-
 import { EventCollection } from './collections/events';
 import { GalleryImageCollection } from './collections/galleryImages';
 import { GroupCollection } from './collections/groups';
@@ -9,18 +7,19 @@ import { SessionCollection } from './collections/sessions';
 import { UpdateTimeCollection } from './collections/updateTime';
 import { UserCollection } from './collections/users';
 
-import { getEnvChecked } from '@shared/env';
 import { PollCollection } from './collections/polls';
 import { PendingUserCollection } from './collections/pendingUsers';
+import { D1Database } from '@shared/cloudflare/d1/types';
+import { TableDescriptor } from './sqlite/types';
+import { buildCreateTableQuery } from './sqlite/queryBuilder';
+import { DataQuery } from './sqlite/query';
 
-export class Repository implements AsyncDisposable {
-  private client: MongoClient;
-  private session: ClientSession | undefined;
-  private static defaultConnectionString: string | undefined;
+export class Repository {
+  private client: D1Database;
+  private static defaultDatabase: D1Database | undefined;
 
-  constructor(client: MongoClient, session?: ClientSession) {
+  constructor(client: D1Database) {
     this.client = client;
-    this.session = session;
   }
 
   users = this.collection(UserCollection);
@@ -34,42 +33,72 @@ export class Repository implements AsyncDisposable {
   groups = this.collection(GroupCollection);
   polls = this.collection(PollCollection);
 
-  async transaction<R>(block: (trepo: Repository) => Promise<R>): Promise<R> {
-    const session = this.client.startSession();
+  static async init(database: D1Database) {
+    const tables: [string, TableDescriptor<unknown>][] = [];
+    const collections = [
+      UserCollection,
+      PendingUserCollection,
+      EventCollection,
+      GalleryImageCollection,
+      SessionCollection,
+      ScheduleCollection,
+      ScheduleTeacherCollection,
+      UpdateTimeCollection,
+      GroupCollection,
+    ];
 
-    try {
-      return await session.withTransaction(() =>
-        block(new Repository(this.client, session))
-      );
-    } finally {
-      await session.endSession();
+    for (const collection of collections) {
+      const descriptor = collection.descriptor();
+
+      if (Array.isArray(descriptor)) {
+        tables.push(...descriptor);
+      } else {
+        tables.push([collection.toString(), descriptor]);
+      }
+    }
+
+    for (const [name, descriptor] of tables) {
+      await database.prepare(buildCreateTableQuery(name, descriptor)).run();
     }
   }
 
-  async [Symbol.asyncDispose](): Promise<void> {
-    await this.client.close();
-  }
-
   private collection<T>(
-    type: new (client: MongoClient, session: ClientSession | undefined) => T
+    type: new (client: D1Database) => T
   ): (this: Repository) => T {
     return () => {
-      return new type(this.client, this.session);
+      return new type(this.client);
     };
   }
 
-  static setDefaultConnectionString(value: string) {
-    Repository.defaultConnectionString = value;
+  async batch<T extends unknown[]>(queries: {
+    [K in keyof T]: DataQuery<T[K]>;
+  }): Promise<T> {
+    const results = await this.client.batch(
+      queries.flatMap(({ statements }) => statements)
+    );
+
+    let resultOffset = 0;
+    return queries.map((query) => {
+      const part = results.slice(
+        resultOffset,
+        resultOffset + query.statements.length
+      );
+      resultOffset += query.statements.length;
+
+      return query.mapResult(part);
+    }) as T;
   }
 
-  static async openConnection(connectionString?: string): Promise<Repository> {
-    const client = new MongoClient(
-      connectionString ??
-        Repository.defaultConnectionString ??
-        getEnvChecked('MONGO_CONNECTION_STRING')
-    );
-    await client.connect();
+  static setDefaultDatabase(value: D1Database) {
+    Repository.defaultDatabase = value;
+  }
 
-    return new Repository(client);
+  static openConnection(database?: D1Database): Repository {
+    const db = database ?? Repository.defaultDatabase;
+    if (db === undefined) {
+      throw new Error('No default database');
+    }
+
+    return new Repository(db);
   }
 }

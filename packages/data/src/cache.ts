@@ -1,5 +1,7 @@
 import { UpdateTimeType } from './types/meta';
 import { Repository } from './repo';
+import { DataQuery } from './sqlite/query';
+import { isPromise } from '@shared/typecheck';
 
 export abstract class CachedExternalApi<T, F = T> {
   private collection: UpdateTimeType;
@@ -19,23 +21,24 @@ export abstract class CachedExternalApi<T, F = T> {
   async fetchValue(): Promise<T> {
     let repo = this.specRepo;
 
-    try {
-      if (repo === undefined) {
-        repo = await Repository.openConnection();
-      }
+    if (repo === undefined) {
+      repo = Repository.openConnection();
+    }
 
+    const fetchFromRepoAction = this.fetchFromRepo(repo);
+
+    let result: T | null = null;
+
+    if (isPromise(fetchFromRepoAction)) {
       const fetchTimePromise = repo.updateTime().getByType(this.collection);
-      const fetchFromRepoPromise = this.fetchFromRepo(repo);
       const anyResult = await Promise.race([
         fetchTimePromise,
-        fetchFromRepoPromise,
+        fetchFromRepoAction,
       ]);
-
-      let result: T | null = null;
 
       if (typeof anyResult === 'number') {
         if (Date.now() - anyResult < this.invalidateTime) {
-          result = await fetchFromRepoPromise;
+          result = await fetchFromRepoAction;
         }
       } else {
         const lastUpdateTime = await fetchTimePromise;
@@ -44,29 +47,46 @@ export abstract class CachedExternalApi<T, F = T> {
           result = anyResult;
         }
       }
-
-      if (result !== null) {
-        return result;
-      }
-
-      const fetchResult = await this.fetchFromExternalApi();
-
-      await Promise.all([
-        this.putToRepo(repo, fetchResult),
-        repo.updateTime().setByType(this.collection, Date.now()),
+    } else {
+      const [fetchTime, repoResult] = await repo.batch([
+        repo.updateTime().getByTypeAction(this.collection),
+        fetchFromRepoAction,
       ]);
 
-      return this.mapFetchResult(fetchResult);
-    } finally {
-      if (this.specRepo === undefined) {
-        await repo?.[Symbol.asyncDispose]();
+      if (Date.now() - fetchTime < this.invalidateTime) {
+        result = repoResult;
       }
     }
+
+    if (result !== null) {
+      return result;
+    }
+
+    console.log('set');
+    const fetchValue = await this.fetchFromExternalApi();
+    const putAction = this.putToRepo(repo, fetchValue);
+
+    const setTimeAction = repo
+      .updateTime()
+      .setByType(this.collection, Date.now());
+
+    await (isPromise(putAction)
+      ? Promise.all([putAction, setTimeAction.get()])
+      : repo.batch([...putAction, setTimeAction]));
+
+    return this.mapFetchResult(fetchValue);
   }
 
-  protected abstract fetchFromRepo(repo: Repository): Promise<T | null>;
+  protected abstract fetchFromRepo(
+    repo: Repository
+  ): Promise<T | null> | DataQuery<T | null>;
+
   protected abstract fetchFromExternalApi(): Promise<F>;
-  protected abstract putToRepo(repo: Repository, value: F): Promise<void>;
+
+  protected abstract putToRepo(
+    repo: Repository,
+    value: F
+  ): Promise<void> | DataQuery<unknown>[];
 
   protected mapFetchResult(value: F): T {
     return value as unknown as T;

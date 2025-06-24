@@ -3,10 +3,10 @@ import { getCookieValue, setCookie } from '@shared/cookies';
 
 export const SESSION_ID_COOKIE = 'sid';
 
-export async function newSessionId(): Promise<bigint> {
+export async function newSessionId(): Promise<string> {
   const buffer = await randomBytes(8);
 
-  return buffer.readBigInt64LE(0);
+  return buffer.toString('hex');
 }
 
 export function getSessionId(request: Request): string | undefined {
@@ -23,10 +23,10 @@ export function parseSessionIdString(
   return value === undefined ? undefined : BigInt(value);
 }
 
-export function setSessionId(response: Response, value: bigint) {
+export function setSessionId(response: Response, value: string) {
   setCookie(response, {
     name: SESSION_ID_COOKIE,
-    value: value.toString(10),
+    value,
     httpOnly: true,
     path: '/',
     domain: 'sc-fam.org',
