@@ -1,6 +1,5 @@
 import { DataQuery, query } from '../sqlite/query';
-import { buildUpdateWhereQuery } from '../sqlite/queryBuilder';
-import { TableDescriptors } from '../sqlite/types';
+import { TableDescriptor } from '../sqlite/types';
 import {
   Day,
   DaySchedule,
@@ -14,6 +13,7 @@ import {
 } from '../types/schedule';
 
 import { EntityCollection } from './base';
+import { ScheduleLessonCollection } from './scheduleLessons';
 
 function splitToWeeks<Input extends RawLesson, T>(
   rawLessons: Omit<Input, 'groupCampusId'>[],
@@ -37,32 +37,14 @@ function splitToWeeks<Input extends RawLesson, T>(
   return [Object.values(result[0]), Object.values(result[1])];
 }
 
-export class ScheduleCollection extends EntityCollection<RawLesson>(
-  'schedule_lessons'
+export class ScheduleCollection extends EntityCollection<RawSchedule>(
+  'schedule'
 ) {
-  static descriptor(): TableDescriptors<[RawLesson, RawSchedule]> {
-    return [
-      [
-        'schedule_lessons',
-        {
-          groupCampusId: 'TEXT NOT NULL',
-          week: 'INTEGER NOT NULL',
-          day: 'INTEGER NOT NULL',
-          type: 'INTEGER NOT NULL',
-          name: 'TEXT NOT NULL',
-          place: 'TEXT NOT NULL',
-          time: 'TEXT NOT NULL',
-          teacher: 'TEXT NOT NULL',
-        },
-      ],
-      [
-        'schedule',
-        {
-          groupCampusId: 'TEXT NOT NULL PRIMARY KEY',
-          links: 'TEXT',
-        },
-      ],
-    ];
+  static descriptor(): TableDescriptor<RawSchedule> {
+    return {
+      groupCampusId: 'TEXT NOT NULL PRIMARY KEY',
+      links: 'TEXT',
+    };
   }
 
   findByGroupWithTeachers(
@@ -81,12 +63,9 @@ export class ScheduleCollection extends EntityCollection<RawLesson>(
       [groupCampusId]
     );
 
-    const linksQuery = this.selectOneAction<{ links: string }>(
-      'SELECT links FROM schedule WHERE groupCampusId=?',
-      [groupCampusId]
-    );
+    const linksQuery = this.findOneWhereAction({ groupCampusId }, ['links']);
 
-    return query.merge([scheduleQuery, linksQuery], ([lessons, links]) => {
+    return query.merge([scheduleQuery, linksQuery]).map(([lessons, links]) => {
       return lessons.length > 0
         ? {
             groupCampusId,
@@ -101,16 +80,18 @@ export class ScheduleCollection extends EntityCollection<RawLesson>(
                 },
               })
             ),
-            links: links ? JSON.parse(links.links) : null,
+            links: links && links.links ? JSON.parse(links.links) : null,
           }
         : null;
     });
   }
 
   upsertWeeks({ groupCampusId, weeks }: ScheduleWithTeachers) {
+    const lessons = this.getCollection(ScheduleLessonCollection);
+
     return [
-      this.deleteWhere({ groupCampusId }),
-      ...this.insertOrReplaceManyAction(
+      lessons.deleteWhere({ groupCampusId }),
+      ...lessons.insertOrReplaceManyAction(
         weeks
           .map((week, index) =>
             week.map(({ day, lessons }) =>
@@ -130,28 +111,17 @@ export class ScheduleCollection extends EntityCollection<RawLesson>(
   }
 
   updateLinks(groupCampusId: string, links: Schedule['links']) {
-    const updated = { links: JSON.stringify(links) };
-
-    return this.client
-      .prepare(
-        buildUpdateWhereQuery<RawSchedule>(
-          'schedule',
-          { groupCampusId },
-          updated
-        )
-      )
-      .bind(updated.links, groupCampusId)
-      .run();
+    return this.updateWhere(
+      { groupCampusId },
+      { links: JSON.stringify(links) }
+    );
   }
 
   async getLinks(groupCampusId: string): Promise<Record<LessonId, string>> {
-    const links = await this.selectOne<{ links: string }>(
-      'SELECT links FROM schedule WHERE groupCampusId=?',
-      [groupCampusId]
-    );
+    const links = await this.findOneWhere({ groupCampusId }, ['links']);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return links ? JSON.parse(links.links) : {};
+    return links && links.links ? JSON.parse(links.links) : {};
   }
 
   // findSchedulesWithGroupIds(ids: string[]) {

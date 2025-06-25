@@ -1,7 +1,7 @@
 import { Repository } from '@data/repo';
 import { TelegramBot } from './telegram';
 import { Message, Update } from './telegram/types';
-import { Lesson } from '@data/types/schedule';
+import { LessonWithTeacher } from '@data/types/schedule';
 
 export class BotController {
   private bot: TelegramBot;
@@ -14,9 +14,7 @@ export class BotController {
 
   private async handleMessage(message: Message) {
     if (message.text !== undefined && message.text.startsWith('/start')) {
-      await using repo = await Repository.openConnection(
-        this.env.MONGO_CONNECTION_STRING
-      );
+      const repo = Repository.openConnection();
       const user = await repo.users().findByTelegramUserId(message.from.id);
 
       await (user === null
@@ -46,7 +44,7 @@ export class BotController {
     );
   }
 
-  async handleTimeTrigger(userId: number, lessons: Lesson[]) {
+  async handleTimeTrigger(userId: number, lessons: LessonWithTeacher[]) {
     let message = lessons.length === 1 ? 'Почалася пара' : 'Почалися пари';
     message += ':\n\n';
     // message += lessons

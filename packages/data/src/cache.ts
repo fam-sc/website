@@ -62,7 +62,6 @@ export abstract class CachedExternalApi<T, F = T> {
       return result;
     }
 
-    console.log('set');
     const fetchValue = await this.fetchFromExternalApi();
     const putAction = this.putToRepo(repo, fetchValue);
 

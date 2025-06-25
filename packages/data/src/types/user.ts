@@ -26,7 +26,6 @@ export type User = Omit<RawUser, 'hasAvatar'> & {
 
 // Info about user that has registered, but yet not clicked magic link in email.
 export type PendingUser = {
-  id: number;
   firstName: string;
   lastName: string;
   parentName: string | null;

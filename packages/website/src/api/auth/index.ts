@@ -13,16 +13,6 @@ export function getSessionId(request: Request): string | undefined {
   return getCookieValue(request, SESSION_ID_COOKIE);
 }
 
-export function getSessionIdNumber(request: Request): bigint | undefined {
-  return parseSessionIdString(getSessionId(request));
-}
-
-export function parseSessionIdString(
-  value: string | undefined
-): bigint | undefined {
-  return value === undefined ? undefined : BigInt(value);
-}
-
 export function setSessionId(response: Response, value: string) {
   setCookie(response, {
     name: SESSION_ID_COOKIE,

@@ -2,6 +2,7 @@ import { Repository } from '@data/repo';
 
 import { getCurrentTime } from '@shared/api/campus';
 import { BotController } from './controller';
+import { ScheduleWithTeachers } from '@data/types/schedule';
 
 function getUniqueGroups(users: { academicGroup: string }[]): string[] {
   const result = new Set<string>();
@@ -13,6 +14,27 @@ function getUniqueGroups(users: { academicGroup: string }[]): string[] {
   return [...result];
 }
 
+async function getScheduleMap(
+  repo: Repository,
+  groups: string[]
+): Promise<Map<string, ScheduleWithTeachers>> {
+  const schedules = await Promise.all(
+    groups.map((group) => {
+      return repo.schedule().findByGroupWithTeachers(group).get();
+    })
+  );
+
+  const result = new Map<string, ScheduleWithTeachers>();
+
+  for (const schedule of schedules) {
+    if (schedule !== null) {
+      result.set(schedule.groupCampusId, schedule);
+    }
+  }
+
+  return result;
+}
+
 export async function handleOnTime(
   time: { hour: number; minute: number },
   env: Env
@@ -20,37 +42,23 @@ export async function handleOnTime(
   const timeBreakpoint = `${time.hour}:${time.minute}`;
   const controller = new BotController(env);
 
-  await using repo = await Repository.openConnection(
-    env.MONGO_CONNECTION_STRING
-  );
+  const repo = Repository.openConnection();
 
   const { currentWeek, currentDay } = await getCurrentTime();
 
-  const users = await repo
-    .users()
-    .findAllUsersWithLinkedTelegram()
-    .project<{
-      academicGroup: string;
-      telegramUserId: number;
-    }>({ academicGroup: 1, telegramUserId: 1 })
-    .toArray();
+  const users = await repo.users().findAllUsersWithLinkedTelegram();
 
   const groups = getUniqueGroups(users);
-  const schedules = await repo
-    .schedule()
-    .findSchedulesWithGroupIds(groups)
-    .toArray();
+  const schedules = await getScheduleMap(repo, groups);
 
-  for (const user of users) {
-    const schedule = schedules.find(
-      (value) => value.groupCampusId === user.academicGroup
-    );
+  for (const { academicGroup, telegramUserId } of users) {
+    const schedule = schedules.get(academicGroup);
     if (schedule === undefined) {
       continue;
     }
 
     const week = schedule.weeks[currentWeek - 1];
-    const day = week.days[currentDay - 1];
+    const day = week[currentDay - 1];
 
     // It might be undefined if the index is out of bounds.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -62,8 +70,8 @@ export async function handleOnTime(
       (lesson) => lesson.time === timeBreakpoint
     );
 
-    if (lessons.length > 0) {
-      await controller.handleTimeTrigger(user.telegramUserId, lessons);
+    if (telegramUserId !== null && lessons.length > 0) {
+      await controller.handleTimeTrigger(telegramUserId, lessons);
     }
   }
 }

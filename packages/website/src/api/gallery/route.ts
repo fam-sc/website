@@ -28,7 +28,7 @@ app.get('/gallery', async (request) => {
   const repo = Repository.openConnection();
   const images = await repo.galleryImages().getPage(page - 1, PAGE_SIZE);
 
-  return ok(images);
+  return ok(images.map(({ id, images }) => ({ id, sizes: images })));
 });
 
 app.post('/gallery', async (request, { env }) => {

@@ -43,7 +43,7 @@ app.put('/events/:id', async (request, { env, params: { id } }) => {
     });
 
     const newEvent: Partial<Event> = {
-      date,
+      date: date.getTime(),
       title,
       status,
       description: hydratedDescription,
@@ -80,9 +80,10 @@ app.delete(
     }
 
     return authRoute(request, UserRole.ADMIN, async (repo) => {
-      const {
-        meta: { changes },
-      } = await repo.events().deleteWhere('id', numberId);
+      const { changes } = await repo
+        .events()
+        .deleteWhere({ id: numberId })
+        .get();
 
       if (changes !== 0) {
         await MEDIA_BUCKET.delete(`events/${id}`);

@@ -5,7 +5,6 @@ import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@shared/parseInt';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
-import { Repository } from '@data/repo';
 import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
 import { getMediaFileUrl } from '@/api/media';
@@ -17,6 +16,7 @@ import { LinkButton } from '@/components/LinkButton';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { ImageSize } from '@shared/image/types';
 import { RichTextString } from '@shared/richText/types';
+import { repository } from '@/utils/repo';
 
 type ClientEvent = {
   id: number;
@@ -40,12 +40,12 @@ function toClientEvent(event: Event): ClientEvent {
   };
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
   const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const { total: totalItems, items } = await repo
     .events()
     .getPage(page - 1, ITEMS_PER_PAGE);

@@ -132,7 +132,6 @@ describe('pollResultsToTable', () => {
       ],
       [
         {
-          userId: 1,
           date: date.getTime(),
           answers: [
             {

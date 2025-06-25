@@ -1,4 +1,4 @@
-import { repeatJoin } from '@shared/string/repeatJoin';
+import { repeatJoin } from '../../../shared/src/string/repeatJoin';
 import { qMarks } from './expression';
 import {
   getMaybeModifierValue,
@@ -15,16 +15,15 @@ export type Conditions<T> = {
 };
 
 type Fields<T> = (T & string)[] | '*';
+type Keyword = 'WHERE' | 'RETURNING' | 'LIMIT' | 'OFFSET';
 
-function withFactory(
-  infix: string
-): (value: string, suffix?: string) => string {
-  return (value, suffix) =>
-    suffix !== undefined ? `${value} ${infix} ${suffix}` : value;
+function withKeyword(
+  prefix: string,
+  infix: Keyword,
+  suffix: string | number | undefined
+) {
+  return suffix ? `${prefix} ${infix} ${suffix}` : prefix;
 }
-
-const withReturning = withFactory('RETURNING');
-const withWhere = withFactory('WHERE');
 
 function joinColumns(array: string[]): string {
   return array.map((item) => `"${item}"`).join(',');
@@ -38,10 +37,18 @@ function maybeModifierToKeyValue(key: string, value: unknown): string {
   return isModifier(value) ? `"${key}"${value.expression}` : `"${key}"=?`;
 }
 
-function conditionsToWhereClause(conditions: Conditions<unknown>): string {
-  return Object.entries(conditions)
-    .map(([key, value]) => maybeModifierToKeyValue(key, value))
-    .join(' AND ');
+function conditionsToWhereClause(
+  conditions: Conditions<unknown> | undefined
+): string {
+  return conditions
+    ? Object.entries(conditions)
+        .map(([key, value]) => maybeModifierToKeyValue(key, value))
+        .join(' AND ')
+    : '';
+}
+
+function selectFromTable(columns: string, tableName: string): string {
+  return `SELECT ${columns} FROM ${tableName}`;
 }
 
 export function getConditionsBinding(conditions: Conditions<unknown>) {
@@ -59,8 +66,9 @@ export function buildGeneralInsertQuery<T extends object>(
   const keys = Object.keys(value);
   const columns = joinColumns(keys);
 
-  return withReturning(
+  return withKeyword(
     `${flavor} INTO "${tableName}" (${columns}) VALUES (${qMarks(keys.length)})`,
+    'RETURNING',
     returning && `"${returning}"`
   );
 }
@@ -80,8 +88,9 @@ export function buildGeneralInsertManyQuery<T extends object>(
     values.length
   );
 
-  return withReturning(
+  return withKeyword(
     `${flavor} INTO "${tableName}" (${columns}) VALUES ${qMarkTemplate}`,
+    'RETURNING',
     returning && `"${returning}"`
   );
 }
@@ -91,8 +100,9 @@ export function buildFindWhereQuery<T>(
   conditions: Conditions<T>,
   fields?: Fields<keyof T>
 ): string {
-  return withWhere(
-    `SELECT ${resolveFields(fields)} FROM "${tableName}"`,
+  return withKeyword(
+    selectFromTable(resolveFields(fields), tableName),
+    'WHERE',
     conditionsToWhereClause(conditions)
   );
 }
@@ -101,9 +111,33 @@ export function buildCountWhereQuery<T>(
   tableName: string,
   conditions?: Conditions<T>
 ): string {
-  const whereClause = conditions ? conditionsToWhereClause(conditions) : '';
+  return withKeyword(
+    selectFromTable(`COUNT(*) as count`, tableName),
+    'WHERE',
+    conditionsToWhereClause(conditions)
+  );
+}
 
-  return withWhere(`SELECT COUNT(*) as count FROM "${tableName}"`, whereClause);
+export function buildGetPageQuery(
+  tableName: string,
+  offset: number,
+  size: number,
+  conditions?: Conditions<unknown>,
+  fields?: Fields<unknown>
+): string {
+  return withKeyword(
+    withKeyword(
+      withKeyword(
+        selectFromTable(resolveFields(fields), tableName),
+        'WHERE',
+        conditionsToWhereClause(conditions)
+      ),
+      'LIMIT',
+      size
+    ),
+    'OFFSET',
+    offset > 0 ? offset : undefined
+  );
 }
 
 export function buildUpdateWhereQuery<T extends object>(
@@ -116,14 +150,22 @@ export function buildUpdateWhereQuery<T extends object>(
     .filter((value) => value !== undefined)
     .join(',');
 
-  return `UPDATE "${tableName}" SET ${set} WHERE ${conditionsToWhereClause(conditions)}`;
+  return withKeyword(
+    `UPDATE "${tableName}" SET ${set}`,
+    'WHERE',
+    conditionsToWhereClause(conditions)
+  );
 }
 
 export function buildDeleteWhereQuery(
   tableName: string,
   conditions: Conditions<unknown>
 ) {
-  return `DELETE FROM "${tableName}" WHERE ${conditionsToWhereClause(conditions)}`;
+  return withKeyword(
+    `DELETE FROM "${tableName}"`,
+    'WHERE',
+    conditionsToWhereClause(conditions)
+  );
 }
 
 export function buildCreateTableQuery<T>(

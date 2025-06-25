@@ -19,6 +19,7 @@ import { EventStatus } from '@data/types';
 import { useState, useRef, useCallback } from 'react';
 import styles from './page.module.scss';
 import { parseInt } from '@shared/parseInt';
+import { repository } from '@/utils/repo';
 
 async function getClientEvent(repo: Repository, id: number) {
   try {
@@ -40,11 +41,11 @@ async function getClientEvent(repo: Repository, id: number) {
   }
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
   const editEventId = parseInt(searchParams.get('edit'));
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const event =
     editEventId !== undefined
       ? await getClientEvent(repo, editEventId)

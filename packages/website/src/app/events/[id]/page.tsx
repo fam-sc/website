@@ -1,6 +1,5 @@
 import { notFound } from '@shared/responses';
 import { Route } from './+types/page';
-import { Repository } from '@data/repo';
 import { deleteEvent } from '@/api/events/client';
 import { getMediaFileUrl } from '@/api/media';
 import { useAuthInfo } from '@/auth/context';
@@ -21,14 +20,15 @@ import { DeleteEventDialog } from './DeleteEventDialog';
 import styles from './page.module.scss';
 import { Image } from '@/components/Image';
 import { parseInt } from '@shared/parseInt';
+import { repository } from '@/utils/repo';
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, context }: Route.LoaderArgs) {
   const id = parseInt(params.id);
   if (id === undefined) {
     return notFound();
   }
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const event = await repo.events().findById(id);
 
   if (event === null) {

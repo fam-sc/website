@@ -32,10 +32,12 @@ app.post('/signUp/finish', async (request) => {
         telegramUserId: null,
         role: UserRole.STUDENT_NON_APPROVED,
         passwordHash: pendingUser.passwordHash,
+        hasAvatar: 0,
       },
       'id'
     );
-  } catch {
+  } catch (e: unknown) {
+    console.log(e);
     return conflict({ message: 'Email exists' });
   }
 

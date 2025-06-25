@@ -37,6 +37,8 @@ export type PollQuestion = { title: string } & (
 export type PollType = PollQuestion['type'];
 
 export type RawPollRespondent = {
+  pollId: number;
+
   // We save userId not to use it in processing,
   // but to disallow posting more than one response with the same account.
   userId: number;
@@ -51,6 +53,8 @@ export type PollRespondent = {
   date: number;
   answers: PollRespondentAnswer[];
 };
+
+export type AnonymousPollRespondent = Omit<PollRespondent, 'userId'>;
 
 export type PollRespondentAnswer = {
   // if question's type is input

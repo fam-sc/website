@@ -43,7 +43,7 @@ app.post('/events', async (request, { env }) => {
 
   return await authRoute(request, UserRole.ADMIN, async (repo) => {
     const id = await repo.events().insertEvent({
-      date,
+      date: date.getTime(),
       status,
       title,
       description: richTextDescription,

@@ -28,11 +28,11 @@ export class GalleryImageCollection extends EntityCollection<RawGalleryImage>(
     id: number
   ): Promise<GalleryImageWithEvent | null> {
     const result = await this.selectOne<{
-      'gallery_images.date': number;
-      'events.id': number;
-      'events.title': string;
+      galleryDate: number;
+      eventId: number;
+      eventTitle: string;
     }>(
-      `SELECT gallery_images.date, events.id, events.title 
+      `SELECT gallery_images.date as galleryDate, events.id as eventId, events.title as eventTitle 
       FROM gallery_images 
       INNER JOIN events ON events.id=gallery_images.id 
       WHERE gallery_images.id=?`
@@ -41,21 +41,25 @@ export class GalleryImageCollection extends EntityCollection<RawGalleryImage>(
     return (
       result && {
         id,
-        date: result['gallery_images.date'],
+        date: result.galleryDate,
         event: {
-          id: result['events.id'],
-          title: result['events.title'],
+          id: result.eventId,
+          title: result.eventTitle,
         },
       }
     );
   }
 
   async getPage(index: number, size: number) {
-    const result = await this.selectAll<{ id: number; images: string }>(
-      `SELECT id, images FROM gallery_images OFFSET ${index * size} LIMIT ${size}`
-    );
+    const result = await this.getPageBase(index * size, size, {}, [
+      'id',
+      'images',
+    ]).get();
 
-    return result.map(({ id, images }) => ({ id, images: JSON.parse(images) }));
+    return result.map(({ id, images }) => ({
+      id,
+      images: JSON.parse(images) as ImageSize[],
+    }));
   }
 
   async getImageSizes(id: number): Promise<ImageSize[] | null> {

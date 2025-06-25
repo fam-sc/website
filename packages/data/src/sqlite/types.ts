@@ -18,7 +18,3 @@ export type ColumnDescriptor<T> = Concat<
 >;
 
 export type TableDescriptor<T> = { [K in keyof T]: ColumnDescriptor<T[K]> };
-
-export type TableDescriptors<Types extends unknown[]> = {
-  [T in keyof Types]: [string, TableDescriptor<Types[T]>];
-};

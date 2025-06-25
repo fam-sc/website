@@ -1,5 +1,4 @@
 import { Route } from './+types/page';
-import { Repository } from '@data/repo';
 import { fetchGalleryPage } from '@/api/gallery/client';
 import { GalleryImageWithSizes } from '@/api/gallery/types';
 import { getMediaFileUrl } from '@/api/media';
@@ -12,8 +11,9 @@ import { useNavigate, Link } from 'react-router';
 import { GalleryImageInfoDialog } from './dialog';
 import styles from './page.module.scss';
 import { parseInt } from '@shared/parseInt';
+import { repository } from '@/utils/repo';
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
@@ -22,7 +22,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     return null;
   }
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const sizes = await repo.galleryImages().getImageSizes(numberId);
 
   return sizes !== null ? { id: numberId, sizes } : null;

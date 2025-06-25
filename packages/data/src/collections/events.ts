@@ -1,3 +1,7 @@
+import {
+  buildCountWhereQuery,
+  buildGetPageQuery,
+} from '../sqlite/queryBuilder';
 import { TableDescriptor } from '../sqlite/types';
 import { Event, RawEvent } from '../types';
 
@@ -78,10 +82,8 @@ export class EventCollection extends EntityCollection<RawEvent>('events') {
 
   async getPage(index: number, size: number) {
     const [count, events] = await this.client.batch([
-      this.client.prepare('SELECT COUNT(*) as count FROM events'),
-      this.client.prepare(
-        `SELECT * FROM events OFFSET ${index * size} LIMIT ${size}`
-      ),
+      this.client.prepare(buildCountWhereQuery('events')),
+      this.client.prepare(buildGetPageQuery('events', index * size, size)),
     ]);
 
     return {

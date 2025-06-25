@@ -1,7 +1,6 @@
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
 import { getSessionId } from '@/api/auth';
-import { Repository } from '@data/repo';
 import { Labeled } from '@/components/Labeled';
 import { ReactNode, useState } from 'react';
 import { TextInput } from '@/components/TextInput';
@@ -10,14 +9,15 @@ import { Button } from '@/components/Button';
 import { updateUserPersonalInfo } from '@/api/users/client';
 import { Title } from '@/components/Title';
 import styles from './page.module.scss';
+import { repository } from '@/utils/repo';
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/');
   }
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const personalInfo = await repo.sessions().getUserPersonalInfo(sessionId);
   if (personalInfo === null) {
     return redirect('/');

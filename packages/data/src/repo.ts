@@ -6,20 +6,59 @@ import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
 import { UpdateTimeCollection } from './collections/updateTime';
 import { UserCollection } from './collections/users';
-
+import { ScheduleLessonCollection } from './collections/scheduleLessons';
+import { PollRespondentCollection } from './collections/pollRespondents';
 import { PollCollection } from './collections/polls';
 import { PendingUserCollection } from './collections/pendingUsers';
-import { D1Database } from '@shared/cloudflare/d1/types';
+
+import { D1Database, D1Result } from '@shared/cloudflare/d1/types';
 import { TableDescriptor } from './sqlite/types';
 import { buildCreateTableQuery } from './sqlite/queryBuilder';
-import { DataQuery } from './sqlite/query';
+import { DataQueryArray } from './sqlite/query';
+import { EntityCollectionClass } from './collections/base';
+import { batchHelper, batchWithResultsHelper } from './utils/batch';
+
+const collectionTypes = [
+  UserCollection,
+  PendingUserCollection,
+  EventCollection,
+  GalleryImageCollection,
+  SessionCollection,
+  ScheduleCollection,
+  ScheduleLessonCollection,
+  ScheduleTeacherCollection,
+  UpdateTimeCollection,
+  GroupCollection,
+  PollCollection,
+  PollRespondentCollection,
+];
 
 export class Repository {
   private client: D1Database;
   private static defaultDatabase: D1Database | undefined;
+  private collections: Map<EntityCollectionClass, unknown>;
 
   constructor(client: D1Database) {
     this.client = client;
+
+    const collections = new Map<EntityCollectionClass, unknown>();
+    const getCollection = <T>(type: EntityCollectionClass<T>) => {
+      const result = collections.get(type);
+      if (result === undefined) {
+        throw new Error('Cannot find collection');
+      }
+
+      return result as T;
+    };
+
+    for (const collectionType of collectionTypes) {
+      const collection = new collectionType(client);
+      collection.getCollection = getCollection;
+
+      collections.set(collectionType, collection);
+    }
+
+    this.collections = collections;
   }
 
   users = this.collection(UserCollection);
@@ -35,26 +74,11 @@ export class Repository {
 
   static async init(database: D1Database) {
     const tables: [string, TableDescriptor<unknown>][] = [];
-    const collections = [
-      UserCollection,
-      PendingUserCollection,
-      EventCollection,
-      GalleryImageCollection,
-      SessionCollection,
-      ScheduleCollection,
-      ScheduleTeacherCollection,
-      UpdateTimeCollection,
-      GroupCollection,
-    ];
 
-    for (const collection of collections) {
+    for (const collection of collectionTypes) {
       const descriptor = collection.descriptor();
 
-      if (Array.isArray(descriptor)) {
-        tables.push(...descriptor);
-      } else {
-        tables.push([collection.toString(), descriptor]);
-      }
+      tables.push([collection.toString(), descriptor]);
     }
 
     for (const [name, descriptor] of tables) {
@@ -66,27 +90,23 @@ export class Repository {
     type: new (client: D1Database) => T
   ): (this: Repository) => T {
     return () => {
-      return new type(this.client);
+      const result = this.collections.get(type);
+      if (result === undefined) {
+        throw new Error('Cannot find collection');
+      }
+
+      return result as T;
     };
   }
 
-  async batch<T extends unknown[]>(queries: {
-    [K in keyof T]: DataQuery<T[K]>;
-  }): Promise<T> {
-    const results = await this.client.batch(
-      queries.flatMap(({ statements }) => statements)
-    );
+  async batch<T extends unknown[]>(queries: DataQueryArray<T>): Promise<T> {
+    return batchHelper(this.client, queries);
+  }
 
-    let resultOffset = 0;
-    return queries.map((query) => {
-      const part = results.slice(
-        resultOffset,
-        resultOffset + query.statements.length
-      );
-      resultOffset += query.statements.length;
-
-      return query.mapResult(part);
-    }) as T;
+  async batchWithResults<T extends unknown[]>(
+    queries: DataQueryArray<T>
+  ): Promise<[T, D1Result[]]> {
+    return batchWithResultsHelper(this.client, queries);
   }
 
   static setDefaultDatabase(value: D1Database) {

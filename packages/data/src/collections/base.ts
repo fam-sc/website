@@ -10,18 +10,28 @@ import {
   buildCreateTableQuery,
   buildCountWhereQuery,
   getConditionsBinding,
+  buildGetPageQuery,
 } from '../sqlite/queryBuilder';
-import { TableDescriptor, TableDescriptors } from '../sqlite/types';
-import { DataQuery, query } from '../sqlite/query';
+import { TableDescriptor } from '../sqlite/types';
+import { DataQuery, DataQueryContext, query } from '../sqlite/query';
+import { batchWithResultsHelper } from '../utils/batch';
+
+export type EntityCollectionClass<T = unknown> = new (client: D1Database) => T;
 
 export function EntityCollection<Raw extends object>(tableName: string) {
   type Fields<S = Raw> = (keyof S & string)[] | '*';
 
   return class {
     protected client: D1Database;
+    queryContext: DataQueryContext;
 
     constructor(client: D1Database) {
       this.client = client;
+      this.queryContext = {
+        batch(queries) {
+          return batchWithResultsHelper(client, queries);
+        },
+      };
     }
 
     protected async updateWhere(
@@ -59,7 +69,6 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       sql: string,
       bindings: unknown[] = []
     ): DataQuery<R | null> {
-      console.log(bindings);
       return query.first(this.client.prepare(sql).bind(...bindings));
     }
 
@@ -67,7 +76,6 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       sql: string,
       bindings: unknown[] = []
     ): Promise<R | null> {
-      console.log(bindings);
       return this.client
         .prepare(sql)
         .bind(...bindings)
@@ -198,49 +206,36 @@ export function EntityCollection<Raw extends object>(tableName: string) {
 
     private prepareFindWhereStatement<R extends Raw>(
       conditions: Conditions<R>,
-      fields?: Fields<Partial<Raw>>,
-      otherTableName?: string
+      fields?: Fields<Partial<Raw>>
     ): D1PreparedStatement {
       const bindings = getConditionsBinding(conditions);
 
       return this.client
-        .prepare(
-          buildFindWhereQuery(otherTableName ?? tableName, conditions, fields)
-        )
+        .prepare(buildFindWhereQuery(tableName, conditions, fields))
         .bind(...bindings);
     }
 
     findOneWhereAction<K extends keyof Raw & string = keyof Raw & string>(
       conditions: Conditions<Raw>,
-      fields?: K[] | '*',
-      otherTableName?: string
+      fields?: K[] | '*'
     ): DataQuery<Pick<Raw, K> | null> {
-      return query.first(
-        this.prepareFindWhereStatement(conditions, fields, otherTableName)
-      );
+      return query.first(this.prepareFindWhereStatement(conditions, fields));
     }
 
     findOneWhere<K extends keyof Raw & string = keyof Raw & string>(
       conditions: Conditions<Raw>,
-      fields?: K[] | '*',
-      otherTableName?: string
+      fields?: K[] | '*'
     ): Promise<Pick<Raw, K> | null> {
-      return this.prepareFindWhereStatement(
-        conditions,
-        fields,
-        otherTableName
-      ).first();
+      return this.prepareFindWhereStatement(conditions, fields).first();
     }
 
     async findManyWhere<K extends keyof Raw & string = keyof Raw & string>(
       conditions: Conditions<Raw>,
-      fields?: K[] | '*',
-      otherTableName?: string
+      fields?: K[] | '*'
     ): Promise<Pick<Raw, K>[]> {
       const { results } = await this.prepareFindWhereStatement(
         conditions,
-        fields,
-        otherTableName
+        fields
       ).all<Pick<Raw, K>>();
 
       return results;
@@ -248,11 +243,20 @@ export function EntityCollection<Raw extends object>(tableName: string) {
 
     findManyWhereAction<K extends keyof Raw & string = keyof Raw & string>(
       conditions: Conditions<Raw>,
-      fields?: K[] | '*',
-      otherTableName?: string
+      fields?: K[] | '*'
     ): DataQuery<Pick<Raw, K>[]> {
-      return query.all(
-        this.prepareFindWhereStatement(conditions, fields, otherTableName)
+      return query.all(this.prepareFindWhereStatement(conditions, fields));
+    }
+
+    protected getPageBase<K extends keyof Raw & string = keyof Raw & string>(
+      offset: number,
+      size: number,
+      conditions: Conditions<Raw> = {},
+      fields?: K[] | '*'
+    ): DataQuery<Pick<Raw, K>[]> {
+      return this.selectAllAction(
+        buildGetPageQuery(tableName, offset, size, conditions, fields),
+        getConditionsBinding(conditions)
       );
     }
 
@@ -292,7 +296,12 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.client.exec(buildCreateTableQuery(tableName, schema));
     }
 
-    static descriptor(): TableDescriptor<Raw> | TableDescriptors<unknown[]> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getCollection<T>(_type: EntityCollectionClass<T>): T {
+      throw new Error('Not implemented');
+    }
+
+    static descriptor(): TableDescriptor<Raw> {
       throw new Error('Not implemented');
     }
 

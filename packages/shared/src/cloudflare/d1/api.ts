@@ -79,7 +79,7 @@ export class ApiD1Database implements D1Database {
       async first() {
         const { results } = await database.doQuery(sql, bindings ?? []);
 
-        return results[0];
+        return results[0] ?? null;
       },
       raw: notImplemented,
     };

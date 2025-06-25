@@ -10,17 +10,17 @@ import { redirect } from 'react-router';
 import { Route } from './+types/page';
 import { Title } from '@/components/Title';
 import { useAuthInfo } from '@/auth/context';
-import { Repository } from '@data/repo';
+import { repository } from '@/utils/repo';
 
 const ITEMS_PER_PAGE = 20;
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
 
   const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const { total: totalItems, items } = await repo
     .polls()
     .getPage(page - 1, ITEMS_PER_PAGE);

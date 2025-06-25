@@ -29,12 +29,5 @@ export function multienvPlugin(): Plugin {
         );
       }
     },
-    resolveImportMeta(property) {
-      console.log(property);
-      if (property === 'HOST') {
-        console.log('HOST');
-        return `'${host}'`;
-      }
-    },
   };
 }

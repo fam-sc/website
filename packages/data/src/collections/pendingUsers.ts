@@ -7,7 +7,7 @@ export class PendingUserCollection extends EntityCollection<PendingUser>(
 ) {
   static descriptor(): TableDescriptor<PendingUser> {
     return {
-      id: 'INTEGER NOT NULL PRIMARY KEY',
+      token: 'TEXT NOT NULL PRIMARY KEY',
       academicGroup: 'TEXT NOT NULL',
       createdAt: 'INTEGER NOT NULL',
       email: 'TEXT NOT NULL',
@@ -16,7 +16,6 @@ export class PendingUserCollection extends EntityCollection<PendingUser>(
       parentName: 'TEXT',
       passwordHash: 'TEXT NOT NULL',
       telnum: 'TEXT',
-      token: 'TEXT NOT NULL',
     };
   }
 

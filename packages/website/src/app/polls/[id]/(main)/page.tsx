@@ -11,9 +11,9 @@ import { notFound } from '@shared/responses';
 
 import { Route } from './+types/page';
 import { Title } from '@/components/Title';
-import { Repository } from '@data/repo';
 import { getSessionId } from '@/api/auth';
 import { parseInt } from '@shared/parseInt';
+import { repository } from '@/utils/repo';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (
@@ -23,13 +23,13 @@ function ErrorMessage({ children }: PropsWithChildren) {
   );
 }
 
-export async function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ request, params, context }: Route.LoaderArgs) {
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/polls');
   }
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const userInfo = await repo.sessions().getUserWithRole(sessionId);
   const numberId = parseInt(params.id);
 
@@ -41,14 +41,14 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     return redirect('/polls');
   }
 
-  const poll = await repo.polls().findOneWhere({ id: numberId });
+  const [poll, userReposponded] = await repo.batch([
+    repo.polls().findEndDateAndQuestions(numberId),
+    repo.polls().hasUserResponded(numberId, userInfo.id),
+  ]);
+
   if (poll === null) {
     return notFound();
   }
-
-  const userReposponded = poll.respondents.find(
-    (respondent) => respondent.userId === userInfo.id
-  );
 
   const isPollEnded = poll.endDate !== null;
   const canViewInfo = userInfo.role >= UserRole.ADMIN;

@@ -2,6 +2,12 @@ import { D1PreparedStatement, D1Result } from '@shared/cloudflare/d1/types';
 
 type Mapping<T, R> = (value: T, result: D1Result[]) => R;
 
+export interface DataQueryContext {
+  batch<T extends unknown[]>(
+    queries: DataQueryArray<T>
+  ): Promise<[T, D1Result[]]>;
+}
+
 export type DataQuery<T> = {
   readonly statements: D1PreparedStatement[];
 
@@ -10,6 +16,25 @@ export type DataQuery<T> = {
 
   getWithResult(): Promise<[T, D1Result[]]>;
   get(): Promise<T>;
+};
+
+export type DataQueryArray<T extends unknown[]> = {
+  [K in keyof T]: DataQuery<T[K]>;
+};
+
+const defaultQueryContext: DataQueryContext = {
+  async batch<T extends unknown[]>(
+    queries: DataQueryArray<T>
+  ): Promise<[T, D1Result[]]> {
+    const valuesAndResults = await Promise.all(
+      queries.map((query) => query.getWithResult())
+    );
+
+    return [
+      valuesAndResults.map(([value]) => value) as T,
+      valuesAndResults.flatMap(([, result]) => result),
+    ];
+  },
 };
 
 function mapQuery<T, R>(
@@ -84,27 +109,22 @@ function first<T>(statement: D1PreparedStatement): DataQuery<T | null> {
   });
 }
 
-function merge<T extends unknown[], R>(
+function merge<T extends unknown[]>(
   queries: { [K in keyof T]: DataQuery<T[K]> },
-  mapping: (values: T) => R
-): DataQuery<R> {
-  return createQuery(
+  context: DataQueryContext = defaultQueryContext
+): DataQuery<T> {
+  function getWithResult() {
+    return context.batch(queries);
+  }
+
+  return createQuery<T>(
     queries.flatMap(({ statements }) => statements),
     {
-      async get() {
-        const parts = await Promise.all(queries.map((query) => query.get()));
+      getWithResult,
+      async get(): Promise<T> {
+        const [value] = await getWithResult();
 
-        return mapping(parts as T);
-      },
-      async getWithResult() {
-        const parts = await Promise.all(
-          queries.map((query) => query.getWithResult())
-        );
-
-        return [
-          mapping(parts.map(([value]) => value) as T),
-          parts.flatMap(([, result]) => result),
-        ];
+        return value;
       },
       mapResult(results) {
         let resultOffset = 0;
@@ -118,7 +138,7 @@ function merge<T extends unknown[], R>(
           return query.mapResult(part);
         });
 
-        return mapping(parts as T);
+        return parts as T;
       },
     }
   );

@@ -5,6 +5,7 @@ import { UserRole } from '@data/types/user';
 import { submitPollPayload } from '@/api/polls/types';
 import { app } from '@/api/app';
 import { isValidAnswers } from './validation';
+import { parseInt } from '@shared/parseInt';
 
 app.post('/polls/:id', async (request, { params: { id } }) => {
   const rawPayload = await request.json();
@@ -15,10 +16,19 @@ app.post('/polls/:id', async (request, { params: { id } }) => {
     return badRequest();
   }
 
+  const numberId = parseInt(id);
+  if (numberId === undefined) {
+    return badRequest();
+  }
+
   const { answers } = payloadResult.data;
 
   return authRoute(request, UserRole.STUDENT, async (repo, userId) => {
-    const poll = await repo.polls().findById(id);
+    const [poll, userResponded] = await repo.batch([
+      repo.polls().findEndDateAndQuestions(numberId),
+      repo.polls().hasUserResponded(numberId, userId),
+    ]);
+
     if (poll === null) {
       return notFound();
     }
@@ -30,11 +40,6 @@ app.post('/polls/:id', async (request, { params: { id } }) => {
       });
     }
 
-    const objectUserId = new ObjectId(userId);
-    const userResponded = poll.respondents.find(
-      (respondent) => respondent.userId === objectUserId
-    );
-
     if (userResponded) {
       return badRequest({ message: 'The user has already responded' });
     }
@@ -43,9 +48,9 @@ app.post('/polls/:id', async (request, { params: { id } }) => {
       return badRequest({ message: 'Invalid poll answers' });
     }
 
-    await repo.polls().addRespondent(id, {
-      userId: objectUserId,
-      date: new Date(),
+    await repo.polls().addRespondent(numberId, {
+      date: Date.now(),
+      userId,
       answers,
     });
 

@@ -1,7 +1,6 @@
 import styles from './page.module.scss';
 import { notFound } from '@shared/responses';
 import { Route } from './+types/page';
-import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
 import { redirect } from 'react-router';
 import { getSessionId } from '@/api/auth';
@@ -17,14 +16,15 @@ import { useState } from 'react';
 import { ResultsTab } from './tabs/results';
 import { formatDateTime } from '@shared/date';
 import { parseInt } from '@shared/parseInt';
+import { repository } from '@/utils/repo';
 
-export async function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ request, params, context }: Route.LoaderArgs) {
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/polls');
   }
 
-  const repo = Repository.openConnection();
+  const repo = repository(context);
   const userInfo = await repo.sessions().getUserWithRole(sessionId);
   const numberId = parseInt(params.id);
 

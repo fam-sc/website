@@ -8,13 +8,13 @@ import {
 
 import { EntityCollection } from './base';
 
-import { notNull } from '../sqlite/modifier';
+import { notEquals, notNull } from '../sqlite/modifier';
 import { TableDescriptor } from '../sqlite/types';
 
 export class UserCollection extends EntityCollection<RawUser>('users') {
   static descriptor(): TableDescriptor<RawUser> {
     return {
-      id: 'INTEGER NOT NULL PRIMARY KEY',
+      id: 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
       academicGroup: 'TEXT NOT NULL',
       email: 'TEXT NOT NULL',
       firstName: 'TEXT NOT NULL',
@@ -43,7 +43,11 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
   }
 
   findAllUsersWithLinkedTelegram() {
-    return this.findManyWhere({ telegramUserId: notNull() });
+    return this.findManyWhere({ telegramUserId: notNull() }, [
+      'id',
+      'academicGroup',
+      'telegramUserId',
+    ]);
   }
 
   async findAllNonApprovedUsers(academicGroup?: string): Promise<ShortUser[]> {
@@ -93,9 +97,21 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
   }
 
   async getPage(index: number, size: number) {
-    const result = await this.selectAll(
-      `SELECT firstName,lastName,parentName,academicGroup, email, role FROM users WHERE role!=${UserRole.ADMIN} OFFSET ${index * size} LIMIT ${size}`
-    );
+    const result = await this.getPageBase(
+      index * size,
+      size,
+      { role: notEquals(UserRole.ADMIN) },
+      [
+        'id',
+        'firstName',
+        'lastName',
+        'parentName',
+        'academicGroup',
+        'email',
+        'role',
+        'hasAvatar',
+      ]
+    ).get();
 
     return result.map(({ hasAvatar, ...rest }) => ({
       hasAvatar: hasAvatar === 1,

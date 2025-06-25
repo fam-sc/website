@@ -39,9 +39,9 @@ app.patch('/schedule', async (request) => {
   }
 
   return authRoute(request, UserRole.GROUP_HEAD, async (repo) => {
-    const {
-      meta: { changes },
-    } = await repo.schedule().updateLinks(normalizeGuid(group), payload);
+    const { changes } = await repo
+      .schedule()
+      .updateLinks(normalizeGuid(group), payload);
 
     if (changes === 0) {
       return notFound();
