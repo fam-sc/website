@@ -1,8 +1,8 @@
 import { verifyAuthorizationHash } from '../../auth';
 import { Repository } from '@data/repo';
-import { ObjectId } from 'mongodb';
 import { badRequest } from '../../responses';
 import { BotController } from '@/controller';
+import { parseInt } from '@shared/parseInt';
 
 export async function POST(request: Request, env: Env): Promise<Response> {
   const { searchParams } = new URL(request.url);
@@ -25,10 +25,8 @@ export async function POST(request: Request, env: Env): Promise<Response> {
     return badRequest();
   }
 
-  let objectUserId: ObjectId;
-  try {
-    objectUserId = new ObjectId(userId);
-  } catch {
+  const numberUserId = parseInt(userId);
+  if (numberUserId === undefined) {
     return badRequest();
   }
 
@@ -45,11 +43,9 @@ export async function POST(request: Request, env: Env): Promise<Response> {
     return badRequest();
   }
 
-  await using repo = await Repository.openConnection(
-    env.MONGO_CONNECTION_STRING
-  );
+  const repo = Repository.openConnection();
 
-  await repo.users().updateTelegramUserId(objectUserId, telegramIdNumber);
+  await repo.users().updateTelegramUserId(numberUserId, telegramIdNumber);
 
   const controller = new BotController(env);
   await controller.handleAuth(telegramIdNumber);

@@ -14,7 +14,7 @@ import styles from './PollWithSubmit.module.scss';
 import { useNavigate } from 'react-router';
 
 export type PollWithSubmitProps = {
-  id: string;
+  id: number;
   questions: Poll['questions'];
 };
 

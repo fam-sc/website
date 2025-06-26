@@ -29,7 +29,7 @@ app.get('/users', async (request) => {
       email: item.email,
       group: groups.get(item.academicGroup) ?? '',
       role: item.role,
-      hasAvatar: item.hasAvatar ?? false,
+      hasAvatar: item.hasAvatar,
     }));
 
     return ok(responseResult);

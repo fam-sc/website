@@ -1,6 +1,6 @@
 import { ok, unauthrorized } from '@shared/responses';
 import { UserInfo } from '@/api/users/types';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { formPersonName } from '@shared/person';
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
@@ -8,12 +8,12 @@ import { getFacultyGroupMapById } from '@/api/groups/utils';
 import { app } from '@/api/app';
 
 app.get('/users/approveList', async (request) => {
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return unauthrorized();
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
   const userWithRole = await repo.sessions().getUserWithRoleAndGroup(sessionId);
 
   if (userWithRole === null || userWithRole.role < UserRole.GROUP_HEAD) {

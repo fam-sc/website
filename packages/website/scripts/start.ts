@@ -20,8 +20,6 @@ async function run() {
 
   const buildPathArg = process.argv[2];
   if (!buildPathArg) {
-    console.error(`
-  Usage: yarn start <server-build-path> - e.g. yarn start build/server/index.js`);
     // eslint-disable-next-line unicorn/no-process-exit
     process.exit(1);
   }

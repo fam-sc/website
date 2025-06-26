@@ -18,8 +18,10 @@ import { ImageInfo } from '@/utils/image/types';
 import { EventStatus } from '@data/types';
 import { useState, useRef, useCallback } from 'react';
 import styles from './page.module.scss';
+import { parseInt } from '@shared/parseInt';
+import { repository } from '@/utils/repo';
 
-async function getClientEvent(repo: Repository, id: string) {
+async function getClientEvent(repo: Repository, id: number) {
   try {
     const editEvent = await repo.events().findById(id);
 
@@ -39,15 +41,17 @@ async function getClientEvent(repo: Repository, id: string) {
   }
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
-  const editEventId = searchParams.get('edit');
+  const editEventId = parseInt(searchParams.get('edit'));
 
-  await using repo = await Repository.openConnection();
+  const repo = repository(context);
   const event =
-    editEventId !== null ? await getClientEvent(repo, editEventId) : undefined;
+    editEventId !== undefined
+      ? await getClientEvent(repo, editEventId)
+      : undefined;
 
-  if (event === undefined && editEventId !== null) {
+  if (event === undefined && editEventId !== undefined) {
     return redirect('/events/+');
   }
 
@@ -67,8 +71,8 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   const imageFileRef = useRef<File>(undefined);
 
   const [title, setTitle] = useState(event?.title ?? '');
-  const [date, setDate] = useState(event?.date ?? new Date());
-  const [status, setStatus] = useState<EventStatus>('pending');
+  const [date, setDate] = useState(event ? new Date(event.date) : new Date());
+  const [status, setStatus] = useState(EventStatus.PENDING);
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(
     event === undefined
   );
@@ -126,11 +130,11 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
 
       <Labeled title="Статус">
         <OptionSwitch
-          options={['pending', 'ended']}
+          options={[EventStatus.PENDING, EventStatus.ENDED]}
           selected={status}
           renderOption={useCallback(
-            (status: 'pending' | 'ended') =>
-              status === 'pending' ? 'Очікується' : 'Закінчилась',
+            (status: EventStatus) =>
+              status === EventStatus.PENDING ? 'Очікується' : 'Закінчилась',
             []
           )}
           onOptionSelected={setStatus}

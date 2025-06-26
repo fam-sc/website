@@ -1,5 +1,3 @@
-import { ClientSession, MongoClient } from 'mongodb';
-
 import { EventCollection } from './collections/events';
 import { GalleryImageCollection } from './collections/galleryImages';
 import { GroupCollection } from './collections/groups';
@@ -8,19 +6,59 @@ import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
 import { UpdateTimeCollection } from './collections/updateTime';
 import { UserCollection } from './collections/users';
-
-import { getEnvChecked } from '@shared/env';
+import { ScheduleLessonCollection } from './collections/scheduleLessons';
+import { PollRespondentCollection } from './collections/pollRespondents';
 import { PollCollection } from './collections/polls';
 import { PendingUserCollection } from './collections/pendingUsers';
 
-export class Repository implements AsyncDisposable {
-  private client: MongoClient;
-  private session: ClientSession | undefined;
-  private static defaultConnectionString: string | undefined;
+import { D1Database, D1Result } from '@shared/cloudflare/d1/types';
+import { TableDescriptor } from './sqlite/types';
+import { buildCreateTableQuery } from './sqlite/queryBuilder';
+import { DataQueryArray } from './sqlite/query';
+import { EntityCollectionClass } from './collections/base';
+import { batchHelper, batchWithResultsHelper } from './utils/batch';
 
-  constructor(client: MongoClient, session?: ClientSession) {
+const collectionTypes = [
+  UserCollection,
+  PendingUserCollection,
+  EventCollection,
+  GalleryImageCollection,
+  SessionCollection,
+  ScheduleCollection,
+  ScheduleLessonCollection,
+  ScheduleTeacherCollection,
+  UpdateTimeCollection,
+  GroupCollection,
+  PollCollection,
+  PollRespondentCollection,
+];
+
+export class Repository {
+  private client: D1Database;
+  private static defaultDatabase: D1Database | undefined;
+  private collections: Map<EntityCollectionClass, unknown>;
+
+  constructor(client: D1Database) {
     this.client = client;
-    this.session = session;
+
+    const collections = new Map<EntityCollectionClass, unknown>();
+    const getCollection = <T>(type: EntityCollectionClass<T>) => {
+      const result = collections.get(type);
+      if (result === undefined) {
+        throw new Error('Cannot find collection');
+      }
+
+      return result as T;
+    };
+
+    for (const collectionType of collectionTypes) {
+      const collection = new collectionType(client);
+      collection.getCollection = getCollection;
+
+      collections.set(collectionType, collection);
+    }
+
+    this.collections = collections;
   }
 
   users = this.collection(UserCollection);
@@ -34,42 +72,53 @@ export class Repository implements AsyncDisposable {
   groups = this.collection(GroupCollection);
   polls = this.collection(PollCollection);
 
-  async transaction<R>(block: (trepo: Repository) => Promise<R>): Promise<R> {
-    const session = this.client.startSession();
+  static async init(database: D1Database) {
+    const tables: [string, TableDescriptor<unknown>][] = [];
 
-    try {
-      return await session.withTransaction(() =>
-        block(new Repository(this.client, session))
-      );
-    } finally {
-      await session.endSession();
+    for (const collection of collectionTypes) {
+      const descriptor = collection.descriptor();
+
+      tables.push([collection.toString(), descriptor]);
+    }
+
+    for (const [name, descriptor] of tables) {
+      await database.prepare(buildCreateTableQuery(name, descriptor)).run();
     }
   }
 
-  async [Symbol.asyncDispose](): Promise<void> {
-    await this.client.close();
-  }
-
   private collection<T>(
-    type: new (client: MongoClient, session: ClientSession | undefined) => T
+    type: new (client: D1Database) => T
   ): (this: Repository) => T {
     return () => {
-      return new type(this.client, this.session);
+      const result = this.collections.get(type);
+      if (result === undefined) {
+        throw new Error('Cannot find collection');
+      }
+
+      return result as T;
     };
   }
 
-  static setDefaultConnectionString(value: string) {
-    Repository.defaultConnectionString = value;
+  async batch<T extends unknown[]>(queries: DataQueryArray<T>): Promise<T> {
+    return batchHelper(this.client, queries);
   }
 
-  static async openConnection(connectionString?: string): Promise<Repository> {
-    const client = new MongoClient(
-      connectionString ??
-        Repository.defaultConnectionString ??
-        getEnvChecked('MONGO_CONNECTION_STRING')
-    );
-    await client.connect();
+  async batchWithResults<T extends unknown[]>(
+    queries: DataQueryArray<T>
+  ): Promise<[T, D1Result[]]> {
+    return batchWithResultsHelper(this.client, queries);
+  }
 
-    return new Repository(client);
+  static setDefaultDatabase(value: D1Database) {
+    Repository.defaultDatabase = value;
+  }
+
+  static openConnection(database?: D1Database): Repository {
+    const db = database ?? Repository.defaultDatabase;
+    if (db === undefined) {
+      throw new Error('No default database');
+    }
+
+    return new Repository(db);
   }
 }

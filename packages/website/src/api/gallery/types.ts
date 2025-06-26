@@ -1,13 +1,13 @@
 export type GalleryImageWithEvent = {
-  id: string;
+  id: number;
   date: string;
   event: {
-    id: string;
+    id: number;
     title: string;
   } | null;
 };
 
 export type GalleryImageWithSizes = {
-  id: string;
+  id: number;
   sizes: { width: number; height: number }[];
 };

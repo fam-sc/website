@@ -37,14 +37,14 @@ export async function addEvent(payload: AddEventPayload) {
   });
 }
 
-export async function editEvent(id: string, payload: EditEventPayload) {
+export async function editEvent(id: number, payload: EditEventPayload) {
   await apiCheckedFetch(`/events/${id}`, {
     method: 'PUT',
     body: payloadToFormData(payload),
   });
 }
 
-export async function deleteEvent(id: string) {
+export async function deleteEvent(id: number) {
   await apiCheckedFetch(`/events/${id}`, {
     method: 'DELETE',
   });

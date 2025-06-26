@@ -1,5 +1,5 @@
 import { badRequest, unauthrorized } from '@shared/responses';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { userPersonalInfo } from '@/api/users/payloads';
 import { app } from '@/api/app';
@@ -15,21 +15,19 @@ app.put('/users/personal', async (request) => {
 
   const personalInfo = piResult.data;
 
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return unauthrorized();
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
 
-  return await repo.transaction(async (trepo) => {
-    const session = await trepo.sessions().findBySessionId(sessionId);
-    if (session === null) {
-      return unauthrorized();
-    }
+  const session = await repo.sessions().findBySessionId(sessionId);
+  if (session === null) {
+    return unauthrorized();
+  }
 
-    await repo.users().updatePersonalInfo(session.userId, personalInfo);
+  await repo.users().updatePersonalInfo(session.userId, personalInfo);
 
-    return new Response();
-  });
+  return new Response();
 });

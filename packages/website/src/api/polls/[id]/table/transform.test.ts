@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { answerToString, pollResultsToTable } from './transform';
 import { PollQuestion } from '@data/types/poll';
-import { ObjectId } from 'mongodb';
 
 describe('answerToString', () => {
   describe('text', () => {
@@ -133,8 +132,7 @@ describe('pollResultsToTable', () => {
       ],
       [
         {
-          userId: new ObjectId(),
-          date,
+          date: date.getTime(),
           answers: [
             {
               text: 'Text',

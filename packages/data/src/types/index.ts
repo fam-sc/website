@@ -1,29 +1,54 @@
-import { ObjectId } from 'mongodb';
-
 import { RichTextString } from '@shared/richText/types';
 import { ImageSize } from '@shared/image/types';
 import { UserRole } from './user';
 
-export type EventStatus = 'pending' | 'ended';
+export const enum EventStatus {
+  PENDING = 0,
+  ENDED = 1,
+}
 
-export type Event = {
+export type RawEvent = {
+  id: number;
   title: string;
-  status: 'pending' | 'ended';
-  date: Date;
+  status: EventStatus;
+  date: number;
+  description: string;
+  images: string;
+};
+
+export type Event = Omit<RawEvent, 'description' | 'images'> & {
   description: RichTextString;
   images: ImageSize[];
 };
 
-export type GalleryImage = {
-  date: Date;
+export type RawGalleryImage = {
+  id: number;
+  date: number;
   order: number;
-  eventId: string | null;
+  eventId: number | null;
+  images: string;
+};
+
+export type GalleryImage = {
+  id: number;
+  date: number;
+  order: number;
+  eventId: number | null;
   images: ImageSize[];
 };
 
+export type GalleryImageWithEvent = {
+  id: number;
+  date: number;
+  event: {
+    id: number;
+    title: string;
+  } | null;
+};
+
 export type AuthSession = {
-  sessionId: bigint;
-  userId: ObjectId;
+  sessionId: string;
+  userId: number;
 };
 
 export type AuthSessionWithRole = {

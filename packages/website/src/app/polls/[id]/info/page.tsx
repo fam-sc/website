@@ -1,11 +1,9 @@
 import styles from './page.module.scss';
 import { notFound } from '@shared/responses';
 import { Route } from './+types/page';
-import { omitProperty } from '@/utils/object/omit';
-import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
 import { redirect } from 'react-router';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { closePoll } from '@/api/polls/client';
 import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
@@ -17,27 +15,34 @@ import { Typography } from '@/components/Typography';
 import { useState } from 'react';
 import { ResultsTab } from './tabs/results';
 import { formatDateTime } from '@shared/date';
+import { parseInt } from '@shared/parseInt';
+import { repository } from '@/utils/repo';
 
-export async function loader({ request, params }: Route.LoaderArgs) {
-  const sessionId = getSessionIdNumber(request);
+export async function loader({ request, params, context }: Route.LoaderArgs) {
+  const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/polls');
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = repository(context);
   const userInfo = await repo.sessions().getUserWithRole(sessionId);
+  const numberId = parseInt(params.id);
 
-  if (userInfo === null || userInfo.role < UserRole.STUDENT) {
+  if (
+    userInfo === null ||
+    numberId === undefined ||
+    userInfo.role < UserRole.STUDENT
+  ) {
     return redirect('/polls');
   }
 
-  const poll = await repo.polls().findShortPoll(params.id);
+  const poll = await repo.polls().findShortPoll(numberId);
 
   if (poll === null) {
     return notFound();
   }
 
-  return { poll: { id: poll._id.toString(), ...omitProperty(poll, '_id') } };
+  return { poll };
 }
 
 export default function Page({ loaderData: { poll } }: Route.ComponentProps) {
@@ -73,11 +78,13 @@ export default function Page({ loaderData: { poll } }: Route.ComponentProps) {
         )}
       </div>
 
-      <Prefixed value="Дата початку">{formatDateTime(poll.startDate)}</Prefixed>
+      <Prefixed value="Дата початку">
+        {formatDateTime(new Date(poll.startDate))}
+      </Prefixed>
 
       {poll.endDate && (
         <Prefixed value="Дата закінчення">
-          {formatDateTime(poll.endDate)}
+          {formatDateTime(new Date(poll.endDate))}
         </Prefixed>
       )}
 

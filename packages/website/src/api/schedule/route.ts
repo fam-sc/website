@@ -39,16 +39,14 @@ app.patch('/schedule', async (request) => {
   }
 
   return authRoute(request, UserRole.GROUP_HEAD, async (repo) => {
-    return await repo.transaction(async (trepo) => {
-      const result = await trepo
-        .schedule()
-        .updateLinks(normalizeGuid(group), payload);
+    const { changes } = await repo
+      .schedule()
+      .updateLinks(normalizeGuid(group), payload);
 
-      if (result.matchedCount === 0) {
-        return notFound();
-      }
+    if (changes === 0) {
+      return notFound();
+    }
 
-      return new Response();
-    });
+    return new Response();
   });
 });

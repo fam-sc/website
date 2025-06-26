@@ -70,4 +70,5 @@ export type Group = z.infer<typeof group>;
 export type DaySchedule = z.infer<typeof daySchedule>;
 export type LessonSchedule = z.infer<typeof lessonSchedule>;
 export type TeacherPairType = z.infer<typeof teacherPairType>;
+export type TeacherPairTag = z.infer<typeof teacherPairTag>;
 export type CurrentTime = z.infer<typeof currentTime>;

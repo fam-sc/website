@@ -1,81 +1,116 @@
-import {
-  ClientSession,
-  MongoClient,
-  ObjectId,
-  UpdateResult,
-  WithId,
-} from 'mongodb';
-
+import { isNull } from '../sqlite/modifier';
+import { query } from '../sqlite/query';
+import { TableDescriptor } from '../sqlite/types';
 import {
   Poll,
+  PollQuestion,
   PollRespondent,
-  PollWithEndDateAndRespondents,
-  ShortPoll,
+  PollRespondentAnswer,
+  RawPoll,
 } from '../types/poll';
 
-import { EntityCollection, resolveObjectId } from './base';
-import { pagination } from '../misc/pagination';
-import { emptyUpdateResult } from '../misc/result';
+import { EntityCollection } from './base';
+import { PollRespondentCollection } from './pollRespondents';
 
-export class PollCollection extends EntityCollection<Poll> {
-  constructor(client: MongoClient, session?: ClientSession) {
-    super(client, session, 'polls');
+export class PollCollection extends EntityCollection<RawPoll>('polls') {
+  static descriptor(): TableDescriptor<RawPoll> {
+    return {
+      id: 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
+      title: 'TEXT NOT NULL',
+      startDate: 'INTEGER NOT NULL',
+      endDate: 'INTEGER',
+      questions: 'TEXT NOT NULL',
+    };
   }
 
-  findShortPoll(id: string) {
-    return this.findById<ShortPoll>(id, {
-      projection: { title: 1, startDate: 1, endDate: 1 },
+  findShortPoll(id: number) {
+    return this.findOneWhere({ id }, ['id', 'title', 'startDate', 'endDate']);
+  }
+
+  findEndDateAndQuestions(id: number) {
+    return this.findOneWhereAction({ id }, [
+      'endDate',
+      'questions',
+      'title',
+    ]).map((result) => {
+      if (result === null) {
+        return null;
+      }
+
+      return {
+        id,
+        title: result.title,
+        endDate: result.endDate,
+        questions: JSON.parse(result.questions) as PollQuestion[],
+      };
     });
   }
 
-  findPollWithQuestionsAndAnswers(id: string) {
-    return this.findById<Pick<Poll, 'questions' | 'respondents'>>(id, {
-      projection: { questions: 1, respondents: 1 },
-    });
+  hasUserResponded(pollId: number, userId: number) {
+    return this.getCollection(PollRespondentCollection)
+      .count({ pollId, userId })
+      .map((count) => count > 0);
   }
 
-  findPollWithEndDateAndAnswers(id: string) {
-    return this.findById<PollWithEndDateAndRespondents>(id, {
-      projection: { endDate: 1, 'respondents.userId': 1 },
-    });
+  insertPoll({
+    questions,
+    ...rest
+  }: Pick<Poll, 'title' | 'startDate' | 'endDate' | 'questions'>) {
+    return this.insert({ questions: JSON.stringify(questions), ...rest });
   }
 
-  addRespondent(id: string | ObjectId, respondent: PollRespondent) {
-    return this.updateById(id, { $push: { respondents: respondent } });
-  }
+  async findPollWithQuestionsAndAnswers(id: number) {
+    const questionQuery = this.findOneWhereAction({ id }, ['questions']);
+    const answersQuery = this.getCollection(
+      PollRespondentCollection
+    ).findManyWhereAction({ pollId: id }, ['date', 'answers']);
 
-  async closePoll(id: string | ObjectId): Promise<UpdateResult<Poll>> {
-    let objectId: ObjectId;
-    try {
-      objectId = resolveObjectId(id);
-    } catch {
-      return emptyUpdateResult();
+    const [questionsValue, respondents] = await query
+      .merge([questionQuery, answersQuery], this.queryContext)
+      .get();
+
+    if (questionsValue === null) {
+      return null;
     }
 
+    const { questions } = questionsValue;
+
+    return {
+      questions: JSON.parse(questions) as PollQuestion[],
+      respondents: respondents.map(({ date, answers }) => {
+        return {
+          date,
+          answers: JSON.parse(answers) as PollRespondentAnswer[],
+        };
+      }),
+    };
+  }
+
+  addRespondent(id: number, respondent: PollRespondent) {
+    return this.getCollection(PollRespondentCollection).insert({
+      pollId: id,
+      answers: JSON.stringify(respondent.answers),
+      date: respondent.date,
+      userId: respondent.userId,
+    });
+  }
+
+  async closePoll(id: number) {
     // Do not update endDate if it's already not null
-    return this.updateOne(
-      { _id: objectId, endDate: null },
-      { $set: { endDate: new Date() } }
-    );
+    return this.updateWhere({ id, endDate: isNull() }, { endDate: Date.now() });
   }
 
   async getPage(index: number, size: number) {
-    const result = await this.aggregate([
-      {
-        $sort: {
-          date: -1,
-        },
-      },
-      pagination(index, size),
-    ]).next();
+    const [total, items] = await query
+      .merge(
+        [
+          this.count(),
+          this.getPageBase(index * size, size, {}, ['id', 'title']),
+        ],
+        this.queryContext
+      )
+      .get();
 
-    if (result === null) {
-      return { total: 0, items: [] };
-    }
-
-    return {
-      total: (result.metadata[0]?.totalCount ?? 0) as number,
-      items: result.data as WithId<Poll>[],
-    };
+    return { total, items };
   }
 }

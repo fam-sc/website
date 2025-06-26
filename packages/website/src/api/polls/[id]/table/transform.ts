@@ -1,7 +1,7 @@
 import { PollResultsTable } from '@/api/polls/types';
 import {
+  AnonymousPollRespondent,
   PollQuestion,
-  PollRespondent,
   PollRespondentAnswer,
 } from '@data/types/poll';
 import { indexMany } from '@shared/indexMany';
@@ -47,11 +47,11 @@ export function answerToString(
 
 export function pollResultsToTable(
   questions: PollQuestion[],
-  respondents: PollRespondent[]
+  respondents: AnonymousPollRespondent[]
 ): PollResultsTable {
   const columns = ['Дата', ...questions.map(({ title }) => title)];
   const data = respondents.map((respondent) => [
-    formatDateTime(respondent.date),
+    formatDateTime(new Date(respondent.date)),
     ...respondent.answers.map((answer, i) =>
       answerToString(answer, questions[i])
     ),

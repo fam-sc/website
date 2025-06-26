@@ -9,8 +9,14 @@ import { putMultipleSizedImages } from '@/api/media/multiple';
 import { hydrateRichText } from '@/api/richText/hydration';
 import { Event } from '@data/types';
 import { UserRole } from '@data/types/user';
+import { parseInt } from '@shared/parseInt';
 
 app.put('/events/:id', async (request, { env, params: { id } }) => {
+  const numberId = parseInt(id);
+  if (numberId === undefined) {
+    return notFound();
+  }
+
   const formData = await request.formData();
   const { title, description, descriptionFiles, date, image, status } =
     parseEditEventPayload(formData);
@@ -22,44 +28,42 @@ app.put('/events/:id', async (request, { env, params: { id } }) => {
   await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
   return await authRoute(request, UserRole.ADMIN, async (repo) => {
-    await repo.transaction(async (trepo) => {
-      const sizes = imageSize && resolveImageSizes(imageSize);
+    const sizes = imageSize && resolveImageSizes(imageSize);
 
-      const prevDescription = await trepo.events().getDescriptionById(id);
-      if (prevDescription === null) {
-        return notFound();
-      }
+    const prevDescription = await repo.events().getDescriptionById(numberId);
+    if (prevDescription === null) {
+      return notFound();
+    }
 
-      const hydratedDescription = await hydrateRichText(description, {
-        env,
-        mediaTransaction,
-        files: descriptionFiles,
-        previous: prevDescription,
-      });
-
-      const newEvent: Partial<Event> = {
-        date,
-        title,
-        status,
-        description: hydratedDescription,
-      };
-
-      if (sizes) {
-        newEvent.images = sizes;
-      }
-
-      await trepo.events().update(id, newEvent);
-
-      if (imageBuffer && sizes) {
-        await putMultipleSizedImages(
-          env,
-          `events/${id}`,
-          imageBuffer,
-          sizes,
-          mediaTransaction
-        );
-      }
+    const hydratedDescription = await hydrateRichText(description, {
+      env,
+      mediaTransaction,
+      files: descriptionFiles,
+      previous: prevDescription,
     });
+
+    const newEvent: Partial<Event> = {
+      date: date.getTime(),
+      title,
+      status,
+      description: hydratedDescription,
+    };
+
+    if (sizes) {
+      newEvent.images = sizes;
+    }
+
+    await repo.events().update(numberId, newEvent);
+
+    if (imageBuffer && sizes) {
+      await putMultipleSizedImages(
+        env,
+        `events/${numberId}`,
+        imageBuffer,
+        sizes,
+        mediaTransaction
+      );
+    }
 
     await mediaTransaction.commit();
 
@@ -70,9 +74,18 @@ app.put('/events/:id', async (request, { env, params: { id } }) => {
 app.delete(
   '/events/:id',
   async (request, { env: { MEDIA_BUCKET }, params: { id } }) => {
+    const numberId = parseInt(id);
+    if (numberId === undefined) {
+      return new Response();
+    }
+
     return authRoute(request, UserRole.ADMIN, async (repo) => {
-      const result = await repo.events().delete(id);
-      if (result.deletedCount !== 0) {
+      const { changes } = await repo
+        .events()
+        .deleteWhere({ id: numberId })
+        .get();
+
+      if (changes !== 0) {
         await MEDIA_BUCKET.delete(`events/${id}`);
       }
 

@@ -30,7 +30,6 @@ export class MediaTransaction implements AsyncDisposable {
   }
 
   async commit() {
-    console.log('commit');
     await Promise.all(this.ops.map((op) => op.run()));
 
     this.runSucessful = true;

@@ -15,8 +15,8 @@ abstract class BaseExternalApi<T> extends CachedExternalApi<T, Group[]> {
     return getApiFacultyGroups();
   }
 
-  protected async putToRepo(repo: Repository, value: Group[]): Promise<void> {
-    await repo.groups().insertOrUpdateAll(value);
+  protected putToRepo(repo: Repository, value: Group[]) {
+    return repo.groups().insertOrUpdateAll(value);
   }
 }
 
@@ -28,7 +28,7 @@ class GetFacultyGroupByIdExternalApi extends BaseExternalApi<Group | null> {
     this.groupId = groupId;
   }
 
-  protected fetchFromRepo(repo: Repository): Promise<Group | null> {
+  protected fetchFromRepo(repo: Repository) {
     return repo.groups().findByCampusId(this.groupId);
   }
 
@@ -46,7 +46,7 @@ class GetFacultyGroupListByIdExternalApi extends BaseExternalApi<Group[]> {
     this.groupIds = groupIds;
   }
 
-  protected fetchFromRepo(repo: Repository): Promise<Group[]> {
+  protected fetchFromRepo(repo: Repository) {
     return repo.groups().findByIds([...this.groupIds]);
   }
 
@@ -56,8 +56,8 @@ class GetFacultyGroupListByIdExternalApi extends BaseExternalApi<Group[]> {
 }
 
 class GetFacultyGroupsExternalApi extends BaseExternalApi<Group[]> {
-  protected fetchFromRepo(repo: Repository): Promise<Group[]> {
-    return repo.groups().getAll().toArray() as Promise<Group[]>;
+  protected fetchFromRepo(repo: Repository) {
+    return repo.groups().all();
   }
 }
 
@@ -69,7 +69,7 @@ class GroupExistsExternalApi extends BaseExternalApi<boolean> {
     this.groupId = groupId;
   }
 
-  protected fetchFromRepo(repo: Repository): Promise<boolean> {
+  protected fetchFromRepo(repo: Repository) {
     return repo.groups().groupExists(this.groupId);
   }
 

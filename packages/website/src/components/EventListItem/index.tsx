@@ -10,7 +10,7 @@ import { Image } from '../Image';
 import { EventStatus } from '@data/types';
 
 export type EventListItemProps = {
-  id: string;
+  id: number;
   status: EventStatus;
   title: string;
   date: string;
