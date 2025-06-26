@@ -1,6 +1,6 @@
 import { parseHexString, toHexString } from '@shared/string/hex';
 
-const ITERATIONS = 600_000;
+const ITERATIONS = 100_000;
 const SALT_LENGTH = 16;
 
 function generateSalt(): Uint8Array {
@@ -51,9 +51,9 @@ export async function verifyPassword(
   hashed: string,
   password: string
 ): Promise<boolean> {
-  const salt = parseHexString(hashed.slice(0, SALT_LENGTH));
+  const salt = parseHexString(hashed.slice(0, SALT_LENGTH * 2));
   const actual = await hashPasswordBase(password, salt);
-  const expected = hashed.slice(SALT_LENGTH);
+  const expected = hashed.slice(SALT_LENGTH * 2);
 
   return actual === expected;
 }

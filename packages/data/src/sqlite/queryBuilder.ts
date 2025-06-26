@@ -48,7 +48,7 @@ function conditionsToWhereClause(
 }
 
 function selectFromTable(columns: string, tableName: string): string {
-  return `SELECT ${columns} FROM ${tableName}`;
+  return `SELECT ${columns} FROM "${tableName}"`;
 }
 
 export function getConditionsBinding(conditions: Conditions<unknown>) {

@@ -6,7 +6,6 @@ import { createRequestHandler } from '@react-router/express';
 import express from 'express';
 import { ServerBuild } from 'react-router';
 import { loadEnvFile } from 'node:process';
-import { getApiEnv } from '@/utils/apiEnv.node';
 
 const PORT = 3000;
 
@@ -48,11 +47,6 @@ async function run() {
     createRequestHandler({
       build,
       mode: process.env.NODE_ENV,
-      // getLoadContext() {
-      //   return {
-      //     cloudflare: { env: getApiEnv() },
-      //   };
-      // },
     })
   );
 

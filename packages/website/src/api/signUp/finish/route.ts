@@ -36,8 +36,8 @@ app.post('/signUp/finish', async (request) => {
       },
       'id'
     );
-  } catch (e: unknown) {
-    console.log(e);
+  } catch (error: unknown) {
+    console.log(error);
     return conflict({ message: 'Email exists' });
   }
 
