@@ -20,8 +20,6 @@ export function multienvPlugin(): Plugin {
         config.mode === 'staging' || config.mode === 'production'
           ? 'cf'
           : 'node';
-
-      console.log(host);
     },
     resolveId(id) {
       const module = virtualModules.find(
