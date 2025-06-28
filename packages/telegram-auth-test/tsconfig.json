@@ -8,9 +8,8 @@
     "skipLibCheck": true,
     "module": "esnext",
     "moduleResolution": "bundler",
-    "jsx": "preserve",
-    "types": ["./worker-configuration.d.ts"]
+    "jsx": "preserve"
   },
-  "include": ["./src", "./worker-configuration.d.ts"],
+  "include": ["./src"],
   "exclude": ["./node_modules"]
 }

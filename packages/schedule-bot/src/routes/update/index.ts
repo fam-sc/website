@@ -1,8 +1,9 @@
 import { BotController } from '@/controller';
-import { badRequest } from '@/responses';
 import { Update } from '@/telegram/types';
+import { app } from '../app';
+import { badRequest } from '@shared/responses';
 
-export async function POST(request: Request, env: Env): Promise<Response> {
+app.post('/update', async (request, { env }) => {
   const secretToken = request.headers.get('x-telegram-bot-api-secret-token');
   if (secretToken !== env.BOT_SECRET_TOKEN) {
     return badRequest();
@@ -14,6 +15,4 @@ export async function POST(request: Request, env: Env): Promise<Response> {
   await controller.handleUpdate(update);
 
   return new Response();
-}
-
-export default { POST };
+});

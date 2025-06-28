@@ -1,5 +1,5 @@
 import { badRequest, notFound, ok } from '@shared/responses';
-import { getScheduleForGroup } from './get';
+import { getScheduleForGroup } from '@shared-schedule/get';
 import { normalizeGuid } from '@shared/guid';
 import { authRoute } from '@/api/authRoute';
 import { UserRole } from '@data/types/user';

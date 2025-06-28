@@ -1,6 +1,6 @@
 {
   "name": "@sc-fam/shared",
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.1",
   "scripts": {
     "build:no-emit": "tsc --noEmit"
   },

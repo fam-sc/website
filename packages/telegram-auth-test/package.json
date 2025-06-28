@@ -1,15 +1,20 @@
 {
   "name": "telegram-auth-test",
   "type": "module",
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.1",
   "scripts": {
     "build": "vite build",
-    "deploy": "yarn build && wrangler deploy"
+    "deploy": "wrangler pages deploy --project-name=sc-fam-tg-test dist"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.1.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "4.4.1",
     "vite": "6.3.5",
     "wrangler": "4.20.0"
+  },
+  "dependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   }
 }

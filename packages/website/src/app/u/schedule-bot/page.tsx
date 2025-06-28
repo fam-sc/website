@@ -1,9 +1,10 @@
-import { finishAuthToScheduleBot } from '@/api/schedulebot/client';
+import { authorizeScheduleBotToUser } from '@/api/users/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { useNotification } from '@/components/Notification';
 import { TelegramLoginWidget } from '@/components/TelegramLoginWidget';
 import { Typography } from '@/components/Typography';
 import { useState } from 'react';
+import styles from './page.module.scss';
 
 type State = 'widget' | 'pending' | 'success';
 
@@ -13,9 +14,9 @@ export default function Page() {
   const notification = useNotification();
 
   return (
-    <div>
+    <div className={styles.root}>
       {state === 'pending' ? (
-        <IndeterminateCircularProgress />
+        <IndeterminateCircularProgress className={styles.progress} />
       ) : state === 'success' ? (
         <Typography>
           Успішно! Ви можете закрити цю сторінку та повернутися до бота
@@ -23,14 +24,21 @@ export default function Page() {
       ) : (
         <TelegramLoginWidget
           bot="famschedulebot"
-          onCallback={({ auth_date, first_name, username, hash, id }) => {
+          onCallback={({
+            auth_date,
+            first_name,
+            photo_url,
+            username,
+            hash,
+            id,
+          }) => {
             setState('pending');
 
-            finishAuthToScheduleBot({
-              userId: '',
+            authorizeScheduleBotToUser({
               hash,
               username,
               firstName: first_name,
+              photoUrl: photo_url,
               telegramUserId: id,
               authDate: auth_date,
             })

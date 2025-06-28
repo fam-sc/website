@@ -9,7 +9,7 @@ import {
   DaySchedule as ApiDaySchedule,
   Schedule as ApiSchedule,
   LessonType as ApiLessonType,
-} from '@/api/schedule/types';
+} from './types';
 
 import {
   Day,
@@ -19,7 +19,7 @@ import {
   LessonType,
   LessonWithTeacher,
 } from '@data/types/schedule';
-import { Teacher } from '../pma/types';
+import { Teacher } from '../../shared/src/api/pma/types';
 
 export function campusDayToWeekdayNumber(value: Weekday): Day {
   switch (value) {

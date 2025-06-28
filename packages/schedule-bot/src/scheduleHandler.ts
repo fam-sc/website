@@ -2,76 +2,100 @@ import { Repository } from '@data/repo';
 
 import { getCurrentTime } from '@shared/api/campus';
 import { BotController } from './controller';
-import { ScheduleWithTeachers } from '@data/types/schedule';
+import { Schedule } from '@shared-schedule/types';
+import { CurrentTime, Time, timeBreakpoints } from '@shared/api/campus/types';
+import { getTrueCurrentTime } from '@shared/api/time';
+import { findNearestTimePoint } from '@shared/chrono/time';
+import { getScheduleForGroup } from '@shared-schedule/get';
+import { User } from '@data/types/user';
 
-function getUniqueGroups(users: { academicGroup: string }[]): string[] {
+function getUniqueGroups(users: { academicGroup: string }[]): Set<string> {
   const result = new Set<string>();
 
   for (const user of users) {
     result.add(user.academicGroup);
   }
 
-  return [...result];
+  return result;
 }
 
 async function getScheduleMap(
-  repo: Repository,
-  groups: string[]
-): Promise<Map<string, ScheduleWithTeachers>> {
+  groups: Set<string>
+): Promise<Record<string, Schedule>> {
   const schedules = await Promise.all(
-    groups.map((group) => {
-      return repo.schedule().findByGroupWithTeachers(group).get();
-    })
+    [...groups].map((group) => getScheduleForGroup(group))
   );
 
-  const result = new Map<string, ScheduleWithTeachers>();
+  const result: Record<string, Schedule> = {};
 
   for (const schedule of schedules) {
-    if (schedule !== null) {
-      result.set(schedule.groupCampusId, schedule);
-    }
+    result[schedule.groupCampusId] = schedule;
   }
 
   return result;
 }
 
-export async function handleOnTime(
-  time: { hour: number; minute: number },
-  env: Env
-) {
-  const timeBreakpoint = `${time.hour}:${time.minute}`;
+export async function handleOnCronEvent(env: Env) {
+  const now = await getTrueCurrentTime('Europe/Kyiv');
+  const time = findNearestTimePoint(
+    timeBreakpoints,
+    `${now.getHours()}:${now.getMinutes()}`
+  );
+
+  if (time !== undefined) {
+    await handleOnTime(time, env);
+  }
+}
+
+async function handleOnTime(timeBreakpoint: Time, env: Env) {
   const controller = new BotController(env);
 
   const repo = Repository.openConnection();
 
-  const { currentWeek, currentDay } = await getCurrentTime();
-
+  const currentTime = await getCurrentTime();
   const users = await repo.users().findAllUsersWithLinkedTelegram();
 
-  const groups = getUniqueGroups(users);
-  const schedules = await getScheduleMap(repo, groups);
+  const schedules = await getScheduleMap(getUniqueGroups(users));
 
-  for (const { academicGroup, telegramUserId } of users) {
-    const schedule = schedules.get(academicGroup);
-    if (schedule === undefined) {
-      continue;
-    }
+  await Promise.all(
+    users.map((user) =>
+      handleUser(
+        controller,
+        user,
+        schedules[user.academicGroup],
+        currentTime,
+        timeBreakpoint
+      )
+    )
+  );
+}
 
+async function handleUser(
+  controller: BotController,
+  { id, telegramUserId }: Pick<User, 'id' | 'telegramUserId'>,
+  schedule: Schedule,
+  { currentWeek, currentDay }: CurrentTime,
+  now: Time
+) {
+  try {
     const week = schedule.weeks[currentWeek - 1];
     const day = week[currentDay - 1];
 
     // It might be undefined if the index is out of bounds.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (day === undefined) {
-      continue;
+      return;
     }
 
-    const lessons = day.lessons.filter(
-      (lesson) => lesson.time === timeBreakpoint
-    );
+    const lessons = day.lessons.filter((lesson) => lesson.time === now);
 
     if (telegramUserId !== null && lessons.length > 0) {
       await controller.handleTimeTrigger(telegramUserId, lessons);
     }
+  } catch (error: unknown) {
+    console.error(
+      `time = ${now}; userId = ${id}; tgUserId = ${telegramUserId}`,
+      error
+    );
   }
 }

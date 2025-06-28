@@ -8,6 +8,10 @@ routes = [
   { pattern = "schedule-bot.sc-fam.org", custom_domain = true }
 ]
 
+d1_databases = [
+  { binding = 'DB', database_name = "website", database_id = "402b9901-777f-46ac-a699-2b3d32593d32" }
+]
+
 [triggers]
 # Note that this time is UTC. Europe/Kyiv is currently +3,
 # so we need to subtract 3 hours

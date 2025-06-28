@@ -1,4 +1,4 @@
-import { formatDateTime } from '@shared/date';
+import { formatDateTime } from '@shared/chrono/date';
 import { shortenRichText } from '@shared/richText/short';
 import { Event } from '@data/types';
 import { Route } from './+types/page';

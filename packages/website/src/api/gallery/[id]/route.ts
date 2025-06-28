@@ -1,6 +1,6 @@
 import { notFound, ok } from '@shared/responses';
 import { Repository } from '@data/repo';
-import { formatDateTime } from '@shared/date';
+import { formatDateTime } from '@shared/chrono/date';
 import { authRoute } from '@/api/authRoute';
 import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';

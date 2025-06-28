@@ -1,18 +1,29 @@
-import { verifyHmac } from './crypto';
+import { hash, verifyHmac } from '@shared/crypto';
+import { ScheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+import { parseHexString } from '@shared/string/hex';
 
-export type TelegramAuthData = {
-  userId: string;
-  username: string;
-  firstName: string;
-  authDate: string;
-  hash: string;
-};
+function createCheckString(data: ScheduleBotAuthPayload): string {
+  const parts = [
+    ['auth_date', data.authDate],
+    ['first_name', data.firstName],
+    ['id', data.telegramUserId],
+    ['photo_url', data.photoUrl],
+    ['username', data.username],
+  ];
+
+  return parts
+    .filter(([, value]) => value !== undefined)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('\n');
+}
 
 export async function verifyAuthorizationHash(
-  data: TelegramAuthData,
+  payload: ScheduleBotAuthPayload,
   botKey: string
 ): Promise<boolean> {
-  const hashData = `auth_date=${data.authDate}\nfirst_name=${data.firstName}\nid=${data.userId}\nusername=${data.username}`;
+  const checkString = createCheckString(payload);
+  const signed = parseHexString(payload.hash);
+  const key = await hash(botKey);
 
-  return verifyHmac(botKey, hashData, data.hash);
+  return verifyHmac(key, checkString, signed);
 }

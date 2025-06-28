@@ -4,6 +4,7 @@ import { apiCheckedFetch, apiFetchObject } from '../fetch';
 import type { SignInData, SignUpData } from '@/api/auth/types';
 import type { ChangePasswordPayload } from '@/api/users/payloads';
 import { UserRole } from '@data/types/user';
+import { ScheduleBotAuthPayload } from '@shared/api/schedulebot/types';
 
 export function uploadUserAvatar(body: BodyInit) {
   return apiCheckedFetch(`/users/avatar`, {
@@ -17,6 +18,7 @@ export function changeUserRole(userId: number, role: UserRole) {
     method: 'POST',
   });
 }
+
 export function approveUser(userId: number) {
   return changeUserRole(userId, UserRole.STUDENT);
 }
@@ -76,5 +78,13 @@ export function finishSignUp(token: string) {
 export function logOut() {
   return apiCheckedFetch(`/users/logOut`, {
     method: 'POST',
+  });
+}
+
+export function authorizeScheduleBotToUser(payload: ScheduleBotAuthPayload) {
+  return apiCheckedFetch('/users/scheduleBotAuth', {
+    method: 'POST',
+    body: payload,
+    json: true,
   });
 }

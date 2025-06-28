@@ -1,9 +1,9 @@
-import { findTeacherByName } from '../../../../shared/src/api/intellect';
-import { getTeachers as getPmaTeachers } from '../pma';
-import { Teacher } from '../pma/types';
+import { findTeacherByName } from '@shared/api/intellect';
+import { getTeachers as getPmaTeachers } from '@shared/api/pma';
+import { Teacher } from '@shared/api/pma/types';
 
 import { convertToKeyMap } from '@shared/keyMap';
-import { getIntellectProfileUrl } from '../../../../shared/src/api/intellect/url';
+import { getIntellectProfileUrl } from '@shared/api/intellect/url';
 
 export type TeacherMap = Map<string, Teacher>;
 

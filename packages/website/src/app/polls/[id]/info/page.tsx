@@ -14,7 +14,7 @@ import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 import { useState } from 'react';
 import { ResultsTab } from './tabs/results';
-import { formatDateTime } from '@shared/date';
+import { formatDateTime } from '@shared/chrono/date';
 import { parseInt } from '@shared/parseInt';
 import { repository } from '@/utils/repo';
 

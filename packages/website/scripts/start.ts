@@ -5,24 +5,25 @@ import mogran from 'morgan';
 import { createRequestHandler } from '@react-router/express';
 import express from 'express';
 import { ServerBuild } from 'react-router';
-import { loadEnvFile } from 'node:process';
+import { config } from 'dotenv';
+import process from 'node:process';
 
 const PORT = 3000;
 
 async function run() {
-  loadEnvFile('.env');
+  config({ path: '.env', quiet: true });
 
   if (fs.existsSync('.env.local')) {
-    loadEnvFile('.env.local');
+    config({ path: '.env.local', quiet: true });
   }
 
   process.env.NODE_ENV = 'production';
 
   const buildPathArg = process.argv[2];
   if (!buildPathArg) {
-    // eslint-disable-next-line unicorn/no-process-exit
-    process.exit(1);
+    return;
   }
+
   const buildPath = path.resolve(buildPathArg);
 
   console.log('Importing the build');
