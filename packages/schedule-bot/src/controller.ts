@@ -1,7 +1,7 @@
 import { Repository } from '@data/repo';
 import { TelegramBot } from './telegram';
 import { Message, Update } from './telegram/types';
-import { LessonWithTeacher } from '@data/types/schedule';
+import { Lesson } from '@shared-schedule/types';
 
 export class BotController {
   private bot: TelegramBot;
@@ -20,7 +20,7 @@ export class BotController {
       await (user === null
         ? this.bot.sendMessage(
             message.from.id,
-            `Вітаємо!\n\nДля того, щоб користуватися цим ботом потрібно прив'язати ваш телеграм аккаунт до облікового запису SC FAM\n\nhttps://sc-fam.org/u/telegram-auth`
+            `Вітаємо!\n\nДля того, щоб користуватися цим ботом потрібно прив'язати ваш телеграм аккаунт до облікового запису SC FAM\n\nhttps://sc-fam.org/u/schedule-bot`
           )
         : this.bot.sendMessage(
             message.from.id,
@@ -44,14 +44,14 @@ export class BotController {
     );
   }
 
-  async handleTimeTrigger(userId: number, lessons: LessonWithTeacher[]) {
+  async handleTimeTrigger(userId: number, lessons: Lesson[]) {
     let message = lessons.length === 1 ? 'Почалася пара' : 'Почалися пари';
     message += ':\n\n';
-    // message += lessons
-    //   .map((lesson) => {
-    //     return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
-    //   })
-    //   .join('\n');
+    message += lessons
+      .map((lesson) => {
+        return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
+      })
+      .join('\n');
 
     await this.bot.sendMessage(userId, message);
   }

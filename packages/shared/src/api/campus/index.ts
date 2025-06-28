@@ -1,4 +1,4 @@
-import { z, ZodMiniType } from 'zod/v4-mini';
+import { array, ZodMiniType } from 'zod/v4-mini';
 import { fetchObject } from '../../fetch';
 import {
   CurrentTime,
@@ -16,7 +16,7 @@ async function apiRequest<T>(path: string, schema: ZodMiniType<T>): Promise<T> {
 }
 
 export function getGroups(): Promise<Group[]> {
-  return apiRequest('/schedule/groups', z.array(group));
+  return apiRequest('/schedule/groups', array(group));
 }
 
 export function getLessons(groupId: string): Promise<LessonSchedule> {

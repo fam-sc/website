@@ -1,6 +1,6 @@
 import { coerce } from '@shared/math';
 import { Event, EventStatus } from '@data/types';
-import { formatDateTime } from '@shared/date';
+import { formatDateTime } from '@shared/chrono/date';
 import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@shared/parseInt';
 import { redirect } from 'react-router';

@@ -9,7 +9,7 @@ import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
 
 import styles from './page.module.scss';
 
-import { getTrueCurrentTime } from '@/api/time';
+import { getTrueCurrentTime } from '@shared/api/time';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { CurrentLesson } from '@/components/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';

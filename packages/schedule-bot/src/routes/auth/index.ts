@@ -1,56 +1,42 @@
-import { verifyAuthorizationHash } from '../../auth';
-import { Repository } from '@data/repo';
-import { badRequest } from '../../responses';
+import { app } from '../app';
+import { scheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+import { verifyAuthorizationHash } from '@/auth';
+import { badRequest, unauthrorized } from '@shared/responses';
 import { BotController } from '@/controller';
-import { parseInt } from '@shared/parseInt';
 
-export async function POST(request: Request, env: Env): Promise<Response> {
-  const { searchParams } = new URL(request.url);
+// 5 minutes
+const VALID_DURATION = 5 * 60 * 1000;
 
-  const userId = searchParams.get('uid');
-  const telegramId = searchParams.get('tid');
-  const authDate = searchParams.get('auth_date');
-  const firstName = searchParams.get('first_name');
-  const username = searchParams.get('username');
-  const hash = searchParams.get('hash');
+app.post('/auth', async (request, { env }) => {
+  const authorization = request.headers.get('Authorization');
+  if (authorization !== `Bearer ${env.ACCESS_KEY}`) {
+    console.error('Invalid access key', authorization);
+    console.log(env.ACCESS_KEY);
 
-  if (
-    telegramId === null ||
-    hash === null ||
-    userId === null ||
-    authDate === null ||
-    username === null ||
-    firstName === null
-  ) {
+    return unauthrorized();
+  }
+
+  const rawPayload = await request.json();
+
+  const payloadResult = scheduleBotAuthPayload.safeParse(rawPayload);
+  if (!payloadResult.success) {
     return badRequest();
   }
 
-  const numberUserId = parseInt(userId);
-  if (numberUserId === undefined) {
-    return badRequest();
+  const payload = payloadResult.data;
+  if (Date.now() - payload.authDate * 1000 > VALID_DURATION) {
+    console.error('Stale payload');
+    return unauthrorized();
   }
 
-  const isValidHash = await verifyAuthorizationHash(
-    { authDate, firstName, hash, username, userId: telegramId },
-    env.BOT_KEY
-  );
-  if (!isValidHash) {
-    return new Response('Not Authorized', { status: 401 });
+  const isVerified = await verifyAuthorizationHash(payload, env.BOT_KEY);
+  console.log(isVerified);
+
+  if (isVerified) {
+    await new BotController(env).handleAuth(payload.telegramUserId);
+
+    return new Response();
   }
 
-  const telegramIdNumber = Number.parseInt(telegramId);
-  if (Number.isNaN(telegramIdNumber)) {
-    return badRequest();
-  }
-
-  const repo = Repository.openConnection();
-
-  await repo.users().updateTelegramUserId(numberUserId, telegramIdNumber);
-
-  const controller = new BotController(env);
-  await controller.handleAuth(telegramIdNumber);
-
-  return new Response();
-}
-
-export default { POST };
+  return unauthrorized();
+});

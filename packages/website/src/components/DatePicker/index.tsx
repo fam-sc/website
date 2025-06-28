@@ -1,7 +1,7 @@
 import { PropsMap } from '@/types/react';
 import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
-import { toLocalISOString } from '@shared/date';
+import { toLocalISOString } from '@shared/chrono/date';
 
 type InputProps = PropsMap['input'];
 

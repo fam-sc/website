@@ -9,8 +9,6 @@
     "strict": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "allowJs": true,
-    "checkJs": false,
     "incremental": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -27,7 +25,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@data/*": ["../data/src/*"],
-      "@shared/*": ["../shared/src/*"]
+      "@shared/*": ["../shared/src/*"],
+      "@shared-schedule/*": ["../shared-schedule/src/*"]
     },
     "isolatedModules": true
   },
@@ -36,8 +35,6 @@
     "**/.server/**/*",
     "**/.client/**/*",
     "./.storybook/**/*",
-    ".react-router/types/**/*",
-    "../shared/src/api/campus",
-    "../shared/src/api/intellect"
+    ".react-router/types/**/*"
   ]
 }

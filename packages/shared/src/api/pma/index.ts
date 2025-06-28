@@ -3,8 +3,8 @@ import { Discipline, NameWithLink, Teacher } from './types';
 
 const SITE_URL = 'https://pma.fpm.kpi.ua';
 
-async function fetchPage(url: string): Promise<string> {
-  const response = await fetch(url, {
+async function fetchPage(path: string): Promise<string> {
+  const response = await fetch(`${SITE_URL}${path}`, {
     headers: {
       'Cache-Control': 'no-cache',
     },
@@ -25,16 +25,14 @@ function mapNameWithLink(items: NameWithLink[]): NameWithLink[] {
 }
 
 export async function getTeachers(): Promise<Teacher[]> {
-  const pageContent = await fetchPage(`${SITE_URL}/uk/vikladachi`);
+  const pageContent = await fetchPage('/uk/vikladachi');
   const teachersBlock = findNextDataBlock(pageContent, 'teachers_blocks');
 
   return mapNameWithLink(teachersBlock.props.people);
 }
 
 export async function getDisciplines(): Promise<Discipline[]> {
-  const pageContent = await fetchPage(
-    `${SITE_URL}/uk/studentam/navchalni-distsiplini`
-  );
+  const pageContent = await fetchPage('/uk/studentam/navchalni-distsiplini');
   const disciplineListBlock = findNextDataBlock(
     pageContent,
     'discipline_list_blocks'

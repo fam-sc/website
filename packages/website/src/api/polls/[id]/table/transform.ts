@@ -5,7 +5,7 @@ import {
   PollRespondentAnswer,
 } from '@data/types/poll';
 import { indexMany } from '@shared/indexMany';
-import { formatDateTime } from '@shared/date';
+import { formatDateTime } from '@shared/chrono/date';
 
 export function answerToString(
   answer: PollRespondentAnswer,

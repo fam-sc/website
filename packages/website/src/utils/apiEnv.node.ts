@@ -19,8 +19,8 @@ export function getApiEnv(): Env {
   );
 
   return {
-    MONGO_CONNECTION_STRING: getEnvChecked('MONGO_CONNECTION_STRING'),
     RESEND_API_KEY: getEnvChecked('RESEND_API_KEY'),
+    SCHEDULE_BOT_ACCESS_KEY: getEnvChecked('SCHEDULE_BOT_ACCESS_KEY'),
     MEDIA_BUCKET: bucket,
     TURNSTILE_SECRET_KEY: '',
     DB: getDatabase(),

@@ -1,5 +1,5 @@
 import { lessonType } from '@/api/schedule/types';
-import { UpdateScheduleLinksPayload } from '@/api/schedule/payloads';
+import { UpdateScheduleLinksPayload } from './payloads';
 
 function isValidLessonId(value: unknown): boolean {
   if (value !== null) {

@@ -1,6 +1,5 @@
 import { expect, test } from 'vitest';
-import { verifyHmac } from './crypto';
-import { toHexString } from '@shared/string/hex';
+import { verifyHmac } from '.';
 
 test('verifyHmac', async () => {
   const key = '123';
@@ -21,9 +20,7 @@ test('verifyHmac', async () => {
     cryptoKey,
     dataBuffer
   );
-  const signed = toHexString([...new Uint8Array(signedBuffer)]);
-
-  const result = await verifyHmac(key, data, signed);
+  const result = await verifyHmac(keyBuffer, data, signedBuffer);
 
   expect(result).toBe(true);
 });
