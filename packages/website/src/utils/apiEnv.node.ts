@@ -1,14 +1,6 @@
 import { getEnvChecked } from '@shared/env';
 import { ApiR2Bucket } from '@shared/cloudflare/r2/api';
-import { ApiD1Database } from '@shared/cloudflare/d1/api';
-
-export function getDatabase(): D1Database {
-  const token = getEnvChecked('CF_D1_TOKEN');
-  const accountId = getEnvChecked('CF_D1_ACCOUNT_ID');
-  const dbId = getEnvChecked('CF_D1_ID');
-
-  return new ApiD1Database(token, accountId, dbId);
-}
+import { getDatabase } from './d1Db';
 
 export function getApiEnv(): Env {
   const bucket = new ApiR2Bucket(
