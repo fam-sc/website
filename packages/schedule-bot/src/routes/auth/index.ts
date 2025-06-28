@@ -11,7 +11,6 @@ app.post('/auth', async (request, { env }) => {
   const authorization = request.headers.get('Authorization');
   if (authorization !== `Bearer ${env.ACCESS_KEY}`) {
     console.error('Invalid access key', authorization);
-    console.log(env.ACCESS_KEY);
 
     return unauthrorized();
   }
@@ -30,7 +29,6 @@ app.post('/auth', async (request, { env }) => {
   }
 
   const isVerified = await verifyAuthorizationHash(payload, env.BOT_KEY);
-  console.log(isVerified);
 
   if (isVerified) {
     await new BotController(env).handleAuth(payload.telegramUserId);
