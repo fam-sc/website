@@ -61,100 +61,79 @@ export class ParamRouter<Env> {
   private addPath(path: string, method: HttpMethod, handler: Handler<Env>) {
     const parts = path.slice(1).split('/');
 
-    this.addPathPart(this.rootNode, parts, method, handler);
-  }
+    let parent: PathNode<Env> = this.rootNode;
 
-  private addPathPart(
-    parent: PathNode<Env>,
-    parts: string[],
-    method: HttpMethod,
-    handler: Handler<Env>
-  ) {
-    const [firstPart, ...restParts] = parts;
-    const isParam = firstPart.startsWith(':');
-    const name = isParam ? firstPart.slice(1) : firstPart;
+    for (const part of parts) {
+      const isParam = part.startsWith(':');
+      const name = isParam ? part.slice(1) : part;
 
-    let currentNode = isParam ? parent.paramNode?.value : parent.children[name];
-    if (currentNode === undefined) {
-      if (
-        isParam &&
-        parent.paramNode !== undefined &&
-        parent.paramNode.name !== name
-      ) {
-        throw new Error('Already have param route');
+      let currentNode = isParam
+        ? parent.paramNode?.value
+        : parent.children[name];
+
+      if (currentNode === undefined) {
+        if (
+          isParam &&
+          parent.paramNode !== undefined &&
+          parent.paramNode.name !== name
+        ) {
+          throw new Error('Already have param route');
+        }
+
+        currentNode = { children: {} };
+
+        if (isParam) {
+          parent.paramNode = { name, value: currentNode };
+        } else {
+          parent.children[name] = currentNode;
+        }
       }
 
-      currentNode = { children: {} };
-
-      if (isParam) {
-        parent.paramNode = { name, value: currentNode };
-      } else {
-        parent.children[name] = currentNode;
-      }
+      parent = currentNode;
     }
 
-    if (restParts.length === 0) {
-      const currentHandlerNode = currentNode as HandlerPathNode<Env>;
+    const currentHandlerNode = parent as HandlerPathNode<Env>;
 
-      if (currentHandlerNode.handlers === undefined) {
-        currentHandlerNode.handlers = {};
-      }
-
-      currentHandlerNode.handlers[method] = handler;
-    } else {
-      this.addPathPart(currentNode, restParts, method, handler);
+    if (currentHandlerNode.handlers === undefined) {
+      currentHandlerNode.handlers = {};
     }
+
+    currentHandlerNode.handlers[method] = handler;
   }
 
   handleRequest(request: Request, env: Env) {
     const { pathname } = new URL(request.url);
 
     if (pathname.startsWith(this.prefix)) {
+      const params: Record<string, string> = {};
       const parts = pathname.slice(this.prefix.length + 1).split('/');
+      let parent: PathNode<Env> = this.rootNode;
 
-      return this.handleRequestByParts(parts, this.rootNode, request, env, {});
-    }
+      for (const part of parts) {
+        let nextNode = parent.children[part];
 
-    return Promise.resolve(notFound());
-  }
+        if (nextNode === undefined) {
+          const { paramNode } = parent;
 
-  private handleRequestByParts(
-    parts: string[],
-    node: PathNode<Env>,
-    request: Request,
-    env: Env,
-    params: Params
-  ): Promise<Response> {
-    if (parts.length > 0) {
-      const [firstPart, ...restParts] = parts;
-      let nextNode = node.children[firstPart];
-      const nextParams = params;
-
-      if (nextNode === undefined) {
-        const { paramNode } = node;
-
-        if (paramNode !== undefined) {
-          nextNode = paramNode.value;
-          nextParams[paramNode.name] = firstPart;
+          if (paramNode !== undefined) {
+            nextNode = paramNode.value;
+            params[paramNode.name] = part;
+          } else {
+            return Promise.resolve(notFound());
+          }
         }
+
+        parent = nextNode;
       }
 
-      if (nextNode !== undefined) {
-        return this.handleRequestByParts(
-          restParts,
-          nextNode,
-          request,
-          env,
-          nextParams
-        );
-      }
-    } else if ('handlers' in node && node.handlers !== undefined) {
-      const { handlers } = node;
-      const handler = handlers[request.method as HttpMethod];
+      if ('handlers' in parent && parent.handlers) {
+        const { handlers } = parent;
+        const handler = handlers[request.method as HttpMethod];
 
-      return handler
-        ? handler(request, { env, params })
-        : Promise.resolve(methodNotAllowed(Object.keys(handlers)));
+        return handler
+          ? handler(request, { env, params })
+          : Promise.resolve(methodNotAllowed(Object.keys(handlers)));
+      }
     }
 
     return Promise.resolve(notFound());
