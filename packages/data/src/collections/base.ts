@@ -1,193 +1,312 @@
-/* eslint-disable unicorn/no-array-method-this-argument */
-/* eslint-disable unicorn/no-array-callback-reference */
+import { D1Database, D1PreparedStatement } from '@shared/cloudflare/d1/types';
+
 import {
-  Abortable,
-  AggregateOptions,
-  AnyBulkWriteOperation,
-  BulkWriteOptions,
-  ClientSession,
-  Collection,
-  DeleteOptions,
-  DeleteResult,
-  Document,
-  Filter,
-  FindOptions,
-  MongoClient,
-  ObjectId,
-  OptionalUnlessRequiredId,
-  UpdateFilter,
-  UpdateOptions,
-  UpdateResult,
-  WithId,
-} from 'mongodb';
-import { emptyDeleteResult, emptyUpdateResult } from '../misc/result';
+  InsertFlavor,
+  buildGeneralInsertQuery,
+  Conditions,
+  buildFindWhereQuery,
+  buildUpdateWhereQuery,
+  buildDeleteWhereQuery,
+  buildCreateTableQuery,
+  buildCountWhereQuery,
+  getConditionsBinding,
+  buildGetPageQuery,
+} from '../sqlite/queryBuilder';
+import { TableDescriptor } from '../sqlite/types';
+import { DataQuery, DataQueryContext, query } from '../sqlite/query';
+import { batchWithResultsHelper } from '../utils/batch';
 
-export function resolveObjectId(value: string | ObjectId): ObjectId {
-  return typeof value === 'string' ? new ObjectId(value) : value;
-}
+export type EntityCollectionClass<T = unknown> = new (client: D1Database) => T;
 
-export class EntityCollection<T extends Document> {
-  private client: MongoClient;
-  protected session: ClientSession | undefined;
-  private collectionName: string;
+export function EntityCollection<Raw extends object>(tableName: string) {
+  type Fields<S = Raw> = (keyof S & string)[] | '*';
 
-  constructor(
-    client: MongoClient,
-    session: ClientSession | undefined,
-    collectionName: string
-  ) {
-    this.client = client;
-    this.collectionName = collectionName;
-    this.session = session;
-  }
+  return class {
+    protected client: D1Database;
+    queryContext: DataQueryContext;
 
-  protected collection(): Collection<T> {
-    return this.client.db().collection(this.collectionName);
-  }
-
-  getAll() {
-    return this.collection().find({}, this.options());
-  }
-
-  findById<R = T>(
-    id: string | ObjectId,
-    options?: FindOptions<T>
-  ): Promise<WithId<R> | null> {
-    let objectId: ObjectId;
-
-    try {
-      objectId = resolveObjectId(id);
-    } catch {
-      return Promise.resolve(null);
+    constructor(client: D1Database) {
+      this.client = client;
+      this.queryContext = {
+        batch(queries) {
+          return batchWithResultsHelper(client, queries);
+        },
+      };
     }
 
-    return this.collection().findOne<WithId<R>>(
-      { _id: objectId } as Filter<T>,
-      {
-        ...options,
-        session: this.session,
+    protected async updateWhere(
+      conditions: Conditions<Raw>,
+      value: Partial<Raw>
+    ) {
+      const { meta } = await this.client
+        .prepare(buildUpdateWhereQuery(tableName, conditions, value))
+        .bind(...Object.values(value), ...getConditionsBinding(conditions))
+        .run();
+
+      return { changes: meta.changes };
+    }
+
+    protected selectAllAction<R = Raw>(
+      sql: string,
+      bindings?: unknown[]
+    ): DataQuery<R[]> {
+      return query.all(this.client.prepare(sql).bind(...(bindings ?? [])));
+    }
+
+    protected async selectAll<R = Raw>(
+      sql: string,
+      bindings?: unknown[]
+    ): Promise<R[]> {
+      const { results } = await this.client
+        .prepare(sql)
+        .bind(...(bindings ?? []))
+        .all<R>();
+
+      return results;
+    }
+
+    protected selectOneAction<R = Raw>(
+      sql: string,
+      bindings: unknown[] = []
+    ): DataQuery<R | null> {
+      return query.first(this.client.prepare(sql).bind(...bindings));
+    }
+
+    protected async selectOne<R = Raw>(
+      sql: string,
+      bindings: unknown[] = []
+    ): Promise<R | null> {
+      return this.client
+        .prepare(sql)
+        .bind(...bindings)
+        .first<R>();
+    }
+
+    private insertBaseAction<R extends keyof Raw & string>(
+      flavor: InsertFlavor,
+      value: Partial<Raw>,
+      returning?: R
+    ): DataQuery<Raw[R] | undefined> {
+      const statement = this.client
+        .prepare(buildGeneralInsertQuery(flavor, tableName, value, returning))
+        .bind(...Object.values(value));
+
+      return query.first<Record<R, Raw[R]>>(statement).map((result) => {
+        if (result === null || returning === undefined) {
+          return undefined;
+        }
+
+        return result[returning];
+      });
+    }
+
+    private async insertBase<R extends keyof Raw & string>(
+      flavor: InsertFlavor,
+      value: Partial<Raw>,
+      returning?: R
+    ): Promise<Raw[R] | undefined> {
+      const result = await this.client
+        .prepare(buildGeneralInsertQuery(flavor, tableName, value, returning))
+        .bind(...Object.values(value))
+        .first<Record<R, Raw[R]>>();
+
+      if (result === null || returning === undefined) {
+        return undefined;
       }
-    );
-  }
 
-  insert(value: OptionalUnlessRequiredId<T>) {
-    return this.collection().insertOne(value, this.options());
-  }
-
-  insertMany(values: OptionalUnlessRequiredId<T>[]) {
-    return this.collection().insertMany(values, this.options());
-  }
-
-  count(): Promise<number> {
-    return this.collection().countDocuments();
-  }
-
-  delete(id: string | ObjectId): Promise<DeleteResult> {
-    let objectId: ObjectId;
-
-    try {
-      objectId = resolveObjectId(id);
-    } catch {
-      return Promise.resolve(emptyDeleteResult());
+      return result[returning];
     }
 
-    return this.deleteOne({ _id: objectId } as Filter<T>);
-  }
+    insert<R extends keyof Raw & string>(
+      value: Partial<Raw>
+    ): Promise<Raw[R] | undefined>;
 
-  deleteOne(filter: Filter<T>, options?: DeleteOptions) {
-    return this.collection().deleteOne(filter, {
-      session: this.session,
-      ...options,
-    });
-  }
+    insert<R extends keyof Raw & string>(
+      value: Partial<Raw>,
+      returning: R
+    ): Promise<Raw[R]>;
 
-  protected options() {
-    return { session: this.session };
-  }
-
-  protected findOne<R = WithId<T>>(
-    filter: Filter<T>,
-    options?: FindOptions<T>
-  ) {
-    return this.collection().findOne<R>(filter, {
-      ...options,
-      session: this.session,
-    });
-  }
-
-  protected bulkWrite(
-    ops: readonly AnyBulkWriteOperation<T>[],
-    options?: BulkWriteOptions
-  ) {
-    return this.collection().bulkWrite(ops, {
-      ...options,
-      session: this.session,
-    });
-  }
-
-  protected updateOne(
-    filter: Filter<T>,
-    update: UpdateFilter<T> | Document[],
-    options?: UpdateOptions
-  ) {
-    return this.collection().updateOne(filter, update, {
-      ...options,
-      session: this.session,
-    });
-  }
-
-  protected updateMany(
-    filter: Filter<T>,
-    update: UpdateFilter<T> | Document[],
-    options?: UpdateOptions
-  ) {
-    return this.collection().updateMany(filter, update, {
-      ...options,
-      session: this.session,
-    });
-  }
-
-  protected updateById(
-    id: string | ObjectId,
-    update: UpdateFilter<T> | Document[],
-    options?: UpdateOptions
-  ): Promise<UpdateResult<T>> {
-    let objectId: ObjectId;
-    try {
-      objectId = resolveObjectId(id);
-    } catch {
-      return Promise.resolve(emptyUpdateResult());
+    insert<R extends keyof Raw & string>(
+      value: Partial<Raw>,
+      returning?: R
+    ): Promise<Raw[R] | undefined> {
+      return this.insertBase('INSERT', value, returning);
     }
 
-    return this.updateOne({ _id: objectId } as Filter<T>, update, {
-      ...options,
-      session: this.session,
-    });
-  }
+    insertOrReplace<R extends keyof Raw & string>(
+      value: Partial<Raw>,
+      returning?: R
+    ): Promise<Raw[R] | undefined> {
+      return this.insertBase('INSERT OR REPLACE', value, returning);
+    }
 
-  protected find(filter: Filter<T>, options?: FindOptions & Abortable) {
-    return this.collection().find(filter, {
-      ...options,
-      session: this.session,
-    });
-  }
+    insertOrReplaceAction<R extends keyof Raw & string>(
+      value: Partial<Raw>,
+      returning?: R
+    ): DataQuery<Raw[R] | undefined> {
+      return this.insertBaseAction('INSERT OR REPLACE', value, returning);
+    }
 
-  protected aggregate<T extends Document = Document>(
-    pipeline: Document[],
-    options?: AggregateOptions
-  ) {
-    return this.collection().aggregate<T>(pipeline, {
-      ...options,
-      session: this.session,
-    });
-  }
+    private insertManyBaseAction<R extends keyof Raw & string>(
+      flavor: InsertFlavor,
+      values: Partial<Raw>[],
+      returning?: R
+    ): DataQuery<Raw[R] | undefined>[] {
+      return values.map((value) =>
+        this.insertBaseAction(flavor, value, returning)
+      );
+    }
 
-  protected async documentExists(filter: Filter<T>): Promise<boolean> {
-    const result = await this.collection().countDocuments(
-      filter,
-      this.options()
-    );
+    private async insertManyBase<R extends keyof Raw & string>(
+      flavor: InsertFlavor,
+      values: Partial<Raw>[],
+      returning?: R
+    ): Promise<Raw[R][] | undefined> {
+      const result = await Promise.all(
+        values.map((value) => this.insertBase(flavor, value, returning))
+      );
 
-    return result > 0;
-  }
+      return returning !== undefined ? (result as Raw[R][]) : undefined;
+    }
+
+    insertMany(values: Partial<Raw>[]): Promise<void>;
+
+    insertMany<R extends keyof Raw & string>(
+      values: Partial<Raw>[],
+      returning: R
+    ): Promise<Raw[R][]>;
+
+    async insertMany<Value extends Partial<Raw>, R extends keyof Raw & string>(
+      values: Value[],
+      returning?: R
+    ): Promise<Raw[R][] | void> {
+      return this.insertManyBase('INSERT', values, returning);
+    }
+
+    insertOrReplaceMany(values: Partial<Raw>[]): Promise<void>;
+
+    insertOrReplaceMany<R extends keyof Raw & string>(
+      values: Partial<Raw>[],
+      returning: R
+    ): Promise<Raw[R][]>;
+
+    async insertOrReplaceMany<
+      Value extends Partial<Raw>,
+      R extends keyof Raw & string,
+    >(values: Value[], returning?: R): Promise<Raw[R][] | void> {
+      return this.insertManyBase('INSERT OR REPLACE', values, returning);
+    }
+
+    insertOrReplaceManyAction<R extends keyof Raw & string>(
+      values: Partial<Raw>[],
+      returning?: R
+    ) {
+      return this.insertManyBaseAction('INSERT OR REPLACE', values, returning);
+    }
+
+    private prepareFindWhereStatement<R extends Raw>(
+      conditions: Conditions<R>,
+      fields?: Fields<Partial<Raw>>
+    ): D1PreparedStatement {
+      const bindings = getConditionsBinding(conditions);
+
+      return this.client
+        .prepare(buildFindWhereQuery(tableName, conditions, fields))
+        .bind(...bindings);
+    }
+
+    findOneWhereAction<K extends keyof Raw & string = keyof Raw & string>(
+      conditions: Conditions<Raw>,
+      fields?: K[] | '*'
+    ): DataQuery<Pick<Raw, K> | null> {
+      return query.first(this.prepareFindWhereStatement(conditions, fields));
+    }
+
+    findOneWhere<K extends keyof Raw & string = keyof Raw & string>(
+      conditions: Conditions<Raw>,
+      fields?: K[] | '*'
+    ): Promise<Pick<Raw, K> | null> {
+      return this.prepareFindWhereStatement(conditions, fields).first();
+    }
+
+    async findManyWhere<K extends keyof Raw & string = keyof Raw & string>(
+      conditions: Conditions<Raw>,
+      fields?: K[] | '*'
+    ): Promise<Pick<Raw, K>[]> {
+      const { results } = await this.prepareFindWhereStatement(
+        conditions,
+        fields
+      ).all<Pick<Raw, K>>();
+
+      return results;
+    }
+
+    findManyWhereAction<K extends keyof Raw & string = keyof Raw & string>(
+      conditions: Conditions<Raw>,
+      fields?: K[] | '*'
+    ): DataQuery<Pick<Raw, K>[]> {
+      return query.all(this.prepareFindWhereStatement(conditions, fields));
+    }
+
+    protected getPageBase<K extends keyof Raw & string = keyof Raw & string>(
+      offset: number,
+      size: number,
+      conditions: Conditions<Raw> = {},
+      fields?: K[] | '*'
+    ): DataQuery<Pick<Raw, K>[]> {
+      return this.selectAllAction(
+        buildGetPageQuery(tableName, offset, size, conditions, fields),
+        getConditionsBinding(conditions)
+      );
+    }
+
+    deleteWhere(conditions: Conditions<Raw>) {
+      return query
+        .first(
+          this.client
+            .prepare(buildDeleteWhereQuery(tableName, conditions))
+            .bind(...getConditionsBinding(conditions))
+        )
+        .map((_, [result]) => {
+          return { changes: result.meta.changes };
+        });
+    }
+
+    async deleteAll() {
+      await this.client.prepare(`DELETE FROM ${tableName}`).run();
+    }
+
+    count(conditions?: Conditions<Raw>): DataQuery<number> {
+      const statement = this.client
+        .prepare(buildCountWhereQuery(tableName, conditions))
+        .bind(...(conditions ? getConditionsBinding(conditions) : []));
+
+      return query
+        .first<{ count: number }>(statement)
+        .map((result) => result?.count ?? 0);
+    }
+
+    all<K extends keyof Raw & string>(
+      fields: K[] | '*' = '*'
+    ): DataQuery<Pick<Raw, K>[]> {
+      return this.findManyWhereAction({}, fields);
+    }
+
+    protected createTable(schema: TableDescriptor<Raw>) {
+      return this.client.exec(buildCreateTableQuery(tableName, schema));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getCollection<T>(_type: EntityCollectionClass<T>): T {
+      throw new Error('Not implemented');
+    }
+
+    static descriptor(): TableDescriptor<Raw> {
+      throw new Error('Not implemented');
+    }
+
+    static toString(): string {
+      return tableName;
+    }
+  };
 }

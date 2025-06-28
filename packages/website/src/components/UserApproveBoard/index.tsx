@@ -5,7 +5,7 @@ import { UserApproveItem } from '../UserApproveItem';
 import styles from './index.module.scss';
 
 export type UserApproveItemType = {
-  id: string;
+  id: number;
   avatarSrc: string | undefined;
   name: string;
   email: string;
@@ -16,7 +16,7 @@ export type UserApproveBoardProps = {
   className?: string;
   items: UserApproveItemType[];
 
-  onItemAction: (id: string, type: 'approve' | 'disapprove') => Promise<void>;
+  onItemAction: (id: number, type: 'approve' | 'disapprove') => Promise<void>;
 };
 
 export function UserApproveBoard({

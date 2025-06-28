@@ -1,76 +1,71 @@
-import { ClientSession, MongoClient, ObjectId, WithId } from 'mongodb';
-
-import { Event, GalleryImage } from '../types';
+import { TableDescriptor } from '../sqlite/types';
+import { GalleryImage, GalleryImageWithEvent, RawGalleryImage } from '../types';
 
 import { EntityCollection } from './base';
 import { ImageSize } from '@shared/image/types';
 
-export class GalleryImageCollection extends EntityCollection<GalleryImage> {
-  constructor(client: MongoClient, session?: ClientSession) {
-    super(client, session, 'gallery-images');
+export class GalleryImageCollection extends EntityCollection<RawGalleryImage>(
+  'gallery_images'
+) {
+  static descriptor(): TableDescriptor<RawGalleryImage> {
+    return {
+      id: 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
+      date: 'INTEGER NOT NULL',
+      eventId: 'INTEGER',
+      images: 'TEXT NOT NULL',
+      order: 'INTEGER NOT NULL',
+    };
   }
 
-  update(id: string, value: Partial<GalleryImage>) {
-    return this.updateById(id, { $set: value });
+  update(id: number, { images, ...rest }: Partial<GalleryImage>) {
+    return this.updateWhere(
+      { id },
+      images ? { images: JSON.stringify(images), ...rest } : rest
+    );
   }
 
-  async getGalleryImageWithEvent(id: ObjectId) {
-    const result = await this.aggregate<
-      WithId<GalleryImage> & { event: [WithId<Event>] | [] }
-    >([
-      {
-        $match: { _id: id },
-      },
-      {
-        $lookup: {
-          from: 'events',
-          foreignField: '_id',
-          localField: 'eventId',
-          as: 'event',
+  async getGalleryImageWithEvent(
+    id: number
+  ): Promise<GalleryImageWithEvent | null> {
+    const result = await this.selectOne<{
+      galleryDate: number;
+      eventId: number;
+      eventTitle: string;
+    }>(
+      `SELECT gallery_images.date as galleryDate, events.id as eventId, events.title as eventTitle 
+      FROM gallery_images 
+      INNER JOIN events ON events.id=gallery_images.id 
+      WHERE gallery_images.id=?`
+    );
+
+    return (
+      result && {
+        id,
+        date: result.galleryDate,
+        event: {
+          id: result.eventId,
+          title: result.eventTitle,
         },
-      },
-    ]).next();
-
-    return result === null
-      ? null
-      : { ...result, event: result.event[0] ?? null };
+      }
+    );
   }
 
   async getPage(index: number, size: number) {
-    const result = await this.aggregate<{
-      data: { _id: ObjectId; images: ImageSize[] }[];
-    }>([
-      {
-        $sort: {
-          date: -1,
-          order: 1,
-        },
-      },
-      {
-        $facet: {
-          data: [{ $skip: index * size }, { $limit: size }],
-        },
-      },
-      {
-        $project: { data: { _id: 1, images: 1 } },
-      },
-    ]).next();
+    const result = await this.getPageBase(index * size, size, {}, [
+      'id',
+      'images',
+    ]).get();
 
-    if (result === null) {
-      return [];
-    }
-
-    return result.data.map(({ _id, images: sizes }) => ({
-      id: _id.toString(),
-      sizes,
+    return result.map(({ id, images }) => ({
+      id,
+      images: JSON.parse(images) as ImageSize[],
     }));
   }
 
-  async getImageSizes(id: string): Promise<ImageSize[] | null> {
-    const result = await this.findById<{ images: ImageSize[] }>(id, {
-      projection: { images: 1 },
-    });
+  async getImageSizes(id: number): Promise<ImageSize[] | null> {
+    const result = await this.findOneWhere({ id }, ['images']);
 
-    return result?.images ?? null;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return result ? JSON.parse(result.images) : null;
   }
 }

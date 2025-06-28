@@ -3,25 +3,27 @@ import { UserLayoutNavigation } from './nav';
 import { UserAvatar } from './avatar';
 import { ReactNode } from 'react';
 import { redirect } from 'react-router';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { tabs } from './tabs';
-import { Repository } from '@data/repo';
 import { Route } from './+types/layout';
 import { Outlet } from 'react-router';
+import { repository } from '@/utils/repo';
 
 export interface UserLayoutProps {
   children: ReactNode;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const sessionId = getSessionIdNumber(request);
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const sessionId = getSessionId(request);
+  console.log(sessionId);
 
   if (sessionId === undefined) {
     return redirect('/');
   }
 
-  await using repo = await Repository.openConnection();
+  const repo = repository(context);
   const result = await repo.sessions().getUserWithRole(sessionId);
+  console.log(result);
   if (result === null) {
     return redirect('/');
   }

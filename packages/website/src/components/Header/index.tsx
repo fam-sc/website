@@ -44,7 +44,7 @@ function Buttons() {
 }
 
 type AvatarProps = {
-  userId: string;
+  userId: number;
   hasAvatar: boolean | undefined;
 };
 

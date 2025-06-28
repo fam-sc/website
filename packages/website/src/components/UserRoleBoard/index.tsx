@@ -9,7 +9,7 @@ export type UserRoleBoardProps = {
   className?: string;
   users: UserInfoWithRole[];
 
-  onChangeRole: (id: string, role: UserRole) => void;
+  onChangeRole: (id: number, role: UserRole) => void;
 };
 
 export function UserRoleBoard({

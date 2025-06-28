@@ -1,16 +1,16 @@
-import { z } from 'zod/v4-mini';
+import { string, object, nullable, minLength, z } from 'zod/v4-mini';
 
-const nonEmptyString = z.string().check(z.minLength(1));
+const nonEmptyString = string().check(minLength(1));
 
-export const userPersonalInfo = z.object({
+export const userPersonalInfo = object({
   firstName: nonEmptyString,
   lastName: nonEmptyString,
-  parentName: z.nullable(nonEmptyString),
+  parentName: nullable(nonEmptyString),
 });
 
-export const changePasswordPayload = z.object({
-  oldPassword: z.string(),
-  newPassword: z.string(),
+export const changePasswordPayload = object({
+  oldPassword: string(),
+  newPassword: string(),
 });
 
 export type ChangePasswordPayload = z.infer<typeof changePasswordPayload>;

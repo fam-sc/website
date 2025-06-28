@@ -5,37 +5,54 @@ export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 // `${type}-${name}-${teacher.name}`
 export type LessonId = string;
 
+export const enum LessonType {
+  LECTURE = 0,
+  PRACTICE = 1,
+  LAB = 2,
+}
+
 export type Lesson = {
-  type: 'lec' | 'prac' | 'lab';
+  type: LessonType;
   name: string;
   teacher: string;
   time: Time;
   place: string;
 };
 
-export type DaySchedule = {
+export type LessonWithTeacher = Omit<Lesson, 'teacher'> & {
+  teacher: ScheduleTeacher;
+};
+
+export type DaySchedule<T = Lesson> = {
   day: Day;
-  lessons: Lesson[];
+  lessons: T[];
 };
 
-export type ScheduleWeek = {
-  days: DaySchedule[];
-};
+export type ScheduleWeek<T = Lesson> = DaySchedule<T>[];
 
-export type Schedule = {
+export type Schedule<T = Lesson> = {
   groupCampusId: string;
-  weeks: [ScheduleWeek, ScheduleWeek];
+  weeks: [ScheduleWeek<T>, ScheduleWeek<T>];
 
-  // null means that links weren't fetched (doesn't mean that it's empty)
-  // undefined means that it's empty.
-  links?: Record<LessonId, string> | null;
+  // undefined means that link wasn't fetched.
+  // null means that it's empty.
+  links: Record<LessonId, string> | undefined | null;
 };
+
+export type ScheduleWithTeachers = Schedule<LessonWithTeacher>;
+
+export type RawSchedule = {
+  groupCampusId: string;
+  links: string | null | undefined;
+};
+
+export interface RawLesson extends Lesson {
+  groupCampusId: string;
+  week: 1 | 2;
+  day: Day;
+}
 
 export type ScheduleTeacher = {
   name: string;
   link: string | null;
 };
-
-export interface ScheduleWithTeachers extends Schedule {
-  teachers: ScheduleTeacher[];
-}

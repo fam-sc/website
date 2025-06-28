@@ -1,3 +1,5 @@
+import { parseHexString, toHexString } from '@shared/string/hex';
+
 const ITERATIONS = 100_000;
 const SALT_LENGTH = 16;
 
@@ -11,7 +13,7 @@ function generateSalt(): Uint8Array {
 async function hashPasswordBase(
   password: string,
   salt: Uint8Array
-): Promise<Uint8Array> {
+): Promise<string> {
   const textEncoder = new TextEncoder();
   const passwordBuffer = textEncoder.encode(password);
   const importedKey = await crypto.subtle.importKey(
@@ -34,39 +36,24 @@ async function hashPasswordBase(
     32 * 8
   );
 
-  return new Uint8Array(derivation);
+  return toHexString([...new Uint8Array(derivation)]);
 }
 
-export async function hashPassword(password: string): Promise<Uint8Array> {
+export async function hashPassword(password: string): Promise<string> {
   const salt = generateSalt();
 
   const hash = await hashPasswordBase(password, salt);
 
-  return new Uint8Array([...salt, ...hash]);
-}
-
-function isSameBuffers(a: Uint8Array, b: Uint8Array): boolean {
-  if (a.length === b.length) {
-    // eslint-disable-next-line unicorn/no-for-loop
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  return false;
+  return `${toHexString([...salt])}${hash}`;
 }
 
 export async function verifyPassword(
-  hashed: Uint8Array,
+  hashed: string,
   password: string
 ): Promise<boolean> {
-  const salt = hashed.slice(0, SALT_LENGTH);
+  const salt = parseHexString(hashed.slice(0, SALT_LENGTH * 2));
   const actual = await hashPasswordBase(password, salt);
-  const expected = hashed.slice(SALT_LENGTH);
+  const expected = hashed.slice(SALT_LENGTH * 2);
 
-  return isSameBuffers(expected, actual);
+  return actual === expected;
 }

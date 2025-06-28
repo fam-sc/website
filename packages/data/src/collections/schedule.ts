@@ -1,59 +1,130 @@
-import { ClientSession, MongoClient } from 'mongodb';
-
-import { Schedule, ScheduleWithTeachers } from '../types/schedule';
+import { DataQuery, query } from '../sqlite/query';
+import { TableDescriptor } from '../sqlite/types';
+import {
+  Day,
+  DaySchedule,
+  LessonId,
+  LessonWithTeacher,
+  RawLesson,
+  RawSchedule,
+  Schedule,
+  ScheduleWeek,
+  ScheduleWithTeachers,
+} from '../types/schedule';
 
 import { EntityCollection } from './base';
+import { ScheduleLessonCollection } from './scheduleLessons';
 
-export class ScheduleCollection extends EntityCollection<Schedule> {
-  constructor(client: MongoClient, session?: ClientSession) {
-    super(client, session, 'schedule');
+function splitToWeeks<Input extends RawLesson, T>(
+  rawLessons: Omit<Input, 'groupCampusId'>[],
+  mapEntry: (input: Omit<Input, 'week' | 'day'>) => T
+): [ScheduleWeek<T>, ScheduleWeek<T>] {
+  type Item = Partial<Record<Day, DaySchedule<T>>>;
+
+  const result: [Item, Item] = [{}, {}];
+
+  for (const { week, day, ...rest } of rawLessons) {
+    const weekMap = result[week - 1];
+    let daySchedule = weekMap[day];
+    if (daySchedule === undefined) {
+      daySchedule = { day, lessons: [] };
+      weekMap[day] = daySchedule;
+    }
+
+    daySchedule.lessons.push(mapEntry(rest as Omit<Input, 'week' | 'day'>));
   }
 
-  findByGroup(groupCampusId: string): Promise<Schedule | null> {
-    return this.findOne({ groupCampusId });
+  return [Object.values(result[0]), Object.values(result[1])];
+}
+
+export class ScheduleCollection extends EntityCollection<RawSchedule>(
+  'schedule'
+) {
+  static descriptor(): TableDescriptor<RawSchedule> {
+    return {
+      groupCampusId: 'TEXT NOT NULL PRIMARY KEY',
+      links: 'TEXT',
+    };
   }
 
   findByGroupWithTeachers(
     groupCampusId: string
-  ): Promise<ScheduleWithTeachers | null> {
-    return this.aggregate<ScheduleWithTeachers>([
-      { $match: { groupCampusId } },
-      {
-        $lookup: {
-          from: 'schedule_teachers',
-          foreignField: 'name',
-          localField: 'weeks.days.lessons.teacher',
-          as: 'teachers',
-        },
-      },
-      {
-        $project: { 'teachers._id': 0 },
-      },
-    ]).next();
+  ): DataQuery<ScheduleWithTeachers | null> {
+    type R = RawLesson & {
+      lesson_name: string;
+      teacher_link: string | null;
+    };
+
+    const scheduleQuery = this.selectAllAction<R>(
+      `SELECT week, day, place, teacher, time, type, link, schedule_teachers.link as teacher_link, schedule_lessons.name as lesson_name
+      FROM schedule_lessons 
+      RIGHT JOIN schedule_teachers ON schedule_lessons.teacher=schedule_teachers.name 
+      WHERE groupCampusId=?`,
+      [groupCampusId]
+    );
+
+    const linksQuery = this.findOneWhereAction({ groupCampusId }, ['links']);
+
+    return query.merge([scheduleQuery, linksQuery]).map(([lessons, links]) => {
+      return lessons.length > 0
+        ? {
+            groupCampusId,
+            weeks: splitToWeeks<R, LessonWithTeacher>(
+              lessons,
+              ({ teacher, teacher_link, lesson_name, ...rest }) => ({
+                ...rest,
+                name: lesson_name,
+                teacher: {
+                  name: teacher,
+                  link: teacher_link,
+                },
+              })
+            ),
+            links: links && links.links ? JSON.parse(links.links) : null,
+          }
+        : null;
+    });
   }
 
-  upsertWeeks({ groupCampusId, weeks }: Schedule) {
-    return this.updateOne(
-      { groupCampusId },
-      { $set: { groupCampusId, weeks } },
-      { upsert: true }
-    );
+  upsertWeeks({ groupCampusId, weeks }: ScheduleWithTeachers) {
+    const lessons = this.getCollection(ScheduleLessonCollection);
+
+    return [
+      lessons.deleteWhere({ groupCampusId }),
+      ...lessons.insertOrReplaceManyAction(
+        weeks
+          .map((week, index) =>
+            week.map(({ day, lessons }) =>
+              lessons.map(({ teacher, ...rest }) => ({
+                groupCampusId,
+                week: (index + 1) as 1 | 2,
+                day,
+                teacher: teacher.name,
+                ...rest,
+              }))
+            )
+          )
+          // eslint-disable-next-line unicorn/no-magic-array-flat-depth
+          .flat(2)
+      ),
+    ];
   }
 
   updateLinks(groupCampusId: string, links: Schedule['links']) {
-    return this.updateOne({ groupCampusId }, { $set: { links } });
-  }
-
-  async getLinks(groupCampusId: string): Promise<Schedule['links'] | null> {
-    const result = await this.findOne<Pick<Schedule, 'links'>>(
+    return this.updateWhere(
       { groupCampusId },
-      { projection: { links: 1 } }
+      { links: JSON.stringify(links) }
     );
-
-    return result?.links ?? null;
   }
 
-  findSchedulesWithGroupIds(ids: string[]) {
-    return this.find({ groupCampusId: { $in: ids } });
+  async getLinks(groupCampusId: string): Promise<Record<LessonId, string>> {
+    const links = await this.findOneWhere({ groupCampusId }, ['links']);
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return links && links.links ? JSON.parse(links.links) : {};
   }
+
+  // findSchedulesWithGroupIds(ids: string[]) {
+  //   return this.find({ groupCampusId: { $in: ids } });
+  // }
 }

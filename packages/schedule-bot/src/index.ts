@@ -1,21 +1,18 @@
-import { parseCronTimeToLocal } from './cron';
-import auth from './routes/auth';
-import update from './routes/update';
-import { handleOnTime } from './scheduleHandler';
-import { RouteMap, handleRoute } from '@shared/route/simple';
+import { Repository } from '@data/repo';
+import { app } from './routes/app';
+import { handleOnCronEvent } from './scheduleHandler';
 
-const routes: RouteMap<Env> = {
-  '/auth': auth,
-  '/update': update,
-};
+import './routes';
 
 export default {
   fetch(request: Request, env: Env): Promise<Response> {
-    return handleRoute(request, env, routes);
-  },
-  async scheduled(controller, env) {
-    const time = parseCronTimeToLocal(controller.cron);
+    Repository.setDefaultDatabase(env.DB);
 
-    await handleOnTime(time, env);
+    return app.handleRequest(request, env);
+  },
+  scheduled(_, env) {
+    Repository.setDefaultDatabase(env.DB);
+
+    return handleOnCronEvent(env);
   },
 } satisfies ExportedHandler<Env>;

@@ -27,12 +27,7 @@ export default async function handleRequest(
     },
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (import.meta.env.PROD && loadContext.cloudflare !== undefined) {
-    Repository.setDefaultConnectionString(
-      loadContext.cloudflare.env.MONGO_CONNECTION_STRING
-    );
-  }
+  Repository.setDefaultDatabase(loadContext.cloudflare.env.DB);
 
   const { pathname } = new URL(request.url);
 

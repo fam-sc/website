@@ -1,35 +1,39 @@
-import { ClientSession, MongoClient } from 'mongodb';
-
-import { ScheduleTeacher } from '../types/schedule';
+import { ScheduleTeacher, ScheduleWithTeachers } from '../types/schedule';
 
 import { EntityCollection } from './base';
+import { valueIn } from '../sqlite/modifier';
+import { TableDescriptor } from '../sqlite/types';
 
-export class ScheduleTeacherCollection extends EntityCollection<ScheduleTeacher> {
-  constructor(client: MongoClient, session?: ClientSession) {
-    super(client, session, 'schedule_teachers');
+function uniqueTeachers(schedule: ScheduleWithTeachers): ScheduleTeacher[] {
+  const result = new Map<string, ScheduleTeacher>();
+
+  for (const week of schedule.weeks) {
+    for (const { lessons } of week) {
+      for (const { teacher } of lessons) {
+        result.set(teacher.name, teacher);
+      }
+    }
   }
 
-  insertOrUpdate({ name, link }: ScheduleTeacher) {
-    return this.updateOne({ name }, { $set: { name, link } }, { upsert: true });
+  return [...result.values()];
+}
+
+export class ScheduleTeacherCollection extends EntityCollection<ScheduleTeacher>(
+  'schedule_teachers'
+) {
+  static descriptor(): TableDescriptor<ScheduleTeacher> {
+    return { name: 'TEXT NOT NULL PRIMARY KEY', link: 'TEXT' };
   }
 
-  insertOrUpdateMany(items: ScheduleTeacher[]) {
-    return this.bulkWrite(
-      items.map(({ name, link }) => ({
-        updateOne: {
-          filter: { name },
-          update: { $set: { name, link } },
-          upsert: true,
-        },
-      }))
-    );
+  insertFromSchedule(schedule: ScheduleWithTeachers) {
+    return this.insertOrReplaceManyAction(uniqueTeachers(schedule));
   }
 
   findByName(name: string) {
-    return this.findOne({ name });
+    return this.findOneWhere({ name });
   }
 
   findByNames(names: string[]) {
-    return this.find({ name: { $in: names } });
+    return this.findManyWhere({ name: valueIn(names) });
   }
 }

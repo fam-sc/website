@@ -24,7 +24,7 @@ export const PrimaryWithUser: Story = {
   decorators: [
     (Story) => (
       <AuthProvider
-        value={{ user: { id: '1', role: UserRole.ADMIN, hasAvatar: false } }}
+        value={{ user: { id: 1, role: UserRole.ADMIN, hasAvatar: false } }}
       >
         <Story />
       </AuthProvider>

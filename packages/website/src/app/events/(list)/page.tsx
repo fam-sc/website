@@ -1,12 +1,10 @@
 import { coerce } from '@shared/math';
-import { WithId } from 'mongodb';
-import { Event } from '@data/types';
-import { formatDateTime } from '@shared/date';
+import { Event, EventStatus } from '@data/types';
+import { formatDateTime } from '@shared/chrono/date';
 import { shortenRichText } from '@shared/richText/short';
 import { parseInt } from '@shared/parseInt';
 import { redirect } from 'react-router';
 import { Route } from './+types/page';
-import { Repository } from '@data/repo';
 import styles from './page.module.scss';
 import { Pagination } from '@/components/Pagination';
 import { getMediaFileUrl } from '@/api/media';
@@ -18,10 +16,11 @@ import { LinkButton } from '@/components/LinkButton';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { ImageSize } from '@shared/image/types';
 import { RichTextString } from '@shared/richText/types';
+import { repository } from '@/utils/repo';
 
 type ClientEvent = {
-  id: string;
-  status: 'pending' | 'ended';
+  id: number;
+  status: EventStatus;
   title: string;
   date: string;
   description: RichTextString;
@@ -30,23 +29,23 @@ type ClientEvent = {
 
 const ITEMS_PER_PAGE = 5;
 
-function toClientEvent(event: WithId<Event>): ClientEvent {
+function toClientEvent(event: Event): ClientEvent {
   return {
-    id: event._id.toString(),
+    id: event.id,
     status: event.status,
     title: event.title,
-    date: formatDateTime(event.date),
+    date: formatDateTime(new Date(event.date)),
     description: shortenRichText(event.description, 200, 'ellipsis'),
     images: event.images,
   };
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
   const rawPage = searchParams.get('page');
   let page = parseInt(rawPage) ?? 1;
 
-  await using repo = await Repository.openConnection();
+  const repo = repository(context);
   const { total: totalItems, items } = await repo
     .events()
     .getPage(page - 1, ITEMS_PER_PAGE);

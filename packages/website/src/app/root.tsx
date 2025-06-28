@@ -18,10 +18,10 @@ import { backgroundColor } from '@/theme';
 
 import '@/theme/global.scss';
 import type { UserWithRoleAndAvatar } from '@/api/users/types';
-import { Repository } from '@data/repo';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { getMinRoleForRoute } from './permissions';
 import { TurnstileScript } from '@/components/TurnstileScript';
+import { repository } from '@/utils/repo';
 
 export const links: Route.LinksFunction = () => [
   {
@@ -35,12 +35,12 @@ export const links: Route.LinksFunction = () => [
   { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
 ];
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const sessionId = getSessionIdNumber(request);
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const sessionId = getSessionId(request);
   let user: UserWithRoleAndAvatar | null = null;
 
   if (sessionId !== undefined) {
-    await using repo = await Repository.openConnection();
+    const repo = repository(context);
 
     user = await repo.sessions().getUserWithRole(sessionId);
   }

@@ -23,6 +23,7 @@ import './users/password/route';
 import './users/logOut/route';
 import './users/avatar/route';
 import './users/me/route';
+import './users/scheduleBotAuth/route';
 import './users/approveList/route';
 import './users/[id]/disapprove/route';
 import './users/[id]/role/route';

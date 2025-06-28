@@ -1,6 +1,6 @@
 {
   "name": "@sc-fam/mail-test",
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.1",
   "scripts": {
     "dev": "vite dev"
   },

@@ -40,7 +40,7 @@ export default function Page() {
   }, []);
 
   const onItemAction = useCallback(
-    async (id: string, type: 'approve' | 'disapprove') => {
+    async (id: number, type: 'approve' | 'disapprove') => {
       await (type === 'approve' ? approveUser(id) : disapproveUser(id));
 
       if (typeof users === 'object') {

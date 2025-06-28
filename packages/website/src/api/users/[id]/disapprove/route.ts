@@ -1,18 +1,19 @@
-import { notFound, unauthrorized } from '@shared/responses';
-import { getSessionIdNumber } from '@/api/auth';
+import { badRequest, notFound, unauthrorized } from '@shared/responses';
+import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
+import { parseInt } from '@shared/parseInt';
 
 app.post(
   '/users/:id/disapprove',
   async (request, { params: { id: userId } }) => {
-    const sessionId = getSessionIdNumber(request);
+    const sessionId = getSessionId(request);
     if (sessionId === undefined) {
       return unauthrorized();
     }
 
-    await using repo = await Repository.openConnection();
+    const repo = Repository.openConnection();
 
     const userWithRole = await repo
       .sessions()
@@ -21,19 +22,22 @@ app.post(
       return unauthrorized();
     }
 
-    return await repo.transaction(async (trepo) => {
-      const targetUser = await trepo.users().findById(userId);
-      if (targetUser === null) {
-        return notFound();
-      }
+    const numberUserId = parseInt(userId);
+    if (numberUserId === undefined) {
+      return badRequest({ message: 'Invalid user id' });
+    }
 
-      if (targetUser.role !== UserRole.STUDENT_NON_APPROVED) {
-        return unauthrorized();
-      }
+    const targetUser = await repo.users().findOneWhere({ id: numberUserId });
+    if (targetUser === null) {
+      return notFound();
+    }
 
-      await trepo.users().delete(userId);
+    if (targetUser.role !== UserRole.STUDENT_NON_APPROVED) {
+      return unauthrorized();
+    }
 
-      return new Response();
-    });
+    await repo.users().deleteWhere({ id: numberUserId }).get();
+
+    return new Response();
   }
 );

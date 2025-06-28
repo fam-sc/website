@@ -29,7 +29,7 @@ export default [
       route('info', 'u/info/page.tsx'),
       route('password', 'u/password/page.tsx'),
       route('roles', 'u/roles/page.tsx'),
-      route('telegram-auth', 'u/telegram-auth/page.tsx'),
+      route('schedule-bot', 'u/schedule-bot/page.tsx'),
     ]),
     route('finish-sign-up', 'u/finish-sign-up/page.tsx'),
   ]),

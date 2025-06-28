@@ -1,9 +1,7 @@
-import { formatDateTime } from '@shared/date';
+import { formatDateTime } from '@shared/chrono/date';
 import { shortenRichText } from '@shared/richText/short';
-import { WithId } from 'mongodb';
 import { Event } from '@data/types';
 import { Route } from './+types/page';
-import { Repository } from '@data/repo';
 import { usefulLinks } from './usefulLinks';
 import { Typography } from '@/components/Typography';
 import { UsefulLinkList } from '@/components/UsefulLinkList';
@@ -13,20 +11,21 @@ import { getMediaFileUrl } from '@/api/media';
 import { LinkButton } from '@/components/LinkButton';
 import { Title } from '@/components/Title';
 import styles from './page.module.scss';
+import { repository } from '@/utils/repo';
 
-function toClientEvent(event: WithId<Event>) {
+function toClientEvent(event: Event) {
   return {
-    id: event._id.toString(),
+    id: event.id,
     status: event.status,
     title: event.title,
-    date: formatDateTime(event.date),
+    date: formatDateTime(new Date(event.date)),
     description: shortenRichText(event.description, 200, 'ellipsis'),
     images: event.images,
   };
 }
 
-export async function loader() {
-  await using repo = await Repository.openConnection();
+export async function loader({ context }: Route.LoaderArgs) {
+  const repo = repository(context);
   const latestEvents = await repo.events().getLatestEvents(3);
 
   return { latestEvents: latestEvents.map((value) => toClientEvent(value)) };

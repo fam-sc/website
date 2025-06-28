@@ -1,6 +1,7 @@
 {
   "name": "@sc-fam/schedule-bot",
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.1",
+  "type": "module",
   "scripts": {
     "build:no-emit": "tsc --noEmit",
     "deploy": "wrangler deploy",
@@ -9,11 +10,12 @@
     "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
   },
   "dependencies": {
-    "mongodb": "6.17.0",
     "wrangler": "4.20.0"
   },
   "devDependencies": {
-    "@types/node": "22.15.14",
+    "@types/node": "24.0.7",
+    "dotenv": "17.0.0",
+    "tsx": "4.20.3",
     "typescript": "5.8.3"
   }
 }

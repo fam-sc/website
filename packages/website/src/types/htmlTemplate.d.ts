@@ -1,3 +1,3 @@
 declare module '*.html?t' {
-  export default function html(subs: Record<string, unknown>);
+  export default function html(subs: Record<string, unknown>): string;
 }

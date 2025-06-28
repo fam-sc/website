@@ -1,4 +1,4 @@
-import { TelegramLoginWidget } from './LoginWidget';
+import { TelegramLoginWidget } from '../../website/src/components/TelegramLoginWidget';
 
 function App() {
   return (

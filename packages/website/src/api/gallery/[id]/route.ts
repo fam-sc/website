@@ -1,32 +1,28 @@
-import { GalleryImageWithEvent } from '@/api/gallery/types';
 import { notFound, ok } from '@shared/responses';
 import { Repository } from '@data/repo';
-import { formatDateTime } from '@shared/date';
-import { ObjectId } from 'mongodb';
+import { formatDateTime } from '@shared/chrono/date';
 import { authRoute } from '@/api/authRoute';
 import { UserRole } from '@data/types/user';
 import { app } from '@/api/app';
+import { parseInt } from '@shared/parseInt';
+import { GalleryImageWithEvent } from '../types';
 
 app.get('/gallery/:id', async (_request, { params: { id } }) => {
-  let objectId: ObjectId;
-  try {
-    objectId = new ObjectId(id);
-  } catch {
+  const numberId = parseInt(id);
+  if (numberId === undefined) {
     return notFound();
   }
 
-  await using repo = await Repository.openConnection();
-  const image = await repo.galleryImages().getGalleryImageWithEvent(objectId);
+  const repo = Repository.openConnection();
+  const image = await repo.galleryImages().getGalleryImageWithEvent(numberId);
   if (image === null) {
     return notFound();
   }
 
-  const { event } = image;
-
   const result: GalleryImageWithEvent = {
-    id: image._id.toString(),
-    date: formatDateTime(image.date),
-    event: event ? { id: event._id.toString(), title: event.title } : null,
+    id: image.id,
+    date: formatDateTime(new Date(image.date)),
+    event: image.event,
   };
 
   return ok(result);
@@ -35,10 +31,18 @@ app.get('/gallery/:id', async (_request, { params: { id } }) => {
 app.delete(
   '/gallery/:id',
   async (request, { env: { MEDIA_BUCKET }, params: { id } }) => {
-    return authRoute(request, UserRole.ADMIN, async (repo) => {
-      const result = await repo.galleryImages().delete(id);
+    const numberId = parseInt(id);
+    if (numberId === undefined) {
+      return new Response();
+    }
 
-      if (result.deletedCount > 0) {
+    return authRoute(request, UserRole.ADMIN, async (repo) => {
+      const result = await repo
+        .galleryImages()
+        .deleteWhere({ id: numberId })
+        .get();
+
+      if (result.changes > 0) {
         await MEDIA_BUCKET.delete(`gallery/${id}`);
       }
 

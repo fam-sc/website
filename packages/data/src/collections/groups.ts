@@ -1,35 +1,31 @@
-import { ClientSession, MongoClient } from 'mongodb';
-
 import { Group } from '../types';
 
 import { EntityCollection } from './base';
+import { valueIn } from '../sqlite/modifier';
+import { TableDescriptor } from '../sqlite/types';
+import { DataQuery } from '../sqlite/query';
 
-export class GroupCollection extends EntityCollection<Group> {
-  constructor(client: MongoClient, session?: ClientSession) {
-    super(client, session, 'groups');
+export class GroupCollection extends EntityCollection<Group>('groups') {
+  static descriptor(): TableDescriptor<Group> {
+    return {
+      campusId: 'TEXT NOT NULL PRIMARY KEY',
+      name: 'TEXT NOT NULL',
+    };
   }
 
   insertOrUpdateAll(groups: Group[]) {
-    return this.bulkWrite(
-      groups.map(({ campusId, name }) => ({
-        updateOne: {
-          filter: { campusId },
-          update: { $set: { campusId, name } },
-          upsert: true,
-        },
-      }))
-    );
+    return this.insertOrReplaceManyAction(groups);
   }
 
   findByCampusId(campusId: string) {
-    return this.findOne({ campusId });
+    return this.findOneWhereAction({ campusId });
   }
 
   findByIds(ids: string[]) {
-    return this.find({ campusId: { $in: ids } }).toArray();
+    return this.findManyWhereAction({ campusId: valueIn(ids) });
   }
 
-  groupExists(campusId: string): Promise<boolean> {
-    return this.documentExists({ campusId });
+  groupExists(campusId: string): DataQuery<boolean> {
+    return this.count({ campusId }).map((result) => result > 0);
   }
 }

@@ -2,13 +2,12 @@ import { ApiErrorCode } from '@/api/errorCodes';
 import { badRequest, unauthrorized } from '@shared/responses';
 import { changePasswordPayload } from '@/api/users/payloads';
 import { hashPassword, verifyPassword } from '@/api/auth/password';
-import { getSessionIdNumber } from '@/api/auth';
+import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
-import { Binary } from 'mongodb';
 import { app } from '@/api/app';
 
 app.put('/users/password', async (request: Request) => {
-  const sessionId = getSessionIdNumber(request);
+  const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return unauthrorized();
   }
@@ -23,35 +22,29 @@ app.put('/users/password', async (request: Request) => {
 
   const { oldPassword, newPassword } = payloadResult.data;
 
-  await using repo = await Repository.openConnection();
+  const repo = Repository.openConnection();
 
-  return await repo.transaction(async (trepo) => {
-    const userWithPassword = await trepo
-      .sessions()
-      .getUserWithPassword(sessionId);
+  const userWithPassword = await repo.sessions().getUserWithPassword(sessionId);
 
-    if (userWithPassword === null) {
-      return unauthrorized();
-    }
+  if (userWithPassword === null) {
+    return unauthrorized();
+  }
 
-    const isValidOld = await verifyPassword(
-      userWithPassword.passwordHash.buffer,
-      oldPassword
-    );
+  const isValidOld = await verifyPassword(
+    userWithPassword.passwordHash,
+    oldPassword
+  );
 
-    if (!isValidOld) {
-      return unauthrorized({
-        message: 'Old password is invalid',
-        code: ApiErrorCode.INVALID_OLD_PASSWORD,
-      });
-    }
+  if (!isValidOld) {
+    return unauthrorized({
+      message: 'Old password is invalid',
+      code: ApiErrorCode.INVALID_OLD_PASSWORD,
+    });
+  }
 
-    const newHash = await hashPassword(newPassword);
+  const newHash = await hashPassword(newPassword);
 
-    await trepo
-      .users()
-      .updatePassword(userWithPassword.id, new Binary(newHash));
+  await repo.users().updatePassword(userWithPassword.id, newHash);
 
-    return new Response();
-  });
+  return new Response();
 });

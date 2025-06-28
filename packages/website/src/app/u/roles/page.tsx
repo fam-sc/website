@@ -30,7 +30,7 @@ export default function Page() {
   const [optimisticItems, setOptimisticItems] = useOptimistic(items);
 
   const onChangeRole = useCallback(
-    (id: string, role: UserRole) => {
+    (id: number, role: UserRole) => {
       startTransition(() => {
         setOptimisticItems((t) =>
           t.map((item) => (item.id === id ? { ...item, role } : item))
