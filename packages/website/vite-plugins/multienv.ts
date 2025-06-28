@@ -10,14 +10,17 @@ const virtualModules: VirtualModule[] = [
 ];
 
 export function multienvPlugin(): Plugin {
-  const host =
-    process.env.NODE_ENV === 'development' || process.env.LOCAL === '1'
-      ? 'node'
-      : 'cf';
+  let host: string | undefined;
 
   return {
     name: 'multienv-plugin',
     enforce: 'pre',
+    configResolved(config) {
+      host =
+        config.mode === 'staging' || config.mode === 'production'
+          ? 'cf'
+          : 'node';
+    },
     resolveId(id) {
       const module = virtualModules.find(
         (value) => `virtual:${value.name}` === id

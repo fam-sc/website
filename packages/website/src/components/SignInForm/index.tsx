@@ -7,35 +7,35 @@ import { Link } from '../Link';
 import styles from './index.module.scss';
 import { signIn } from '@/api/users/client';
 import { useNotification } from '../Notification';
+import { TurnstileWidget } from '../TurnstileWidget';
+import { emailRegex } from '@shared/string/regex';
+import { useTestRegex } from '@/hooks/useTestRegex';
 
 export default function SignInForm() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState<string>();
+
+  const isEmailValid = useTestRegex(email, emailRegex);
 
   const notification = useNotification();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    signIn({ email: formData.email, password: formData.password })
-      .then(() => {
-        // Don't use client navigation, because the auth status changed and
-        // we need to refresh the root layout
-        globalThis.location.href = '/u/info';
+  const handleSubmit = () => {
+    if (turnstileToken !== undefined) {
+      signIn({
+        email,
+        password,
+        turnstileToken,
       })
-      .catch(() => {
-        notification.show('Неправильний email або пароль', 'error');
-      });
+        .then(() => {
+          // Don't use client navigation, because the auth status changed and
+          // we need to refresh the root layout
+          globalThis.location.href = '/u/info';
+        })
+        .catch(() => {
+          notification.show('Неправильний email або пароль', 'error');
+        });
+    }
   };
 
   return (
@@ -50,10 +50,9 @@ export default function SignInForm() {
           Пошта
         </Typography>
         <TextInput
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}
+          onTextChanged={setEmail}
+          error={!isEmailValid}
         />
       </div>
 
@@ -61,20 +60,32 @@ export default function SignInForm() {
         <Typography as="label" variant="bodyLarge">
           Пароль
         </Typography>
-        <PasswordInput
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
+        <PasswordInput value={password} onTextChanged={setPassword} />
       </div>
 
       <div className={styles.formGroup}>
         <Link to="https://t.me/fpm_sc_bot">Забули пароль?</Link>
       </div>
 
+      {import.meta.env.VITE_HOST === 'cf' && (
+        <TurnstileWidget
+          className={styles['turnstile-widget']}
+          onSuccess={setTurnstileToken}
+        />
+      )}
+
       <div className={styles.formGroup}>
-        <Button onClick={handleSubmit} buttonVariant="solid">
+        <Button
+          onClick={handleSubmit}
+          buttonVariant="solid"
+          disabled={
+            !(
+              isEmailValid &&
+              password.length > 0 &&
+              turnstileToken !== undefined
+            )
+          }
+        >
           Увійти
         </Button>
       </div>

@@ -15,6 +15,7 @@ import { pick } from '@/utils/object/pick';
 import { useNotification } from '../Notification';
 import { normalizeGuid } from '@shared/guid';
 import { useNavigate } from 'react-router';
+import { TurnstileWidget } from '../TurnstileWidget';
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -29,6 +30,7 @@ export default function SignUpForm() {
 
   const [group, setGroup] = useState<string>();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string>();
 
   const [actionInProgress, setActionInProgress] = useState(false);
 
@@ -54,29 +56,31 @@ export default function SignUpForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const payload: SignUpData = {
-      ...pick(formData, [
-        'firstName',
-        'lastName',
-        'parentName',
-        'email',
-        'password',
-      ]),
-      telnum: formData.phone,
-      academicGroup: normalizeGuid(group as string),
-    };
+  const handleSubmit = () => {
+    if (turnstileToken !== undefined) {
+      const payload: SignUpData = {
+        ...pick(formData, [
+          'firstName',
+          'lastName',
+          'parentName',
+          'email',
+          'password',
+        ]),
+        telnum: formData.phone,
+        academicGroup: normalizeGuid(group as string),
+        turnstileToken,
+      };
 
-    setActionInProgress(true);
-    signUp(payload)
-      .then(() => {
-        return redirect('/sign/email');
-      })
-      .catch(() => {
-        setActionInProgress(false);
-        notification.show('Сталася помилка', 'error');
-      });
+      setActionInProgress(true);
+      signUp(payload)
+        .then(() => {
+          return redirect('/sign/email');
+        })
+        .catch(() => {
+          setActionInProgress(false);
+          notification.show('Сталася помилка', 'error');
+        });
+    }
   };
 
   return (
@@ -181,6 +185,13 @@ export default function SignUpForm() {
         </Checkbox>
       </div>
 
+      {import.meta.env.VITE_HOST === 'cf' && (
+        <TurnstileWidget
+          className={styles['turnstile-widget']}
+          onSuccess={setTurnstileToken}
+        />
+      )}
+
       <ErrorBoard
         items={[
           !isValidEmail && 'Неправильний email',
@@ -195,7 +206,9 @@ export default function SignUpForm() {
 
       <Button
         buttonVariant="solid"
-        disabled={!canSubmit || actionInProgress}
+        disabled={
+          !canSubmit || turnstileToken === undefined || actionInProgress
+        }
         onClick={handleSubmit}
       >
         Зареєструватися

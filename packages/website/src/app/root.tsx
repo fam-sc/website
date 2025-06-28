@@ -20,6 +20,7 @@ import '@/theme/global.scss';
 import type { UserWithRoleAndAvatar } from '@/api/users/types';
 import { getSessionId } from '@/api/auth';
 import { getMinRoleForRoute } from './permissions';
+import { TurnstileScript } from '@/components/TurnstileScript';
 import { repository } from '@/utils/repo';
 
 export const links: Route.LinksFunction = () => [
@@ -69,6 +70,7 @@ export function Layout({
 
         <Meta />
         <Links />
+        <TurnstileScript />
       </head>
       <body>
         <NotificationWrapper>
