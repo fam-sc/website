@@ -122,4 +122,10 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
   getPersonalInfo(id: number): Promise<UserPersonalInfo | null> {
     return this.findOneWhere({ id }, ['firstName', 'lastName', 'parentName']);
   }
+
+  async userWithEmailExists(email: string): Promise<boolean> {
+    const count = await this.count({ email }).get();
+
+    return count > 0;
+  }
 }

@@ -65,6 +65,12 @@ export interface UserWithPassword {
   passwordHash: string;
 }
 
+export interface ForgotPasswordEntry {
+  token: string;
+  email: string;
+  expirationDate: number;
+}
+
 export function isUserRole(role: unknown): role is UserRole {
   return (
     typeof role === 'number' &&

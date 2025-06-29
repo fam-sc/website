@@ -5,6 +5,8 @@ import type { SignInData, SignUpData } from '@/api/auth/types';
 import type { ChangePasswordPayload } from '@/api/users/payloads';
 import { UserRole } from '@data/types/user';
 import { ScheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+import { ForgotPasswordPayload } from './forgotPassword/types';
+import { ResetPasswordPayload } from './resetPassword/types';
 
 export function uploadUserAvatar(body: BodyInit) {
   return apiCheckedFetch(`/users/avatar`, {
@@ -83,6 +85,22 @@ export function logOut() {
 
 export function authorizeScheduleBotToUser(payload: ScheduleBotAuthPayload) {
   return apiCheckedFetch('/users/scheduleBotAuth', {
+    method: 'POST',
+    body: payload,
+    json: true,
+  });
+}
+
+export function forgotPassword(payload: ForgotPasswordPayload) {
+  return apiCheckedFetch('/users/forgotPassword', {
+    method: 'POST',
+    body: payload,
+    json: true,
+  });
+}
+
+export function resetPassword(payload: ResetPasswordPayload) {
+  return apiCheckedFetch('/users/resetPassword', {
     method: 'POST',
     body: payload,
     json: true,

@@ -26,9 +26,11 @@ const defaultQueryContext: DataQueryContext = {
   async batch<T extends unknown[]>(
     queries: DataQueryArray<T>
   ): Promise<[T, D1Result[]]> {
-    const valuesAndResults = await Promise.all(
-      queries.map((query) => query.getWithResult())
-    );
+    const valuesAndResults: [unknown, D1Result[]][] = [];
+
+    for (const query of queries) {
+      valuesAndResults.push(await query.getWithResult());
+    }
 
     return [
       valuesAndResults.map(([value]) => value) as T,

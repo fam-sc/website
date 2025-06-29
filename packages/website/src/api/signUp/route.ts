@@ -3,10 +3,12 @@ import { hashPassword } from '@/api/auth/password';
 import { SignUpDataSchema } from '@/api/auth/types';
 import { Repository } from '@data/repo';
 import { randomBytes } from '@shared/crypto/random';
-import { sendConfirmationMail } from '@/api/mail/confirmation';
 import { checkFacultyGroupExists } from '@/api/groups/get';
 import { app } from '@/api/app';
 import { verifyTurnstileTokenByHost } from '../turnstile/verify';
+import { sendMail } from '../mail';
+import mailText from './mail.txt?t';
+import mailHtml from './mail.html?t';
 
 async function newPendingToken(): Promise<string> {
   const buffer = await randomBytes(32);
@@ -14,8 +16,17 @@ async function newPendingToken(): Promise<string> {
   return buffer.toString('hex');
 }
 
-function createConfirmationLink(token: string): string {
-  return `https://sc-fam.org/u/finish-sign-up?token=${token}`;
+async function sendConfirmationMail(
+  apiKey: string,
+  recepient: string,
+  token: string
+) {
+  const activationLink = `https://sc-fam.org/u/finish-sign-up?token=${token}`;
+
+  await sendMail(apiKey, recepient, 'Активація облікового запису SC FAM', {
+    text: mailText({ activationLink }),
+    html: mailHtml({ activationLink }),
+  });
 }
 
 app.post('/signUp', async (request, { env }) => {
@@ -75,11 +86,7 @@ app.post('/signUp', async (request, { env }) => {
     return conflict({ message: 'Email exists' });
   }
 
-  await sendConfirmationMail(
-    env.RESEND_API_KEY,
-    email,
-    createConfirmationLink(pendingToken)
-  );
+  await sendConfirmationMail(env.RESEND_API_KEY, email, pendingToken);
 
   return new Response();
 });

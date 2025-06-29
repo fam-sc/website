@@ -33,6 +33,12 @@ export default [
     ]),
     route('finish-sign-up', 'u/finish-sign-up/page.tsx'),
   ]),
+  ...prefix('forgot-password', [
+    route('email', 'forgot-password/email/page.tsx'),
+    route('expired', 'forgot-password/expired/page.tsx'),
+    route('success', 'forgot-password/success/page.tsx'),
+    index('forgot-password/page.tsx'),
+  ]),
   route('privacy-policy', 'privacy-policy/page.tsx'),
   route('schedule', 'schedule/page.tsx'),
   route('sign', 'sign/page.tsx'),

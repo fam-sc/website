@@ -94,15 +94,15 @@ export class ApiD1Database implements D1Database {
   }
 
   async batch<T>(statements: D1PreparedStatement[]): Promise<D1Result<T>[]> {
-    const results = await Promise.all(
-      statements.map((statement) => {
-        const { sql, bindings } = statement as ExtendedD1Statement;
+    const results: D1Result<T>[] = [];
 
-        return this.doQuery(sql, bindings ?? []);
-      })
-    );
+    for (const statement of statements) {
+      const { sql, bindings } = statement as ExtendedD1Statement;
 
-    return results as D1Result<T>[];
+      results.push(await this.doQuery(sql, bindings ?? []));
+    }
+
+    return results;
   }
 
   prepare(query: string): D1PreparedStatement {

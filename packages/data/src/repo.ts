@@ -17,6 +17,7 @@ import { buildCreateTableQuery } from './sqlite/queryBuilder';
 import { DataQueryArray } from './sqlite/query';
 import { EntityCollectionClass } from './collections/base';
 import { batchHelper, batchWithResultsHelper } from './utils/batch';
+import { ForgotPasswordCollection } from './collections/forgotPasswords';
 
 const collectionTypes = [
   UserCollection,
@@ -31,6 +32,7 @@ const collectionTypes = [
   GroupCollection,
   PollCollection,
   PollRespondentCollection,
+  ForgotPasswordCollection,
 ];
 
 export class Repository {
@@ -71,6 +73,7 @@ export class Repository {
   updateTime = this.collection(UpdateTimeCollection);
   groups = this.collection(GroupCollection);
   polls = this.collection(PollCollection);
+  forgotPasswordEntries = this.collection(ForgotPasswordCollection);
 
   static async init(database: D1Database) {
     const tables: [string, TableDescriptor<unknown>][] = [];

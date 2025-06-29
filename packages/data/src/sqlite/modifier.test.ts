@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import {
   equals,
+  greaterOrEquals,
   isNull,
   Modifier,
   notEquals,
@@ -12,6 +13,7 @@ import {
 test.each<[Modifier, string]>([
   [equals('1'), '=?'],
   [notEquals('1'), '!=?'],
+  [greaterOrEquals('1'), '>=?'],
   [valueIn([1, 2, 3]), 'IN (?,?,?)'],
   [valueNotIn([1, 2, 3]), 'NOT IN (?,?,?)'],
   [isNull(), 'IS NULL'],

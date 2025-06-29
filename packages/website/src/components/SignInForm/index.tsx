@@ -64,7 +64,7 @@ export default function SignInForm() {
       </div>
 
       <div className={styles.formGroup}>
-        <Link to="https://t.me/fpm_sc_bot">Забули пароль?</Link>
+        <Link to="/forgot-password">Забули пароль?</Link>
       </div>
 
       {import.meta.env.VITE_HOST === 'cf' && (

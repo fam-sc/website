@@ -5,7 +5,7 @@ import { cloudflare } from '@cloudflare/vite-plugin';
 import { manifestPlugin } from './vite-plugins/manifest';
 import { imagePlugin } from './vite-plugins/image';
 import { multienvPlugin } from './vite-plugins/multienv';
-import { htmlPlugin } from './vite-plugins/html';
+import { templatePlugin } from './vite-plugins/template';
 
 const isLocal = process.env.LOCAL === '1';
 
@@ -32,7 +32,7 @@ export default defineConfig((env) => ({
     manifestPlugin(),
     imagePlugin(),
     multienvPlugin(),
-    htmlPlugin(),
+    templatePlugin(),
     tsconfigPaths(),
   ],
 }));
