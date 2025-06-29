@@ -18,6 +18,7 @@ export default tseslint.config(
       'node_modules',
       'eslint.config.mts',
       'vitest.config.ts',
+      'coverage',
     ],
   },
   eslint.configs.recommended,

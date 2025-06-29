@@ -31,7 +31,7 @@ export function getCookieValue(
   return undefined;
 }
 
-type CookieInfo = {
+export type CookieInfo = {
   name: string;
   value: string;
   httpOnly?: boolean;

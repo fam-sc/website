@@ -1,7 +1,8 @@
-import { expect, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import {
   equals,
   greaterOrEquals,
+  isNoBinding,
   isNull,
   Modifier,
   notEquals,
@@ -20,4 +21,14 @@ test.each<[Modifier, string]>([
   [notNull(), 'IS NOT NULL'],
 ])('expression', (modifier, expected) => {
   expect(modifier.expression).toEqual(expected);
+});
+
+describe('isNoBinding', () => {
+  test('true', () => {
+    expect(isNoBinding(isNull().binding)).toBe(true);
+  });
+
+  test('false', () => {
+    expect(isNoBinding(equals('1').binding)).toBe(false);
+  });
 });

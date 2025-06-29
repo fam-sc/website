@@ -1,10 +1,12 @@
 import { describe, expect, test } from 'vitest';
 import {
+  buildCountWhereQuery,
   buildCreateTableQuery,
   buildDeleteWhereQuery,
   buildFindWhereQuery,
   buildGeneralInsertManyQuery,
   buildGeneralInsertQuery,
+  buildGetPageQuery,
   buildUpdateWhereQuery,
   Conditions,
 } from './queryBuilder';
@@ -80,12 +82,23 @@ describe('buildGeneralInsertManyQuery', () => {
   });
 });
 
-test.each<[Conditions<unknown>, string]>([
-  [{ a: 1 }, 'SELECT * FROM "table" WHERE "a"=?'],
-  [{ a: 1, b: 2 }, 'SELECT * FROM "table" WHERE "a"=? AND "b"=?'],
-  [{ a: 1, b: notEquals(2) }, 'SELECT * FROM "table" WHERE "a"=? AND "b"!=?'],
-])('buildFindWhereQuery', (conditions, expected) => {
-  const actual = buildFindWhereQuery('table', conditions);
+test.each<[Conditions<object>, ('a' | 'b')[] | '*', string]>([
+  [{}, '*', 'SELECT * FROM "table"'],
+  [{}, ['a'], 'SELECT "a" FROM "table"'],
+  [{}, ['a', 'b'], 'SELECT "a","b" FROM "table"'],
+  [{ a: 1 }, '*', 'SELECT * FROM "table" WHERE "a"=?'],
+  [{ a: 1, b: 2 }, '*', 'SELECT * FROM "table" WHERE "a"=? AND "b"=?'],
+  [
+    { a: 1, b: notEquals(2) },
+    '*',
+    'SELECT * FROM "table" WHERE "a"=? AND "b"!=?',
+  ],
+])('buildFindWhereQuery', (conditions, fields, expected) => {
+  const actual = buildFindWhereQuery<{ a: number; b: number }>(
+    'table',
+    conditions,
+    fields
+  );
 
   expect(actual).toEqual(expected);
 });
@@ -106,6 +119,31 @@ test.each<['a', number | Modifier, string]>([
   ['a', notEquals(1), 'DELETE FROM "table" WHERE "a"!=?'],
 ])('buildDeleteWhereQuery', (column, value, expected) => {
   const actual = buildDeleteWhereQuery('table', { [column]: value });
+
+  expect(actual).toEqual(expected);
+});
+
+test.each<[Conditions<unknown>, string]>([
+  [{}, 'SELECT COUNT(*) as count FROM "table"'],
+  [{ a: 1 }, 'SELECT COUNT(*) as count FROM "table" WHERE "a"=?'],
+])('buildCountWhereQuery', (conditions, expected) => {
+  const actual = buildCountWhereQuery('table', conditions);
+
+  expect(actual).toBe(expected);
+});
+
+test.each<[number, number, Conditions<unknown>, string[] | '*', string]>([
+  [0, 5, {}, '*', 'SELECT * FROM "table" LIMIT 5'],
+  [1, 5, {}, ['a'], 'SELECT "a" FROM "table" LIMIT 5 OFFSET 1'],
+  [
+    1,
+    5,
+    { a: 5 },
+    ['a', 'b'],
+    'SELECT "a","b" FROM "table" WHERE "a"=? LIMIT 5 OFFSET 1',
+  ],
+])('buildGetPageQuery', (offset, count, conditions, fields, expected) => {
+  const actual = buildGetPageQuery('table', offset, count, conditions, fields);
 
   expect(actual).toEqual(expected);
 });

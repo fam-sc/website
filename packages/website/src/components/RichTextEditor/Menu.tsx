@@ -4,7 +4,7 @@ import { ItalicIcon } from '@/icons/ItalicIcon';
 import { StrikeIcon } from '@/icons/StrikeIcon';
 import { SubscriptIcon } from '@/icons/SubscriptIcon';
 import { UnderlineIcon } from '@/icons/UnderlineIcon';
-import { mapObjectToArray } from '@/utils/mapObject';
+import { mapObjectToArray } from '@shared/collections/mapObject';
 import { FC } from 'react';
 import { AlignCenterIcon } from '@/icons/AlignCenterIcon';
 import { AlignJustifyIcon } from '@/icons/AlignJustifyIcon';

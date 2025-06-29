@@ -5,6 +5,7 @@ export default {
     '**/node_modules',
     'packages/website/build/**',
     'packages/website/storybook-static/**',
+    'coverage/**',
   ],
   rules: {
     'selector-class-pattern': null,

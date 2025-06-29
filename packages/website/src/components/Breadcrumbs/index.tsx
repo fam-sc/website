@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
-import { joinArray } from '@/utils/joinArray';
+import { joinArray } from '@shared/collections/joinArray';
 
 export type BreadcrumbItem = {
   title: string;

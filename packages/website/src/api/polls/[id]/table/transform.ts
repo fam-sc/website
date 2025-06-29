@@ -4,7 +4,7 @@ import {
   PollQuestion,
   PollRespondentAnswer,
 } from '@data/types/poll';
-import { indexMany } from '@shared/indexMany';
+import { indexMany } from '@shared/collections/indexMany';
 import { formatDateTime } from '@shared/chrono/date';
 
 export function answerToString(
