@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { formPersonName } from './person';
 
 describe('formPersonName', () => {

@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
-import { IconButton } from '../IconButton';
-import { TextInput, TextInputProps } from '../TextInput';
-
-import styles from './index.module.scss';
-
 import { SeePasswordIcon } from '@/icons/SeePasswordIcon';
 import { classNames } from '@/utils/classNames';
+
+import { IconButton } from '../IconButton';
+import { TextInput, TextInputProps } from '../TextInput';
+import styles from './index.module.scss';
 
 interface PasswordInputProps
   extends Omit<TextInputProps, 'endContent' | 'type'> {

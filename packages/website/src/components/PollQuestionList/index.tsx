@@ -1,11 +1,12 @@
 import { classNames } from '@/utils/classNames';
+
+import { List } from '../List';
 import {
   PollQuestion,
   QuestionAnswer,
   QuestionDescriptor,
 } from '../PollQuestion';
 import styles from './index.module.scss';
-import { List } from '../List';
 
 type QuestionItem = {
   title: string;

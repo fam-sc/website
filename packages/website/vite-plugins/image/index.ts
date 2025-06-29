@@ -1,13 +1,15 @@
-import { Plugin, ResolvedConfig } from 'vite';
-import sharp, { FormatEnum } from 'sharp';
-import type { ImageSize } from '@shared/image/types';
 import path from 'node:path';
-import { MetaEntry, withWidth } from './utils';
+
+import type { ImageSize } from '@shared/image/types';
+import sharp, { FormatEnum } from 'sharp';
+import { Plugin, ResolvedConfig } from 'vite';
+
 import {
   getTargetSize,
   resolveImageWidths,
 } from '../../../shared/src/image/breakpoints';
 import { CachedResizer } from './cache';
+import { MetaEntry, withWidth } from './utils';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 type PluginContext = ThisParameterType<Extract<Plugin['resolveId'], Function>>;

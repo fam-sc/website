@@ -1,13 +1,13 @@
 import { Repository } from '@data/repo';
-
+import { User } from '@data/types/user';
 import { getCurrentTime } from '@shared/api/campus';
-import { BotController } from './controller';
-import { Schedule } from '@shared-schedule/types';
 import { CurrentTime, Time, timeBreakpoints } from '@shared/api/campus/types';
 import { getTrueCurrentTime } from '@shared/api/time';
 import { findNearestTimePoint } from '@shared/chrono/time';
 import { getScheduleForGroup } from '@shared-schedule/get';
-import { User } from '@data/types/user';
+import { Schedule } from '@shared-schedule/types';
+
+import { BotController } from './controller';
 
 function getUniqueGroups(users: { academicGroup: string }[]): Set<string> {
   const result = new Set<string>();

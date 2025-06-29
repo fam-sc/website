@@ -1,7 +1,7 @@
+import { EventStatus } from '@data/types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { EventListItem } from '.';
-import { EventStatus } from '@data/types';
 
 export default {
   component: EventListItem,

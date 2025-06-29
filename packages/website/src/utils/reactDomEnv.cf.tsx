@@ -1,6 +1,6 @@
+import { isbot } from 'isbot';
 import { renderToReadableStream } from 'react-dom/server.edge';
 import { EntryContext, ServerRouter } from 'react-router';
-import { isbot } from 'isbot';
 
 export async function renderResponse(
   request: Request,

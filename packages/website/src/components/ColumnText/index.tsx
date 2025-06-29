@@ -1,9 +1,8 @@
-import { Typography, TypographyProps } from '../Typography';
-
-import styles from './index.module.scss';
-
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+
+import { Typography, TypographyProps } from '../Typography';
+import styles from './index.module.scss';
 
 type ParagraphProps = PropsMap['p'];
 

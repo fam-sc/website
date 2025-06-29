@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { getSessionId, newSessionId, SESSION_ID_COOKIE } from '.';
 
 test('newSessionId/smoke', async () => {

@@ -1,5 +1,5 @@
-import { Key } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Key } from 'react';
 
 import { Swiper } from '.';
 

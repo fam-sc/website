@@ -1,4 +1,4 @@
-import { string, object, nullable, minLength, z } from 'zod/v4-mini';
+import { minLength, nullable, object, string, z } from 'zod/v4-mini';
 
 const nonEmptyString = string().check(minLength(1));
 

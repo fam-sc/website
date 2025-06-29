@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { parseInt } from './parseInt';
 
 test.each<[unknown, number | undefined]>([

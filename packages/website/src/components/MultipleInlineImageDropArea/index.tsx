@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import styles from './index.module.scss';
-import { BaseFileDropArea } from '../BaseFileDropArea';
+
 import { classNames } from '@/utils/classNames';
-import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
 import { imageFileGate } from '@/utils/fileGate';
+
+import { BaseFileDropArea } from '../BaseFileDropArea';
+import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
+import styles from './index.module.scss';
 
 export type MultipleInlineImageDropAreaProps = {
   className?: string;

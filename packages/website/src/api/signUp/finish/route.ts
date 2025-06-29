@@ -1,8 +1,9 @@
-import { badRequest, conflict } from '@shared/responses';
 import { Repository } from '@data/repo';
-import { newSessionId, setSessionId } from '@/api/auth';
 import { UserRole } from '@data/types/user';
+import { badRequest, conflict } from '@shared/responses';
+
 import { app } from '@/api/app';
+import { newSessionId, setSessionId } from '@/api/auth';
 
 app.post('/signUp/finish', async (request) => {
   const { searchParams } = new URL(request.url);

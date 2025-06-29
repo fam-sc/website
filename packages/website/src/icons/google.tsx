@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { SvgProps } from './types';
 
 export function googleIcon(d: string) {

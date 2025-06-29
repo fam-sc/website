@@ -1,11 +1,10 @@
-import { Schedule } from '@/api/schedule/types';
-import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';
-
 import { getSchedule } from '@/api/schedule/client';
+import { Schedule } from '@/api/schedule/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
 import { broadcastUpdatedLesson } from '@/utils/schedule/broadcast';
-import { DataLoadingContainer } from '../DataLoadingContainer';
 
+import { DataLoadingContainer } from '../DataLoadingContainer';
+import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';
 import styles from './index.module.scss';
 
 export type ScheduleGridLoaderProps = {

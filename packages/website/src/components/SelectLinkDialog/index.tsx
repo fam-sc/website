@@ -1,12 +1,10 @@
+import { urlRegex } from '@shared/string/regex';
 import { useMemo, useState } from 'react';
 
 import { Button } from '../Button';
 import { ModalDialog } from '../ModalDialog';
 import { TextInput } from '../TextInput';
-
 import styles from './index.module.scss';
-
-import { urlRegex } from '@shared/string/regex';
 
 type Result = {
   link: string;

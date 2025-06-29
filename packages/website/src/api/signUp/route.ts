@@ -1,14 +1,16 @@
-import { badRequest, conflict } from '@shared/responses';
-import { hashPassword } from '@/api/auth/password';
-import { SignUpDataSchema } from '@/api/auth/types';
 import { Repository } from '@data/repo';
 import { randomBytes } from '@shared/crypto/random';
-import { checkFacultyGroupExists } from '@/api/groups/get';
+import { badRequest, conflict } from '@shared/responses';
+
 import { app } from '@/api/app';
-import { verifyTurnstileTokenByHost } from '../turnstile/verify';
+import { hashPassword } from '@/api/auth/password';
+import { SignUpDataSchema } from '@/api/auth/types';
+import { checkFacultyGroupExists } from '@/api/groups/get';
+
 import { sendMail } from '../mail';
-import mailText from './mail.txt?t';
+import { verifyTurnstileTokenByHost } from '../turnstile/verify';
 import mailHtml from './mail.html?t';
+import mailText from './mail.txt?t';
 
 async function newPendingToken(): Promise<string> {
   const buffer = await randomBytes(32);

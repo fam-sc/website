@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { resolveSizes } from './sizes';
 import { ImageSizes } from './types';
 

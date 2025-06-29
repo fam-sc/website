@@ -1,25 +1,24 @@
 import {
-  DaySchedule as CampusDaySchedule,
-  LessonSchedule,
-  Weekday,
-  TeacherPairTag,
-} from '@shared/api/campus/types';
-
-import {
-  DaySchedule as ApiDaySchedule,
-  Schedule as ApiSchedule,
-  LessonType as ApiLessonType,
-} from './types';
-
-import {
   Day,
   DaySchedule as DataDaySchedule,
-  ScheduleWithTeachers as DataScheduleWithTeachers,
   LessonId,
   LessonType,
   LessonWithTeacher,
+  ScheduleWithTeachers as DataScheduleWithTeachers,
 } from '@data/types/schedule';
+import {
+  DaySchedule as CampusDaySchedule,
+  LessonSchedule,
+  TeacherPairTag,
+  Weekday,
+} from '@shared/api/campus/types';
+
 import { Teacher } from '../../shared/src/api/pma/types';
+import {
+  DaySchedule as ApiDaySchedule,
+  LessonType as ApiLessonType,
+  Schedule as ApiSchedule,
+} from './types';
 
 export function campusDayToWeekdayNumber(value: Weekday): Day {
   switch (value) {

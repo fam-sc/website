@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { InlineQuestion, InlineQuestionProps } from '.';
 import { Button } from '../Button';
+import { InlineQuestion, InlineQuestionProps } from '.';
 
 function Component(props: InlineQuestionProps) {
   return (

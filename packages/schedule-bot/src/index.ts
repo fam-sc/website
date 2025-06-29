@@ -1,8 +1,9 @@
+import './routes';
+
 import { Repository } from '@data/repo';
+
 import { app } from './routes/app';
 import { handleOnCronEvent } from './scheduleHandler';
-
-import './routes';
 
 export default {
   fetch(request: Request, env: Env): Promise<Response> {

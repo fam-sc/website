@@ -1,19 +1,20 @@
 import {
-  z,
+  array,
   discriminatedUnion,
+  int,
+  literal,
+  number,
   object,
+  optional,
+  positive,
   record,
   string,
-  literal,
-  union,
-  array,
-  ZodMiniType,
-  number,
-  positive,
-  int,
-  optional,
   templateLiteral,
+  union,
+  z,
+  ZodMiniType,
 } from 'zod/v4-mini';
+
 import { RichTextAtomNode, RichTextNode, supportedRichTextTags } from './types';
 
 const dimension = number().check(positive(), int());

@@ -1,22 +1,17 @@
 import './events/[id]/route';
 import './events/route';
-
 import './gallery/route';
 import './gallery/[id]/route';
-
 import './groups/route';
 import './groups/[id]/route';
-
 import './polls/route';
 import './polls/[id]/route';
 import './polls/[id]/close/route';
 import './polls/[id]/table/route';
-
 import './schedule/route';
 import './signIn/route';
 import './signUp/route';
 import './signUp/finish/route';
-
 import './users/route';
 import './users/personal/route';
 import './users/password/route';

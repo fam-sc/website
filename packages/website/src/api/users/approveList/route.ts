@@ -1,11 +1,12 @@
-import { ok, unauthrorized } from '@shared/responses';
-import { UserInfo } from '@/api/users/types';
-import { getSessionId } from '@/api/auth';
-import { formPersonName } from '@shared/person';
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
-import { getFacultyGroupMapById } from '@/api/groups/utils';
+import { formPersonName } from '@shared/person';
+import { ok, unauthrorized } from '@shared/responses';
+
 import { app } from '@/api/app';
+import { getSessionId } from '@/api/auth';
+import { getFacultyGroupMapById } from '@/api/groups/utils';
+import { UserInfo } from '@/api/users/types';
 
 app.get('/users/approveList', async (request) => {
   const sessionId = getSessionId(request);

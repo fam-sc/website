@@ -1,10 +1,11 @@
 import { ReactElement, useId, useState } from 'react';
-import { List } from '../List';
 import React from 'react';
 
-import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
+
 import { Button } from '../Button';
+import { List } from '../List';
+import styles from './index.module.scss';
 
 type MaybeArray<T> = T | T[];
 

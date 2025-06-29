@@ -1,4 +1,4 @@
-import styles from './index.module.scss';
+import { useMemo } from 'react';
 
 import {
   Day,
@@ -8,10 +8,11 @@ import {
   timeBreakpoints,
 } from '@/api/schedule/types';
 import { classNames } from '@/utils/classNames';
+
 import { DayMarker } from './DayMarker';
-import { TimeMarkers } from './TimeMarkers';
+import styles from './index.module.scss';
 import { TileGroup } from './TileGroup';
-import { useMemo } from 'react';
+import { TimeMarkers } from './TimeMarkers';
 import { groupSchedule } from './transform';
 
 export type CurrentLesson = { day: Day; time: Time | undefined };

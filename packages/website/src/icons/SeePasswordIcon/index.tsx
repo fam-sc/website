@@ -1,6 +1,6 @@
 import { classNames } from '@/utils/classNames';
-import { SvgProps } from '../types';
 
+import { SvgProps } from '../types';
 import styles from './index.module.scss';
 
 export interface SeePasswordIconProps extends SvgProps {

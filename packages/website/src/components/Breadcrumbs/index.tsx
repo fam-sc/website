@@ -1,11 +1,11 @@
-import { Link } from '../Link';
-
-import styles from './index.module.scss';
+import { joinArray } from '@shared/collections/joinArray';
 
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
-import { joinArray } from '@shared/collections/joinArray';
+
+import { Link } from '../Link';
+import styles from './index.module.scss';
 
 export type BreadcrumbItem = {
   title: string;

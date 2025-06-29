@@ -1,7 +1,7 @@
 import { classNames } from '@/utils/classNames';
 
-import styles from './index.module.scss';
 import { OptionBase, OptionBaseProps } from '../OptionBase';
+import styles from './index.module.scss';
 
 export function RadioButton({
   className,

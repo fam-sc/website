@@ -1,9 +1,11 @@
-import { authRoute } from '@/api/authRoute';
-import { notFound, ok } from '@shared/responses';
 import { UserRole } from '@data/types/user';
-import { pollResultsToTable } from './transform';
-import { app } from '@/api/app';
 import { parseInt } from '@shared/parseInt';
+import { notFound, ok } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { authRoute } from '@/api/authRoute';
+
+import { pollResultsToTable } from './transform';
 
 app.get('/polls/:id/table', async (request, { params }) => {
   const id = parseInt(params.id);

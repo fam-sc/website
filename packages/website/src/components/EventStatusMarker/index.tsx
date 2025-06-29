@@ -1,7 +1,9 @@
+import { EventStatus } from '@data/types';
+
 import { classNames } from '@/utils/classNames';
+
 import { Typography } from '../Typography';
 import styles from './index.module.scss';
-import { EventStatus } from '@data/types';
 
 export type EventStatusMarkerProps = {
   className?: string;

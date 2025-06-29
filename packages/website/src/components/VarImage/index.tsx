@@ -1,5 +1,6 @@
-import { Image, ImageProps } from '../Image';
 import { ImageInfo, ImageSizes } from '@/utils/image/types';
+
+import { Image, ImageProps } from '../Image';
 
 type ImgProps = Omit<ImageProps, 'src' | 'alt' | 'width' | 'height'>;
 

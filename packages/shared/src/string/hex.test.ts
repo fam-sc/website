@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { parseHexString, toHexString } from './hex';
 
 test.each<[number[]]>([

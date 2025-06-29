@@ -1,5 +1,6 @@
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+
 import styles from './index.module.scss';
 
 type ListProps = PropsMap['ul'];

@@ -1,5 +1,6 @@
-import { RichTextString } from '@shared/richText/types';
 import { ImageSize } from '@shared/image/types';
+import { RichTextString } from '@shared/richText/types';
+
 import { UserRole } from './user';
 
 export const enum EventStatus {

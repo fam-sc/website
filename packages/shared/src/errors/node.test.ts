@@ -1,7 +1,9 @@
-import { describe, expect, test } from 'vitest';
-import { isFileNotFoundError } from './node';
-import fs from 'node:fs/promises';
 import { fail } from 'node:assert';
+import fs from 'node:fs/promises';
+
+import { describe, expect, test } from 'vitest';
+
+import { isFileNotFoundError } from './node';
 
 describe('isFileNotFoundError', () => {
   test('not found', async () => {

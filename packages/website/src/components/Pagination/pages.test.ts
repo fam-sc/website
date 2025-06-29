@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { getViewPages } from './pages';
 
 test.each<[number, number, (number | null)[]]>([

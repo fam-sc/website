@@ -1,9 +1,10 @@
+import { useId } from 'react';
+
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
-import { Typography, TypographyVariant } from '../Typography';
 
+import { Typography, TypographyVariant } from '../Typography';
 import styles from './index.module.scss';
-import { useId } from 'react';
 
 type InputProps = PropsMap['input'];
 

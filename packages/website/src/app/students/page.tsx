@@ -1,17 +1,19 @@
+import { Event } from '@data/types';
 import { formatDateTime } from '@shared/chrono/date';
 import { shortenRichText } from '@shared/richText/short';
-import { Event } from '@data/types';
-import { Route } from './+types/page';
-import { usefulLinks } from './usefulLinks';
+
+import { getMediaFileUrl } from '@/api/media';
+import { EventListItem } from '@/components/EventListItem';
+import { LinkButton } from '@/components/LinkButton';
+import { List } from '@/components/List';
+import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 import { UsefulLinkList } from '@/components/UsefulLinkList';
-import { List } from '@/components/List';
-import { EventListItem } from '@/components/EventListItem';
-import { getMediaFileUrl } from '@/api/media';
-import { LinkButton } from '@/components/LinkButton';
-import { Title } from '@/components/Title';
-import styles from './page.module.scss';
 import { repository } from '@/utils/repo';
+
+import { Route } from './+types/page';
+import styles from './page.module.scss';
+import { usefulLinks } from './usefulLinks';
 
 function toClientEvent(event: Event) {
   return {

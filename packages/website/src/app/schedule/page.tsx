@@ -1,32 +1,30 @@
+import { UserRole } from '@data/types/user';
 import { getCurrentTime } from '@shared/api/campus';
-import { Route } from './+types/page';
-import { getFacultyGroupById } from '@/api/groups/get';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-import { calculateCurrentLesson } from './date';
-import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
-
-import styles from './page.module.scss';
-
 import { getTrueCurrentTime } from '@shared/api/time';
+import { shortenGuid } from '@shared/guid';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
+
+import { getFacultyGroupById } from '@/api/groups/get';
+import { updateScheduleLinks } from '@/api/schedule/client';
+import { Schedule } from '@/api/schedule/types';
+import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
+import { useAuthInfo } from '@/auth/context';
+import { Button } from '@/components/Button';
+import { GroupSelect } from '@/components/GroupSelect';
+import { useNotification } from '@/components/Notification';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { CurrentLesson } from '@/components/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/ScheduleGridLoader';
-import { GroupSelect } from '@/components/GroupSelect';
-import { useInterval } from '@/hooks/useInterval';
-import { shortenGuid } from '@shared/guid';
-import { EditIcon } from '@/icons/EditIcon';
-import { CheckIcon } from '@/icons/CheckIcon';
-import { Schedule } from '@/api/schedule/types';
-import { Button } from '@/components/Button';
-import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
-import { updateScheduleLinks } from '@/api/schedule/client';
-import { useNotification } from '@/components/Notification';
-import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
-import { useNavigate } from 'react-router';
 import { Title } from '@/components/Title';
+import { useInterval } from '@/hooks/useInterval';
+import { CheckIcon } from '@/icons/CheckIcon';
+import { EditIcon } from '@/icons/EditIcon';
+
+import { Route } from './+types/page';
+import { calculateCurrentLesson } from './date';
+import styles from './page.module.scss';
+import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
 
 type Week = 1 | 2;
 

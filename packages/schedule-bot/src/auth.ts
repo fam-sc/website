@@ -1,5 +1,5 @@
-import { hash, verifyHmac } from '@shared/crypto';
 import { ScheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+import { hash, verifyHmac } from '@shared/crypto';
 import { parseHexString } from '@shared/string/hex';
 
 function createCheckString(data: ScheduleBotAuthPayload): string {

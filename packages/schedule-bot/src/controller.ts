@@ -1,8 +1,9 @@
 import { Repository } from '@data/repo';
+import { Lesson } from '@shared-schedule/types';
+
+import { getMessage } from './messages';
 import { TelegramBot } from './telegram';
 import { Message, Update } from './telegram/types';
-import { Lesson } from '@shared-schedule/types';
-import { getMessage } from './messages';
 
 export class BotController {
   private bot: TelegramBot;

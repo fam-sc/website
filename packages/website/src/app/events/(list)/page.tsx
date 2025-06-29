@@ -1,22 +1,24 @@
-import { coerce } from '@shared/math';
 import { Event, EventStatus } from '@data/types';
+import { UserRole } from '@data/types/user';
 import { formatDateTime } from '@shared/chrono/date';
-import { shortenRichText } from '@shared/richText/short';
+import { ImageSize } from '@shared/image/types';
+import { coerce } from '@shared/math';
 import { parseInt } from '@shared/parseInt';
+import { shortenRichText } from '@shared/richText/short';
+import { RichTextString } from '@shared/richText/types';
 import { redirect } from 'react-router';
+
+import { getMediaFileUrl } from '@/api/media';
+import { useAuthInfo } from '@/auth/context';
+import { EventListItem } from '@/components/EventListItem';
+import { LinkButton } from '@/components/LinkButton';
+import { List } from '@/components/List';
+import { Pagination } from '@/components/Pagination';
+import { PlusIcon } from '@/icons/PlusIcon';
+import { repository } from '@/utils/repo';
+
 import { Route } from './+types/page';
 import styles from './page.module.scss';
-import { Pagination } from '@/components/Pagination';
-import { getMediaFileUrl } from '@/api/media';
-import { EventListItem } from '@/components/EventListItem';
-import { List } from '@/components/List';
-import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
-import { LinkButton } from '@/components/LinkButton';
-import { PlusIcon } from '@/icons/PlusIcon';
-import { ImageSize } from '@shared/image/types';
-import { RichTextString } from '@shared/richText/types';
-import { repository } from '@/utils/repo';
 
 type ClientEvent = {
   id: number;

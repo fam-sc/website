@@ -1,14 +1,16 @@
+import { Repository } from '@data/repo';
+import { UserRole } from '@data/types/user';
+import { resolveImageSizes } from '@shared/image/breakpoints';
+import { getImageSize } from '@shared/image/size';
+import { badRequest, ok } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { authRoute } from '@/api/authRoute';
 import { parseAddEventPayload } from '@/api/events/payloads';
 import { MediaTransaction } from '@/api/media/transaction';
-import { badRequest, ok } from '@shared/responses';
-import { Repository } from '@data/repo';
-import { getImageSize } from '@shared/image/size';
-import { authRoute } from '@/api/authRoute';
-import { app } from '@/api/app';
-import { resolveImageSizes } from '@shared/image/breakpoints';
+
 import { putMultipleSizedImages } from '../media/multiple';
 import { hydrateRichText } from '../richText/hydration';
-import { UserRole } from '@data/types/user';
 
 app.get('/events', async (request) => {
   const url = new URL(request.url);

@@ -1,11 +1,12 @@
-import { CloseIcon } from '@/icons/CloseIcon';
-import { IconButton } from '../IconButton';
-import { TextInput } from '../TextInput';
 import { useLayoutEffect, useRef } from 'react';
 
-import styles from './index.module.scss';
-import { Typography } from '../Typography';
+import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
+
+import { IconButton } from '../IconButton';
+import { TextInput } from '../TextInput';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type OptionListBuilderProps = {
   className?: string;

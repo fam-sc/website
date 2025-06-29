@@ -1,8 +1,7 @@
-import { Typography } from '../Typography';
-
 import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
 
+import { Typography } from '../Typography';
 import styles from './index.module.scss';
 
 type ButtonVariant = 'flat' | 'solid' | 'outlined';

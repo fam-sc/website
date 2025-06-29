@@ -1,6 +1,8 @@
-import { LinkIcon } from '@/icons/LinkIcon';
 import { useCurrentEditor } from '@tiptap/react';
 import { useState } from 'react';
+
+import { LinkIcon } from '@/icons/LinkIcon';
+
 import { SelectLinkDialog } from '../SelectLinkDialog';
 import { ToggleButton } from './ToggleButton';
 

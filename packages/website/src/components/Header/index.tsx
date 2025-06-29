@@ -1,19 +1,18 @@
 import { useState } from 'react';
+
+import { getMediaFileUrl } from '@/api/media';
+import { useAuthInfo } from '@/auth/context';
+import { navigationMainRoutes } from '@/constants/navigation';
+import { useScrollbar } from '@/hooks/useScrollbar';
+import { CloseIcon } from '@/icons/CloseIcon';
+import { MenuIcon } from '@/icons/MenuIcon';
 import Logo from '@/images/logo.png?w=100!';
 
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';
 import { LinkButton } from '../LinkButton';
-
-import styles from './index.module.scss';
-
-import { useScrollbar } from '@/hooks/useScrollbar';
-import { CloseIcon } from '@/icons/CloseIcon';
-import { MenuIcon } from '@/icons/MenuIcon';
-import { useAuthInfo } from '@/auth/context';
-import { getMediaFileUrl } from '@/api/media';
-import { navigationMainRoutes } from '@/constants/navigation';
 import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
+import styles from './index.module.scss';
 
 function Navigation() {
   return (

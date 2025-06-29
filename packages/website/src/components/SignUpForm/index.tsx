@@ -1,21 +1,23 @@
-import { useCallback, useState } from 'react';
-import { Button } from '@/components/Button';
-import { TextInput } from '@/components/TextInput';
-import { PasswordInput } from '@/components/PasswordInput';
-import { Typography } from '@/components/Typography';
-import { Checkbox } from '@/components/Checkbox';
-import styles from './index.module.scss';
-import { GroupSelect } from '../GroupSelect';
-import { emailRegex, telnumRegex } from '@shared/string/regex';
-import { useTestRegex } from '@/hooks/useTestRegex';
-import { ErrorBoard } from '../ErrorBoard';
-import { signUp } from '@/api/users/client';
-import { SignUpData } from '@/api/auth/types';
-import { pick } from '@/utils/object/pick';
-import { useNotification } from '../Notification';
 import { normalizeGuid } from '@shared/guid';
+import { emailRegex, telnumRegex } from '@shared/string/regex';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
+
+import { SignUpData } from '@/api/auth/types';
+import { signUp } from '@/api/users/client';
+import { Button } from '@/components/Button';
+import { Checkbox } from '@/components/Checkbox';
+import { PasswordInput } from '@/components/PasswordInput';
+import { TextInput } from '@/components/TextInput';
+import { Typography } from '@/components/Typography';
+import { useTestRegex } from '@/hooks/useTestRegex';
+import { pick } from '@/utils/object/pick';
+
+import { ErrorBoard } from '../ErrorBoard';
+import { GroupSelect } from '../GroupSelect';
+import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
+import styles from './index.module.scss';
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({

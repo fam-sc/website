@@ -1,6 +1,7 @@
 import { ChainedCommands, Editor } from '@tiptap/core';
 import { useCurrentEditor } from '@tiptap/react';
 import { ReactNode } from 'react';
+
 import { IconButton } from '../IconButton';
 import styles from './ToggleButton.module.scss';
 

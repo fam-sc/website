@@ -1,5 +1,6 @@
 import { UserRole } from '@data/types/user';
 import { expect, test } from 'vitest';
+
 import { getMinRoleForRoute } from './permissions';
 
 test.each<[string, UserRole | null]>([

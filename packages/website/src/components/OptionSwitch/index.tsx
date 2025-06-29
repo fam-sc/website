@@ -1,11 +1,10 @@
 import { ReactNode, useId } from 'react';
 
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
 import { PropsMap, WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type OptionArray = readonly [string, string] | readonly [number, number];
 type ListProps = PropsMap['ul'];

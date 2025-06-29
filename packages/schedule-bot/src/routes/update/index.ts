@@ -1,7 +1,9 @@
+import { badRequest } from '@shared/responses';
+
 import { BotController } from '@/controller';
 import { Update } from '@/telegram/types';
+
 import { app } from '../app';
-import { badRequest } from '@shared/responses';
 
 app.post('/update', async (request, { env }) => {
   const secretToken = request.headers.get('x-telegram-bot-api-secret-token');

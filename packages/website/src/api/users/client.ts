@@ -1,10 +1,12 @@
-import { UserInfo, UserPersonalInfo } from '@/api/users/types';
-import { UserInfoWithRole } from '@/api/users/types';
-import { apiCheckedFetch, apiFetchObject } from '../fetch';
-import type { SignInData, SignUpData } from '@/api/auth/types';
-import type { ChangePasswordPayload } from '@/api/users/payloads';
 import { UserRole } from '@data/types/user';
 import { ScheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+
+import type { SignInData, SignUpData } from '@/api/auth/types';
+import type { ChangePasswordPayload } from '@/api/users/payloads';
+import { UserInfo, UserPersonalInfo } from '@/api/users/types';
+import { UserInfoWithRole } from '@/api/users/types';
+
+import { apiCheckedFetch, apiFetchObject } from '../fetch';
 import { ForgotPasswordPayload } from './forgotPassword/types';
 import { ResetPasswordPayload } from './resetPassword/types';
 

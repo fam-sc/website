@@ -1,8 +1,10 @@
+import { UserRole } from '@data/types/user';
+
 import { UserInfoWithRole } from '@/api/users/types';
 import { classNames } from '@/utils/classNames';
-import { UserRoleItem } from '../UserRoleItem';
-import { UserRole } from '@data/types/user';
+
 import { List } from '../List';
+import { UserRoleItem } from '../UserRoleItem';
 import styles from './index.module.scss';
 
 export type UserRoleBoardProps = {

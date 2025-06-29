@@ -1,5 +1,6 @@
-import { UserWithRoleAndAvatar } from '@/api/users/types';
 import { createContext, ReactNode, useContext } from 'react';
+
+import { UserWithRoleAndAvatar } from '@/api/users/types';
 
 export type AuthContextInfo = {
   user: UserWithRoleAndAvatar | null;

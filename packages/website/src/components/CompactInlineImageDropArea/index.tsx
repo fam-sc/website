@@ -1,11 +1,13 @@
 import { useCallback } from 'react';
-import { useNotification } from '../Notification';
-import { classNames } from '@/utils/classNames';
-import styles from './index.module.scss';
-import { PropsMap } from '@/types/react';
-import { UploadFileButton } from '../UploadFileButton';
-import { imageFileGate } from '@/utils/fileGate';
+
 import { useCacheInvalidate } from '@/hooks/useCacheInvalidate';
+import { PropsMap } from '@/types/react';
+import { classNames } from '@/utils/classNames';
+import { imageFileGate } from '@/utils/fileGate';
+
+import { useNotification } from '../Notification';
+import { UploadFileButton } from '../UploadFileButton';
+import styles from './index.module.scss';
 
 type DivProps = PropsMap['div'];
 

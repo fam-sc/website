@@ -8,7 +8,6 @@ import {
   PollRespondentAnswer,
   RawPoll,
 } from '../types/poll';
-
 import { EntityCollection } from './base';
 import { PollRespondentCollection } from './pollRespondents';
 

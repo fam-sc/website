@@ -1,11 +1,12 @@
 import sharp, {
-  Sharp,
   FormatEnum,
-  PngOptions,
   JpegOptions,
-  WebpOptions,
+  PngOptions,
+  Sharp,
   SharpInput,
+  WebpOptions,
 } from 'sharp';
+
 import { ImageSize } from './types';
 
 export function outputFormat(

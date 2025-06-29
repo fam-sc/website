@@ -1,5 +1,5 @@
-import { getGroups } from '@shared/api/campus';
 import { Group } from '@data/types';
+import { getGroups } from '@shared/api/campus';
 
 const FACULTY = 'ФПМ';
 

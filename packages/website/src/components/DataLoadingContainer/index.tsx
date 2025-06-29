@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
-import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
+
+import { DataState } from '@/hooks/useDataLoader';
 import { classNames } from '@/utils/classNames';
 
-import styles from './index.module.scss';
-import { DataState } from '@/hooks/useDataLoader';
 import { ErrorMessage } from '../ErrorMessage';
+import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
+import styles from './index.module.scss';
 
 export type DataLoadingContainerProps<T> = {
   value: DataState<T>;

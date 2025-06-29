@@ -1,8 +1,9 @@
-import { app } from '@/api/app';
 import { Repository } from '@data/repo';
+import { ok, unauthrorized } from '@shared/responses';
+
+import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';
 import { UserSelfInfo } from '@/api/users/types';
-import { ok, unauthrorized } from '@shared/responses';
 
 app.get('/users/me', async (request) => {
   const sessionId = getSessionId(request);

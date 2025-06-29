@@ -1,4 +1,5 @@
 import { Typography } from '@/components/Typography';
+
 import styles from './page.module.scss';
 
 export default function Page() {

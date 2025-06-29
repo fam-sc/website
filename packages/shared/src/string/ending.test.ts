@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { withEnding } from './ending';
 
 describe('withEnding', () => {

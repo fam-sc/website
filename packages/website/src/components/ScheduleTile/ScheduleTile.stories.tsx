@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 
 import { ScheduleTile, ScheduleTileProps } from '.';
-import { useState } from 'react';
 
 function Component({ lesson: initialLesson, ...rest }: ScheduleTileProps) {
   const [lesson, setLesson] = useState(initialLesson);

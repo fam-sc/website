@@ -1,15 +1,16 @@
-import { parseEditEventPayload } from '@/api/events/payloads';
-import { MediaTransaction } from '@/api/media/transaction';
-import { getImageSize } from '@shared/image/size';
-import { authRoute } from '@/api/authRoute';
-import { app } from '@/api/app';
-import { notFound } from '@shared/responses';
-import { resolveImageSizes } from '@shared/image/breakpoints';
-import { putMultipleSizedImages } from '@/api/media/multiple';
-import { hydrateRichText } from '@/api/richText/hydration';
 import { Event } from '@data/types';
 import { UserRole } from '@data/types/user';
+import { resolveImageSizes } from '@shared/image/breakpoints';
+import { getImageSize } from '@shared/image/size';
 import { parseInt } from '@shared/parseInt';
+import { notFound } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { authRoute } from '@/api/authRoute';
+import { parseEditEventPayload } from '@/api/events/payloads';
+import { putMultipleSizedImages } from '@/api/media/multiple';
+import { MediaTransaction } from '@/api/media/transaction';
+import { hydrateRichText } from '@/api/richText/hydration';
 
 app.put('/events/:id', async (request, { env, params: { id } }) => {
   const numberId = parseInt(id);

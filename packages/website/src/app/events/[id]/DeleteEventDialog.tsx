@@ -1,7 +1,8 @@
+import { useCallback } from 'react';
+
 import { Button } from '@/components/Button';
 import { ModalDialog } from '@/components/ModalDialog';
 import { Typography } from '@/components/Typography';
-import { useCallback } from 'react';
 
 export type DeleteEventDialogProps = {
   onClose: () => void;

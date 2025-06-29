@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ModalOverlay } from '.';
 import { Typography } from '../Typography';
+import { ModalOverlay } from '.';
 
 function Component({ effect }: { effect: 'tint' | 'blur' }) {
   return (

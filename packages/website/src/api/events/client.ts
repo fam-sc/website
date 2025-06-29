@@ -1,6 +1,7 @@
 import { AddEventPayload, EditEventPayload } from '@/api/events/payloads';
-import { ShortEvent } from './types';
+
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
+import { ShortEvent } from './types';
 
 export function fetchAllEventsShort(): Promise<ShortEvent[]> {
   return apiFetchObject(`/events?type=short`, {

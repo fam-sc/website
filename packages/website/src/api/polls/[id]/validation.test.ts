@@ -1,5 +1,6 @@
 import { PollQuestion, PollRespondentAnswer } from '@data/types/poll';
 import { describe, expect, test } from 'vitest';
+
 import { isValidAnswer, isValidAnswers } from './validation';
 
 test.each<[PollQuestion, PollRespondentAnswer, boolean]>([

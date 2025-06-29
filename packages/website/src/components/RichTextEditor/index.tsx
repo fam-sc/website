@@ -1,17 +1,17 @@
+import { EditorContext, useEditor } from '@tiptap/react';
 import { Ref, useEffect, useImperativeHandle, useMemo } from 'react';
 
-import { EditorContext, useEditor } from '@tiptap/react';
-
 import { classNames } from '@/utils/classNames';
-import { Menu, useMenuOptions } from './Menu';
-import { extensions } from './extensions';
+import { ObjectUrlManager } from '@/utils/objectUrlManager';
 import {
   SerializeResultWithFiles,
   tiptapTextToRichText,
 } from '@/utils/tiptap/serializer';
-import { ObjectUrlManager } from '@/utils/objectUrlManager';
-import styles from './index.module.scss';
+
 import { EditorContent } from './EditorContent';
+import { extensions } from './extensions';
+import styles from './index.module.scss';
+import { Menu, useMenuOptions } from './Menu';
 
 export type RichTextEditorRef = {
   getRichText(): SerializeResultWithFiles | null;

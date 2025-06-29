@@ -1,15 +1,17 @@
-import { redirect, useNavigate } from 'react-router';
-import { Route } from './+types/page';
-import { repository } from '@/utils/repo';
 import { useState } from 'react';
-import { PasswordInput } from '@/components/PasswordInput';
-import { ErrorBoard } from '@/components/ErrorBoard';
-import { Button } from '@/components/Button';
-import { resetPassword } from '@/api/users/client';
-import { useNotification } from '@/components/Notification';
+import { redirect, useNavigate } from 'react-router';
+
 import { ApiError } from '@/api/error';
 import { ApiErrorCode } from '@/api/errorCodes';
+import { resetPassword } from '@/api/users/client';
+import { Button } from '@/components/Button';
+import { ErrorBoard } from '@/components/ErrorBoard';
 import { Labeled } from '@/components/Labeled';
+import { useNotification } from '@/components/Notification';
+import { PasswordInput } from '@/components/PasswordInput';
+import { repository } from '@/utils/repo';
+
+import { Route } from './+types/page';
 import styles from './page.module.scss';
 
 export async function loader({ request, context }: Route.LoaderArgs) {

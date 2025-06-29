@@ -1,6 +1,7 @@
-import { getSessionId, SESSION_ID_COOKIE } from '@/api/auth';
 import { Repository } from '@data/repo';
+
 import { app } from '@/api/app';
+import { getSessionId, SESSION_ID_COOKIE } from '@/api/auth';
 
 app.post('/users/logOut', async (request: Request) => {
   const sessionId = getSessionId(request);

@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { isErrorResponseBody, notFound, ok } from './responses';
 
 test.each<[unknown, boolean]>([

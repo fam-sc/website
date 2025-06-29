@@ -1,10 +1,11 @@
-import { app } from '@/api/app';
-import { badRequest, unauthrorized } from '@shared/responses';
-import { scheduleBotAuthPayload } from '@shared/api/schedulebot/types';
-import { getSessionId } from '@/api/auth';
-import { authorizeScheduleBot } from '@/api/schedulebot/client';
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
+import { scheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+import { badRequest, unauthrorized } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { getSessionId } from '@/api/auth';
+import { authorizeScheduleBot } from '@/api/schedulebot/client';
 
 app.post('/users/scheduleBotAuth', async (request, { env }) => {
   const sessionId = getSessionId(request);

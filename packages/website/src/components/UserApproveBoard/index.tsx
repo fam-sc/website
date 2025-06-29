@@ -1,7 +1,7 @@
 import { classNames } from '@/utils/classNames';
+
 import { List } from '../List';
 import { UserApproveItem } from '../UserApproveItem';
-
 import styles from './index.module.scss';
 
 export type UserApproveItemType = {

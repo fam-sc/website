@@ -1,3 +1,5 @@
+import '@/theme/global.scss';
+
 import {
   isRouteErrorResponse,
   Links,
@@ -9,19 +11,18 @@ import {
   useLoaderData,
 } from 'react-router';
 
-import type { Route } from './+types/root';
+import { getSessionId } from '@/api/auth';
+import type { UserWithRoleAndAvatar } from '@/api/users/types';
 import { AuthProvider } from '@/auth/context';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { NotificationWrapper } from '@/components/Notification';
-import { backgroundColor } from '@/theme';
-
-import '@/theme/global.scss';
-import type { UserWithRoleAndAvatar } from '@/api/users/types';
-import { getSessionId } from '@/api/auth';
-import { getMinRoleForRoute } from './permissions';
 import { TurnstileScript } from '@/components/TurnstileScript';
+import { backgroundColor } from '@/theme';
 import { repository } from '@/utils/repo';
+
+import type { Route } from './+types/root';
+import { getMinRoleForRoute } from './permissions';
 
 export const links: Route.LinksFunction = () => [
   {

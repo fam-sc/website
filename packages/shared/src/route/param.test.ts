@@ -1,4 +1,5 @@
 import { expect, test, vi } from 'vitest';
+
 import { ParamRouter } from './param';
 
 const handler = () => Promise.resolve(new Response());

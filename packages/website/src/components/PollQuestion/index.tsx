@@ -1,15 +1,16 @@
 import { AriaAttributes, FC, ReactNode, useId } from 'react';
-import styles from './index.module.scss';
-import { Typography } from '../Typography';
-import { TextArea } from '../TextArea';
+
 import { Checkbox } from '../Checkbox';
+import { RadioButton } from '../RadioButton';
+import { TextArea } from '../TextArea';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 import {
-  QuestionDescriptor,
-  QuestionAnswer,
   Choice,
+  QuestionAnswer,
+  QuestionDescriptor,
   QuestionType,
 } from './types';
-import { RadioButton } from '../RadioButton';
 
 export * from './types';
 

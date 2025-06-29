@@ -2,8 +2,8 @@
 
 import { array, ZodMiniType } from 'zod/v4-mini';
 
-import { ApiResponse, Lecturer, lecturer } from './types';
 import { fetchObject } from '../../fetch';
+import { ApiResponse, Lecturer, lecturer } from './types';
 
 const BASE_URL = `https://api.campus.kpi.ua/intellect/v2`;
 

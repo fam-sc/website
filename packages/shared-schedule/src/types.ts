@@ -1,5 +1,4 @@
 import { Time } from '@shared/api/campus/types';
-
 import { z } from 'zod/v4-mini';
 
 export type { Time } from '@shared/api/campus/types';

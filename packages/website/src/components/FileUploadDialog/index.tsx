@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
+import { FileGate } from '@/utils/fileGate';
+
 import { CircularProgress } from '../CircularProgress';
 import { FileDropArea } from '../FileDropArea';
 import { ModalDialog } from '../ModalDialog';
-
 import styles from './index.module.scss';
-import { FileGate } from '@/utils/fileGate';
 
 export type FileUploadDialogProps = {
   // A number between 0 and 1 that specifies

@@ -1,9 +1,10 @@
-import styles from './index.module.scss';
+import { MouseEvent, useState } from 'react';
 
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+
 import { Typography } from '../Typography';
-import { MouseEvent, useState } from 'react';
+import styles from './index.module.scss';
 
 type DivProps = PropsMap['div'];
 

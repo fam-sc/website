@@ -1,4 +1,5 @@
 import path from 'node:path';
+
 import { StorybookConfig } from 'storybook/internal/types';
 
 // Storybook cannot find a module without this helper.

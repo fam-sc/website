@@ -1,4 +1,5 @@
 import { classNames } from '@/utils/classNames';
+
 import { LinkButton } from '../LinkButton';
 import { Typography } from '../Typography';
 import styles from './index.module.scss';

@@ -1,15 +1,17 @@
+import { emailRegex } from '@shared/string/regex';
 import { useState } from 'react';
-import { Button } from '@/components/Button';
-import { TextInput } from '@/components/TextInput';
-import { PasswordInput } from '@/components/PasswordInput';
-import { Typography } from '@/components/Typography';
-import { Link } from '../Link';
-import styles from './index.module.scss';
+
 import { signIn } from '@/api/users/client';
+import { Button } from '@/components/Button';
+import { PasswordInput } from '@/components/PasswordInput';
+import { TextInput } from '@/components/TextInput';
+import { Typography } from '@/components/Typography';
+import { useTestRegex } from '@/hooks/useTestRegex';
+
+import { Link } from '../Link';
 import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
-import { emailRegex } from '@shared/string/regex';
-import { useTestRegex } from '@/hooks/useTestRegex';
+import styles from './index.module.scss';
 
 export default function SignInForm() {
   const [email, setEmail] = useState('');

@@ -1,19 +1,19 @@
-import { IconLinkButton } from '@/components/IconLinkButton';
-import { Typography } from '@/components/Typography';
-import { InfoIcon } from '@/icons/InfoIcon';
 import { UserRole } from '@data/types/user';
-
-import styles from './page.module.scss';
-import { PollWithSubmit } from './PollWithSubmit';
+import { parseInt } from '@shared/parseInt';
+import { notFound } from '@shared/responses';
 import { PropsWithChildren } from 'react';
 import { redirect } from 'react-router';
-import { notFound } from '@shared/responses';
+
+import { getSessionId } from '@/api/auth';
+import { IconLinkButton } from '@/components/IconLinkButton';
+import { Title } from '@/components/Title';
+import { Typography } from '@/components/Typography';
+import { InfoIcon } from '@/icons/InfoIcon';
+import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
-import { Title } from '@/components/Title';
-import { getSessionId } from '@/api/auth';
-import { parseInt } from '@shared/parseInt';
-import { repository } from '@/utils/repo';
+import styles from './page.module.scss';
+import { PollWithSubmit } from './PollWithSubmit';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   return (

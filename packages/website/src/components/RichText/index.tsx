@@ -1,18 +1,18 @@
-import React, { Key, ReactNode } from 'react';
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
-import { getMediaFileUrl } from '@/api/media';
 import {
   RichTextElementNode,
   RichTextNode,
   RichTextString,
 } from '@shared/richText/types';
-import { classNames } from '@/utils/classNames';
+import React, { Key, ReactNode } from 'react';
 import { Link } from 'react-router';
+
+import { getMediaFileUrl } from '@/api/media';
 import { MediaFilePath } from '@/api/media';
+import { classNames } from '@/utils/classNames';
+
 import { Image } from '../Image';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type RichTextProps = {
   className?: string;

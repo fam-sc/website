@@ -1,7 +1,8 @@
-import { UpdateTimeType } from './types/meta';
+import { isPromise } from '@shared/typecheck';
+
 import { Repository } from './repo';
 import { DataQuery } from './sqlite/query';
-import { isPromise } from '@shared/typecheck';
+import { UpdateTimeType } from './types/meta';
 
 export abstract class CachedExternalApi<T, F = T> {
   private collection: UpdateTimeType;

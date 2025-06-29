@@ -1,13 +1,15 @@
-import styles from './index.module.scss';
+import { EventStatus } from '@data/types';
+import { ImageSize } from '@shared/image/types';
+import { RichTextString } from '@shared/richText/types';
+import { Link } from 'react-router';
+
+import { EventStatusMarker } from '@/components/EventStatusMarker';
+import { RichText } from '@/components/RichText';
 import { Typography } from '@/components/Typography';
 import { EventIcon } from '@/icons/EventIcon';
-import { RichText } from '@/components/RichText';
-import { EventStatusMarker } from '@/components/EventStatusMarker';
-import { RichTextString } from '@shared/richText/types';
-import { ImageSize } from '@shared/image/types';
-import { Link } from 'react-router';
+
 import { Image } from '../Image';
-import { EventStatus } from '@data/types';
+import styles from './index.module.scss';
 
 export type EventListItemProps = {
   id: number;

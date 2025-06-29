@@ -1,7 +1,8 @@
-import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
 import { unauthrorized } from '@shared/responses';
+
+import { getSessionId } from '@/api/auth';
 
 export async function authRoute(
   request: Request,

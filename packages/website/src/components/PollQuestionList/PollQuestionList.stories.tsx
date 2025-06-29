@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { PollQuestionList, PollQuestionListProps } from '.';
 import { useState } from 'react';
+
 import { QuestionAnswer } from '../PollQuestion/types';
+import { PollQuestionList, PollQuestionListProps } from '.';
 
 function Component(props: PollQuestionListProps) {
   const [answers, setAnswers] = useState<QuestionAnswer[]>([]);

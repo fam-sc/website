@@ -1,10 +1,12 @@
+import { useState } from 'react';
+import { useSearchParams } from 'react-router';
+
 import { Button } from '@/components/Button';
 import SignInForm from '@/components/SignInForm';
 import SignUpForm from '@/components/SignUpForm';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
-import { useState } from 'react';
-import { useSearchParams } from 'react-router';
+
 import styles from './page.module.scss';
 
 export default function SignPage() {

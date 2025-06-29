@@ -1,10 +1,12 @@
-import { notFound, ok } from '@shared/responses';
 import { Repository } from '@data/repo';
-import { formatDateTime } from '@shared/chrono/date';
-import { authRoute } from '@/api/authRoute';
 import { UserRole } from '@data/types/user';
-import { app } from '@/api/app';
+import { formatDateTime } from '@shared/chrono/date';
 import { parseInt } from '@shared/parseInt';
+import { notFound, ok } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { authRoute } from '@/api/authRoute';
+
 import { GalleryImageWithEvent } from '../types';
 
 app.get('/gallery/:id', async (_request, { params: { id } }) => {

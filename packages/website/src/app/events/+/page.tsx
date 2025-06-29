@@ -1,7 +1,10 @@
 import { Repository } from '@data/repo';
+import { EventStatus } from '@data/types';
+import { parseInt } from '@shared/parseInt';
 import { richTextToHtml } from '@shared/richText/htmlBuilder';
+import { useCallback, useRef, useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
-import { Route } from './+types/page';
+
 import { addEvent, editEvent } from '@/api/events/client';
 import { getMediaFileUrl } from '@/api/media';
 import { Button } from '@/components/Button';
@@ -11,15 +14,14 @@ import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { Labeled } from '@/components/Labeled';
 import { useNotification } from '@/components/Notification';
 import { OptionSwitch } from '@/components/OptionSwitch';
-import { RichTextEditorRef, RichTextEditor } from '@/components/RichTextEditor';
+import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
 import { ImageInfo } from '@/utils/image/types';
-import { EventStatus } from '@data/types';
-import { useState, useRef, useCallback } from 'react';
-import styles from './page.module.scss';
-import { parseInt } from '@shared/parseInt';
 import { repository } from '@/utils/repo';
+
+import { Route } from './+types/page';
+import styles from './page.module.scss';
 
 async function getClientEvent(repo: Repository, id: number) {
   try {

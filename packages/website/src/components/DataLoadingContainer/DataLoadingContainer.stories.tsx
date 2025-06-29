@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { DataLoadingContainer } from '.';
 import { useDataLoader } from '@/hooks/useDataLoader';
 import { delay } from '@/utils/delay';
+
+import { DataLoadingContainer } from '.';
 
 function Component({ loader }: { loader: () => Promise<string> }) {
   const [state, onRetry] = useDataLoader(loader, []);

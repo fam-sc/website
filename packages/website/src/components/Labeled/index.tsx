@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import styles from './index.module.scss';
-import { Typography, TypographyVariant } from '../Typography';
+
 import { PropsMap } from '@/types/react';
+
+import { Typography, TypographyVariant } from '../Typography';
+import styles from './index.module.scss';
 
 type DivProps = PropsMap['div'];
 

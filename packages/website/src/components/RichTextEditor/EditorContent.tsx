@@ -1,16 +1,17 @@
 import { Editor } from '@tiptap/core';
 import { EditorContent as TiptapEditorContent } from '@tiptap/react';
-import { FileDrop } from '../FileDrop';
 import { useCallback } from 'react';
-import { ObjectUrlManager } from '@/utils/objectUrlManager';
-import richTextStyles from '../RichText/index.module.scss';
-import typographyStyles from '../Typography/index.module.scss';
-import styles from './EditorContent.module.scss';
 
 import { classNames } from '@/utils/classNames';
-import { Typography } from '../Typography';
 import { imageFileGate, isAllFilesValid } from '@/utils/fileGate';
+import { ObjectUrlManager } from '@/utils/objectUrlManager';
+
+import { FileDrop } from '../FileDrop';
 import { useNotification } from '../Notification';
+import richTextStyles from '../RichText/index.module.scss';
+import { Typography } from '../Typography';
+import typographyStyles from '../Typography/index.module.scss';
+import styles from './EditorContent.module.scss';
 
 export interface EditorContentProps {
   disabled?: boolean;

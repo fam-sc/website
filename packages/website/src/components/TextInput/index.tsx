@@ -1,10 +1,10 @@
 import { ReactNode, Ref } from 'react';
 
-import styles from './index.module.scss';
-
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
+
 import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type InputProps = PropsMap['input'];
 

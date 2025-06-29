@@ -11,7 +11,6 @@ import {
   ScheduleWeek,
   ScheduleWithTeachers,
 } from '../types/schedule';
-
 import { EntityCollection } from './base';
 import { ScheduleLessonCollection } from './scheduleLessons';
 

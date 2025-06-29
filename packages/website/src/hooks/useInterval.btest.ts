@@ -1,5 +1,6 @@
 import { afterAll, expect, test, vi } from 'vitest';
 import { renderHook } from 'vitest-browser-react';
+
 import { useInterval } from './useInterval';
 
 test('should cleanup pending timer', () => {

@@ -1,13 +1,14 @@
-import { classNames } from '@/utils/classNames';
-import { QuestionDescriptor, QuestionType } from '../PollQuestion/types';
-
-import styles from './index.module.scss';
-import { TextInput } from '../TextInput';
-import { Select } from '../Select';
 import { FC } from 'react';
-import { OptionListBuilder } from '../OptionListBuilder';
-import { QuestionBuildItem } from './item';
+
+import { classNames } from '@/utils/classNames';
+
 import { Checkbox } from '../Checkbox';
+import { OptionListBuilder } from '../OptionListBuilder';
+import { QuestionDescriptor, QuestionType } from '../PollQuestion/types';
+import { Select } from '../Select';
+import { TextInput } from '../TextInput';
+import styles from './index.module.scss';
+import { QuestionBuildItem } from './item';
 
 export type PollQuestionBuilderProps = {
   className?: string;

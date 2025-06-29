@@ -1,8 +1,7 @@
-import { ScheduleTeacher, ScheduleWithTeachers } from '../types/schedule';
-
-import { EntityCollection } from './base';
 import { valueIn } from '../sqlite/modifier';
 import { TableDescriptor } from '../sqlite/types';
+import { ScheduleTeacher, ScheduleWithTeachers } from '../types/schedule';
+import { EntityCollection } from './base';
 
 function uniqueTeachers(schedule: ScheduleWithTeachers): ScheduleTeacher[] {
   const result = new Map<string, ScheduleTeacher>();

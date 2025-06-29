@@ -1,10 +1,10 @@
 import { Key, ReactNode, useEffect, useRef } from 'react';
 
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
-import { SwiperManager } from './manager';
+
 import { SwiperIndicator } from '../SwiperIndicator';
+import styles from './index.module.scss';
+import { SwiperManager } from './manager';
 
 export type SwiperProps<T extends { id: Key }> = {
   className?: string;

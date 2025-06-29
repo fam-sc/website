@@ -1,10 +1,9 @@
+import { classNames } from '@/utils/classNames';
+
 import { LinkButton } from '../LinkButton';
 import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
-import { classNames } from '@/utils/classNames';
 import { VarImage, VarImageType } from '../VarImage';
+import styles from './index.module.scss';
 
 export type TextWithImageProps = {
   className?: string;

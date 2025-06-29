@@ -1,10 +1,10 @@
-import { classNames } from '@/utils/classNames';
-import { PollQuestionBuilder } from '../PollQuestionBuilder';
-
-import styles from './index.module.scss';
-import { IconButton } from '../IconButton';
 import { PlusIcon } from '@/icons/PlusIcon';
+import { classNames } from '@/utils/classNames';
+
+import { IconButton } from '../IconButton';
+import { PollQuestionBuilder } from '../PollQuestionBuilder';
 import { isValidItem, QuestionBuildItem } from '../PollQuestionBuilder/item';
+import styles from './index.module.scss';
 
 export type PollBuilderProps = {
   className?: string;

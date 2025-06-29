@@ -1,10 +1,12 @@
 import { cloneElement, ReactElement, useEffect, useRef, useState } from 'react';
-import styles from './index.module.scss';
-import { Typography } from '../Typography';
-import { Button } from '../Button';
-import { classNames } from '@/utils/classNames';
+
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
 import { PropsMap } from '@/types/react';
+import { classNames } from '@/utils/classNames';
+
+import { Button } from '../Button';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type DivProps = PropsMap['div'];
 

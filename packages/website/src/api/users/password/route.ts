@@ -1,10 +1,11 @@
-import { ApiErrorCode } from '@/api/errorCodes';
-import { badRequest, unauthrorized } from '@shared/responses';
-import { changePasswordPayload } from '@/api/users/payloads';
-import { hashPassword, verifyPassword } from '@/api/auth/password';
-import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
+import { badRequest, unauthrorized } from '@shared/responses';
+
 import { app } from '@/api/app';
+import { getSessionId } from '@/api/auth';
+import { hashPassword, verifyPassword } from '@/api/auth/password';
+import { ApiErrorCode } from '@/api/errorCodes';
+import { changePasswordPayload } from '@/api/users/payloads';
 
 app.put('/users/password', async (request: Request) => {
   const sessionId = getSessionId(request);

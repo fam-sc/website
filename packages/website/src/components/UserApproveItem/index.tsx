@@ -1,10 +1,11 @@
-import { CheckIcon } from '@/icons/CheckIcon';
-import { CloseIcon } from '@/icons/CloseIcon';
-import { IconButton } from '../IconButton';
 import { useState } from 'react';
 
-import styles from './index.module.scss';
+import { CheckIcon } from '@/icons/CheckIcon';
+import { CloseIcon } from '@/icons/CloseIcon';
+
+import { IconButton } from '../IconButton';
 import { UserInfoItem, UserInfoItemProps } from '../UserInfoItem';
+import styles from './index.module.scss';
 
 type ActionType = 'approve' | 'disapprove';
 

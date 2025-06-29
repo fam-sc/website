@@ -3,6 +3,7 @@ import type {
   PollResultsTable,
   SubmitPollPayload,
 } from '@/api/polls/types';
+
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function addPoll(payload: AddPollPayload) {

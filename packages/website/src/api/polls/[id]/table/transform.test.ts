@@ -1,6 +1,7 @@
-import { describe, expect, test } from 'vitest';
-import { answerToString, pollResultsToTable } from './transform';
 import { PollQuestion } from '@data/types/poll';
+import { describe, expect, test } from 'vitest';
+
+import { answerToString, pollResultsToTable } from './transform';
 
 describe('answerToString', () => {
   describe('text', () => {

@@ -1,7 +1,7 @@
 import { fetchPollResultsTable } from '@/api/polls/client';
-import { useDataLoader } from '@/hooks/useDataLoader';
-import { Table } from '@/components/Table';
 import { DataLoadingContainer } from '@/components/DataLoadingContainer';
+import { Table } from '@/components/Table';
+import { useDataLoader } from '@/hooks/useDataLoader';
 
 import styles from './index.module.scss';
 

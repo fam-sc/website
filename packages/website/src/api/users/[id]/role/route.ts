@@ -1,10 +1,11 @@
-import { badRequest, notFound, unauthrorized } from '@shared/responses';
-import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
 import { isUserRole } from '@data/types/user';
 import { UserRole } from '@data/types/user';
-import { app } from '@/api/app';
 import { parseInt } from '@shared/parseInt';
+import { badRequest, notFound, unauthrorized } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { getSessionId } from '@/api/auth';
 
 app.post(
   '/users/:id/role',

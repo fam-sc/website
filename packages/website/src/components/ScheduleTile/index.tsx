@@ -1,18 +1,18 @@
-import { OptionalLink } from '../OptionalLink';
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
+import { useState } from 'react';
 
 import { Lesson } from '@/api/schedule/types';
+import { LinkIcon } from '@/icons/LinkIcon';
 import { PlaceIcon } from '@/icons/PlaceIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
+import { UpDownIcon } from '@/icons/UpDownIcon';
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
-import { useState } from 'react';
+
 import { IconButton } from '../IconButton';
-import { UpDownIcon } from '@/icons/UpDownIcon';
 import { Link } from '../Link';
-import { LinkIcon } from '@/icons/LinkIcon';
+import { OptionalLink } from '../OptionalLink';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type DivProps = PropsMap['div'];
 

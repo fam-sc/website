@@ -1,8 +1,8 @@
 import {
-  D1Result,
-  D1PreparedStatement,
   D1Database,
   D1ExecResult,
+  D1PreparedStatement,
+  D1Result,
 } from './types';
 
 type D1Response<T> = { result: D1Result<T>[] };

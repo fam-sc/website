@@ -1,12 +1,12 @@
 // See docs/campus/openapi.yml
 
 import {
+  array,
   enum as zodEnum,
+  literal,
+  number,
   object,
   string,
-  number,
-  array,
-  literal,
   union,
   z,
 } from 'zod/v4-mini';

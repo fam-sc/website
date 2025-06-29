@@ -1,7 +1,8 @@
-import { authRoute } from '@/api/authRoute';
-import { badRequest } from '@shared/responses';
 import { UserRole } from '@data/types/user';
+import { badRequest } from '@shared/responses';
+
 import { app } from '@/api/app';
+import { authRoute } from '@/api/authRoute';
 import { addPollPayload } from '@/api/polls/types';
 
 app.post('/polls', async (request) => {

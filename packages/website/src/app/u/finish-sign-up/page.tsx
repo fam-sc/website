@@ -1,11 +1,12 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
+
 import { finishSignUp } from '@/api/users/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { LinkButton } from '@/components/LinkButton';
 import { Typography } from '@/components/Typography';
-import { useEffect, useState } from 'react';
 
 import styles from './page.module.scss';
-import { useSearchParams } from 'react-router';
 
 type State = 'pending' | 'success' | 'error';
 

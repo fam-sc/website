@@ -1,16 +1,18 @@
-import { PollBuilder } from '@/components/PollBuilder';
-import styles from './page.module.scss';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+
+import { addPoll } from '@/api/polls/client';
+import type { AddPollPayload } from '@/api/polls/types';
+import { Button } from '@/components/Button';
+import { useNotification } from '@/components/Notification';
+import { PollBuilder } from '@/components/PollBuilder';
 import {
   isValidItem,
   QuestionBuildItem,
 } from '@/components/PollQuestionBuilder/item';
-import { Button } from '@/components/Button';
-import { useNotification } from '@/components/Notification';
-import { addPoll } from '@/api/polls/client';
 import { TextInput } from '@/components/TextInput';
-import type { AddPollPayload } from '@/api/polls/types';
-import { useNavigate } from 'react-router';
+
+import styles from './page.module.scss';
 
 export default function Page() {
   const [title, setTitle] = useState('');

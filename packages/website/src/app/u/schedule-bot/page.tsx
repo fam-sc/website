@@ -1,9 +1,11 @@
+import { useState } from 'react';
+
 import { authorizeScheduleBotToUser } from '@/api/users/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { useNotification } from '@/components/Notification';
 import { TelegramLoginWidget } from '@/components/TelegramLoginWidget';
 import { Typography } from '@/components/Typography';
-import { useState } from 'react';
+
 import styles from './page.module.scss';
 
 type State = 'widget' | 'pending' | 'success';

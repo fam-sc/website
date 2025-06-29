@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { isPromise } from './typecheck';
 
 describe('isPromise', () => {

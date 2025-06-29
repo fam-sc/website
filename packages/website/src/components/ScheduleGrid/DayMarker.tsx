@@ -1,7 +1,8 @@
 import { Day } from '@/api/schedule/types';
+import { classNames } from '@/utils/classNames';
+
 import { Typography } from '../Typography';
 import styles from './DayMarker.module.scss';
-import { classNames } from '@/utils/classNames';
 
 const days = [
   'Понеділок',

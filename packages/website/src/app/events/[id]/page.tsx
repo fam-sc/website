@@ -1,9 +1,16 @@
+import { UserRole } from '@data/types/user';
+import { parseInt } from '@shared/parseInt';
 import { notFound } from '@shared/responses';
-import { Route } from './+types/page';
+import { richTextToPlainText } from '@shared/richText/plainTransform';
+import { shortenByWord } from '@shared/string/shortenByWord';
+import { useCallback, useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+
 import { deleteEvent } from '@/api/events/client';
 import { getMediaFileUrl } from '@/api/media';
 import { useAuthInfo } from '@/auth/context';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
+import { Image } from '@/components/Image';
 import { useNotification } from '@/components/Notification';
 import { RichText } from '@/components/RichText';
 import { Title } from '@/components/Title';
@@ -11,16 +18,11 @@ import { Typography } from '@/components/Typography';
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EditIcon } from '@/icons/EditIcon';
 import { classNames } from '@/utils/classNames';
-import { UserRole } from '@data/types/user';
-import { richTextToPlainText } from '@shared/richText/plainTransform';
-import { shortenByWord } from '@shared/string/shortenByWord';
-import { useState, useMemo, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router';
+import { repository } from '@/utils/repo';
+
+import { Route } from './+types/page';
 import { DeleteEventDialog } from './DeleteEventDialog';
 import styles from './page.module.scss';
-import { Image } from '@/components/Image';
-import { parseInt } from '@shared/parseInt';
-import { repository } from '@/utils/repo';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
   const id = parseInt(params.id);

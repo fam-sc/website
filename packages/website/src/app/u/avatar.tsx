@@ -1,7 +1,8 @@
+import { useState } from 'react';
+
+import { getMediaFileUrl } from '@/api/media';
 import { uploadUserAvatar } from '@/api/users/client';
 import { CompactInlineImageDropArea } from '@/components/CompactInlineImageDropArea';
-import { getMediaFileUrl } from '@/api/media';
-import { useState } from 'react';
 
 export function UserAvatar({
   userId,

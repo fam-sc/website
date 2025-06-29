@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Tabs } from '.';
 import { Tab } from '../Tab';
 import { Typography } from '../Typography';
+import { Tabs } from '.';
 
 function Component() {
   return (

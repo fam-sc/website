@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { ClassName, classNames } from './classNames';
 
 test.each<[ClassName[], string]>([

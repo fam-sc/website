@@ -1,9 +1,11 @@
-import { app } from '@/api/app';
-import { resetPasswordPayload } from './types';
-import { badRequest } from '@shared/responses';
-import { hashPassword } from '@/api/auth/password';
 import { Repository } from '@data/repo';
+import { badRequest } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { hashPassword } from '@/api/auth/password';
 import { ApiErrorCode } from '@/api/errorCodes';
+
+import { resetPasswordPayload } from './types';
 
 app.post('/users/resetPassword', async (request) => {
   const rawPayload = await request.json();

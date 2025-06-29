@@ -1,7 +1,8 @@
-import { fileURLToPath } from 'node:url';
-import { expect, test } from 'vitest';
-import path from 'node:path';
 import fsp from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { expect, test } from 'vitest';
 
 const API_PATH = path.dirname(fileURLToPath(import.meta.url));
 

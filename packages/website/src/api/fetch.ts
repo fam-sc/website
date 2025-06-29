@@ -1,5 +1,6 @@
 import { encodeInitBodyToJson, ExtendedRequestInit } from '@shared/fetch';
 import { isErrorResponseBody } from '@shared/responses';
+
 import { ApiError } from '@/api/error';
 
 export async function getApiErrorFromResponse(

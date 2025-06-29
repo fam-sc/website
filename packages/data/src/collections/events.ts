@@ -1,12 +1,12 @@
+import { RichTextString } from '@shared/richText/types';
+
 import {
   buildCountWhereQuery,
   buildGetPageQuery,
 } from '../sqlite/queryBuilder';
 import { TableDescriptor } from '../sqlite/types';
 import { Event, RawEvent } from '../types';
-
 import { EntityCollection } from './base';
-import { RichTextString } from '@shared/richText/types';
 
 function mapRawEvent(event: RawEvent): Event {
   return {

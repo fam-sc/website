@@ -1,12 +1,14 @@
-import { app } from '@/api/app';
-import { forgotPasswordPayload } from './types';
-import { badRequest, unauthrorized } from '@shared/responses';
-import { verifyTurnstileTokenByHost } from '@/api/turnstile/verify';
-import mailText from './mail.txt?t';
-import mailHtml from './mail.html?t';
-import { sendMail } from '@/api/mail';
-import { randomBytes } from '@shared/crypto/random';
 import { Repository } from '@data/repo';
+import { randomBytes } from '@shared/crypto/random';
+import { badRequest, unauthrorized } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { sendMail } from '@/api/mail';
+import { verifyTurnstileTokenByHost } from '@/api/turnstile/verify';
+
+import mailHtml from './mail.html?t';
+import mailText from './mail.txt?t';
+import { forgotPasswordPayload } from './types';
 
 // 10 minutes
 const EXPIRATION_DURATION = 10 * 60 * 1000;

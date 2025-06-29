@@ -1,11 +1,13 @@
-import { classNames } from '@/utils/classNames';
-import styles from './index.module.scss';
-import { Typography } from '../Typography';
-import { getViewPages } from './pages';
 import { ReactNode } from 'react';
+import { Link } from 'react-router';
+
 import { ArrowLeftIcon } from '@/icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
-import { Link } from 'react-router';
+import { classNames } from '@/utils/classNames';
+
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
+import { getViewPages } from './pages';
 
 export type PaginationProps = {
   className?: string;

@@ -1,7 +1,7 @@
-import { getAllFiles } from '@shared/formData';
-import { coerce, object, pipe, string, union, literal, z } from 'zod/v4-mini';
-import { richText } from '@shared/richText/zod';
 import { EventStatus } from '@data/types';
+import { getAllFiles } from '@shared/formData';
+import { richText } from '@shared/richText/zod';
+import { coerce, literal, object, pipe, string, union, z } from 'zod/v4-mini';
 
 const status = union([
   literal(EventStatus.PENDING),

@@ -1,12 +1,12 @@
 import { PropsMap } from '@/types/react';
-import { BaseFileDropArea } from '../BaseFileDropArea';
 import { classNames } from '@/utils/classNames';
-
-import styles from './index.module.scss';
-import { ImageBlur } from '../ImageBlur';
-import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
-import { VarImageType } from '../VarImage';
 import { imageFileGate } from '@/utils/fileGate';
+
+import { BaseFileDropArea } from '../BaseFileDropArea';
+import { DeleteButtonWrapper } from '../DeleteButtonWrapper';
+import { ImageBlur } from '../ImageBlur';
+import { VarImageType } from '../VarImage';
+import styles from './index.module.scss';
 
 type DivProps = PropsMap['div'];
 

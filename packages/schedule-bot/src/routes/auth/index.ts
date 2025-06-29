@@ -1,8 +1,10 @@
-import { app } from '../app';
 import { scheduleBotAuthPayload } from '@shared/api/schedulebot/types';
-import { verifyAuthorizationHash } from '@/auth';
 import { badRequest, unauthrorized } from '@shared/responses';
+
+import { verifyAuthorizationHash } from '@/auth';
 import { BotController } from '@/controller';
+
+import { app } from '../app';
 
 // 5 minutes
 const VALID_DURATION = 5 * 60 * 1000;

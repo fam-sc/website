@@ -1,11 +1,13 @@
+import { UserRole } from '@data/types/user';
+import { parseInt } from '@shared/parseInt';
+import { badRequest, notFound } from '@shared/responses';
+
+import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';
 import { ApiErrorCode } from '@/api/errorCodes';
-import { badRequest, notFound } from '@shared/responses';
-import { UserRole } from '@data/types/user';
 import { submitPollPayload } from '@/api/polls/types';
-import { app } from '@/api/app';
+
 import { isValidAnswers } from './validation';
-import { parseInt } from '@shared/parseInt';
 
 app.post('/polls/:id', async (request, { params: { id } }) => {
   const rawPayload = await request.json();

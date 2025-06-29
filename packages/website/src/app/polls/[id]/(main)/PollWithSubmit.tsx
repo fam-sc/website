@@ -1,3 +1,6 @@
+import { useCallback, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
+
 import { submitPoll } from '@/api/polls/client';
 import type { Poll } from '@/api/polls/types';
 import { Button } from '@/components/Button';
@@ -8,10 +11,8 @@ import {
   QuestionType,
 } from '@/components/PollQuestion';
 import { PollQuestionList } from '@/components/PollQuestionList';
-import { useState, useMemo, useCallback } from 'react';
 
 import styles from './PollWithSubmit.module.scss';
-import { useNavigate } from 'react-router';
 
 export type PollWithSubmitProps = {
   id: number;

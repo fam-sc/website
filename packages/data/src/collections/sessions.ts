@@ -1,7 +1,6 @@
 import { TableDescriptor } from '../sqlite/types';
 import { AuthSession } from '../types';
 import { User, UserPersonalInfo, UserWithRoleAndAvatar } from '../types/user';
-
 import { EntityCollection } from './base';
 
 export class SessionCollection extends EntityCollection<AuthSession>(

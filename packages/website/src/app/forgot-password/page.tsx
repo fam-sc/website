@@ -1,3 +1,7 @@
+import { emailRegex } from '@shared/string/regex';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+
 import { forgotPassword } from '@/api/users/client';
 import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
@@ -5,9 +9,7 @@ import { TextInput } from '@/components/TextInput';
 import { TurnstileWidget } from '@/components/TurnstileWidget';
 import { Typography } from '@/components/Typography';
 import { useTestRegex } from '@/hooks/useTestRegex';
-import { emailRegex } from '@shared/string/regex';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+
 import styles from './page.module.scss';
 
 export default function Page() {

@@ -1,10 +1,12 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+import { xxh3 } from '@node-rs/xxhash';
 import type { ImageSize } from '@shared/image/types';
+import { FormatEnum } from 'sharp';
+
 import { isFileNotFoundError } from '../../../shared/src/errors/node';
 import { resizeImage } from '../../../shared/src/image/sharp';
-import path from 'node:path';
-import fs from 'node:fs/promises';
-import { xxh3 } from '@node-rs/xxhash';
-import { FormatEnum } from 'sharp';
 
 type CacheEntry = {
   hash: string;

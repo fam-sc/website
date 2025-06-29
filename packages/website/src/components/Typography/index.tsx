@@ -1,9 +1,9 @@
 import React, { Attributes, ReactNode } from 'react';
 
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
+
+import styles from './index.module.scss';
 
 type Header = `h${1 | 2 | 3 | 4 | 5 | 6}`;
 

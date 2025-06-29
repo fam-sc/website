@@ -1,10 +1,12 @@
-import { ImageIcon } from '@/icons/ImageIcon';
 import { useCurrentEditor } from '@tiptap/react';
 import { useState } from 'react';
+
+import { ImageIcon } from '@/icons/ImageIcon';
+import { imageFileGate } from '@/utils/fileGate';
+import { ObjectUrlManager } from '@/utils/objectUrlManager';
+
 import { FileUploadDialog } from '../FileUploadDialog';
 import { ToggleButton } from './ToggleButton';
-import { ObjectUrlManager } from '@/utils/objectUrlManager';
-import { imageFileGate } from '@/utils/fileGate';
 
 export type InsertImageButtonProps = {
   urlManager: ObjectUrlManager;

@@ -1,7 +1,7 @@
+import { PropsMap } from '@/types/react';
+
 import { Link, LinkProps } from '../Link';
 import { Typography, TypographyProps } from '../Typography';
-
-import { PropsMap } from '@/types/react';
 
 export type OptionalLinkProps =
   | (LinkProps & { to: string })

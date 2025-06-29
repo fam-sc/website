@@ -1,10 +1,14 @@
-import { fetchGalleryImage, deleteGalleryImage } from '@/api/gallery/client';
+import { useCallback, useEffect, useState } from 'react';
+
+import { deleteGalleryImage, fetchGalleryImage } from '@/api/gallery/client';
 import {
   GalleryImageWithEvent,
   GalleryImageWithSizes,
 } from '@/api/gallery/types';
 import { getMediaFileUrl } from '@/api/media';
 import { IconButton } from '@/components/IconButton';
+import { Image } from '@/components/Image';
+import { InlineQuestion } from '@/components/InlineQuestion';
 import { ModalOverlay } from '@/components/ModalOverlay';
 import { useNotification } from '@/components/Notification';
 import { Typography } from '@/components/Typography';
@@ -12,11 +16,8 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EventIcon } from '@/icons/EventIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
-import { useState, useEffect, useCallback } from 'react';
 
 import styles from './dialog.module.scss';
-import { InlineQuestion } from '@/components/InlineQuestion';
-import { Image } from '@/components/Image';
 
 export type GalleryImageInfoDialogProps = {
   info: GalleryImageWithSizes;

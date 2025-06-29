@@ -1,23 +1,23 @@
+import { D1Database, D1Result } from '@shared/cloudflare/d1/types';
+
+import { EntityCollectionClass } from './collections/base';
 import { EventCollection } from './collections/events';
+import { ForgotPasswordCollection } from './collections/forgotPasswords';
 import { GalleryImageCollection } from './collections/galleryImages';
 import { GroupCollection } from './collections/groups';
+import { PendingUserCollection } from './collections/pendingUsers';
+import { PollRespondentCollection } from './collections/pollRespondents';
+import { PollCollection } from './collections/polls';
 import { ScheduleCollection } from './collections/schedule';
+import { ScheduleLessonCollection } from './collections/scheduleLessons';
 import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
 import { UpdateTimeCollection } from './collections/updateTime';
 import { UserCollection } from './collections/users';
-import { ScheduleLessonCollection } from './collections/scheduleLessons';
-import { PollRespondentCollection } from './collections/pollRespondents';
-import { PollCollection } from './collections/polls';
-import { PendingUserCollection } from './collections/pendingUsers';
-
-import { D1Database, D1Result } from '@shared/cloudflare/d1/types';
-import { TableDescriptor } from './sqlite/types';
-import { buildCreateTableQuery } from './sqlite/queryBuilder';
 import { DataQueryArray } from './sqlite/query';
-import { EntityCollectionClass } from './collections/base';
+import { buildCreateTableQuery } from './sqlite/queryBuilder';
+import { TableDescriptor } from './sqlite/types';
 import { batchHelper, batchWithResultsHelper } from './utils/batch';
-import { ForgotPasswordCollection } from './collections/forgotPasswords';
 
 const collectionTypes = [
   UserCollection,

@@ -1,7 +1,8 @@
-import { unauthrorized } from '@shared/responses';
-import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
+import { unauthrorized } from '@shared/responses';
+
 import { app } from '@/api/app';
+import { getSessionId } from '@/api/auth';
 
 app.post(
   '/users/avatar',

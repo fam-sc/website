@@ -1,8 +1,9 @@
-import { authRoute } from '@/api/authRoute';
-import { notFound } from '@shared/responses';
 import { UserRole } from '@data/types/user';
-import { app } from '@/api/app';
 import { parseInt } from '@shared/parseInt';
+import { notFound } from '@shared/responses';
+
+import { app } from '@/api/app';
+import { authRoute } from '@/api/authRoute';
 
 app.post('/polls/:id/close', async (request, { params }) => {
   return authRoute(request, UserRole.ADMIN, async (repo) => {

@@ -1,11 +1,12 @@
-import { Select } from '../Select';
+import { shortenGuid } from '@shared/guid';
+import { useEffect, useMemo } from 'react';
 
 import { getGroups } from '@/api/groups/client';
 import { Group } from '@/api/groups/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
-import { shortenGuid } from '@shared/guid';
-import { useEffect, useMemo } from 'react';
+
 import { useNotification } from '../Notification';
+import { Select } from '../Select';
 
 export type GroupSelectProps = {
   className?: string;

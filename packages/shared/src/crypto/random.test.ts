@@ -1,4 +1,5 @@
 import { test } from 'vitest';
+
 import { randomBytes } from './random';
 
 test('smoke', async () => {

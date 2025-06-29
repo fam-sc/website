@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
-import { RichTextString } from './types';
+
 import { richTextToPlainText } from './plainTransform';
+import { RichTextString } from './types';
 
 test.each<[RichTextString, string]>([
   ['', ''],

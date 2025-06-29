@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { CookieInfo, getCookieValue, setCookie } from './cookies';
 
 describe('getCookieValue', () => {

@@ -1,7 +1,9 @@
-import { expect, test } from 'vitest';
-import { verifyAuthorizationHash } from './auth';
-import { config } from 'dotenv';
 import fs from 'node:fs';
+
+import { config } from 'dotenv';
+import { expect, test } from 'vitest';
+
+import { verifyAuthorizationHash } from './auth';
 
 const envFilePath = './packages/schedule-bot/.env.local';
 

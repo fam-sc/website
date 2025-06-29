@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { verifyHmac } from '.';
 
 test('verifyHmac', async () => {

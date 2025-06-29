@@ -1,8 +1,9 @@
-import { badRequest, unauthrorized } from '@shared/responses';
-import { getSessionId } from '@/api/auth';
 import { Repository } from '@data/repo';
-import { userPersonalInfo } from '@/api/users/payloads';
+import { badRequest, unauthrorized } from '@shared/responses';
+
 import { app } from '@/api/app';
+import { getSessionId } from '@/api/auth';
+import { userPersonalInfo } from '@/api/users/payloads';
 
 app.put('/users/personal', async (request) => {
   const bodyObject = await request.json();

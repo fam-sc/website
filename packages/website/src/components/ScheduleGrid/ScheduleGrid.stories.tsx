@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+
+import { DaySchedule } from '@/api/schedule/types';
 
 import { ScheduleGrid, ScheduleGridProps } from '.';
-import { useState } from 'react';
-import { DaySchedule } from '@/api/schedule/types';
 
 function Component({ week: initialWeek, ...rest }: ScheduleGridProps) {
   const [week, setWeek] = useState(initialWeek);

@@ -1,3 +1,5 @@
+import { notEquals, notNull } from '../sqlite/modifier';
+import { TableDescriptor } from '../sqlite/types';
 import {
   RawUser,
   ShortUser,
@@ -5,11 +7,7 @@ import {
   UserPersonalInfo,
   UserRole,
 } from '../types/user';
-
 import { EntityCollection } from './base';
-
-import { notEquals, notNull } from '../sqlite/modifier';
-import { TableDescriptor } from '../sqlite/types';
 
 export class UserCollection extends EntityCollection<RawUser>('users') {
   static descriptor(): TableDescriptor<RawUser> {

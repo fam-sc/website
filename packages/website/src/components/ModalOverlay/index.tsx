@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import styles from './index.module.scss';
+
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { classNames } from '@/utils/classNames';
+
+import styles from './index.module.scss';
 
 export interface ModalOverlayProps {
   className?: string;

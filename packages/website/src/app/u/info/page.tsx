@@ -1,15 +1,17 @@
-import { redirect } from 'react-router';
-import { Route } from './+types/page';
-import { getSessionId } from '@/api/auth';
-import { Labeled } from '@/components/Labeled';
 import { ReactNode, useState } from 'react';
-import { TextInput } from '@/components/TextInput';
-import { useNotification } from '@/components/Notification';
-import { Button } from '@/components/Button';
+import { redirect } from 'react-router';
+
+import { getSessionId } from '@/api/auth';
 import { updateUserPersonalInfo } from '@/api/users/client';
+import { Button } from '@/components/Button';
+import { Labeled } from '@/components/Labeled';
+import { useNotification } from '@/components/Notification';
+import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
-import styles from './page.module.scss';
 import { repository } from '@/utils/repo';
+
+import { Route } from './+types/page';
+import styles from './page.module.scss';
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionId = getSessionId(request);

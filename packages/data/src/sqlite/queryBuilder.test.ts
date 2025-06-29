@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'vitest';
+
+import { Modifier, notEquals } from './modifier';
 import {
   buildCountWhereQuery,
   buildCreateTableQuery,
@@ -10,7 +12,6 @@ import {
   buildUpdateWhereQuery,
   Conditions,
 } from './queryBuilder';
-import { Modifier, notEquals } from './modifier';
 
 describe('buildGeneralInsertQuery', () => {
   test('insert', () => {

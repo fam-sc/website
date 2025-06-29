@@ -1,9 +1,10 @@
-import { classNames } from '@/utils/classNames';
 import { ReactNode } from 'react';
 
-import styles from './index.module.scss';
-import { Typography } from '../Typography';
+import { classNames } from '@/utils/classNames';
+
 import { Button } from '../Button';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type ErrorMessageProps = {
   onRetry?: () => void;

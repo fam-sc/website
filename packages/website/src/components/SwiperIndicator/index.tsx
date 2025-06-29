@@ -1,6 +1,8 @@
 import { ReactNode, Ref, useId } from 'react';
-import styles from './index.module.scss';
+
 import { classNames } from '@/utils/classNames';
+
+import styles from './index.module.scss';
 
 export type SwiperIndicatorProps = {
   ref?: Ref<HTMLDivElement>;

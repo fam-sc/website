@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { hashPassword, verifyPassword } from './password';
 
 test('hashPassword verify', { timeout: 10_000 }, async () => {

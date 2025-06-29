@@ -1,7 +1,7 @@
-import { config } from 'dotenv';
+import { Repository } from '@data/repo';
 import { ApiD1Database } from '@shared/cloudflare/d1/api';
 import { getEnvChecked } from '@shared/env';
-import { Repository } from '@data/repo';
+import { config } from 'dotenv';
 
 async function main() {
   config({ path: '.env.local', quiet: true });

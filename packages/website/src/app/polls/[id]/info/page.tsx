@@ -1,8 +1,10 @@
-import styles from './page.module.scss';
-import { notFound } from '@shared/responses';
-import { Route } from './+types/page';
 import { UserRole } from '@data/types/user';
+import { formatDateTime } from '@shared/chrono/date';
+import { parseInt } from '@shared/parseInt';
+import { notFound } from '@shared/responses';
+import { useState } from 'react';
 import { redirect } from 'react-router';
+
 import { getSessionId } from '@/api/auth';
 import { closePoll } from '@/api/polls/client';
 import { Button } from '@/components/Button';
@@ -12,11 +14,11 @@ import { Tab } from '@/components/Tab';
 import { Tabs } from '@/components/Tabs';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
-import { useState } from 'react';
-import { ResultsTab } from './tabs/results';
-import { formatDateTime } from '@shared/chrono/date';
-import { parseInt } from '@shared/parseInt';
 import { repository } from '@/utils/repo';
+
+import { Route } from './+types/page';
+import styles from './page.module.scss';
+import { ResultsTab } from './tabs/results';
 
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const sessionId = getSessionId(request);

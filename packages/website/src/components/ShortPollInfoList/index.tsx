@@ -1,8 +1,10 @@
+import { Key } from 'react';
+
 import { classNames } from '@/utils/classNames';
+
 import { List } from '../List';
 import { ShortPollInfo } from '../ShortPollInfo';
 import styles from './index.module.scss';
-import { Key } from 'react';
 
 export type ShortPollInfoListProps = {
   className?: string;

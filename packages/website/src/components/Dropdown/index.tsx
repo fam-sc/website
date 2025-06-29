@@ -9,12 +9,11 @@ import React, {
   useState,
 } from 'react';
 
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
 import { classNames } from '@/utils/classNames';
+
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type Position = 'top' | 'right' | 'bottom' | 'left';
 

@@ -1,16 +1,16 @@
-import type { EntryContext } from 'react-router';
-import { redirect } from 'react-router';
-
-import { app } from '@/api/app';
 import '@/api/routes';
 
-import { renderResponse } from 'virtual:utils/reactDomEnv';
-import { getApiEnv } from 'virtual:utils/apiEnv';
-
-import { AppLoadContext } from 'react-router';
 import { Repository } from '@data/repo';
-import { redirects } from './redirects';
 import { internalServerError } from '@shared/responses';
+import type { EntryContext } from 'react-router';
+import { redirect } from 'react-router';
+import { AppLoadContext } from 'react-router';
+import { getApiEnv } from 'virtual:utils/apiEnv';
+import { renderResponse } from 'virtual:utils/reactDomEnv';
+
+import { app } from '@/api/app';
+
+import { redirects } from './redirects';
 
 export default async function handleRequest(
   request: Request,

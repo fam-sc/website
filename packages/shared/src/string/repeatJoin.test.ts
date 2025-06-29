@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { repeatJoin } from './repeatJoin';
 
 test.each<[string, string, number, string]>([

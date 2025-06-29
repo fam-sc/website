@@ -1,9 +1,8 @@
+import { classNames } from '@/utils/classNames';
+
 import { Link } from '../Link';
 import { Typography } from '../Typography';
-
 import styles from './index.module.scss';
-
-import { classNames } from '@/utils/classNames';
 
 export type UsefulLinkListItem = {
   id: string;

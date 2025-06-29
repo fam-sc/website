@@ -1,5 +1,6 @@
 import { timeBreakpoints } from '@shared/api/campus/types';
 import { ReactNode } from 'react';
+
 import { Typography } from '../Typography';
 import styles from './TimeMarkers.module.scss';
 

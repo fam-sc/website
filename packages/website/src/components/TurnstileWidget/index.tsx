@@ -1,6 +1,7 @@
+import { useEffect, useId } from 'react';
+
 import { Turnstile } from '@/api/turnstile/client';
 import { PropsMap } from '@/types/react';
-import { useEffect, useId } from 'react';
 
 declare global {
   interface Window {

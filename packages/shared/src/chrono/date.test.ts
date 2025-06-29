@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { toLocalISOString } from './date';
 
 describe('toLocalISOString', () => {

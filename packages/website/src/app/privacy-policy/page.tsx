@@ -1,8 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import { Typography } from '@/components/Typography';
-import styles from './page.module.scss';
 import { Title } from '@/components/Title';
+import { Typography } from '@/components/Typography';
+
+import styles from './page.module.scss';
 
 export default function Page() {
   return (

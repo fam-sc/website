@@ -1,4 +1,3 @@
-import { getMediaBaseUrl } from '@/api/media';
 import {
   FilePath,
   RichTextAtomNode,
@@ -7,6 +6,8 @@ import {
   supportedRichTextTags,
 } from '@shared/richText/types';
 import { DOMSerializer, Fragment, Schema } from '@tiptap/pm/model';
+
+import { getMediaBaseUrl } from '@/api/media';
 
 type MaybeArray<T> = T | T[];
 

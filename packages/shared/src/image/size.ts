@@ -1,7 +1,7 @@
-import { ImageSize } from './types';
 import { getSize as jpegGetSize, isJpeg } from './formats/jpeg';
 import { getSize as pngGetSize, isPng } from './formats/png';
 import { getSize as webpGetSize, isWebp } from './formats/webp';
+import { ImageSize } from './types';
 
 export function getImageSize(input: Uint8Array): ImageSize {
   if (isJpeg(input)) {

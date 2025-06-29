@@ -1,9 +1,8 @@
-import { Group } from '../types';
-
-import { EntityCollection } from './base';
 import { valueIn } from '../sqlite/modifier';
-import { TableDescriptor } from '../sqlite/types';
 import { DataQuery } from '../sqlite/query';
+import { TableDescriptor } from '../sqlite/types';
+import { Group } from '../types';
+import { EntityCollection } from './base';
 
 export class GroupCollection extends EntityCollection<Group>('groups') {
   static descriptor(): TableDescriptor<Group> {

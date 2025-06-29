@@ -1,5 +1,7 @@
-import { expect, test } from 'vitest';
 import fs from 'node:fs/promises';
+
+import { expect, test } from 'vitest';
+
 import { getSize } from './jpeg';
 
 test('size', async () => {

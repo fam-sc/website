@@ -1,7 +1,8 @@
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
-import styles from './index.module.scss';
+
 import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type BaseTableProps = PropsMap['table'];
 

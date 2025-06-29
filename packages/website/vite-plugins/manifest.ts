@@ -1,6 +1,8 @@
-import { Plugin, ResolvedConfig } from 'vite';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+
+import { Plugin, ResolvedConfig } from 'vite';
+
 import { manifest } from '../src/app/manifest';
 
 export function manifestPlugin(): Plugin[] {

@@ -1,18 +1,17 @@
-import { Link } from '../Link';
-import { Typography } from '../Typography';
+import { ReactNode } from 'react';
 
-import styles from './index.module.scss';
-
-import { classNames } from '@/utils/classNames';
 import { navigationMainRoutes } from '@/constants/navigation';
-
-import logo from '@/images/logo.png?w=20!';
 import { InstagramIcon } from '@/icons/InstagramIcon';
-import { TelegramIcon } from '@/icons/TelegramIcon';
-import { TikTokIcon } from '@/icons/TikTokIcon';
 import { MailIcon } from '@/icons/MailIcon';
 import { QuestionIcon } from '@/icons/QuestionIcon';
-import { ReactNode } from 'react';
+import { TelegramIcon } from '@/icons/TelegramIcon';
+import { TikTokIcon } from '@/icons/TikTokIcon';
+import logo from '@/images/logo.png?w=20!';
+import { classNames } from '@/utils/classNames';
+
+import { Link } from '../Link';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export interface FooterProps {
   className?: string;

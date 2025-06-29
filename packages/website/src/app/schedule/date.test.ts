@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 
-import { calculateCurrentLesson } from './date';
-
 import { CurrentLesson } from '@/components/ScheduleGrid';
+
+import { calculateCurrentLesson } from './date';
 
 test.each<[string, CurrentLesson | undefined]>([
   ['2024-04-24T12:20', { day: 4, time: '12:20' }],

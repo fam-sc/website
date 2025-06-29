@@ -1,5 +1,6 @@
-import { Plugin } from 'vite';
 import path from 'node:path';
+
+import { Plugin } from 'vite';
 
 type VirtualModule = { name: string; type: 'ts' | 'tsx' };
 

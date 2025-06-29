@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 
 import { InlineImageDropArea, InlineImageDropAreaProps } from '.';
-import { useState } from 'react';
 
 function Component(props: InlineImageDropAreaProps) {
   const [image, setImage] = useState<string>();

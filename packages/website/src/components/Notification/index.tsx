@@ -1,8 +1,9 @@
-import { classNames } from '@/utils/classNames';
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+
+import { classNames } from '@/utils/classNames';
+
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type NotificationType = 'plain' | 'error';
 

@@ -1,23 +1,25 @@
+import { mapObjectToArray } from '@shared/collections/mapObject';
+import { Editor } from '@tiptap/core';
+import { useEditorState } from '@tiptap/react';
+import { FC } from 'react';
+
+import { AlignCenterIcon } from '@/icons/AlignCenterIcon';
+import { AlignJustifyIcon } from '@/icons/AlignJustifyIcon';
+import { AlignLeftIcon } from '@/icons/AlignLeftIcon';
+import { AlignRightIcon } from '@/icons/AlignRightIcon';
 import { BlockQuoteIcon } from '@/icons/BlockQuoteIcon';
 import { BoldIcon } from '@/icons/BoldIcon';
 import { ItalicIcon } from '@/icons/ItalicIcon';
 import { StrikeIcon } from '@/icons/StrikeIcon';
 import { SubscriptIcon } from '@/icons/SubscriptIcon';
-import { UnderlineIcon } from '@/icons/UnderlineIcon';
-import { mapObjectToArray } from '@shared/collections/mapObject';
-import { FC } from 'react';
-import { AlignCenterIcon } from '@/icons/AlignCenterIcon';
-import { AlignJustifyIcon } from '@/icons/AlignJustifyIcon';
-import { AlignLeftIcon } from '@/icons/AlignLeftIcon';
-import { AlignRightIcon } from '@/icons/AlignRightIcon';
 import { SvgProps } from '@/icons/types';
-import styles from './Menu.module.scss';
-import { ToggleButton } from './ToggleButton';
+import { UnderlineIcon } from '@/icons/UnderlineIcon';
+import { ObjectUrlManager } from '@/utils/objectUrlManager';
+
 import { InsertImageButton } from './InsertImageButton';
 import { LinkButton } from './LinkButton';
-import { Editor } from '@tiptap/core';
-import { useEditorState } from '@tiptap/react';
-import { ObjectUrlManager } from '@/utils/objectUrlManager';
+import styles from './Menu.module.scss';
+import { ToggleButton } from './ToggleButton';
 
 type Alignment = 'left' | 'center' | 'right' | 'justify';
 

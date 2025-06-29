@@ -1,11 +1,12 @@
-import { authRoute } from '@/api/authRoute';
-import { getFacultyGroupMapById } from '@/api/groups/utils';
-import { badRequest, ok } from '@shared/responses';
+import { UserRole } from '@data/types/user';
 import { parseInt } from '@shared/parseInt';
 import { formPersonName } from '@shared/person';
-import { UserInfoWithRole } from '@/api/users/types';
+import { badRequest, ok } from '@shared/responses';
+
 import { app } from '@/api/app';
-import { UserRole } from '@data/types/user';
+import { authRoute } from '@/api/authRoute';
+import { getFacultyGroupMapById } from '@/api/groups/utils';
+import { UserInfoWithRole } from '@/api/users/types';
 
 const PAGE_SIZE = 20;
 

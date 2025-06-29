@@ -1,8 +1,8 @@
 import { PropsMap } from '@/types/react';
-import { Button, ButtonProps } from '../Button';
-
-import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
+
+import { Button, ButtonProps } from '../Button';
+import styles from './index.module.scss';
 
 type LabelProps = PropsMap['label'];
 

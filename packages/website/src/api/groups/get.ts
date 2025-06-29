@@ -1,6 +1,7 @@
 import { CachedExternalApi } from '@data/cache';
 import { Repository } from '@data/repo';
 import { Group } from '@data/types';
+
 import { getApiFacultyGroups } from './faculty';
 
 // 7 days

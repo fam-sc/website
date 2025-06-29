@@ -1,8 +1,8 @@
 import { HTMLAttributes, Ref } from 'react';
 
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
+
+import styles from './index.module.scss';
 
 export interface IndeterminateCircularProgressProps
   extends HTMLAttributes<SVGElement> {

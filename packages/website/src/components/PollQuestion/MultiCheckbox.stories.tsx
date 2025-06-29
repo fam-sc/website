@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 
 import { PollQuestion, PollQuestionProps } from '.';
-import { useState } from 'react';
 
 function Component(props: PollQuestionProps<'multicheckbox'>) {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);

@@ -1,8 +1,9 @@
 import { ReactNode, Ref, useEffect, useLayoutEffect, useRef } from 'react';
-import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 
-import styles from './index.module.scss';
 import { classNames } from '@/utils/classNames';
+
+import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
+import styles from './index.module.scss';
 
 export type InfiniteScrollProps = {
   className?: string;

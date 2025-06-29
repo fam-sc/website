@@ -1,4 +1,5 @@
 import { ImpersonatedProps } from '@/utils/impersonation';
+
 import {
   IconComponentBase,
   IconComponentBaseProps,

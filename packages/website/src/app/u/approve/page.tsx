@@ -1,23 +1,24 @@
+import { UserRole } from '@data/types/user';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
+
+import { getMediaFileUrl } from '@/api/media';
 import {
   approveUser,
   disapproveUser,
   getUsersForApprove,
 } from '@/api/users/client';
-import { useDataLoader } from '@/hooks/useDataLoader';
-
-import styles from './page.module.scss';
+import { useAuthInfo } from '@/auth/context';
+import { DataLoadingContainer } from '@/components/DataLoadingContainer';
+import { Title } from '@/components/Title';
+import { Typography } from '@/components/Typography';
 import {
   UserApproveBoard,
   UserApproveItemType,
 } from '@/components/UserApproveBoard';
-import { useCallback } from 'react';
-import { getMediaFileUrl } from '@/api/media';
-import { Typography } from '@/components/Typography';
-import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
-import { DataLoadingContainer } from '@/components/DataLoadingContainer';
-import { useNavigate } from 'react-router';
-import { Title } from '@/components/Title';
+import { useDataLoader } from '@/hooks/useDataLoader';
+
+import styles from './page.module.scss';
 
 export default function Page() {
   const { user } = useAuthInfo();

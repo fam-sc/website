@@ -1,8 +1,8 @@
-import { Typography } from '../Typography';
 import { ReactNode } from 'react';
 
-import styles from './index.module.scss';
+import { Typography } from '../Typography';
 import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
+import styles from './index.module.scss';
 
 export type UserInfoItemProps = {
   avatarSrc?: string;

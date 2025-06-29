@@ -1,15 +1,16 @@
+import { UserRole } from '@data/types/user';
+import { startTransition, useCallback, useOptimistic } from 'react';
+import { useNavigate } from 'react-router';
+
 import { changeUserRole, getAllUsers } from '@/api/users/client';
+import { useAuthInfo } from '@/auth/context';
 import { InfiniteScroll } from '@/components/InfiniteScroll';
 import { useNotification } from '@/components/Notification';
+import { Title } from '@/components/Title';
 import { UserRoleBoard } from '@/components/UserRoleBoard';
 import { usePageFetcher } from '@/hooks/usePageFetcher';
-import { startTransition, useCallback, useOptimistic } from 'react';
 
 import styles from './page.module.scss';
-import { useAuthInfo } from '@/auth/context';
-import { UserRole } from '@data/types/user';
-import { useNavigate } from 'react-router';
-import { Title } from '@/components/Title';
 
 export default function Page() {
   const { user } = useAuthInfo();

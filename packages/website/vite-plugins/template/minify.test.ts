@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { minifyHTML, minifyInlineCss } from './minify';
 
 test.each<[string, string]>([

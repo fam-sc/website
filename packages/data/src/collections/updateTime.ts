@@ -1,8 +1,7 @@
-import { UpdateTime, UpdateTimeType } from '../types/meta';
-
-import { EntityCollection } from './base';
-import { TableDescriptor } from '../sqlite/types';
 import { DataQuery } from '../sqlite/query';
+import { TableDescriptor } from '../sqlite/types';
+import { UpdateTime, UpdateTimeType } from '../types/meta';
+import { EntityCollection } from './base';
 
 export class UpdateTimeCollection extends EntityCollection<UpdateTime>(
   'update_times'

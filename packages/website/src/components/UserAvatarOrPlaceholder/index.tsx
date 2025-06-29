@@ -1,7 +1,8 @@
+import { PropsMap } from '@/types/react';
+import { classNames } from '@/utils/classNames';
+
 import { UnknownUserAvatar } from '../UnknownUserAvatar';
 import styles from './index.module.scss';
-import { classNames } from '@/utils/classNames';
-import { PropsMap } from '@/types/react';
 
 type DivProps = PropsMap['div'];
 

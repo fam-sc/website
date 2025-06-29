@@ -1,8 +1,8 @@
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
-import { BaseFileDropArea } from '../BaseFileDropArea';
 import { FileGate } from '@/utils/fileGate';
+
+import { BaseFileDropArea } from '../BaseFileDropArea';
+import styles from './index.module.scss';
 
 export type FileDropAreaProps = {
   className?: string;

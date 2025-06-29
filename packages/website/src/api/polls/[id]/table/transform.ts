@@ -1,11 +1,12 @@
-import { PollResultsTable } from '@/api/polls/types';
 import {
   AnonymousPollRespondent,
   PollQuestion,
   PollRespondentAnswer,
 } from '@data/types/poll';
-import { indexMany } from '@shared/collections/indexMany';
 import { formatDateTime } from '@shared/chrono/date';
+import { indexMany } from '@shared/collections/indexMany';
+
+import { PollResultsTable } from '@/api/polls/types';
 
 export function answerToString(
   answer: PollRespondentAnswer,

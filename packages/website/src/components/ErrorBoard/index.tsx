@@ -1,7 +1,8 @@
-import { classNames } from '@/utils/classNames';
-import styles from './index.module.scss';
-import { Typography } from '../Typography';
 import { ExclamationIcon } from '@/icons/ExclamationIcon';
+import { classNames } from '@/utils/classNames';
+
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type ErrorBoardProps = {
   className?: string;

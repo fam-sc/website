@@ -1,11 +1,13 @@
+import { useLocation } from 'react-router';
+
+import { logOut } from '@/api/users/client';
+import { Button } from '@/components/Button';
 import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
-import { TabInfo } from './tabs';
-import { Button } from '@/components/Button';
-import { logOut } from '@/api/users/client';
-import styles from './nav.module.scss';
-import { useLocation } from 'react-router';
 import { classNames } from '@/utils/classNames';
+
+import styles from './nav.module.scss';
+import { TabInfo } from './tabs';
 
 type UserLayoutNavigationProps = {
   tabs: TabInfo[];

@@ -1,11 +1,11 @@
-import { ModalDialog } from '../ModalDialog';
-import { Button } from '../Button';
-
-import styles from './index.module.scss';
-import { Typography } from '../Typography';
 import { useId, useState } from 'react';
+
+import { Button } from '../Button';
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import { List } from '../List';
+import { ModalDialog } from '../ModalDialog';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type EventWithId = {
   id: string;

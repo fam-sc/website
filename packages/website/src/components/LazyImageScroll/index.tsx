@@ -1,11 +1,13 @@
-import { InfiniteScroll } from '../InfiniteScroll';
-import styles from './index.module.scss';
-import { usePageFetcher } from '@/hooks/usePageFetcher';
-import { useNotification } from '../Notification';
-import { List } from '../List';
 import { useCallback } from 'react';
-import { VarImage } from '../VarImage';
+
+import { usePageFetcher } from '@/hooks/usePageFetcher';
 import { ImageInfo, ImageSizes } from '@/utils/image/types';
+
+import { InfiniteScroll } from '../InfiniteScroll';
+import { List } from '../List';
+import { useNotification } from '../Notification';
+import { VarImage } from '../VarImage';
+import styles from './index.module.scss';
 
 export type LazyImageScrollProps<T> = {
   className?: string;

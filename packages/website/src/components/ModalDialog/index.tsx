@@ -1,14 +1,13 @@
 import { ReactElement, ReactNode, useId } from 'react';
 
-import { IconButton } from '../IconButton';
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
+
+import { IconButton } from '../IconButton';
 import { ModalOverlay } from '../ModalOverlay';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type ModalDialogProps = {
   title?: string;

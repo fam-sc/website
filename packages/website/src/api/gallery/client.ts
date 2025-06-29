@@ -3,6 +3,7 @@ import {
   GalleryImageWithEvent,
   GalleryImageWithSizes,
 } from '@/api/gallery/types';
+
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
 export function fetchGalleryPage(

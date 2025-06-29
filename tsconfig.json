@@ -14,7 +14,7 @@
     "resolveJsonModule": true
   },
   "include": [
-    "eslint.config.mts",
+    "./eslint.config.mts",
     "stylelint.config.js",
     "prettier.config.mjs"
   ],

@@ -1,9 +1,11 @@
 import { Link } from 'react-router';
+
+import { ImpersonatedProps } from '@/utils/impersonation';
+
 import {
   IconComponentBase,
   IconComponentBaseProps,
 } from '../IconComponentBase';
-import { ImpersonatedProps } from '@/utils/impersonation';
 
 type IconLinkButtonProps = Omit<
   ImpersonatedProps<IconComponentBaseProps, typeof Link>,

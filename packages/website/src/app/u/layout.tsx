@@ -1,13 +1,15 @@
-import styles from './layout.module.scss';
-import { UserLayoutNavigation } from './nav';
-import { UserAvatar } from './avatar';
 import { ReactNode } from 'react';
 import { redirect } from 'react-router';
-import { getSessionId } from '@/api/auth';
-import { tabs } from './tabs';
-import { Route } from './+types/layout';
 import { Outlet } from 'react-router';
+
+import { getSessionId } from '@/api/auth';
 import { repository } from '@/utils/repo';
+
+import { Route } from './+types/layout';
+import { UserAvatar } from './avatar';
+import styles from './layout.module.scss';
+import { UserLayoutNavigation } from './nav';
+import { tabs } from './tabs';
 
 export interface UserLayoutProps {
   children: ReactNode;

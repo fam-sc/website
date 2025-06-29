@@ -1,6 +1,7 @@
 import { UserRole } from '@data/types/user';
-import { UserInfoItem, UserInfoItemProps } from '../UserInfoItem';
+
 import { Select } from '../Select';
+import { UserInfoItem, UserInfoItemProps } from '../UserInfoItem';
 import styles from './index.module.scss';
 
 export interface UserRoleItemProps extends Omit<UserInfoItemProps, 'children'> {

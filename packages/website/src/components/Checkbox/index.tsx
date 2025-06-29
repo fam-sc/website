@@ -1,8 +1,7 @@
-import { OptionBase, OptionBaseProps } from '../OptionBase';
-
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
+
+import { OptionBase, OptionBaseProps } from '../OptionBase';
+import styles from './index.module.scss';
 
 export function Checkbox({
   className,
