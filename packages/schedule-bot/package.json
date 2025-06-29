@@ -5,7 +5,7 @@
   "scripts": {
     "build:no-emit": "tsc --noEmit",
     "deploy": "wrangler deploy",
-    "types": "wrangler types",
+    "typegen": "wrangler types",
     "webhook:set": "tsx ./src/setup/setWebhook.ts",
     "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
   },

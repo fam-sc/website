@@ -14,3 +14,5 @@ dist
 .eslintcache
 .stylelintcache
 coverage
+
+worker-configuration.d.ts

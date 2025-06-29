@@ -7,7 +7,7 @@
     "build:no-emit": "tsc --noEmit",
     "start": "tsx ./scripts/start.ts ./build/server/index.js",
     "test": "vitest --run",
-    "typegen": "react-router typegen",
+    "typegen": "react-router typegen && wrangler types --env staging",
     "storybook:start": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "storybook:deploy": "wrangler pages deploy --project-name=sc-fam-storybook storybook-static",
