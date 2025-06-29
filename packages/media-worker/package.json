@@ -4,7 +4,7 @@
     "build": "tsc",
     "build:no-emit": "tsc --noEmit",
     "deploy": "wrangler deploy",
-    "generate-types": "wrangler types"
+    "typegen": "wrangler types"
   },
   "devDependencies": {
     "typescript": "5.8.3",
