@@ -1,18 +1,10 @@
-import { repeatJoin } from '../../../shared/src/string/repeatJoin';
+import { repeatJoin } from '@shared/string/repeatJoin';
+
+import { Conditions, conditionsToExpression } from './conditions';
 import { qMarks } from './expression';
-import {
-  getMaybeModifierValue,
-  isModifier,
-  isNoBinding,
-  Modifier,
-} from './modifier';
 import { TableDescriptor } from './types';
 
 export type InsertFlavor = 'INSERT' | 'INSERT OR REPLACE';
-
-export type Conditions<T> = {
-  [K in keyof T]?: T[K] | Modifier;
-};
 
 type Fields<T> = (T & string)[] | '*';
 type Keyword = 'WHERE' | 'RETURNING' | 'LIMIT' | 'OFFSET';
@@ -33,28 +25,8 @@ function resolveFields(fields: Fields<string> | undefined): string {
   return Array.isArray(fields) ? joinColumns(fields) : '*';
 }
 
-function maybeModifierToKeyValue(key: string, value: unknown): string {
-  return isModifier(value) ? `"${key}"${value.expression}` : `"${key}"=?`;
-}
-
-function conditionsToWhereClause(
-  conditions: Conditions<unknown> | undefined
-): string {
-  return conditions
-    ? Object.entries(conditions)
-        .map(([key, value]) => maybeModifierToKeyValue(key, value))
-        .join(' AND ')
-    : '';
-}
-
 function selectFromTable(columns: string, tableName: string): string {
   return `SELECT ${columns} FROM "${tableName}"`;
-}
-
-export function getConditionsBinding(conditions: Conditions<unknown>) {
-  return Object.values(conditions)
-    .flatMap((value) => getMaybeModifierValue(value))
-    .filter((value) => !isNoBinding(value));
 }
 
 export function buildGeneralInsertQuery<T extends object>(
@@ -103,7 +75,7 @@ export function buildFindWhereQuery<T>(
   return withKeyword(
     selectFromTable(resolveFields(fields), tableName),
     'WHERE',
-    conditionsToWhereClause(conditions)
+    conditionsToExpression(conditions)
   );
 }
 
@@ -114,7 +86,7 @@ export function buildCountWhereQuery<T>(
   return withKeyword(
     selectFromTable(`COUNT(*) as count`, tableName),
     'WHERE',
-    conditionsToWhereClause(conditions)
+    conditionsToExpression(conditions)
   );
 }
 
@@ -130,7 +102,7 @@ export function buildGetPageQuery(
       withKeyword(
         selectFromTable(resolveFields(fields), tableName),
         'WHERE',
-        conditionsToWhereClause(conditions)
+        conditionsToExpression(conditions)
       ),
       'LIMIT',
       size
@@ -153,7 +125,7 @@ export function buildUpdateWhereQuery<T extends object>(
   return withKeyword(
     `UPDATE "${tableName}" SET ${set}`,
     'WHERE',
-    conditionsToWhereClause(conditions)
+    conditionsToExpression(conditions)
   );
 }
 
@@ -164,7 +136,7 @@ export function buildDeleteWhereQuery(
   return withKeyword(
     `DELETE FROM "${tableName}"`,
     'WHERE',
-    conditionsToWhereClause(conditions)
+    conditionsToExpression(conditions)
   );
 }
 

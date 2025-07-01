@@ -16,28 +16,26 @@ import styles from './index.module.scss';
 export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [turnstileToken, setTurnstileToken] = useState<string>();
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const isEmailValid = useTestRegex(email, emailRegex);
 
   const notification = useNotification();
 
   const handleSubmit = () => {
-    if (turnstileToken !== undefined) {
-      signIn({
-        email,
-        password,
-        turnstileToken,
+    signIn({
+      email,
+      password,
+      turnstileToken,
+    })
+      .then(() => {
+        // Don't use client navigation, because the auth status changed and
+        // we need to refresh the root layout
+        globalThis.location.href = '/u/info';
       })
-        .then(() => {
-          // Don't use client navigation, because the auth status changed and
-          // we need to refresh the root layout
-          globalThis.location.href = '/u/info';
-        })
-        .catch(() => {
-          notification.show('Неправильний email або пароль', 'error');
-        });
-    }
+      .catch(() => {
+        notification.show('Неправильний email або пароль', 'error');
+      });
   };
 
   return (
@@ -81,11 +79,9 @@ export default function SignInForm() {
           onClick={handleSubmit}
           buttonVariant="solid"
           disabled={
-            !(
-              isEmailValid &&
-              password.length > 0 &&
-              turnstileToken !== undefined
-            )
+            !isEmailValid ||
+            password.length === 0 ||
+            (import.meta.env.VITE_HOST === 'cf' && turnstileToken === null)
           }
         >
           Увійти

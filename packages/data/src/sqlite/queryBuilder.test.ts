@@ -10,8 +10,8 @@ import {
   buildGeneralInsertQuery,
   buildGetPageQuery,
   buildUpdateWhereQuery,
-  Conditions,
 } from './queryBuilder';
+import { Conditions } from './Conditions';
 
 describe('buildGeneralInsertQuery', () => {
   test('insert', () => {

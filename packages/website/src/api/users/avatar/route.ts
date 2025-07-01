@@ -1,5 +1,5 @@
 import { Repository } from '@data/repo';
-import { unauthrorized } from '@shared/responses';
+import { unauthorized } from '@shared/responses';
 
 import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';
@@ -9,14 +9,14 @@ app.post(
   async (request: Request, { env: { MEDIA_BUCKET } }) => {
     const sessionId = getSessionId(request);
     if (sessionId === undefined) {
-      return unauthrorized();
+      return unauthorized();
     }
 
     const repo = Repository.openConnection();
 
     const userId = await repo.sessions().getUserIdBySessionId(sessionId);
     if (userId === null) {
-      return unauthrorized();
+      return unauthorized();
     }
 
     await repo.users().updateHasAvatar(userId, true);

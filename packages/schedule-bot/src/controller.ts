@@ -1,9 +1,9 @@
 import { Repository } from '@data/repo';
+import { TelegramBot } from '@shared/api/telegram';
+import { Message, Update } from '@shared/api/telegram/types';
 import { Lesson } from '@shared-schedule/types';
 
 import { getMessage } from './messages';
-import { TelegramBot } from './telegram';
-import { Message, Update } from './telegram/types';
 
 export class BotController {
   private bot: TelegramBot;
@@ -15,7 +15,7 @@ export class BotController {
   private async handleMessage(message: Message) {
     if (message.text !== undefined && message.text.startsWith('/start')) {
       const repo = Repository.openConnection();
-      const user = await repo.users().findByTelegramUserId(message.from.id);
+      const user = await repo.users().findByScheduleBotUserId(message.from.id);
 
       await this.bot.sendMessage(
         message.from.id,

@@ -1,5 +1,6 @@
 import { D1Database, D1PreparedStatement } from '@shared/cloudflare/d1/types';
 
+import { Conditions, getConditionsBinding } from '../sqlite/conditions';
 import { DataQuery, DataQueryContext, query } from '../sqlite/query';
 import {
   buildCountWhereQuery,
@@ -9,8 +10,6 @@ import {
   buildGeneralInsertQuery,
   buildGetPageQuery,
   buildUpdateWhereQuery,
-  Conditions,
-  getConditionsBinding,
   InsertFlavor,
 } from '../sqlite/queryBuilder';
 import { TableDescriptor } from '../sqlite/types';

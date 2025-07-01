@@ -1,6 +1,6 @@
 import { Repository } from '@data/repo';
 import { randomBytes } from '@shared/crypto/random';
-import { badRequest, unauthrorized } from '@shared/responses';
+import { badRequest, unauthorized } from '@shared/responses';
 
 import { app } from '@/api/app';
 import { sendMail } from '@/api/mail';
@@ -50,7 +50,7 @@ app.post('/users/forgotPassword', async (request, { env }) => {
   if (!tokenVerification.success) {
     console.error(`Token verification failed: ${tokenVerification.errorCodes}`);
 
-    return unauthrorized();
+    return unauthorized();
   }
 
   const token = await newConfirmationToken();

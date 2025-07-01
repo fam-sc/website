@@ -21,6 +21,7 @@ import './users/me/route';
 import './users/forgotPassword/route';
 import './users/resetPassword/route';
 import './users/scheduleBotAuth/route';
+import './users/adminBotAuth/route';
 import './users/approveList/route';
 import './users/[id]/disapprove/route';
 import './users/[id]/role/route';

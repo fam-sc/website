@@ -1,8 +1,8 @@
-import { ScheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
 import { checkedFetch } from '@shared/fetch';
 
 export function authorizeScheduleBot(
-  payload: ScheduleBotAuthPayload,
+  payload: TelegramBotAuthPayload,
   accessKey: string
 ) {
   return checkedFetch(`https://schedule-bot.sc-fam.org/auth`, {

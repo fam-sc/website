@@ -1,6 +1,6 @@
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
-import { unauthrorized } from '@shared/responses';
+import { unauthorized } from '@shared/responses';
 
 import { getSessionId } from '@/api/auth';
 
@@ -11,14 +11,14 @@ export async function authRoute(
 ): Promise<Response> {
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
-    return unauthrorized();
+    return unauthorized();
   }
 
   const repo = Repository.openConnection();
   const userWithRole = await repo.sessions().getUserWithRole(sessionId);
 
   if (userWithRole === null || userWithRole.role < minRole) {
-    return unauthrorized();
+    return unauthorized();
   }
 
   return await block(repo, userWithRole.id);

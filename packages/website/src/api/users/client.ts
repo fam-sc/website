@@ -1,5 +1,5 @@
 import { UserRole } from '@data/types/user';
-import { ScheduleBotAuthPayload } from '@shared/api/schedulebot/types';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
 
 import type { SignInData, SignUpData } from '@/api/auth/types';
 import type { ChangePasswordPayload } from '@/api/users/payloads';
@@ -85,8 +85,16 @@ export function logOut() {
   });
 }
 
-export function authorizeScheduleBotToUser(payload: ScheduleBotAuthPayload) {
+export function authorizeScheduleBotToUser(payload: TelegramBotAuthPayload) {
   return apiCheckedFetch('/users/scheduleBotAuth', {
+    method: 'POST',
+    body: payload,
+    json: true,
+  });
+}
+
+export function authorizeAdminBotToUser(payload: TelegramBotAuthPayload) {
+  return apiCheckedFetch('/users/adminBotAuth', {
     method: 'POST',
     body: payload,
     json: true,

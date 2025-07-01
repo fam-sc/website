@@ -4661,6 +4661,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"admin-bot@workspace:packages/admin-bot":
+  version: 0.0.0-use.local
+  resolution: "admin-bot@workspace:packages/admin-bot"
+  dependencies:
+    "@types/node": "npm:24.0.7"
+    dotenv: "npm:17.0.0"
+    tsx: "npm:4.20.3"
+    typescript: "npm:5.8.3"
+    wrangler: "npm:4.22.0"
+  languageName: unknown
+  linkType: soft
+
 "agent-base@npm:^7.1.0, agent-base@npm:^7.1.2":
   version: 7.1.3
   resolution: "agent-base@npm:7.1.3"

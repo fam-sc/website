@@ -1,5 +1,5 @@
 import { Repository } from '@data/repo';
-import { badRequest, unauthrorized } from '@shared/responses';
+import { badRequest, unauthorized } from '@shared/responses';
 
 import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';
@@ -18,14 +18,14 @@ app.put('/users/personal', async (request) => {
 
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
-    return unauthrorized();
+    return unauthorized();
   }
 
   const repo = Repository.openConnection();
 
   const session = await repo.sessions().findBySessionId(sessionId);
   if (session === null) {
-    return unauthrorized();
+    return unauthorized();
   }
 
   await repo.users().updatePersonalInfo(session.userId, personalInfo);
