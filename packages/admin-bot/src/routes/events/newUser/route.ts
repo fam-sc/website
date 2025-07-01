@@ -1,8 +1,10 @@
 import { newUserEventPayload } from '@shared/api/adminbot/types';
+import { getIpLocation } from '@shared/api/ip';
 import { badRequest, unauthorized } from '@shared/responses';
 
 import { isAuthorizedRequest } from '@/auth';
 import { BotController } from '@/controller';
+import { prettyIpLocation } from '@/ip';
 import { app } from '@/routes/app';
 
 app.post('/events/newUser', async (request, { env }) => {
@@ -20,8 +22,15 @@ app.post('/events/newUser', async (request, { env }) => {
 
   const { user } = payloadResult.data;
 
+  const location = user.registrationIp
+    ? await getIpLocation(user.registrationIp)
+    : null;
+
   const controller = new BotController(env);
-  await controller.handleNewUserEvent(user);
+  await controller.handleNewUserEvent({
+    ...user,
+    location: prettyIpLocation(location, user.registrationIp),
+  });
 
   return new Response();
 });

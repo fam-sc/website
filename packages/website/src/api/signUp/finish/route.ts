@@ -1,5 +1,6 @@
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
+import { getConnectingIp } from '@shared/cloudflare/request';
 import { badRequest, conflict } from '@shared/responses';
 
 import { app } from '@/api/app';
@@ -58,6 +59,7 @@ app.post('/signUp/finish', async (request, { env }) => {
       academicGroup: pendingUser.academicGroup,
       email: pendingUser.email,
       telnum: pendingUser.telnum,
+      registrationIp: getConnectingIp(request),
     },
     env
   );

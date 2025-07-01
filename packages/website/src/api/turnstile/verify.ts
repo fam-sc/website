@@ -1,3 +1,5 @@
+import { getConnectingIp } from '@shared/cloudflare/request';
+
 type SiteverifyResponse = {
   success: boolean;
   'error-codes': string[];
@@ -17,7 +19,7 @@ export async function verifyTurnstileToken(
   request: Request,
   token: string
 ): Promise<TurnstileVerficationResult> {
-  const ip = request.headers.get('CF-Connecting-IP');
+  const ip = getConnectingIp(request);
 
   const response = await fetch(
     'https://challenges.cloudflare.com/turnstile/v0/siteverify',

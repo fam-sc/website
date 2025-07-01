@@ -17,6 +17,10 @@ import {
 } from './callback/newUser';
 import { getMessage } from './messages';
 
+type NewUserInfo = Omit<NewUserEventPayload['user'], 'registrationIp'> & {
+  location: string | null;
+};
+
 export class BotController {
   private bot: TelegramBot;
 
@@ -50,7 +54,7 @@ export class BotController {
     await this.bot.sendMessage(userId, getMessage('success-linking'));
   }
 
-  async handleNewUserEvent(user: NewUserEventPayload['user']) {
+  async handleNewUserEvent(user: NewUserInfo) {
     function createText(): string {
       const items = [
         ["Ім'я", user.firstName],
@@ -59,11 +63,15 @@ export class BotController {
         ['Електронна пошта', user.firstName],
         ['Група', user.academicGroup],
         ['Телефон', user.telnum],
-      ] as const;
+        ['IP', user.location],
+      ];
 
       let result = `Новий користувач!\n\n`;
 
-      result += items.map(([key, value]) => `${key}: ${value}`).join('\n');
+      result += items
+        .filter(([, value]) => value !== null)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n');
 
       return result;
     }

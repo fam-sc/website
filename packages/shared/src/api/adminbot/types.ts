@@ -9,6 +9,7 @@ export const newUserEventPayload = object({
     academicGroup: string(),
     email: string(),
     telnum: nullable(string()),
+    registrationIp: nullable(string()),
   }),
 });
 
