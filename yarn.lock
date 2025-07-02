@@ -2925,6 +2925,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sc-fam/admin-bot@workspace:packages/admin-bot":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/admin-bot@workspace:packages/admin-bot"
+  dependencies:
+    "@types/node": "npm:24.0.7"
+    dotenv: "npm:17.0.0"
+    tsx: "npm:4.20.3"
+    typescript: "npm:5.8.3"
+    wrangler: "npm:4.22.0"
+  languageName: unknown
+  linkType: soft
+
 "@sc-fam/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@sc-fam/data@workspace:packages/data"
@@ -4660,18 +4672,6 @@ __metadata:
   checksum: 10c0/dec73ff59b7d6628a01eebaece7f2bdb8bb62b9b5926dcad0f8931f2b8b79c2be21f6c68ac095592adb5adb15831a3635d9343e6a91d028bbe85d564875ec3ec
   languageName: node
   linkType: hard
-
-"admin-bot@workspace:packages/admin-bot":
-  version: 0.0.0-use.local
-  resolution: "admin-bot@workspace:packages/admin-bot"
-  dependencies:
-    "@types/node": "npm:24.0.7"
-    dotenv: "npm:17.0.0"
-    tsx: "npm:4.20.3"
-    typescript: "npm:5.8.3"
-    wrangler: "npm:4.22.0"
-  languageName: unknown
-  linkType: soft
 
 "agent-base@npm:^7.1.0, agent-base@npm:^7.1.2":
   version: 7.1.3

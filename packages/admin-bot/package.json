@@ -1,5 +1,5 @@
 {
-  "name": "admin-bot",
+  "name": "@sc-fam/admin-bot",
   "packageManager": "yarn@4.9.2",
   "scripts": {
     "build:no-emit": "tsc --noEmit",

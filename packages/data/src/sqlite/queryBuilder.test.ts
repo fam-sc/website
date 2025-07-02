@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
+import { Conditions } from './conditions';
 import { Modifier, notEquals } from './modifier';
 import {
   buildCountWhereQuery,
@@ -11,7 +12,6 @@ import {
   buildGetPageQuery,
   buildUpdateWhereQuery,
 } from './queryBuilder';
-import { Conditions } from './Conditions';
 
 describe('buildGeneralInsertQuery', () => {
   test('insert', () => {

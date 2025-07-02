@@ -16,6 +16,6 @@
       "@data/*": ["../data/src/*"]
     }
   },
-  "include": ["./src", "./worker-configuration.d.ts", "../shared/src/api/telegram/auth.test.ts"],
+  "include": ["./src", "./worker-configuration.d.ts"],
   "exclude": ["./node_modules"]
 }

@@ -53,7 +53,7 @@ async function handleOnTime(timeBreakpoint: Time, env: Env) {
   const repo = Repository.openConnection();
 
   const currentTime = await getCurrentTime();
-  const users = await repo.users().findAllUsersWithLinkedTelegram();
+  const users = await repo.users().findAllUsersWithLinkedScheduleBot();
 
   const schedules = await getScheduleMap(getUniqueGroups(users));
 
@@ -72,7 +72,7 @@ async function handleOnTime(timeBreakpoint: Time, env: Env) {
 
 async function handleUser(
   controller: BotController,
-  { id, telegramUserId }: Pick<User, 'id' | 'telegramUserId'>,
+  { id, scheduleBotUserId }: Pick<User, 'id' | 'scheduleBotUserId'>,
   schedule: Schedule,
   { currentWeek, currentDay }: CurrentTime,
   now: Time
@@ -89,12 +89,12 @@ async function handleUser(
 
     const lessons = day.lessons.filter((lesson) => lesson.time === now);
 
-    if (telegramUserId !== null && lessons.length > 0) {
-      await controller.handleTimeTrigger(telegramUserId, lessons);
+    if (scheduleBotUserId !== null && lessons.length > 0) {
+      await controller.handleTimeTrigger(scheduleBotUserId, lessons);
     }
   } catch (error: unknown) {
     console.error(
-      `time = ${now}; userId = ${id}; tgUserId = ${telegramUserId}`,
+      `time = ${now}; userId = ${id}; tgUserId = ${scheduleBotUserId}`,
       error
     );
   }

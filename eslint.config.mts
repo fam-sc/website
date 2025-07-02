@@ -2,7 +2,7 @@ import react from 'eslint-plugin-react';
 import unicorn from 'eslint-plugin-unicorn';
 import prettier from 'eslint-plugin-prettier/recommended';
 import reactHooks from 'eslint-plugin-react-hooks';
-import simpleImportSort from "eslint-plugin-simple-import-sort";
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
@@ -30,7 +30,7 @@ export default tseslint.config(
   {
     settings: {
       react: {
-        version: "detect", 
+        version: 'detect',
       },
     },
     files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
@@ -51,8 +51,8 @@ export default tseslint.config(
       },
     },
     rules: {
-      "simple-import-sort/imports": "error",
-      "simple-import-sort/exports": "error",
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-misused-promises': 'off',
