@@ -1,4 +1,4 @@
-import { TelegramResponse } from './types';
+import { Message, SendMessageExtra, TelegramResponse } from './types';
 
 export class TelegramBot {
   private apiKey: string;
@@ -18,24 +18,27 @@ export class TelegramBot {
         },
       }
     );
-    if (!response.ok) {
-      throw new Error(await response.text());
-    }
 
-    const tgResponse = await response.json<TelegramResponse<T>>();
+    const tgResponse = (await response.json()) as TelegramResponse<T>;
     if (!tgResponse.ok) {
-      throw new Error(tgResponse.description);
+      throw new Error(
+        `${tgResponse.description} when doing ${name}(${JSON.stringify(args)})`
+      );
     }
 
     return tgResponse.result;
   }
 
-  sendMessage(chat_id: number, text: string) {
-    return this.apiMethod('sendMessage', {
+  sendMessage(chat_id: number, text: string, extra?: SendMessageExtra) {
+    return this.apiMethod<Message>('sendMessage', {
       chat_id,
       text,
-      parse_mode: 'Markdown',
+      ...extra,
     });
+  }
+
+  deleteMessage(chat_id: number, message_id: number) {
+    return this.apiMethod('deleteMessage', { chat_id, message_id });
   }
 
   setWebhook(url: string, secret_token: string) {

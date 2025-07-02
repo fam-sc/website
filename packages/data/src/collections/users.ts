@@ -1,3 +1,4 @@
+import { and, or } from '../sqlite/conditions';
 import { notEquals, notNull } from '../sqlite/modifier';
 import { TableDescriptor } from '../sqlite/types';
 import {
@@ -20,7 +21,8 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
       parentName: 'TEXT',
       passwordHash: 'TEXT NOT NULL',
       role: 'INTEGER NOT NULL',
-      telegramUserId: 'INTEGER',
+      scheduleBotUserId: 'INTEGER',
+      adminBotUserId: 'INTEGER',
       telnum: 'TEXT',
       hasAvatar: 'INTEGER NOT NULL',
     };
@@ -32,20 +34,52 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
     return result && { ...result, hasAvatar: result.hasAvatar === 1 };
   }
 
-  updateTelegramUserId(id: number, telegramUserId: number) {
-    return this.updateWhere({ id }, { telegramUserId });
+  updateScheduleBotUserId(id: number, telegramUserId: number) {
+    return this.updateWhere({ id }, { scheduleBotUserId: telegramUserId });
   }
 
-  findByTelegramUserId(id: number) {
-    return this.findOneWhere({ telegramUserId: id });
+  updateAdminBotUserId(id: number, telegramUserId: number) {
+    return this.updateWhere({ id }, { adminBotUserId: telegramUserId });
   }
 
-  findAllUsersWithLinkedTelegram() {
-    return this.findManyWhere({ telegramUserId: notNull() }, [
+  findByScheduleBotUserId(id: number) {
+    return this.findOneWhere({ scheduleBotUserId: id });
+  }
+
+  findByAdminBotUserId(id: number) {
+    return this.findOneWhere({ adminBotUserId: id });
+  }
+
+  findAllUsersWithLinkedScheduleBot() {
+    return this.findManyWhere({ scheduleBotUserId: notNull() }, [
       'id',
       'academicGroup',
-      'telegramUserId',
+      'scheduleBotUserId',
     ]);
+  }
+
+  findAllUsersWithLinkedAdminBot(academicGroup: string) {
+    return this.findManyWhere(
+      and(
+        { adminBotUserId: notNull() },
+        or<RawUser>(
+          { role: UserRole.ADMIN },
+          { role: UserRole.GROUP_HEAD, academicGroup }
+        )
+      ),
+      ['id', 'academicGroup', 'adminBotUserId']
+    );
+  }
+
+  getRoleAndGroupByAdminBotUserId(userId: number) {
+    return this.findOneWhereAction({ adminBotUserId: userId }, [
+      'academicGroup',
+      'role',
+    ]);
+  }
+
+  getRoleAndGroupById(userId: number) {
+    return this.findOneWhereAction({ id: userId }, ['academicGroup', 'role']);
   }
 
   async findAllNonApprovedUsers(academicGroup?: string): Promise<ShortUser[]> {
@@ -71,6 +105,13 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
 
   updateRole(id: number, role: UserRole) {
     return this.updateWhere({ id }, { role });
+  }
+
+  updateRoleIfNonApprovedUser(id: number, role: UserRole) {
+    return this.updateWhere(
+      { id, role: UserRole.STUDENT_NON_APPROVED },
+      { role }
+    );
   }
 
   updatePassword(id: number, passwordHash: string) {

@@ -19,6 +19,5 @@ export function setSessionId(response: Response, value: string) {
     value,
     httpOnly: true,
     path: '/',
-    domain: 'sc-fam.org',
   });
 }

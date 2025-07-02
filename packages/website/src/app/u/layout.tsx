@@ -17,7 +17,6 @@ export interface UserLayoutProps {
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionId = getSessionId(request);
-  console.log(sessionId);
 
   if (sessionId === undefined) {
     return redirect('/');
@@ -25,7 +24,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   const repo = repository(context);
   const result = await repo.sessions().getUserWithRole(sessionId);
-  console.log(result);
+
   if (result === null) {
     return redirect('/');
   }

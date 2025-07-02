@@ -1,5 +1,5 @@
 import { Repository } from '@data/repo';
-import { badRequest, unauthrorized } from '@shared/responses';
+import { badRequest, unauthorized } from '@shared/responses';
 
 import { app } from '@/api/app';
 import { getSessionId, newSessionId, setSessionId } from '@/api/auth';
@@ -45,12 +45,14 @@ app.post('/signIn', async (request, { env }) => {
 
   const user = await repo.users().findUserByEmail(email);
   if (user === null) {
-    return unauthrorized();
+    console.error('User not found');
+    return unauthorized();
   }
 
   const status = await verifyPassword(user.passwordHash, password);
   if (!status) {
-    return unauthrorized();
+    console.error('Mismatched password');
+    return unauthorized();
   }
 
   const sessionId = await newSessionId();

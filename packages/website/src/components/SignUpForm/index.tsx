@@ -32,7 +32,7 @@ export default function SignUpForm() {
 
   const [group, setGroup] = useState<string>();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState<string>();
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const [actionInProgress, setActionInProgress] = useState(false);
 
@@ -59,30 +59,28 @@ export default function SignUpForm() {
   };
 
   const handleSubmit = () => {
-    if (turnstileToken !== undefined) {
-      const payload: SignUpData = {
-        ...pick(formData, [
-          'firstName',
-          'lastName',
-          'parentName',
-          'email',
-          'password',
-        ]),
-        telnum: formData.phone,
-        academicGroup: normalizeGuid(group as string),
-        turnstileToken,
-      };
+    const payload: SignUpData = {
+      ...pick(formData, [
+        'firstName',
+        'lastName',
+        'parentName',
+        'email',
+        'password',
+      ]),
+      telnum: formData.phone,
+      academicGroup: normalizeGuid(group as string),
+      turnstileToken,
+    };
 
-      setActionInProgress(true);
-      signUp(payload)
-        .then(() => {
-          return redirect('/sign/email');
-        })
-        .catch(() => {
-          setActionInProgress(false);
-          notification.show('Сталася помилка', 'error');
-        });
-    }
+    setActionInProgress(true);
+    signUp(payload)
+      .then(() => {
+        return redirect('/sign/email');
+      })
+      .catch(() => {
+        setActionInProgress(false);
+        notification.show('Сталася помилка', 'error');
+      });
   };
 
   return (
@@ -209,7 +207,9 @@ export default function SignUpForm() {
       <Button
         buttonVariant="solid"
         disabled={
-          !canSubmit || turnstileToken === undefined || actionInProgress
+          !canSubmit ||
+          actionInProgress ||
+          (import.meta.env.VITE_HOST === 'cf' && turnstileToken === null)
         }
         onClick={handleSubmit}
       >

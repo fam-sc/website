@@ -1,5 +1,5 @@
 import { Repository } from '@data/repo';
-import { badRequest, unauthrorized } from '@shared/responses';
+import { badRequest, unauthorized } from '@shared/responses';
 
 import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';
@@ -10,7 +10,7 @@ import { changePasswordPayload } from '@/api/users/payloads';
 app.put('/users/password', async (request: Request) => {
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
-    return unauthrorized();
+    return unauthorized();
   }
 
   const rawPayload = await request.json();
@@ -28,7 +28,7 @@ app.put('/users/password', async (request: Request) => {
   const userWithPassword = await repo.sessions().getUserWithPassword(sessionId);
 
   if (userWithPassword === null) {
-    return unauthrorized();
+    return unauthorized();
   }
 
   const isValidOld = await verifyPassword(
@@ -37,7 +37,7 @@ app.put('/users/password', async (request: Request) => {
   );
 
   if (!isValidOld) {
-    return unauthrorized({
+    return unauthorized({
       message: 'Old password is invalid',
       code: ApiErrorCode.INVALID_OLD_PASSWORD,
     });

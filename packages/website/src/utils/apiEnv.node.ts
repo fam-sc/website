@@ -15,6 +15,7 @@ export function getApiEnv(): Env {
     RESEND_API_KEY: getEnvChecked('RESEND_API_KEY'),
     TURNSTILE_SECRET_KEY: '',
     SCHEDULE_BOT_ACCESS_KEY: getEnvChecked('SCHEDULE_BOT_ACCESS_KEY'),
+    ADMIN_BOT_ACCESS_KEY: getEnvChecked('SCHEDULE_BOT_ACCESS_KEY'),
     MEDIA_BUCKET: bucket,
     DB: getDatabase(),
     IMAGES: {} as ImagesBinding,

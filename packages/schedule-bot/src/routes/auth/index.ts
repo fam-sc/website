@@ -1,7 +1,9 @@
-import { scheduleBotAuthPayload } from '@shared/api/schedulebot/types';
-import { badRequest, unauthrorized } from '@shared/responses';
+import {
+  telegramBotAuthPayload,
+  verifyAuthorizationHash,
+} from '@shared/api/telegram/auth';
+import { badRequest, unauthorized } from '@shared/responses';
 
-import { verifyAuthorizationHash } from '@/auth';
 import { BotController } from '@/controller';
 
 import { app } from '../app';
@@ -14,12 +16,12 @@ app.post('/auth', async (request, { env }) => {
   if (authorization !== `Bearer ${env.ACCESS_KEY}`) {
     console.error('Invalid access key', authorization);
 
-    return unauthrorized();
+    return unauthorized();
   }
 
   const rawPayload = await request.json();
 
-  const payloadResult = scheduleBotAuthPayload.safeParse(rawPayload);
+  const payloadResult = telegramBotAuthPayload.safeParse(rawPayload);
   if (!payloadResult.success) {
     return badRequest();
   }
@@ -27,7 +29,7 @@ app.post('/auth', async (request, { env }) => {
   const payload = payloadResult.data;
   if (Date.now() - payload.authDate * 1000 > VALID_DURATION) {
     console.error('Stale payload');
-    return unauthrorized();
+    return unauthorized();
   }
 
   const isVerified = await verifyAuthorizationHash(payload, env.BOT_KEY);
@@ -38,5 +40,5 @@ app.post('/auth', async (request, { env }) => {
     return new Response();
   }
 
-  return unauthrorized();
+  return unauthorized();
 });

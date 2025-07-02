@@ -1,7 +1,6 @@
+import { TelegramBot } from '@shared/api/telegram';
 import { getEnvChecked } from '@shared/env';
 import { config } from 'dotenv';
-
-import { TelegramBot } from '@/telegram';
 
 async function main() {
   config({ path: '.env.local', quiet: true });

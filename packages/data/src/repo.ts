@@ -1,5 +1,6 @@
 import { D1Database, D1Result } from '@shared/cloudflare/d1/types';
 
+import { AdminBotNewUserMessagesCollection } from './collections/adminBotNewUserMessages';
 import { EntityCollectionClass } from './collections/base';
 import { EventCollection } from './collections/events';
 import { ForgotPasswordCollection } from './collections/forgotPasswords';
@@ -33,6 +34,7 @@ const collectionTypes = [
   PollCollection,
   PollRespondentCollection,
   ForgotPasswordCollection,
+  AdminBotNewUserMessagesCollection,
 ];
 
 export class Repository {
@@ -74,6 +76,7 @@ export class Repository {
   groups = this.collection(GroupCollection);
   polls = this.collection(PollCollection);
   forgotPasswordEntries = this.collection(ForgotPasswordCollection);
+  adminBotNewUserMessages = this.collection(AdminBotNewUserMessagesCollection);
 
   static async init(database: D1Database) {
     const tables: [string, TableDescriptor<unknown>][] = [];
@@ -114,6 +117,12 @@ export class Repository {
 
   static setDefaultDatabase(value: D1Database) {
     Repository.defaultDatabase = value;
+  }
+
+  async deleteAll() {
+    for (const collection of this.collections.values()) {
+      await (collection as UserCollection).deleteAll();
+    }
   }
 
   static openConnection(database?: D1Database): Repository {

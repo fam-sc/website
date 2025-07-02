@@ -17,7 +17,8 @@ export type RawUser = {
   role: UserRole;
   hasAvatar: number;
   passwordHash: string;
-  telegramUserId: number | null;
+  scheduleBotUserId: number | null;
+  adminBotUserId: number | null;
 };
 
 export type User = Omit<RawUser, 'hasAvatar'> & {
