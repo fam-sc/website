@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { navigationMainRoutes } from '@/constants/navigation';
 import { InstagramIcon } from '@/icons/InstagramIcon';
@@ -42,24 +42,28 @@ function LinkWithIcon({ to, small, children }: LinkWithIconProps) {
   );
 }
 
+function Section({ children }: React.PropsWithChildren) {
+  return <div className={styles.section}>{children}</div>;
+}
+
 export function Footer({ className }: FooterProps) {
   return (
     <footer className={classNames(styles.root, className)}>
-      <div className={styles.section}>
+      <Section>
         <Typography>Баранівська Валерія</Typography>
         <Typography>Хмарук Олег</Typography>
         <Typography>2025</Typography>
-      </div>
+      </Section>
 
-      <div className={styles.section}>
+      <Section>
         {items.map((item) => (
           <Link key={item.href} to={item.href}>
             <Typography>{item.title}</Typography>
           </Link>
-        ))}{' '}
-      </div>
+        ))}
+      </Section>
 
-      <div className={styles.section}>
+      <Section>
         <Typography as="strong">Підтримка</Typography>
 
         <LinkWithIcon to="https://t.me/fpm_sc_bot" small>
@@ -71,13 +75,13 @@ export function Footer({ className }: FooterProps) {
           <img src={logo} width={15} height={15} alt="Bot" />
           Про нас
         </LinkWithIcon>
-      </div>
+      </Section>
 
-      <div className={styles.section}>
+      <Section>
         <Link to="/privacy-policy">
           <Typography as="strong">Політика конфіденційності</Typography>
         </Link>
-      </div>
+      </Section>
 
       <div className={styles.icons}>
         <LinkWithIcon to="mailto:sr.fam.kpi@gmail.com">
@@ -87,9 +91,11 @@ export function Footer({ className }: FooterProps) {
         <LinkWithIcon to="https://www.instagram.com/fam_kpi/">
           <InstagramIcon />
         </LinkWithIcon>
+
         <LinkWithIcon to="https://t.me/primat_kpi">
           <TelegramIcon />
         </LinkWithIcon>
+
         <LinkWithIcon to="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
           <TikTokIcon />
         </LinkWithIcon>
