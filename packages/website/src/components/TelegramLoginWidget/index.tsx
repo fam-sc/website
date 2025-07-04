@@ -1,23 +1,20 @@
 /* eslint-disable unicorn/prefer-dom-node-dataset */
 
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
 import { useEffect, useId, useRef } from 'react';
 
-export type User = {
-  id: number;
-  first_name: string;
-  last_name: string;
-  username: string;
-  photo_url?: string;
-  auth_date: number;
-  hash: string;
-};
+type CallbackType = (user: TelegramBotAuthPayload) => void;
 
-type CallbackType = (user: User) => void;
+const CALLBACK_PREFIX = '__onTelegramAuth';
 
 declare global {
+  type CallbackMap = Record<
+    `${typeof CALLBACK_PREFIX}${string}`,
+    CallbackType | undefined
+  >;
+
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  interface Window
-    extends Record<`onTelegramAuth${string}`, CallbackType | undefined> {}
+  interface Window extends CallbackMap {}
 }
 
 export type TelegramLoginWidgetProps = {
@@ -33,11 +30,13 @@ export function TelegramLoginWidget({
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // If use script as React element, then it will pull it to the head, which is unwnated in our case.
+    // If to use <script> as a React element, then the React will pull it to the <head>, which is unwnated in our case.
     // The Telegram script inserts iframe where the script is located, so the exact location is important.
-    const { current: root } = rootRef;
+    const root = rootRef.current;
+
     if (root !== null) {
       const script = document.createElement('script');
+
       script.async = true;
       script.src = 'https://telegram.org/js/telegram-widget.js?22';
 
@@ -57,11 +56,13 @@ export function TelegramLoginWidget({
   }, [bot, id]);
 
   useEffect(() => {
-    const name = `onTelegramAuth${id}` as const;
+    const name = `${CALLBACK_PREFIX}${id}` as const;
 
     window[name] = onCallback;
 
     return () => {
+      // Do not leave the callback referenced. It might capture some objects
+      // which would keep them from being GC-ed
       window[name] = undefined;
     };
   }, [id, onCallback]);

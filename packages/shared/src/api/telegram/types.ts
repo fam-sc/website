@@ -18,9 +18,17 @@ export type Message = {
   text?: string;
 };
 
+export type LoginUrl = {
+  url: string;
+  forward_text?: string;
+  bot_username?: string;
+  request_write_access?: boolean;
+};
+
 export type InlineKeyboardButton = {
   text: string;
   callback_data?: string;
+  login_url?: LoginUrl;
 };
 
 export type InlineKeyboardMarkup = {

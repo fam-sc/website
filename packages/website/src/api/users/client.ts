@@ -7,6 +7,7 @@ import { UserInfo, UserPersonalInfo } from '@/api/users/types';
 import { UserInfoWithRole } from '@/api/users/types';
 
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
+import { BotType } from './botAuth/types';
 import { ForgotPasswordPayload } from './forgotPassword/types';
 import { ResetPasswordPayload } from './resetPassword/types';
 
@@ -85,16 +86,11 @@ export function logOut() {
   });
 }
 
-export function authorizeScheduleBotToUser(payload: TelegramBotAuthPayload) {
-  return apiCheckedFetch('/users/scheduleBotAuth', {
-    method: 'POST',
-    body: payload,
-    json: true,
-  });
-}
-
-export function authorizeAdminBotToUser(payload: TelegramBotAuthPayload) {
-  return apiCheckedFetch('/users/adminBotAuth', {
+export function authorizeTelegramBotToUser(
+  type: BotType,
+  payload: TelegramBotAuthPayload
+) {
+  return apiCheckedFetch(`/users/botAuth?type=${type}`, {
     method: 'POST',
     body: payload,
     json: true,

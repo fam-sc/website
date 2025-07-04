@@ -17,10 +17,28 @@ export class BotController {
       const repo = Repository.openConnection();
       const user = await repo.users().findByScheduleBotUserId(message.from.id);
 
-      await this.bot.sendMessage(
-        message.from.id,
-        getMessage(user === null ? 'greeting' : 'already-linked-account')
+      const isGreeting = user === null;
+      const text = getMessage(
+        isGreeting ? 'greeting' : 'already-linked-account'
       );
+      const extra = isGreeting
+        ? {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: 'Увійти',
+                    login_url: {
+                      url: 'https://staging.sc-fam.org/u/bot/schedule-bot',
+                    },
+                  },
+                ],
+              ],
+            },
+          }
+        : undefined;
+
+      await this.bot.sendMessage(message.from.id, text, extra);
     }
   }
 

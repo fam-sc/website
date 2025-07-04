@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { authorizeScheduleBotToUser } from '@/api/users/client';
+import { authorizeTelegramBotToUser } from '@/api/users/client';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { useNotification } from '@/components/Notification';
 import { TelegramLoginWidget } from '@/components/TelegramLoginWidget';
@@ -26,24 +26,10 @@ export default function Page() {
       ) : (
         <TelegramLoginWidget
           bot="famschedulebot"
-          onCallback={({
-            auth_date,
-            first_name,
-            photo_url,
-            username,
-            hash,
-            id,
-          }) => {
+          onCallback={(payload) => {
             setState('pending');
 
-            authorizeScheduleBotToUser({
-              hash,
-              username,
-              firstName: first_name,
-              photoUrl: photo_url,
-              telegramUserId: id,
-              authDate: auth_date,
-            })
+            authorizeTelegramBotToUser('schedule', payload)
               .then(() => {
                 setState('success');
               })

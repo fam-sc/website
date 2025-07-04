@@ -4,22 +4,24 @@ import { hash, verifyHmac } from '../../crypto';
 import { parseHexString } from '../../string/hex';
 
 export const telegramBotAuthPayload = object({
-  telegramUserId: number(),
+  id: number(),
   username: string(),
-  firstName: string(),
-  authDate: number(),
-  photoUrl: optional(string()),
+  first_name: string(),
+  auth_date: number(),
   hash: string(),
+  last_name: optional(string()),
+  photo_url: optional(string()),
 });
 
 export type TelegramBotAuthPayload = z.infer<typeof telegramBotAuthPayload>;
 
 function createCheckString(data: TelegramBotAuthPayload): string {
   const parts = [
-    ['auth_date', data.authDate],
-    ['first_name', data.firstName],
-    ['id', data.telegramUserId],
-    ['photo_url', data.photoUrl],
+    ['auth_date', data.auth_date],
+    ['first_name', data.first_name],
+    ['id', data.id],
+    ['last_name', data.last_name],
+    ['photo_url', data.photo_url],
     ['username', data.username],
   ];
 

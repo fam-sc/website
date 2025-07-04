@@ -25,7 +25,8 @@ app.post('/auth', async (request, { env }) => {
   }
 
   const payload = payloadResult.data;
-  if (Date.now() - payload.authDate * 1000 > VALID_DURATION) {
+
+  if (Date.now() - payload.auth_date * 1000 > VALID_DURATION) {
     console.error('Stale payload');
     return unauthorized();
   }
@@ -33,7 +34,7 @@ app.post('/auth', async (request, { env }) => {
   const isVerified = await verifyAuthorizationHash(payload, env.BOT_KEY);
 
   if (isVerified) {
-    await new BotController(env).handleAuth(payload.telegramUserId);
+    await new BotController(env).handleAuth(payload.id);
 
     return new Response();
   }
