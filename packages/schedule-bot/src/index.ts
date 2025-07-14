@@ -1,6 +1,7 @@
 import './routes';
 
 import { Repository } from '@data/repo';
+import { bot } from 'telegram-standard-bot-api';
 
 import { app } from './routes/app';
 import { handleOnCronEvent } from './scheduleHandler';
@@ -13,7 +14,8 @@ export default {
   },
   scheduled(_, env) {
     Repository.setDefaultDatabase(env.DB);
+    bot.setApiKey(env.BOT_KEY);
 
-    return handleOnCronEvent(env);
+    return handleOnCronEvent();
   },
 } satisfies ExportedHandler<Env>;

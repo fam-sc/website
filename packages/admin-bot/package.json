@@ -15,5 +15,8 @@
     "tsx": "4.20.3",
     "typescript": "5.8.3",
     "wrangler": "4.22.0"
+  },
+  "dependencies": {
+    "telegram-standard-bot-api": "1.0.6"
   }
 }

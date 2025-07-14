@@ -7,7 +7,7 @@ import { findNearestTimePoint } from '@shared/chrono/time';
 import { getScheduleForGroup } from '@shared-schedule/get';
 import { Schedule } from '@shared-schedule/types';
 
-import { BotController } from './controller';
+import { handleTimeTrigger } from './controller';
 
 function getUniqueGroups(users: { academicGroup: string }[]): Set<string> {
   const result = new Set<string>();
@@ -35,7 +35,7 @@ async function getScheduleMap(
   return result;
 }
 
-export async function handleOnCronEvent(env: Env) {
+export async function handleOnCronEvent() {
   const now = await getTrueCurrentTime('Europe/Kyiv');
   const time = findNearestTimePoint(
     timeBreakpoints,
@@ -43,13 +43,11 @@ export async function handleOnCronEvent(env: Env) {
   );
 
   if (time !== undefined) {
-    await handleOnTime(time, env);
+    await handleOnTime(time);
   }
 }
 
-async function handleOnTime(timeBreakpoint: Time, env: Env) {
-  const controller = new BotController(env);
-
+async function handleOnTime(timeBreakpoint: Time) {
   const repo = Repository.openConnection();
 
   const currentTime = await getCurrentTime();
@@ -60,7 +58,6 @@ async function handleOnTime(timeBreakpoint: Time, env: Env) {
   await Promise.all(
     users.map((user) =>
       handleUser(
-        controller,
         user,
         schedules[user.academicGroup],
         currentTime,
@@ -71,7 +68,6 @@ async function handleOnTime(timeBreakpoint: Time, env: Env) {
 }
 
 async function handleUser(
-  controller: BotController,
   { id, scheduleBotUserId }: Pick<User, 'id' | 'scheduleBotUserId'>,
   schedule: Schedule,
   { currentWeek, currentDay }: CurrentTime,
@@ -90,7 +86,7 @@ async function handleUser(
     const lessons = day.lessons.filter((lesson) => lesson.time === now);
 
     if (scheduleBotUserId !== null && lessons.length > 0) {
-      await controller.handleTimeTrigger(scheduleBotUserId, lessons);
+      await handleTimeTrigger(scheduleBotUserId, lessons);
     }
   } catch (error: unknown) {
     console.error(

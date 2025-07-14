@@ -1,72 +1,63 @@
 import { Repository } from '@data/repo';
-import { TelegramBot } from '@shared/api/telegram';
 import { Message, Update } from '@shared/api/telegram/types';
 import { Lesson } from '@shared-schedule/types';
+import { bot } from 'telegram-standard-bot-api';
+import { sendMessage } from 'telegram-standard-bot-api/methods';
 
 import { getMessage } from './messages';
 
-export class BotController {
-  private bot: TelegramBot;
+export async function handleUpdate(update: Update) {
+  console.log(`Received update: ${JSON.stringify(update)}`);
 
-  constructor(env: Env) {
-    this.bot = new TelegramBot(env.BOT_KEY);
+  if (update.message !== undefined) {
+    await handleMessage(update.message);
   }
+}
 
-  private async handleMessage(message: Message) {
-    if (message.text !== undefined && message.text.startsWith('/start')) {
-      const repo = Repository.openConnection();
-      const user = await repo.users().findByScheduleBotUserId(message.from.id);
+async function handleMessage(message: Message) {
+  if (message.text !== undefined && message.text.startsWith('/start')) {
+    const repo = Repository.openConnection();
+    const user = await repo.users().findByScheduleBotUserId(message.from.id);
 
-      const isGreeting = user === null;
-      const text = getMessage(
-        isGreeting ? 'greeting' : 'already-linked-account'
-      );
-      const extra = isGreeting
-        ? {
-            reply_markup: {
-              inline_keyboard: [
-                [
-                  {
-                    text: 'Увійти',
-                    login_url: {
-                      url: 'https://staging.sc-fam.org/u/bot/schedule-bot',
-                    },
+    const isGreeting = user === null;
+    const text = getMessage(isGreeting ? 'greeting' : 'already-linked-account');
+    const extra = isGreeting
+      ? {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: 'Увійти',
+                  login_url: {
+                    url: 'https://staging.sc-fam.org/u/bot/schedule-bot',
                   },
-                ],
+                },
               ],
-            },
-          }
-        : undefined;
+            ],
+          },
+        }
+      : undefined;
 
-      await this.bot.sendMessage(message.from.id, text, extra);
-    }
+    await bot(sendMessage({ chat_id: message.from.id, text, ...extra }));
   }
+}
 
-  async handleUpdate(update: Update) {
-    console.log(`Received update: ${JSON.stringify(update)}`);
+export async function handleAuth(userId: number) {
+  await bot(
+    sendMessage({ chat_id: userId, text: getMessage('success-linking') })
+  );
+}
 
-    if (update.message !== undefined) {
-      await this.handleMessage(update.message);
-    }
-  }
+export async function handleTimeTrigger(userId: number, lessons: Lesson[]) {
+  let text = getMessage(
+    lessons.length === 1 ? 'lessons-started-singular' : 'lessons-started-plural'
+  );
+  text += ':\n\n';
+  text += lessons
+    .map((lesson) => {
+      return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
+    })
+    .join('\n');
 
-  async handleAuth(userId: number) {
-    await this.bot.sendMessage(userId, getMessage('success-linking'));
-  }
-
-  async handleTimeTrigger(userId: number, lessons: Lesson[]) {
-    let message = getMessage(
-      lessons.length === 1
-        ? 'lessons-started-singular'
-        : 'lessons-started-plural'
-    );
-    message += ':\n\n';
-    message += lessons
-      .map((lesson) => {
-        return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
-      })
-      .join('\n');
-
-    await this.bot.sendMessage(userId, message);
-  }
+  await bot(sendMessage({ chat_id: userId, text }));
 }

@@ -2931,6 +2931,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:24.0.7"
     dotenv: "npm:17.0.0"
+    telegram-standard-bot-api: "npm:1.0.6"
     tsx: "npm:4.20.3"
     typescript: "npm:5.8.3"
     wrangler: "npm:4.22.0"
@@ -2968,6 +2969,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:24.0.7"
     dotenv: "npm:17.0.0"
+    telegram-standard-bot-api: "npm:1.0.6"
     tsx: "npm:4.20.3"
     typescript: "npm:5.8.3"
     wrangler: "npm:4.22.0"
@@ -2980,6 +2982,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-s3": "npm:3.826.0"
     sharp: "npm:0.34.2"
+    telegram-standard-bot-api: "npm:1.0.6"
     typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
@@ -10696,6 +10699,13 @@ __metadata:
     wrangler: "npm:4.22.0"
   languageName: unknown
   linkType: soft
+
+"telegram-standard-bot-api@npm:1.0.6":
+  version: 1.0.6
+  resolution: "telegram-standard-bot-api@npm:1.0.6"
+  checksum: 10c0/a3c091d8d6474b3829af4f3c521112e2febd88f8b4be875b8074653488d92ce2214e16ba91da46a4d458845cae0616349baebb1d425a11e792aea7e1e55559bb
+  languageName: node
+  linkType: hard
 
 "test-exclude@npm:^7.0.1":
   version: 7.0.1

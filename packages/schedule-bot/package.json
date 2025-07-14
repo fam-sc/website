@@ -10,6 +10,7 @@
     "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
   },
   "dependencies": {
+    "telegram-standard-bot-api": "1.0.6",
     "wrangler": "4.22.0"
   },
   "devDependencies": {

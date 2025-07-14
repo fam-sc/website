@@ -36,5 +36,6 @@
     "**/.client/**/*",
     "./.storybook/**/*",
     ".react-router/types/**/*"
-  ]
+  ],
+  "exclude": ["storybook-static", "build"]
 }

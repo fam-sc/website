@@ -5,7 +5,7 @@ import {
 import { badRequest, unauthorized } from '@shared/responses';
 
 import { isAuthorizedRequest } from '@/auth';
-import { BotController } from '@/controller';
+import { handleAuth } from '@/controller';
 
 import { app } from '../app';
 
@@ -34,7 +34,7 @@ app.post('/auth', async (request, { env }) => {
   const isVerified = await verifyAuthorizationHash(payload, env.BOT_KEY);
 
   if (isVerified) {
-    await new BotController(env).handleAuth(payload.id);
+    await handleAuth(payload.id);
 
     return new Response();
   }

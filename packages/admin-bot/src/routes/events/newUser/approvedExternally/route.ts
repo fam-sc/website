@@ -2,7 +2,7 @@ import { newUserApprovedExternallyEventPayload } from '@shared/api/adminbot/type
 import { badRequest, unauthorized } from '@shared/responses';
 
 import { isAuthorizedRequest } from '@/auth';
-import { BotController } from '@/controller';
+import { handleNewUserApprovedExternally } from '@/controller';
 import { app } from '@/routes/app';
 
 app.post('/events/newUser/approvedExternally', async (request, { env }) => {
@@ -19,8 +19,7 @@ app.post('/events/newUser/approvedExternally', async (request, { env }) => {
 
   const { userId } = payloadResult.data;
 
-  const controller = new BotController(env);
-  await controller.handleNewUserApprovedExternally(userId);
+  await handleNewUserApprovedExternally(userId);
 
   return new Response();
 });

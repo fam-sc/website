@@ -3,8 +3,9 @@ import {
   verifyAuthorizationHash,
 } from '@shared/api/telegram/auth';
 import { badRequest, unauthorized } from '@shared/responses';
+import { bot } from 'telegram-standard-bot-api';
 
-import { BotController } from '@/controller';
+import { handleAuth } from '@/controller';
 
 import { app } from '../app';
 
@@ -35,7 +36,8 @@ app.post('/auth', async (request, { env }) => {
   const isVerified = await verifyAuthorizationHash(payload, env.BOT_KEY);
 
   if (isVerified) {
-    await new BotController(env).handleAuth(payload.id);
+    bot.setApiKey(env.BOT_KEY);
+    await handleAuth(payload.id);
 
     return new Response();
   }

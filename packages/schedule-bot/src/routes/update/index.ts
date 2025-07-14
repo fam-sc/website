@@ -1,8 +1,9 @@
 import { getApiSecretToken } from '@shared/api/telegram/request';
 import { Update } from '@shared/api/telegram/types';
 import { badRequest } from '@shared/responses';
+import { bot } from 'telegram-standard-bot-api';
 
-import { BotController } from '@/controller';
+import { handleUpdate } from '@/controller';
 
 import { app } from '../app';
 
@@ -12,10 +13,10 @@ app.post('/update', async (request, { env }) => {
     return badRequest();
   }
 
-  const controller = new BotController(env);
   const update = await request.json<Update>();
 
-  await controller.handleUpdate(update);
+  bot.setApiKey(env.BOT_KEY);
+  await handleUpdate(update);
 
   return new Response();
 });
