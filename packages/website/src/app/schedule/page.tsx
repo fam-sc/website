@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { getFacultyGroupById } from '@/api/groups/get';
+import { Group } from '@/api/groups/types';
 import { updateScheduleLinks } from '@/api/schedule/client';
 import { Schedule } from '@/api/schedule/types';
 import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
@@ -20,6 +21,7 @@ import { Title } from '@/components/Title';
 import { useInterval } from '@/hooks/useInterval';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { EditIcon } from '@/icons/EditIcon';
+import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
 import { calculateCurrentLesson } from './date';
@@ -36,14 +38,17 @@ const weekTextMap: Record<Week, string> = {
   [2]: 'Другий тиждень',
 };
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { currentWeek } = await getCurrentTime();
 
   const { searchParams } = new URL(request.url);
   const rawGroup = searchParams.get('group');
   const groupId = rawGroup !== null && rawGroup.length > 0 ? rawGroup : null;
 
-  const group = groupId !== null ? await getFacultyGroupById(groupId) : null;
+  const group =
+    groupId !== null
+      ? await getFacultyGroupById(groupId, repository(context))
+      : null;
 
   return { initialWeek: currentWeek, initialGroup: group };
 }
@@ -57,7 +62,10 @@ export default function Page({
   const canModify = user !== null && user.role >= UserRole.GROUP_HEAD;
 
   const [selectedWeek, setSelectedWeek] = useState<Week>(initialWeek);
-  const [selectedGroup, setSelectedGroup] = useState(initialGroup);
+  const [selectedGroup, setSelectedGroup] = useState<{
+    campusId: string;
+    name?: string;
+  } | null>(initialGroup);
   const [isScheduleEditable, setScheduleEditable] = useState(false);
 
   const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
@@ -71,8 +79,7 @@ export default function Page({
       const savedGroup = retrieveSavedSelectedGroup();
 
       if (savedGroup !== null) {
-        // TODO: Fix it
-        // setSelectedGroup(savedGroup);
+        setSelectedGroup({ campusId: savedGroup });
       }
     }
   }, [initialGroup]);
@@ -86,7 +93,7 @@ export default function Page({
 
     void navigate(url, { preventScrollReset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedGroup]);
+  }, [selectedGroup?.campusId]);
 
   useEffect(() => {
     if (selectedGroup) {
@@ -107,7 +114,9 @@ export default function Page({
   return (
     <>
       <Title>
-        {selectedGroup ? `Розклад групи ${selectedGroup.name}` : 'Розклад'}
+        {selectedGroup?.name
+          ? `Розклад групи ${selectedGroup.name}`
+          : 'Розклад'}
       </Title>
 
       {canModify && (
@@ -154,6 +163,19 @@ export default function Page({
         className={styles['group-select']}
         selectedId={selectedGroup?.campusId}
         onSelected={setSelectedGroup}
+        onGroupsLoaded={useCallback((groups: Group[]) => {
+          setSelectedGroup((selectedGroup) => {
+            if (selectedGroup && selectedGroup.name === undefined) {
+              const group = groups.find(
+                ({ campusId }) => campusId === selectedGroup.campusId
+              );
+
+              return group ?? null;
+            }
+
+            return selectedGroup;
+          });
+        }, [])}
       />
 
       <ScheduleGridLoader

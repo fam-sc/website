@@ -1,0 +1,31 @@
+@use '../../theme/utils' as *;
+
+.header {
+  position: relative;
+  width: 100%;
+
+  input {
+    background: transparent;
+    outline: none;
+    border: none;
+    position: absolute;
+    width: calc(100% - 28px);
+
+    color: var(--color-text-on-background);
+    margin-left: 0.75em;
+
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+
+  &-active { 
+    input {
+      position: static;
+    }
+
+    p {
+      display: none;
+    }
+  }
+}

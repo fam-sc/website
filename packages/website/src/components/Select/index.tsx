@@ -1,10 +1,9 @@
-import { MouseEvent, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 
+import { SelectBase } from '../SelectBase';
 import { Typography } from '../Typography';
-import styles from './index.module.scss';
 
 type DivProps = PropsMap['div'];
 
@@ -19,67 +18,27 @@ export interface SelectProps<T extends string = string> extends DivProps {
 
 export function Select<T extends string>({
   items,
-  selectedItem,
   placeholder,
-  onItemSelected,
-  className,
-  disabled,
+  selectedItem,
   ...rest
 }: SelectProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
-  const itemOnClick = (event: MouseEvent) => {
-    const key = (event.target as HTMLElement).dataset.key;
 
-    if (key !== undefined) {
-      if (key !== selectedItem) {
-        onItemSelected?.(key as T);
-      }
-
-      setIsOpen(false);
-    }
-  };
+  const switchOpen = useCallback(() => {
+    setIsOpen((state) => !state);
+  }, []);
 
   return (
-    <div
-      aria-disabled={disabled}
-      className={classNames(
-        styles.root,
-        isOpen && styles[`root-open`],
-        className
-      )}
-      onBlur={() => {
-        setTimeout(() => {
-          setIsOpen(false);
-        }, 100);
-      }}
+    <SelectBase
+      items={items}
+      isOpen={isOpen}
+      onOpenChanged={setIsOpen}
+      switchOpen={switchOpen}
       {...rest}
     >
-      <button
-        disabled={disabled}
-        className={styles.header}
-        onClick={() => {
-          setIsOpen((state) => !state);
-        }}
-      >
-        <Typography>
-          {items.find((item) => item.key === selectedItem)?.title ??
-            placeholder}
-        </Typography>
-
-        <svg viewBox="0 0 16 16">
-          <path d="M0 4 H16 L8 12Z" />
-        </svg>
-      </button>
-
-      {isOpen && (
-        <ul className={styles.items}>
-          {items.map(({ key, title }) => (
-            <Typography as="li" key={key} data-key={key} onClick={itemOnClick}>
-              {title}
-            </Typography>
-          ))}
-        </ul>
-      )}
-    </div>
+      <Typography>
+        {items.find((item) => item.key === selectedItem)?.title ?? placeholder}
+      </Typography>
+    </SelectBase>
   );
 }

@@ -1,25 +1,31 @@
 import { shortenGuid } from '@shared/guid';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { getGroups } from '@/api/groups/client';
 import { Group } from '@/api/groups/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
 
 import { useNotification } from '../Notification';
-import { Select } from '../Select';
+import { SearchableSelect } from '../SearchableSelect';
 
 export type GroupSelectProps = {
   className?: string;
   disabled?: boolean;
   selectedId: string | undefined;
   onSelected: (value: Group) => void;
+  onGroupsLoaded?: (groups: Group[]) => void;
 };
+
+function prefixSearch(item: { title: string }, query: string): boolean {
+  return item.title.startsWith(query);
+}
 
 export function GroupSelect({
   disabled,
   className,
   selectedId,
   onSelected,
+  onGroupsLoaded,
 }: GroupSelectProps) {
   const [itemsState] = useDataLoader(getGroups, []);
   const items = useMemo(
@@ -42,10 +48,27 @@ export function GroupSelect({
         'error'
       );
     }
-  }, [notification, itemsState]);
+  }, [notification, itemsState, onGroupsLoaded]);
+
+  useEffect(() => {
+    if (typeof itemsState === 'object') {
+      onGroupsLoaded?.(itemsState.value);
+    }
+  }, [itemsState, onGroupsLoaded]);
+
+  const onItemSelected = useCallback(
+    (key: string) => {
+      const group = items.find((group) => group.key === key);
+
+      if (group !== undefined) {
+        onSelected({ campusId: key, name: group.title });
+      }
+    },
+    [items, onSelected]
+  );
 
   return (
-    <Select
+    <SearchableSelect
       className={className}
       items={items}
       placeholder="Виберіть групу"
@@ -53,13 +76,8 @@ export function GroupSelect({
       selectedItem={
         selectedId === undefined ? undefined : shortenGuid(selectedId)
       }
-      onItemSelected={(key) => {
-        const group = items.find((group) => group.key === key);
-
-        if (group !== undefined) {
-          onSelected({ campusId: key, name: group.title });
-        }
-      }}
+      onItemSelected={onItemSelected}
+      search={prefixSearch}
     />
   );
 }
