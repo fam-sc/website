@@ -1,4 +1,5 @@
 import { UserRole } from '@data/types/user';
+import { nearestSize } from '@shared/image/utils';
 import { parseInt } from '@shared/parseInt';
 import { notFound } from '@shared/responses';
 import { richTextToPlainText } from '@shared/richText/plainTransform';
@@ -53,6 +54,12 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
     [event.description]
   );
 
+  const ogImage = useMemo(() => {
+    const size = nearestSize(event.images, 1920);
+
+    return getMediaFileUrl(`events/${event.id}/${size.width}`);
+  }, [event]);
+
   const onClose = useCallback(() => {
     setDeleteDialogShown(false);
   }, []);
@@ -74,6 +81,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
     <div className={styles.root}>
       <Title>{event.title}</Title>
       <meta name="description" content={shortDescription} />
+      <meta name="og:image" content={ogImage} />
 
       <div className={styles.header}>
         <Typography variant="h4">{event.title}</Typography>

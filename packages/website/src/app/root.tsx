@@ -68,6 +68,8 @@ export function Layout({
         <meta name="apple-mobile-web-app-title" content="СР ФПМ" />
         <meta name="theme-color" content={backgroundColor} />
         <meta name="color-scheme" content="dark" />
+        <meta property="og:locale" content="uk_UA" />
+        <meta property="og:site_name" content="Студрада ФПМ" />
 
         <Meta />
         <Links />
