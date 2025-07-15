@@ -7,11 +7,7 @@ export function TelegramInstantViewMeta() {
         property="tg:site_verification"
         content="g7j8/rPFXfhyrq5q0QQV7EsYWv4="
       />
-      <meta
-        property="article:published_time"
-        content="2020-02-03T23:10:04.654Z"
-      />
-      <meta property="article:author" content="Author" />
+      <meta property="article:published_time" />
     </>
   );
 }
