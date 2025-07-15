@@ -1,7 +1,7 @@
 type MediaSection = 'events' | 'gallery' | 'user' | 'rich-text-image';
 type ImageWithSize = `${string}/${number}`;
 type MediaPathMap = {
-  events: ImageWithSize;
+  events: ImageWithSize | `${string}/${number}.png`;
   gallery: ImageWithSize;
   'rich-text-image': ImageWithSize;
   user: string;

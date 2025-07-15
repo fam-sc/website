@@ -98,7 +98,8 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
         <Image
           className={styles.image}
           multiple={event.images.map(({ width, height }) => ({
-            src: getMediaFileUrl(`events/${event.id}/${width}`),
+            // Telegram IV needs the image to have an extension. It doesn't really matter what.
+            src: getMediaFileUrl(`events/${event.id}/${width}.png`),
             width,
             height,
           }))}

@@ -23,11 +23,28 @@ function getHeaders(object: R2Object): Headers {
   return headers;
 }
 
+function pathnameToKey(value: string): string {
+  const slashIndex = value.lastIndexOf('/');
+  if (slashIndex !== -1) {
+    const lastPart = value.slice(slashIndex + 1);
+    const dotIndex = lastPart.lastIndexOf('.');
+
+    if (dotIndex !== -1) {
+      const name = lastPart.slice(0, dotIndex);
+      const prefix = value.slice(0, slashIndex);
+
+      return `${prefix}/${name}`;
+    }
+  }
+
+  return value;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { MEDIA_BUCKET } = env;
     const url = new URL(request.url);
-    const key = url.pathname.slice(1);
+    const key = pathnameToKey(url.pathname.slice(1));
 
     switch (request.method) {
       case 'DELETE': {
@@ -37,7 +54,7 @@ export default {
 
         await MEDIA_BUCKET.delete(key);
 
-        return new Response(undefined, { status: 200 });
+        return new Response();
       }
       case 'PUT': {
         if (!isAuthorized(request, env)) {
@@ -49,7 +66,7 @@ export default {
           customMetadata: { updatedOn: now },
         });
 
-        return new Response(undefined, { status: 200 });
+        return new Response();
       }
       case 'GET': {
         const object = await MEDIA_BUCKET.get(key);
