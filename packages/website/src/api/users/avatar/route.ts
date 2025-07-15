@@ -1,4 +1,5 @@
 import { Repository } from '@data/repo';
+import { getImageMimeType } from '@shared/image/mime';
 import { unauthorized } from '@shared/responses';
 
 import { app } from '@/api/app';
@@ -21,8 +22,12 @@ app.post(
 
     await repo.users().updateHasAvatar(userId, true);
 
-    const image = await request.arrayBuffer();
-    await MEDIA_BUCKET.put(`user/${userId}`, image);
+    const image = await request.bytes();
+    const imageMimeType = getImageMimeType(image);
+
+    await MEDIA_BUCKET.put(`user/${userId}`, image, {
+      httpMetadata: { contentType: imageMimeType },
+    });
 
     return new Response();
   }

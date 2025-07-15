@@ -15,7 +15,9 @@ export async function putMultipleSizedImages(
     sizes.map(async ({ width, height }) => {
       const result = await resizeImage(env, content, width, height);
 
-      mediaTransaction.put(`${path}/${width}`, result);
+      mediaTransaction.put(`${path}/${width}`, result, {
+        httpMetadata: { contentType: 'image/png' },
+      });
     })
   );
 }

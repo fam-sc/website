@@ -16,6 +16,7 @@ import {
   R2Object,
   R2ObjectBody,
   R2Objects,
+  R2PutOptions,
 } from './types';
 
 function notImplemented(): never {
@@ -120,7 +121,14 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
 
   async put(
     key: string,
-    value: ReadableStream | ArrayBuffer | ArrayBufferView | string | null | Blob
+    value:
+      | ReadableStream
+      | ArrayBuffer
+      | ArrayBufferView
+      | string
+      | Blob
+      | null,
+    options?: R2PutOptions
   ): Promise<R2Object> {
     if (value !== null) {
       let body: unknown = value;
@@ -138,12 +146,23 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
         }
       }
 
+      const metadata = options?.httpMetadata;
+      let contentType: string | undefined;
+      if (metadata) {
+        if ('contentType' in metadata) {
+          contentType = metadata.contentType;
+        } else if (metadata instanceof Headers) {
+          contentType = metadata.get('Content-Type') ?? undefined;
+        }
+      }
+
       const result = await this.client.send(
         new PutObjectCommand({
           Bucket: this.bucketName,
           Key: key,
           Body: body as string | ReadableStream | Uint8Array,
           ChecksumAlgorithm: 'CRC32',
+          ContentType: contentType,
         })
       );
 
