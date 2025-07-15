@@ -75,7 +75,7 @@ export default function SignUpForm() {
     setActionInProgress(true);
     signUp(payload)
       .then(() => {
-        return redirect('/sign/email');
+        return redirect('/signup/email');
       })
       .catch(() => {
         setActionInProgress(false);

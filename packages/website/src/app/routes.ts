@@ -46,8 +46,9 @@ export default [
   ]),
   route('privacy-policy', 'privacy-policy/page.tsx'),
   route('schedule', 'schedule/page.tsx'),
-  route('sign', 'sign/page.tsx'),
-  route('sign/email', 'sign/email/page.tsx'),
+  route('signin', 'signin/page.tsx'),
+  route('signup', 'signup/page.tsx'),
+  route('signup/email', 'signup/email/page.tsx'),
   route('students', 'students/page.tsx'),
   route('*', 'not-found.tsx'),
 ] satisfies RouteConfig;

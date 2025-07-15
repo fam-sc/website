@@ -1,7 +1,4 @@
-import { useState } from 'react';
-import { useSearchParams } from 'react-router';
-
-import { Button } from '@/components/Button';
+import { LinkButton } from '@/components/LinkButton';
 import SignInForm from '@/components/SignInForm';
 import SignUpForm from '@/components/SignUpForm';
 import { Title } from '@/components/Title';
@@ -9,11 +6,12 @@ import { Typography } from '@/components/Typography';
 
 import styles from './page.module.scss';
 
-export default function SignPage() {
-  const [searchParams] = useSearchParams();
-  const initialMode = searchParams.get('mode');
+export interface SignPageProps {
+  mode: 'signin' | 'signup';
+}
 
-  const [isSignIn, setIsSignIn] = useState(initialMode === 'signin');
+export function SignPage({ mode }: SignPageProps) {
+  const isSignIn = mode == 'signin';
 
   return (
     <div className={styles.authWrapper}>
@@ -25,14 +23,10 @@ export default function SignPage() {
             <Typography as="strong" variant="h4">
               Ще не з нами?
             </Typography>
-            <Button
-              buttonVariant="outlined"
-              onClick={() => {
-                setIsSignIn(false);
-              }}
-            >
+
+            <LinkButton buttonVariant="outlined" to="/signup">
               Зареєструватись
-            </Button>
+            </LinkButton>
           </>
         ) : (
           <SignUpForm />
@@ -49,14 +43,10 @@ export default function SignPage() {
             <Typography as="strong" variant="h4">
               Вже маєте обліковий запис?
             </Typography>
-            <Button
-              buttonVariant="outlined"
-              onClick={() => {
-                setIsSignIn(true);
-              }}
-            >
+
+            <LinkButton buttonVariant="outlined" to="/signin">
               Увійти
-            </Button>
+            </LinkButton>
           </>
         )}
       </div>
