@@ -23,8 +23,10 @@ export function EventMeta({ event }: { event: Event }) {
   return (
     <>
       <Title>{event.title}</Title>
-      <meta name="description" content={shortDescription} />
-      <meta name="og:image" content={ogImage} />
+
+      <meta property="description" content={shortDescription} />
+      <meta property="og:description" content={shortDescription} />
+      <meta property="og:image" content={ogImage} />
 
       <TelegramInstantViewMeta />
     </>
