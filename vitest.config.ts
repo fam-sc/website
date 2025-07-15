@@ -28,7 +28,7 @@ export default defineConfig({
       {
         plugins,
         test: {
-          include: ['**/*.btest.ts'],
+          include: ['**/*.btest.{ts,tsx}'],
           name: 'browser',
           env,
           browser: {
