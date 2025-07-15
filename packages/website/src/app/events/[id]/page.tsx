@@ -1,10 +1,7 @@
 import { UserRole } from '@data/types/user';
-import { nearestSize } from '@shared/image/utils';
 import { parseInt } from '@shared/parseInt';
 import { notFound } from '@shared/responses';
-import { richTextToPlainText } from '@shared/richText/plainTransform';
-import { shortenByWord } from '@shared/string/shortenByWord';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 import { deleteEvent } from '@/api/events/client';
@@ -14,7 +11,6 @@ import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { Image } from '@/components/Image';
 import { useNotification } from '@/components/Notification';
 import { RichText } from '@/components/RichText';
-import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EditIcon } from '@/icons/EditIcon';
@@ -23,6 +19,7 @@ import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
 import { DeleteEventDialog } from './DeleteEventDialog';
+import { EventMeta } from './meta';
 import styles from './page.module.scss';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
@@ -49,17 +46,6 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   const { user } = useAuthInfo();
   const canEdit = user !== null && user.role >= UserRole.ADMIN;
 
-  const shortDescription = useMemo(
-    () => shortenByWord(richTextToPlainText(event.description), 200),
-    [event.description]
-  );
-
-  const ogImage = useMemo(() => {
-    const size = nearestSize(event.images, 1920);
-
-    return getMediaFileUrl(`events/${event.id}/${size.width}`);
-  }, [event]);
-
   const onClose = useCallback(() => {
     setDeleteDialogShown(false);
   }, []);
@@ -78,10 +64,8 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   }, [event.id, navigate, notification]);
 
   return (
-    <div className={styles.root}>
-      <Title>{event.title}</Title>
-      <meta name="description" content={shortDescription} />
-      <meta name="og:image" content={ogImage} />
+    <article className={styles.root}>
+      <EventMeta event={event} />
 
       <div className={styles.header}>
         <Typography variant="h4">{event.title}</Typography>
@@ -123,6 +107,6 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
       {isDeleteDialogShown && (
         <DeleteEventDialog onClose={onClose} onDelete={onDeleteEvent} />
       )}
-    </div>
+    </article>
   );
 }
