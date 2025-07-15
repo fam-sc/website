@@ -1,5 +1,3 @@
-'use client';
-
 import React, {
   CSSProperties,
   Key,
@@ -11,12 +9,11 @@ import React, {
   useState,
 } from 'react';
 
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
 import { classNames } from '@/utils/classNames';
+
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type Position = 'top' | 'right' | 'bottom' | 'left';
 
@@ -30,13 +27,14 @@ export type DropdownProps<T extends { id: Key }> = {
   position?: Position;
   children: ReactElement<{
     onClick: () => void;
+    'aria-haspopup'?: string;
     ref: RefObject<HTMLElement | null>;
   }>;
 };
 
 export function Dropdown<T extends { id: Key }>({
   items,
-  position,
+  position = 'bottom',
   className,
   style,
   renderItem,
@@ -63,6 +61,7 @@ export function Dropdown<T extends { id: Key }>({
     <div className={classNames(styles.root, className)} style={style}>
       {React.cloneElement(children, {
         ref: triggerRef,
+        'aria-haspopup': 'menu',
         onClick: () => {
           setOpen((state) => !state);
         },
@@ -71,12 +70,16 @@ export function Dropdown<T extends { id: Key }>({
       {isOpen && (
         <ul
           role="menu"
-          className={styles.menu}
-          data-position={position ?? 'bottom'}
+          className={classNames(
+            styles.menu,
+            styles[`menu-position-${position}`]
+          )}
         >
           {items.map((item) => (
             <Typography
               as="li"
+              role="option"
+              tabindex="0"
               key={item.id}
               onClick={() => {
                 onAction?.(item.id);

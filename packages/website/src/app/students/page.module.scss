@@ -1,0 +1,35 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
+.useful-links-title {
+  text-align: center;
+  margin: 0.5em 0 0.7em;
+}
+
+.useful-links {
+  align-self: center;
+  width: 90%;
+
+  @include breakpoint-up('md') {
+    width: 60%;
+  }
+}
+
+.events-title {
+  text-align: center;
+  margin: 1.5em 0 0.7em;
+}
+
+.events {
+  width: 90%;
+  align-self: center;
+
+  @include breakpoint-up('md') {
+    width: 70%;
+  }
+}
+
+.events-more {
+  margin: 1.5em 0;
+  align-self: center;
+}

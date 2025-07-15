@@ -1,5 +1,5 @@
-import { Key } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Key } from 'react';
 
 import { Swiper } from '.';
 
@@ -16,7 +16,6 @@ export const Primary: Story = {
       'https://i.imgur.com/towPadb.png',
       'https://i.imgur.com/zVs0WyF.png',
     ].map((src) => ({ id: src, src })),
-    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
     renderSlide: ({ src }) => <img src={src} draggable={false} />,
   },
 };

@@ -1,25 +1,37 @@
-@use '../../theme/typography' as *;
-
-@mixin hover-or-focused() {
-  &:hover,
-  &:has(input:focus) {
-    @content;
-  }
+.root {
+  width: fit-content;
 }
 
-.root {
-  display: flex;
-  flex-direction: row;
-  width: fit-content;
+.input {
+  --border-color: var(--color-text-on-background);
+  --border-color-hover: var(--color-text-on-background-dark);
 
-  border: 2px solid var(--color-text-on-background);
-  border-radius: 0.5em;
+  $border-decl: 2px solid var(--border-color);
 
   transition: border-color 0.1s linear;
 
-  input {
-    @include variant-full-body('body');
+  display: flex;
+  flex-direction: row;
 
+  &-variant-bordered {
+    border: $border-decl;
+    border-radius: 0.5em;
+  }
+
+  &-variant-underline {
+    border-bottom: $border-decl;
+  }
+
+  &-error {
+    --border-color: var(--color-danger);
+    --border-color-hover: var(--color-danger-dark);
+  }
+
+  &-disabled {
+    border-color: var(--color-text-on-background-dark);
+  }
+
+  input {
     color: var(--color-text-on-background);
 
     background: transparent;
@@ -33,15 +45,10 @@
     padding: 8px 12px;
   }
 
-  @include hover-or-focused() {
-    border-color: var(--color-text-on-background-dark);
-  }
-
-  &[data-state='error'] {
-    border-color: #f00;
-
-    @include hover-or-focused() {
-      border-color: #ba1616;
+  &:hover,
+  &:focus-within {
+    &:not([data-disabled='true']) {
+      border-color: var(--border-color-hover);
     }
   }
 }
@@ -50,4 +57,11 @@
   align-self: stretch;
 
   margin: 4px;
+}
+
+.error {
+  color: var(--color-danger-dark);
+
+  margin-left: 8px;
+  margin-top: 4px;
 }

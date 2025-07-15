@@ -1,0 +1,22 @@
+{
+  "name": "@sc-fam/admin-bot",
+  "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "build:no-emit": "tsc --noEmit",
+    "typegen": "wrangler types",
+    "dev": "wrangler dev --define \"DEV: true\"",
+    "deploy": "wrangler deploy --define \"DEV: false\"",
+    "webhook:set": "tsx ./src/setup/setWebhook.ts",
+    "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.7",
+    "dotenv": "17.0.0",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "wrangler": "4.22.0"
+  },
+  "dependencies": {
+    "telegram-standard-bot-api": "1.0.6"
+  }
+}

@@ -1,6 +1,11 @@
 @use 'sass:map';
 
 $variants: (
+  caption: (
+    font-size: 12,
+    font-weight: 400,
+    letter-spacing: 0.4,
+  ),
   body: (
     font-size: 16,
     font-weight: 400,
@@ -42,7 +47,6 @@ $variants: (
     letter-spacing: 0.15,
   ),
 );
-
 $font: var(--font-murs-gothic);
 
 @function map-px-to-rem($options, $key) {

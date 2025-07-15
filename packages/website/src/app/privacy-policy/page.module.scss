@@ -1,0 +1,23 @@
+.privacyWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: var(--color-background);
+  color: var(--color-text-on-background-dark);
+}
+
+.title {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.subtitle {
+  margin-top: 32px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.paragraph {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}

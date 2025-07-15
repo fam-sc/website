@@ -1,22 +1,15 @@
-import Image from 'next/image';
+import { classNames } from '@/utils/classNames';
 
 import { LinkButton } from '../LinkButton';
 import { Typography } from '../Typography';
-
+import { VarImage, VarImageType } from '../VarImage';
 import styles from './index.module.scss';
-
-import { classNames } from '@/utils/classNames';
 
 export type TextWithImageProps = {
   className?: string;
   title: string;
   subtext: string;
-  image: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  };
+  image: VarImageType;
   button?: {
     title: string;
     href: string;
@@ -33,19 +26,14 @@ export function TextWithImage({
   return (
     <div className={classNames(styles.root, className)}>
       <div className={styles['image-wrapper']}>
-        <Image
-          src={image.src}
-          alt={image.alt}
-          width={image.width}
-          height={image.height}
-        />
+        <VarImage image={image} sizes={{ 900: '60vw', default: '100vw' }} />
       </div>
 
       <div className={styles['text-section']}>
         <Typography variant="h4">{title}</Typography>
         <Typography>{subtext}</Typography>
-        {button === undefined ? undefined : (
-          <LinkButton href={button.href} buttonVariant="solid" color="primary">
+        {button && (
+          <LinkButton to={button.href} buttonVariant="solid" color="primary">
             {button.title}
           </LinkButton>
         )}

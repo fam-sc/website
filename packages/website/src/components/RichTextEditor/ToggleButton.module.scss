@@ -1,0 +1,8 @@
+.root {
+  width: 32px;
+  height: 32px;
+
+  &[aria-checked='true'] {
+    background: var(--color-background-dark);
+  }
+}

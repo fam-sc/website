@@ -10,13 +10,4 @@
   &[data-over='true'] {
     background-color: var(--color-background-dark);
   }
-
-  input {
-    // Hide the input, we only style the label
-    display: none;
-  }
-
-  label {
-    user-select: none;
-  }
 }

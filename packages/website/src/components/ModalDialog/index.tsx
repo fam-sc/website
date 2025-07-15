@@ -1,17 +1,16 @@
-import { ReactElement, ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-
-import { IconButton } from '../IconButton';
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
+import { ReactElement, ReactNode, useId } from 'react';
 
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
 
+import { IconButton } from '../IconButton';
+import { ModalOverlay } from '../ModalOverlay';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
+
 type ModalDialogProps = {
-  title: string;
+  title?: string;
   contentClassName?: string;
   footer?: ReactElement;
   onClose?: () => void;
@@ -25,15 +24,23 @@ export function ModalDialog({
   contentClassName,
   onClose,
 }: ModalDialogProps) {
+  const titleId = useId();
+
   useScrollbar(false);
 
-  return createPortal(
-    <div className={styles.root}>
-      <div className={styles.dialog}>
+  return (
+    <ModalOverlay className={styles.overlay} effect="tint">
+      <div className={styles.dialog} role="dialog" aria-labelledby={titleId}>
         <div className={styles.header}>
-          <Typography>{title}</Typography>
+          {title === undefined ? undefined : (
+            <Typography variant="h5">{title}</Typography>
+          )}
 
-          <IconButton className={styles.close} onClick={onClose}>
+          <IconButton
+            className={styles.close}
+            onClick={onClose}
+            title="Закрити діалог"
+          >
             <CloseIcon />
           </IconButton>
         </div>
@@ -44,7 +51,6 @@ export function ModalDialog({
 
         {footer && <div className={styles.footer}>{footer}</div>}
       </div>
-    </div>,
-    document.body
+    </ModalOverlay>
   );
 }

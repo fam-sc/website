@@ -1,0 +1,23 @@
+.root ul {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: 1em;
+  gap: 0.25em;
+
+  a {
+    display: block;
+
+    &.link-active {
+      background: var(--color-background-dark);
+    }
+  }
+
+  li > * {
+    text-align: start;
+  }
+
+  button {
+    width: 100%;
+  }
+}

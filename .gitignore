@@ -10,3 +10,9 @@ node_modules
 tsconfig.tsbuildinfo
 .env.local
 dist
+.wrangler
+.eslintcache
+.stylelintcache
+coverage
+
+worker-configuration.d.ts

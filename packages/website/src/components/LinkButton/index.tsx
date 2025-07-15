@@ -1,13 +1,32 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
+import { Link, LinkProps } from 'react-router';
+
+import { PropsMap } from '@/types/react';
+import { classNames } from '@/utils/classNames';
 
 import { Button, ButtonProps } from '../Button';
-import { Link, LinkProps } from '../Link';
+import styles from './index.module.scss';
 
-export type LinkButtonProps = LinkProps &
-  ButtonProps & {
-    children?: ReactNode;
-  };
+type AnchorProps = PropsMap['a'];
 
-export function LinkButton(props: LinkButtonProps) {
-  return <Button as={Link} {...props} linkVariant="clean" />;
+export type LinkButtonProps = PropsWithChildren<
+  (
+    | (LinkProps & { realNavigation?: false })
+    | (AnchorProps & { realNavigation: true })
+  ) &
+    ButtonProps
+>;
+
+export function LinkButton({
+  className,
+  realNavigation,
+  ...rest
+}: LinkButtonProps) {
+  return (
+    <Button
+      as={realNavigation ? 'a' : Link}
+      className={classNames(styles.root, className)}
+      {...rest}
+    />
+  );
 }

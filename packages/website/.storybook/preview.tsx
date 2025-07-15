@@ -1,25 +1,28 @@
+import '../src/theme/global.scss';
+
 import type { Preview } from '@storybook/react';
-import localFont from 'next/font/local';
+import { createRoutesStub } from 'react-router';
 
-import '../src/theme/global.module.scss';
-
-const mursGothic = localFont({
-  src: [
-    { path: '../MursGothic-KeyRegular.otf', weight: '400', style: 'normal' },
-    { path: '../MursGothic-WideMedium.otf', weight: '500', style: 'normal' },
-    { path: '../MursGothic-WideDark.ttf', weight: '700', style: 'normal' },
-  ],
-  preload: true,
-  variable: '--font-murs-gothic',
-});
+import { NotificationWrapper } from '@/components/Notification';
 
 const preview: Preview = {
   decorators: [
-    (Story) => (
-      <div className={mursGothic.variable}>
-        <Story />
-      </div>
-    ),
+    (Story) => {
+      const Stub = createRoutesStub([
+        {
+          path: '/',
+          Component: () => <Story />,
+        },
+      ]);
+
+      return (
+        <div>
+          <NotificationWrapper>
+            <Stub />
+          </NotificationWrapper>
+        </div>
+      );
+    },
   ],
 };
 

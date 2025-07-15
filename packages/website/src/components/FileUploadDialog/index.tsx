@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
+import { FileGate } from '@/utils/fileGate';
+
 import { CircularProgress } from '../CircularProgress';
 import { FileDropArea } from '../FileDropArea';
 import { ModalDialog } from '../ModalDialog';
-
 import styles from './index.module.scss';
 
 export type FileUploadDialogProps = {
@@ -11,9 +12,7 @@ export type FileUploadDialogProps = {
   // how much of the sumbitted file is uploaded to the media server.
   fileUploadProgress?: number;
 
-  // It only works on the file chooser. User can still select a file different than 'accept' via file drop.
-  // The logic shouldn't rely on it. Just a hint.
-  accept?: string;
+  accept?: FileGate;
 
   onSubmit?: (file: File) => void;
   onClose?: () => void;
@@ -42,9 +41,11 @@ export function FileUploadDialog({
         <FileDropArea
           className={styles['file-drop']}
           accept={accept}
-          onFile={(file) => {
-            onSubmit?.(file);
-            setIsLoading(true);
+          onFiles={(files) => {
+            if (files.length > 0) {
+              onSubmit?.(files[0]);
+              setIsLoading(true);
+            }
           }}
         />
       )}

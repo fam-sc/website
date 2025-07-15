@@ -1,0 +1,13 @@
+.root {
+  background: none;
+  outline: none;
+  border: none;
+  color: var(--color-text-on-background);
+  font-family: var(--font-murs-gothic);
+
+  color-scheme: dark;
+
+  &:disabled {
+    color: var(--color-text-on-background-dark);
+  }
+}

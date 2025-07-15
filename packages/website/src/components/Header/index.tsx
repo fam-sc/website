@@ -1,40 +1,25 @@
-'use client';
-
 import { useState } from 'react';
-import Logo from '@public/images/logo.png';
-import Image from 'next/image';
+
+import { getMediaFileUrl } from '@/api/media';
+import { useAuthInfo } from '@/auth/context';
+import { navigationMainRoutes } from '@/constants/navigation';
+import { useScrollbar } from '@/hooks/useScrollbar';
+import { CloseIcon } from '@/icons/CloseIcon';
+import { MenuIcon } from '@/icons/MenuIcon';
+import Logo from '@/images/logo.png?w=100!';
 
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';
 import { LinkButton } from '../LinkButton';
-
+import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
 import styles from './index.module.scss';
-
-import { useScrollbar } from '@/hooks/useScrollbar';
-import { CloseIcon } from '@/icons/CloseIcon';
-import { MenuIcon } from '@/icons/MenuIcon';
-
-export type HeaderProps = {
-  userLogOn: boolean;
-};
-
-type ItemProps = {
-  title: string;
-  href: string;
-};
-
-const items: ItemProps[] = [
-  { title: 'Студрада ФПМ', href: '#' },
-  { title: 'Розклад', href: '#' },
-  { title: 'Опитування', href: '#' },
-];
 
 function Navigation() {
   return (
     <ul className={styles.nav}>
-      {items.map(({ title, href }) => (
-        <li key={href}>
-          <Link linkVariant="clean" href={href}>
+      {navigationMainRoutes.map(({ title, href }) => (
+        <li key={`${href}-${title}`}>
+          <Link linkVariant="clean" to={href}>
             {title}
           </Link>
         </li>
@@ -46,53 +31,75 @@ function Navigation() {
 function Buttons() {
   return (
     <div className={styles.buttons}>
-      <LinkButton href="#" buttonVariant="solid">
+      <LinkButton to="/signin" buttonVariant="solid">
         Увійти
       </LinkButton>
 
-      <LinkButton href="#" buttonVariant="outlined">
+      <LinkButton to="/signup" buttonVariant="outlined">
         Зареєструватись
       </LinkButton>
     </div>
   );
 }
 
-function Avatar() {
+type AvatarProps = {
+  userId: number;
+  hasAvatar: boolean | undefined;
+};
+
+function Avatar({ userId, hasAvatar }: AvatarProps) {
   return (
-    <Image
-      className={styles.avatar}
-      src="https://i.imgur.com/xxCgHWM.png"
-      alt=""
-      width={512}
-      height={512}
-    />
+    <Link className={styles.avatar} to="/u/info">
+      <UserAvatarOrPlaceholder
+        src={hasAvatar ? getMediaFileUrl(`user/${userId}`) : undefined}
+      />
+    </Link>
   );
 }
 
-function MobileMenu({ userLogOn }: HeaderProps) {
+function AvatarOrButtons() {
+  const { user } = useAuthInfo();
+
+  return user === null ? (
+    <Buttons />
+  ) : (
+    <Avatar userId={user.id} hasAvatar={user.hasAvatar} />
+  );
+}
+
+function MobileMenu() {
   return (
     <div className={styles['mobile-menu']}>
       <Navigation />
 
-      {userLogOn ? <Avatar /> : <Buttons />}
+      <AvatarOrButtons />
     </div>
   );
 }
 
-export function Header({ userLogOn }: HeaderProps) {
+export function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useScrollbar(!isMobileMenuOpen);
 
   return (
     <header className={styles.root}>
-      <div className={styles.content}>
-        <Link href="/" className={styles.logo}>
-          <Image src={Logo} alt="Logo" />
+      <div
+        className={styles.content}
+        onClick={({ target }) => {
+          // Hide mobile menu if the user navigated to another page - the mobile menu
+          // is no longer relevant.
+          if (target instanceof HTMLElement && target.nodeName === 'A') {
+            setMobileMenuOpen(false);
+          }
+        }}
+      >
+        <Link to="/" className={styles.logo} aria-hidden>
+          <img src={Logo} alt="Logo" />
         </Link>
 
         <Navigation />
-        {userLogOn ? <Avatar /> : <Buttons />}
+        <AvatarOrButtons />
 
         <IconButton
           className={styles['menu-button']}
@@ -103,7 +110,7 @@ export function Header({ userLogOn }: HeaderProps) {
           {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
         </IconButton>
 
-        {isMobileMenuOpen && <MobileMenu userLogOn={userLogOn} />}
+        {isMobileMenuOpen && <MobileMenu />}
       </div>
     </header>
   );

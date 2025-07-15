@@ -1,0 +1,134 @@
+@use 'sass:list';
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+@use '../../theme/typography' as *;
+
+$type-gradient-map: (
+  lec: (
+    #db17be,
+    #9215d1,
+  ),
+  prac: (
+    #ce5c0f,
+    #ee750a,
+  ),
+  lab: (
+    #2abca8,
+    #13927c,
+  ),
+);
+
+.root {
+  background-color: var(--color-background-dark);
+  border-radius: 0.75em;
+
+  padding: 1em;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  box-shadow: 0 0 3px #000;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.type {
+  margin-bottom: 4px;
+  flex-grow: 1;
+
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(0.25turn, var(--start), var(--end));
+
+  @each $key, $value in $type-gradient-map {
+    &-#{$key} {
+      --start: #{list.nth($value, 1)};
+      --end: #{list.nth($value, 2)};
+    }
+  }
+}
+
+.now-indicator {
+  margin-left: auto;
+
+  &::before {
+    $color: #f00;
+
+    content: ' ';
+    display: inline-block;
+
+    @include size(0.75em);
+
+    margin-right: 4px;
+
+    background-color: $color;
+    animation: glowing 1s linear 0s infinite alternate;
+
+    border-radius: 1em;
+
+    @keyframes glowing {
+      from {
+        box-shadow: 0 0 0 $color;
+      }
+
+      to {
+        box-shadow: 0 0 10px $color;
+      }
+    }
+  }
+}
+
+.name {
+  font-weight: 700 !important;
+  margin-bottom: 4px;
+}
+
+// Increase specifity to override display.
+.root .time {
+  @include breakpoint-up('lg') {
+    display: none;
+  }
+}
+
+.link {
+  width: 100%;
+
+  a,
+  input {
+    display: block;
+    background: linear-gradient(0.25turn, #432f67, #2e1f4b);
+    border-radius: 0.5em;
+    padding: 0.5em;
+
+    box-shadow: 0 0 2px #000;
+    overflow: hidden;
+  }
+
+  input {
+    border: none;
+    box-sizing: border-box;
+    max-width: 100%;
+
+    @include variant-full-body('body');
+
+    color: var(--color-text-on-background);
+
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-underline-position: from-font;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px #000;
+    }
+  }
+
+  a {
+    text-overflow: ellipsis;
+  }
+}

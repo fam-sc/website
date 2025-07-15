@@ -1,0 +1,57 @@
+.signinForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 20px;
+  background-color: var(--color-background);
+  color: var(--color-text-on-background);
+  border-radius: 12px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+    margin: 1.5rem auto;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    margin: 10px 5px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+}
+
+.formTitle {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 32px;
+  font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  @media (max-width: 480px) {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+.turnstile-widget {
+  margin-bottom: 1em;
+}

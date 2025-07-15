@@ -1,30 +1,39 @@
-import React from 'react';
-
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
-import { WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
+
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 type ButtonVariant = 'flat' | 'solid' | 'outlined';
 type ButtonColor = 'primary';
 
-export interface ButtonProps extends WithDataSpace<'button-variant' | 'color'> {
+export interface ButtonProps {
+  hasIcon?: boolean;
+  disabled?: boolean;
   className?: string;
   buttonVariant?: ButtonVariant;
   color?: ButtonColor;
 }
 
 export const Button = impersonatedComponent<ButtonProps, 'button'>(
-  'button',
-  ({ className, buttonVariant, color, ...rest }) => {
+  ({
+    as = 'button',
+    buttonVariant = 'flat',
+    color = 'primary',
+    className,
+    disabled,
+    ...rest
+  }) => {
     return (
       <Typography
-        data-button-variant={buttonVariant ?? 'flat'}
-        data-color={color ?? 'primary'}
-        className={classNames(styles.root, className)}
+        as={as}
+        disabled={disabled}
+        className={classNames(
+          styles.root,
+          styles[`root-variant-${buttonVariant}`],
+          styles[`root-color-${color}`],
+          className
+        )}
         {...rest}
       />
     );

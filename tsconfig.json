@@ -8,10 +8,15 @@
     "strict": true,
     "skipLibCheck": true,
     "incremental": true,
+    "allowJs": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "include": ["eslint.config.mts"],
+  "include": [
+    "./eslint.config.mts",
+    "stylelint.config.js",
+    "prettier.config.mjs"
+  ],
   "exclude": ["./node_modules"]
 }

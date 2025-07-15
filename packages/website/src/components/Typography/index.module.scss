@@ -1,14 +1,26 @@
 @use '../../theme/typography' as *;
 
 .root {
-  padding: 0;
-  margin: 0;
-
   font-family: var(--font-murs-gothic);
 
+  &-has-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+
+    svg {
+      fill: var(--color-text-on-background);
+    }
+  }
+
   @each $variant, $options in $variants {
-    &[data-variant='#{$variant}'] {
+    &-variant-#{$variant} {
       @include variant-body($options);
     }
+  }
+
+  &-weight-bold {
+    font-weight: 700 !important;
   }
 }

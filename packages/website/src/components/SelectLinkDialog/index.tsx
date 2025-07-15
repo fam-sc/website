@@ -1,14 +1,10 @@
-'use client';
-
+import { urlRegex } from '@shared/string/regex';
 import { useMemo, useState } from 'react';
 
 import { Button } from '../Button';
 import { ModalDialog } from '../ModalDialog';
 import { TextInput } from '../TextInput';
-
 import styles from './index.module.scss';
-
-import { urlRegex } from '@/utils/regex';
 
 type Result = {
   link: string;
@@ -22,8 +18,7 @@ export type SelectLinkDialogProps = {
 export function SelectLinkDialog(props: SelectLinkDialogProps) {
   const [link, setLink] = useState('');
 
-  const urlPattern = useMemo(() => urlRegex(), []);
-  const isValidLink = useMemo(() => urlPattern.test(link), [urlPattern, link]);
+  const isValidLink = useMemo(() => urlRegex.test(link), [link]);
 
   return (
     <ModalDialog
@@ -48,10 +43,8 @@ export function SelectLinkDialog(props: SelectLinkDialogProps) {
     >
       <TextInput
         value={link}
-        isError={!isValidLink}
-        onTextChanged={(newLink) => {
-          setLink(newLink);
-        }}
+        error={!isValidLink && 'Неправильний формат посилання'}
+        onTextChanged={setLink}
         placeholder="Посилання"
       />
     </ModalDialog>

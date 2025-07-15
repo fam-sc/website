@@ -1,26 +1,69 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
 .root {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 32px;
-  background: var(--color-background-dark);
-  color: var(--color-text-on-background);
+  --columns: 2;
+
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  padding: 2rem;
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-primary-dark);
+  gap: 1em;
+
+  @include breakpoint-up('md') {
+    --columns: 4;
+    padding: 2rem 4rem;
+  }
+
+  @include breakpoint-up('lg') {
+    --columns: 5;
+  }
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 0.8rem;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.link-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  --icon-size: 24px;
+
+  &-small {
+    --icon-size: 16px;
+  }
+
+  svg {
+    width: var(--icon-size);
+    height: var(--icon-size);
+
+    fill: var(--color-text-on-background);
+    stroke: var(--color-text-on-background);
+  }
 }
 
 .icons {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-self: center;
 
-  img {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
+  @include breakpoint-down('lg') {
+    grid-column: 1 / span var(--columns);
   }
 }

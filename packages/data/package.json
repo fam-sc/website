@@ -1,0 +1,13 @@
+{
+  "name": "@sc-fam/data",
+  "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "build:no-emit": "tsc --noEmit"
+  },
+  "exports": {
+    "import": "./src/index.ts"
+  },
+  "dependencies": {
+    "typescript": "5.8.3"
+  }
+}

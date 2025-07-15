@@ -1,0 +1,22 @@
+{
+  "name": "@sc-fam/schedule-bot",
+  "packageManager": "yarn@4.9.2",
+  "type": "module",
+  "scripts": {
+    "build:no-emit": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "typegen": "wrangler types",
+    "webhook:set": "tsx ./src/setup/setWebhook.ts",
+    "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
+  },
+  "dependencies": {
+    "telegram-standard-bot-api": "1.0.6",
+    "wrangler": "4.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.7",
+    "dotenv": "17.0.0",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3"
+  }
+}

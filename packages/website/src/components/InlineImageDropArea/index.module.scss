@@ -1,0 +1,41 @@
+@use '../../theme/utils' as *;
+
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  img {
+    border-radius: 0.75em;
+  }
+}
+
+.image-blur-wrapper {
+  height: 100%;
+}
+
+.drop-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px dashed var(--color-text-on-background);
+  border-radius: 0.75em;
+
+  padding: 1em;
+
+  height: 100%;
+  flex-grow: 0;
+
+  transition: background-color 0.1s linear;
+
+  &[data-over='true'] {
+    background: var(--color-background-dark);
+  }
+
+  > p {
+    margin-top: 1em;
+    user-select: none;
+  }
+}

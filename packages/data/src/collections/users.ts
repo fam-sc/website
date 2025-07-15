@@ -1,0 +1,170 @@
+import { and, or } from '../sqlite/conditions';
+import { notEquals, notNull } from '../sqlite/modifier';
+import { TableDescriptor } from '../sqlite/types';
+import {
+  RawUser,
+  ShortUser,
+  User,
+  UserPersonalInfo,
+  UserRole,
+} from '../types/user';
+import { EntityCollection } from './base';
+
+export class UserCollection extends EntityCollection<RawUser>('users') {
+  static descriptor(): TableDescriptor<RawUser> {
+    return {
+      id: 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
+      academicGroup: 'TEXT NOT NULL',
+      email: 'TEXT NOT NULL',
+      firstName: 'TEXT NOT NULL',
+      lastName: 'TEXT NOT NULL',
+      parentName: 'TEXT',
+      passwordHash: 'TEXT NOT NULL',
+      role: 'INTEGER NOT NULL',
+      scheduleBotUserId: 'INTEGER',
+      adminBotUserId: 'INTEGER',
+      telnum: 'TEXT',
+      hasAvatar: 'INTEGER NOT NULL',
+    };
+  }
+
+  async findUserByEmail(email: string): Promise<User | null> {
+    const result = await this.findOneWhere({ email });
+
+    return result && { ...result, hasAvatar: result.hasAvatar === 1 };
+  }
+
+  updateScheduleBotUserId(id: number, telegramUserId: number) {
+    return this.updateWhere({ id }, { scheduleBotUserId: telegramUserId });
+  }
+
+  updateAdminBotUserId(id: number, telegramUserId: number) {
+    return this.updateWhere({ id }, { adminBotUserId: telegramUserId });
+  }
+
+  findByScheduleBotUserId(id: number) {
+    return this.findOneWhere({ scheduleBotUserId: id });
+  }
+
+  findByAdminBotUserId(id: number) {
+    return this.findOneWhere({ adminBotUserId: id });
+  }
+
+  findAllUsersWithLinkedScheduleBot() {
+    return this.findManyWhere({ scheduleBotUserId: notNull() }, [
+      'id',
+      'academicGroup',
+      'scheduleBotUserId',
+    ]);
+  }
+
+  findAllUsersWithLinkedAdminBot(academicGroup: string) {
+    return this.findManyWhere(
+      and(
+        { adminBotUserId: notNull() },
+        or<RawUser>(
+          { role: UserRole.ADMIN },
+          { role: UserRole.GROUP_HEAD, academicGroup }
+        )
+      ),
+      ['id', 'academicGroup', 'adminBotUserId']
+    );
+  }
+
+  getRoleAndGroupByAdminBotUserId(userId: number) {
+    return this.findOneWhereAction({ adminBotUserId: userId }, [
+      'academicGroup',
+      'role',
+    ]);
+  }
+
+  getRoleAndGroupById(userId: number) {
+    return this.findOneWhereAction({ id: userId }, ['academicGroup', 'role']);
+  }
+
+  async findAllNonApprovedUsers(academicGroup?: string): Promise<ShortUser[]> {
+    const result = await this.findManyWhere(
+      academicGroup ? { academicGroup } : {},
+      [
+        'id',
+        'academicGroup',
+        'firstName',
+        'lastName',
+        'parentName',
+        'email',
+        'role',
+        'hasAvatar',
+      ]
+    );
+
+    return result.map(({ hasAvatar, ...rest }) => ({
+      ...rest,
+      hasAvatar: hasAvatar === 1,
+    }));
+  }
+
+  updateRole(id: number, role: UserRole) {
+    return this.updateWhere({ id }, { role });
+  }
+
+  updateRoleIfNonApprovedUser(id: number, role: UserRole) {
+    return this.updateWhere(
+      { id, role: UserRole.STUDENT_NON_APPROVED },
+      { role }
+    );
+  }
+
+  updatePassword(id: number, passwordHash: string) {
+    return this.updateWhere({ id }, { passwordHash });
+  }
+
+  updateHasAvatar(id: number, hasAvatar: boolean) {
+    return this.updateWhere({ id }, { hasAvatar: hasAvatar ? 1 : 0 });
+  }
+
+  updatePersonalInfo(
+    id: number,
+    { firstName, lastName, parentName }: UserPersonalInfo
+  ) {
+    return this.updateWhere({ id }, { firstName, lastName, parentName });
+  }
+
+  async getUserAcademicGroup(id: number): Promise<string | null> {
+    const result = await this.findOneWhere({ id }, ['academicGroup']);
+
+    return result?.academicGroup ?? null;
+  }
+
+  async getPage(index: number, size: number) {
+    const result = await this.getPageBase(
+      index * size,
+      size,
+      { role: notEquals(UserRole.ADMIN) },
+      [
+        'id',
+        'firstName',
+        'lastName',
+        'parentName',
+        'academicGroup',
+        'email',
+        'role',
+        'hasAvatar',
+      ]
+    ).get();
+
+    return result.map(({ hasAvatar, ...rest }) => ({
+      hasAvatar: hasAvatar === 1,
+      ...rest,
+    }));
+  }
+
+  getPersonalInfo(id: number): Promise<UserPersonalInfo | null> {
+    return this.findOneWhere({ id }, ['firstName', 'lastName', 'parentName']);
+  }
+
+  async userWithEmailExists(email: string): Promise<boolean> {
+    const count = await this.count({ email }).get();
+
+    return count > 0;
+  }
+}

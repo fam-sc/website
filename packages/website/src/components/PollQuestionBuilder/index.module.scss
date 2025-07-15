@@ -1,0 +1,32 @@
+.root {
+  background: var(--color-background-dark);
+  border-radius: 1em;
+  box-shadow: 0 0 3px #000;
+
+  padding: 1em 1.5em;
+
+  transition: box-shadow 0.1s linear;
+
+  &-error {
+    box-shadow: 0 0 8px var(--color-danger);
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.title {
+  flex-grow: 0.8;
+}
+
+.type-select {
+  margin-left: auto;
+
+  width: 20%;
+}

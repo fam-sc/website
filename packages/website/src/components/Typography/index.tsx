@@ -1,17 +1,21 @@
-import React, { Attributes } from 'react';
+import React, { Attributes, ReactNode } from 'react';
 
-import styles from './index.module.scss';
-
-import { WithDataSpace } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
 
+import styles from './index.module.scss';
+
 type Header = `h${1 | 2 | 3 | 4 | 5 | 6}`;
 
-export type TypographyVariant = 'body' | 'bodyLarge' | Header;
+export type TypographyVariant = 'caption' | 'body' | 'bodyLarge' | Header;
+export type TypographyWeight = 'plain' | 'bold';
 
-export interface TypographyProps extends WithDataSpace<'variant'> {
+export interface TypographyProps {
+  hasIcon?: boolean;
   variant?: TypographyVariant;
+  weight?: TypographyWeight;
+  className?: string;
+  children?: ReactNode;
 }
 
 function isHeader(value: TypographyVariant): value is Header {
@@ -19,15 +23,27 @@ function isHeader(value: TypographyVariant): value is Header {
 }
 
 export const Typography = impersonatedComponent<TypographyProps, 'p'>(
-  'p',
-  ({ as: _as, className, variant = 'body', children, ...rest }) => {
-    const elementName = _as === 'p' && isHeader(variant) ? variant : _as;
+  ({
+    as = 'p',
+    className,
+    variant = 'body',
+    weight = 'plain',
+    hasIcon,
+    children,
+    ...rest
+  }) => {
+    const elementName = as === 'p' && isHeader(variant) ? variant : as;
 
     return React.createElement(
       elementName,
       {
-        className: classNames(styles.root, className),
-        'data-variant': variant,
+        className: classNames(
+          styles.root,
+          styles[`root-variant-${variant}`],
+          weight === 'bold' && styles['root-weight-bold'],
+          hasIcon && styles[`root-has-icon`],
+          className
+        ),
         ...rest,
       } as Attributes,
       children

@@ -1,0 +1,11 @@
+@use '../../theme/utils' as *;
+
+.root {
+  input {
+    border-radius: 100%;
+
+    &::before {
+      clip-path: circle(50%);
+    }
+  }
+}

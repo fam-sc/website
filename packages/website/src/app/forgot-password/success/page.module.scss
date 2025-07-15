@@ -1,0 +1,25 @@
+@use '../../../theme/breakpoints' as *;
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0 3em;
+  gap: 1em;
+  align-items: stretch;
+  width: 80%;
+
+  align-self: center;
+
+  @include breakpoint-up('md') {
+    padding: 0;
+    width: 40%;
+  }
+}
+
+.field {
+  width: 100%;
+}
+
+.action {
+  align-self: center;
+}

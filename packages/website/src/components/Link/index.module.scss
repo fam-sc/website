@@ -4,7 +4,7 @@
 
   color: var(--color-text-on-background);
 
-  &[data-link-variant='clean'] {
+  &-variant-clean {
     text-decoration: none;
   }
 }

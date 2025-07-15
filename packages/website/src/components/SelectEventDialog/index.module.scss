@@ -1,0 +1,41 @@
+@use '../../theme/utils' as *;
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 8px;
+}
+
+.loading-indicator {
+  @include size(3em);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  overflow-y: auto;
+
+  width: 100%;
+  max-height: 70dvh;
+
+  padding-right: 4px;
+
+  li {
+    padding: 0.75em 0.5em;
+
+    user-select: none;
+
+    border-radius: 0.5em;
+
+    transition: background-color 0.1s linear;
+
+    &:hover,
+    &[aria-selected='true'] {
+      background-color: var(--color-background-dark);
+    }
+  }
+}

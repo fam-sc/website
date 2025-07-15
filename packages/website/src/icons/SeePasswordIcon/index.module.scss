@@ -6,7 +6,7 @@
     transition: stroke-dashoffset 0.2s linear;
   }
 
-  &[data-active='true'] .strike {
+  &-active .strike {
     stroke-dashoffset: 0;
   }
 }

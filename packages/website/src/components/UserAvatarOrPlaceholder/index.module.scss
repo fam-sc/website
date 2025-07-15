@@ -1,0 +1,21 @@
+.root {
+  &,
+  img {
+    border-radius: 100%;
+  }
+
+  img {
+    object-fit: cover;
+  }
+
+  svg {
+    fill: var(--color-text-on-background);
+    stroke: var(--color-text-on-background);
+  }
+
+  img,
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
+
+import styles from './index.module.scss';
 
 export type CircularProgressProps = {
   // A number between 0 and 1.

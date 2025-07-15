@@ -1,0 +1,16 @@
+@use '../../theme/breakpoints' as *;
+
+.time-marker {
+  display: none;
+
+  @include breakpoint-up('lg') {
+    $index: calc(var(--index) + 2);
+
+    display: block;
+
+    grid-column: 1/1;
+    grid-row: $index;
+
+    margin-top: 0.5em;
+  }
+}

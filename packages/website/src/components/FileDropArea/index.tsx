@@ -1,62 +1,25 @@
-import { useState } from 'react';
-
-import { Button } from '../Button';
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
 import { classNames } from '@/utils/classNames';
+import { FileGate } from '@/utils/fileGate';
+
+import { BaseFileDropArea } from '../BaseFileDropArea';
+import styles from './index.module.scss';
 
 export type FileDropAreaProps = {
   className?: string;
-  accept?: string;
-  onFile?: (file: File) => void;
+  accept?: FileGate;
+  onFiles?: (files: FileList) => void;
 };
 
-export function FileDropArea({ onFile, accept, className }: FileDropAreaProps) {
-  const [isOver, setOver] = useState(false);
-
+export function FileDropArea({
+  onFiles,
+  accept,
+  className,
+}: FileDropAreaProps) {
   return (
-    <div
+    <BaseFileDropArea
       className={classNames(styles.root, className)}
-      data-over={isOver}
-      onDragEnter={() => {
-        setOver(true);
-      }}
-      onDragLeave={() => {
-        setOver(false);
-      }}
-      onDragOver={(e) => {
-        e.preventDefault();
-
-        setOver(true);
-      }}
-      onDrop={(e) => {
-        e.preventDefault();
-
-        const { files } = e.dataTransfer;
-
-        if (files.length > 0) {
-          onFile?.(files[0]);
-        }
-      }}
-    >
-      <Button buttonVariant="solid" as="label">
-        <input
-          type="file"
-          accept={accept}
-          onChange={(event) => {
-            const { files } = event.target;
-
-            if (files !== null && files.length > 0) {
-              onFile?.(files[0]);
-            }
-          }}
-        />
-        Виберіть файл
-      </Button>
-
-      <Typography>Або перетяніть його</Typography>
-    </div>
+      onFiles={onFiles}
+      accept={accept}
+    />
   );
 }

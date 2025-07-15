@@ -2,36 +2,40 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext.disposable", "esnext"],
     "noEmit": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "jsx": "preserve",
-    "allowJs": true,
-    "checkJs": false,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "jsx": "react-jsx",
     "incremental": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "downlevelIteration": true,
+    "rootDirs": [".", "./.react-router/types"],
+    "types": [
+      "vite/client",
+      "./worker-configuration.d.ts",
+      "./src/types/img-multiple.d.ts",
+      "./src/types/img-w.d.ts"
+    ],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@public/*": ["./public/*"]
+      "@data/*": ["../data/src/*"],
+      "@shared/*": ["../shared/src/*"],
+      "@shared-schedule/*": ["../shared-schedule/src/*"]
     },
     "isolatedModules": true
   },
   "include": [
-    "next-env.d.ts",
-    "./src/**/*",
+    "**/*",
+    "**/.server/**/*",
+    "**/.client/**/*",
     "./.storybook/**/*",
-    ".next/types/**/*.ts"
-  ]
+    ".react-router/types/**/*"
+  ],
+  "exclude": ["storybook-static", "build"]
 }

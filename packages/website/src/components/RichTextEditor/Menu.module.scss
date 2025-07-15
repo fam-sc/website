@@ -1,0 +1,8 @@
+@use '../../theme/utils' as *;
+
+.root {
+  margin-bottom: 8px;
+
+  display: flex;
+  flex-flow: row wrap;
+}

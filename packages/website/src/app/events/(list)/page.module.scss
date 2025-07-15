@@ -1,0 +1,30 @@
+@use '../../../theme/breakpoints' as *;
+
+.root {
+  padding: 0 2em;
+  display: flex;
+  flex-direction: column;
+
+  @include breakpoint-up('md') {
+    padding: 1em 3em;
+  }
+}
+
+.list > li {
+  border-bottom: 2px solid var(--color-background-dark);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.pagination {
+  align-self: center;
+
+  margin-bottom: 1em;
+}
+
+.add-event {
+  margin-left: auto;
+  margin-bottom: 1em;
+}

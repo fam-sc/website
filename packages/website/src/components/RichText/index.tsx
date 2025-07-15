@@ -1,19 +1,21 @@
-import React, { Key, ReactNode } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-
-import { Typography } from '../Typography';
-
-import styles from './index.module.scss';
-
-import { getMediaFileUrl } from '@/api/media';
 import {
   RichTextElementNode,
   RichTextNode,
   RichTextString,
-} from '@/richText/types';
+} from '@shared/richText/types';
+import React, { Key, ReactNode } from 'react';
+import { Link } from 'react-router';
+
+import { getMediaFileUrl } from '@/api/media';
+import { MediaFilePath } from '@/api/media';
+import { classNames } from '@/utils/classNames';
+
+import { Image } from '../Image';
+import { Typography } from '../Typography';
+import styles from './index.module.scss';
 
 export type RichTextProps = {
+  className?: string;
   text: RichTextString;
 };
 
@@ -25,7 +27,7 @@ function renderElementNode(node: RichTextElementNode, key?: Key): ReactNode {
 
   if (node.name === 'a') {
     return (
-      <Link {...attrs} href={attrs?.href ?? '/'} key={key}>
+      <Link {...attrs} to={attrs?.href ?? '/'} key={key}>
         {childrenTree}
       </Link>
     );
@@ -45,24 +47,32 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
     return node;
   }
 
-  if (node.name === '#image') {
-    return (
-      <Image
-        src={getMediaFileUrl(node.filePath)}
-        alt=""
-        width={node.width}
-        height={node.height}
-      />
-    );
+  switch (node.name) {
+    case '#image': {
+      return (
+        <Image
+          multiple={node.sizes.map(({ width, height }) => ({
+            src: getMediaFileUrl(`${node.filePath}/${width}` as MediaFilePath),
+            width,
+            height,
+          }))}
+        />
+      );
+    }
+    case '#placeholder-image':
+    case '#unsized-image': {
+      throw new Error('Unexpected node type');
+    }
+    default: {
+      return renderElementNode(node);
+    }
   }
-
-  return renderElementNode(node);
 }
 
-export function RichText(props: RichTextProps) {
+export function RichText({ className, text }: RichTextProps) {
   return (
-    <Typography as="div" className={styles.root}>
-      {renderNode(props.text)}
+    <Typography as="div" className={classNames(styles.root, className)}>
+      {renderNode(text)}
     </Typography>
   );
 }

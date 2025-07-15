@@ -1,70 +1,104 @@
-import Image from 'next/image';
+import React, { ReactNode } from 'react';
+
+import { navigationMainRoutes } from '@/constants/navigation';
+import { InstagramIcon } from '@/icons/InstagramIcon';
+import { MailIcon } from '@/icons/MailIcon';
+import { QuestionIcon } from '@/icons/QuestionIcon';
+import { TelegramIcon } from '@/icons/TelegramIcon';
+import { TikTokIcon } from '@/icons/TikTokIcon';
+import logo from '@/images/logo.png?w=20!';
+import { classNames } from '@/utils/classNames';
 
 import { Link } from '../Link';
 import { Typography } from '../Typography';
-
 import styles from './index.module.scss';
-
-import { classNames } from '@/utils/classNames';
 
 export interface FooterProps {
   className?: string;
 }
 
+const items: { title: string; href: string }[] = [
+  { title: 'Головна', href: '/home' },
+  ...navigationMainRoutes,
+];
+
+type LinkWithIconProps = {
+  to: string;
+  small?: boolean;
+  children: ReactNode;
+};
+
+function LinkWithIcon({ to, small, children }: LinkWithIconProps) {
+  return (
+    <Link
+      to={to}
+      className={classNames(
+        styles['link-with-icon'],
+        small && styles['link-with-icon-small']
+      )}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function Section({ children }: React.PropsWithChildren) {
+  return <div className={styles.section}>{children}</div>;
+}
+
 export function Footer({ className }: FooterProps) {
   return (
     <footer className={classNames(styles.root, className)}>
-      <div className={styles.section}>
+      <Section>
         <Typography>Баранівська Валерія</Typography>
         <Typography>Хмарук Олег</Typography>
         <Typography>2025</Typography>
-      </div>
+      </Section>
 
-      <div className={styles.section}>
-        <Typography as="strong">Головна</Typography>
-        <Typography as="strong">Студентство</Typography>
-        <Typography as="strong">Розклад</Typography>
-        <Typography as="strong">Опитування</Typography>
-      </div>
+      <Section>
+        {items.map((item) => (
+          <Link key={item.href} to={item.href}>
+            <Typography>{item.title}</Typography>
+          </Link>
+        ))}
+      </Section>
 
-      <div className={styles.section}>
+      <Section>
         <Typography as="strong">Підтримка</Typography>
-        <Link href="#">Чат-бот</Link>
-        <Link href="#">Про нас</Link>
-        <Link href="#">FAQ</Link>
-      </div>
 
-      <div className={styles.section}>
-        <Typography as="strong">Політика конфіденційності</Typography>
-        <div className={styles.icons}>
-          <Link href="#">
-            <Image src="/icons/Mail.svg" width={24} height={24} alt="Mail" />
-          </Link>
-          <Link href="#">
-            <Image
-              src="/icons/Instagram.svg"
-              width={24}
-              height={24}
-              alt="Instagram"
-            />
-          </Link>
-          <Link href="#">
-            <Image
-              src="/icons/Telegram.svg"
-              width={24}
-              height={24}
-              alt="Telegram"
-            />
-          </Link>
-          <Link href="#">
-            <Image
-              src="/icons/TikTok.svg"
-              width={24}
-              height={24}
-              alt="TikTok"
-            />
-          </Link>
-        </div>
+        <LinkWithIcon to="https://t.me/fpm_sc_bot" small>
+          <QuestionIcon />
+          Чат-бот
+        </LinkWithIcon>
+
+        <LinkWithIcon to="/home">
+          <img src={logo} width={15} height={15} alt="Bot" />
+          Про нас
+        </LinkWithIcon>
+      </Section>
+
+      <Section>
+        <Link to="/privacy-policy">
+          <Typography as="strong">Політика конфіденційності</Typography>
+        </Link>
+      </Section>
+
+      <div className={styles.icons}>
+        <LinkWithIcon to="mailto:sr.fam.kpi@gmail.com">
+          <MailIcon />
+        </LinkWithIcon>
+
+        <LinkWithIcon to="https://www.instagram.com/fam_kpi/">
+          <InstagramIcon />
+        </LinkWithIcon>
+
+        <LinkWithIcon to="https://t.me/primat_kpi">
+          <TelegramIcon />
+        </LinkWithIcon>
+
+        <LinkWithIcon to="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
+          <TikTokIcon />
+        </LinkWithIcon>
       </div>
     </footer>
   );
