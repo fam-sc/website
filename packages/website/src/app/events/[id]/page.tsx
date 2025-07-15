@@ -63,50 +63,53 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
       });
   }, [event.id, navigate, notification]);
 
+  // Telegram IV requires this layout with <div class="article"> and <article class="article__content">
   return (
-    <article className={styles.root}>
-      <EventMeta event={event} />
+    <div className="article">
+      <article className={classNames(styles.root, 'article__content')}>
+        <EventMeta event={event} />
 
-      <div className={styles.header}>
-        <Typography variant="h4">{event.title}</Typography>
+        <div className={styles.header}>
+          <Typography variant="h4">{event.title}</Typography>
 
-        {canEdit && (
-          <div className={styles['modify-buttons']}>
-            <Link
-              to={`/events/+?edit=${event.id}`}
-              className={styles['modify-button']}
-            >
-              <EditIcon />
-            </Link>
+          {canEdit && (
+            <div className={styles['modify-buttons']}>
+              <Link
+                to={`/events/+?edit=${event.id}`}
+                className={styles['modify-button']}
+              >
+                <EditIcon />
+              </Link>
 
-            <button
-              className={classNames(styles['modify-button'], styles.delete)}
-              onClick={() => {
-                setDeleteDialogShown(true);
-              }}
-            >
-              <DeleteIcon />
-            </button>
-          </div>
+              <button
+                className={classNames(styles['modify-button'], styles.delete)}
+                onClick={() => {
+                  setDeleteDialogShown(true);
+                }}
+              >
+                <DeleteIcon />
+              </button>
+            </div>
+          )}
+        </div>
+
+        <EventStatusMarker className={styles.status} status={event.status} />
+
+        <Image
+          className={styles.image}
+          multiple={event.images.map(({ width, height }) => ({
+            src: getMediaFileUrl(`events/${event.id}/${width}`),
+            width,
+            height,
+          }))}
+        />
+
+        <RichText text={event.description} />
+
+        {isDeleteDialogShown && (
+          <DeleteEventDialog onClose={onClose} onDelete={onDeleteEvent} />
         )}
-      </div>
-
-      <EventStatusMarker className={styles.status} status={event.status} />
-
-      <Image
-        className={styles.image}
-        multiple={event.images.map(({ width, height }) => ({
-          src: getMediaFileUrl(`events/${event.id}/${width}`),
-          width,
-          height,
-        }))}
-      />
-
-      <RichText text={event.description} />
-
-      {isDeleteDialogShown && (
-        <DeleteEventDialog onClose={onClose} onDelete={onDeleteEvent} />
-      )}
-    </article>
+      </article>
+    </div>
   );
 }
