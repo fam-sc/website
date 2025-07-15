@@ -4,6 +4,10 @@ import { ImageInfo, ImageSizes } from '@/utils/image/types';
 
 type ImgProps = PropsMap['img'];
 
+interface ImgPropsWithMultiple extends ImgProps {
+  multiple?: ImageInfo[];
+}
+
 interface ImageWithSizesProps extends Omit<ImgProps, 'sizes'> {
   sizes?: string | ImageSizes;
 }
@@ -16,10 +20,21 @@ interface ImageMultipleProps
 export type ImageProps = ImageWithSizesProps | ImageMultipleProps;
 
 export function Image(props: ImageProps) {
-  let imgProps = { ...props, sizes: resolveSizes(props.sizes) };
-  if ('multiple' in props) {
-    const { multiple } = props;
+  const imgProps = {
+    ...props,
+    sizes: resolveSizes(props.sizes),
+  } as ImgPropsWithMultiple;
+
+  if ('multiple' in imgProps) {
+    const { multiple } = imgProps;
+    delete imgProps.multiple;
+
+    if (multiple === undefined) {
+      return null;
+    }
+
     const lastImage = multiple.at(-1);
+
     if (lastImage === undefined) {
       return null;
     }
@@ -28,7 +43,8 @@ export function Image(props: ImageProps) {
       .map(({ src, width }) => `${src} ${width}w`)
       .join(',');
 
-    imgProps = { srcSet, ...lastImage, ...imgProps };
+    imgProps.srcSet = srcSet;
+    Object.assign(imgProps, lastImage);
   }
 
   return <img {...imgProps} />;
