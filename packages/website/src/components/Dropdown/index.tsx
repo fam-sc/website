@@ -7,7 +7,6 @@ import React, {
   RefObject,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
@@ -19,8 +18,8 @@ import { List } from '../List';
 import { Typography } from '../Typography';
 import styles from './index.module.scss';
 
-type Position = 'top' | 'right' | 'bottom' | 'left';
-type Alignment = 'low' | 'high';
+export type Position = 'top' | 'right' | 'bottom' | 'left';
+export type Alignment = 'low' | 'high';
 
 export type DropdownProps<T extends { id: Key }> = {
   style?: CSSProperties;
@@ -30,6 +29,7 @@ export type DropdownProps<T extends { id: Key }> = {
   renderItem: (value: T) => ReactNode;
   onAction?: (id: T['id']) => void;
   position?: Position;
+  alignment?: Alignment;
   children: ReactElement<{
     onClick: () => void;
     'aria-haspopup'?: string;
@@ -37,23 +37,10 @@ export type DropdownProps<T extends { id: Key }> = {
   }>;
 };
 
-function getHorizontalAlignment(element: HTMLElement): Alignment {
-  const bounds = element.getBoundingClientRect();
-  const width = window.innerWidth;
-
-  console.log(bounds.right);
-  console.log(width);
-
-  if (bounds.right <= width) {
-    return 'high';
-  }
-
-  return 'low';
-}
-
 export function Dropdown<T extends { id: Key }>({
   items,
   position = 'bottom',
+  alignment = 'low',
   className,
   style,
   renderItem,
@@ -61,18 +48,8 @@ export function Dropdown<T extends { id: Key }>({
   children,
 }: DropdownProps<T>) {
   const triggerRef = useRef<HTMLElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
 
   const [isOpen, setOpen] = useState(false);
-  const [alignment, setAlignment] = useState<Alignment>('low');
-
-  useLayoutEffect(() => {
-    const list = listRef.current;
-
-    if (list && isOpen && (position === 'top' || position === 'bottom')) {
-      setAlignment(getHorizontalAlignment(list));
-    }
-  }, [isOpen, position]);
 
   const onTrigger = useCallback(() => {
     setOpen((state) => !state);
@@ -103,8 +80,6 @@ export function Dropdown<T extends { id: Key }>({
     }
   }, [isOpen]);
 
-  console.log(alignment);
-
   return (
     <div className={classNames(styles.root, className)} style={style}>
       {React.cloneElement(children, {
@@ -115,7 +90,6 @@ export function Dropdown<T extends { id: Key }>({
 
       {isOpen && (
         <List
-          ref={listRef}
           role="menu"
           className={classNames(
             styles.menu,

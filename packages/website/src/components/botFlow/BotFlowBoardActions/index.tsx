@@ -58,6 +58,7 @@ export function BotFlowBoardActions({
 
       <Dropdown
         position="bottom"
+        alignment="high"
         items={Object.keys(nodeLabels).map((id) => ({ id: id as NodeType }))}
         onAction={(key) => onAdd?.(key)}
         renderItem={({ id }) => nodeLabels[id]}

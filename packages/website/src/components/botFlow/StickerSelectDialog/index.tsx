@@ -36,8 +36,6 @@ export function StickerSelectDialog({
     const { target } = event;
     const { key } = (target as HTMLElement).dataset;
 
-    console.log(event.target);
-
     setSelectedListSticker(key);
   }, []);
 

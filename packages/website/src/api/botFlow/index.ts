@@ -118,7 +118,6 @@ export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
 }
 
 export async function saveBotFlow(env: Env, inBotFlow: BotFlowWithInMeta) {
-  console.log(inBotFlow);
   const options: BotFlowConfig['options'] = inBotFlow.steps.flatMap((step) =>
     step.options.map((option) => {
       return {
