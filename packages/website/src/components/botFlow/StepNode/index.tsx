@@ -14,6 +14,8 @@ export function StepNode({ id, data }: NodeProps<StepNodeType>) {
   return (
     <NodeContainer type="step">
       <TextArea
+        autoSize
+        variant="inverted-primary"
         value={data.text}
         onTextChanged={(text) => {
           onTextChanged(id, text);

@@ -14,6 +14,8 @@ export function OptionNode({ id, data }: NodeProps<OptionNodeType>) {
   return (
     <NodeContainer type="option">
       <TextArea
+        autoSize
+        variant="inverted-primary"
         value={data.text}
         onTextChanged={(text) => {
           onTextChanged(id, text);

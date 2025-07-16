@@ -24,7 +24,7 @@ export function BotFlowBoardController() {
     <div className={styles.root}>
       <div data-visible={isPending} className={styles['loading-pane']} />
 
-      {flow === undefined ? undefined : (
+      {flow && (
         <BotFlowBoard
           flow={flow}
           onSave={(newFlow) => {
