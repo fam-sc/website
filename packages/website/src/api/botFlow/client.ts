@@ -1,15 +1,16 @@
+import { fetchObject } from '@shared/fetch';
+
 import { BotFlowWithInMeta, BotFlowWithOutMeta } from '@/botFlow/types';
-import { fetchObject } from '@/utils/fetch';
 
 export function fetchBotFlow(): Promise<BotFlowWithOutMeta> {
-  return fetchObject(`/api/botFlow`, { method: 'GET' });
+  return fetchObject(`/api/botFlow`);
 }
 
 export function updateBotFlow(
   value: BotFlowWithInMeta
 ): Promise<BotFlowWithInMeta> {
   return fetchObject(`/api/botFlow`, {
-    method: 'POST',
+    method: 'PUT',
     body: JSON.stringify(value),
   });
 }

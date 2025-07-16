@@ -32,6 +32,7 @@
     "@tiptap/extension-underline": "2.23.0",
     "@tiptap/pm": "2.23.0",
     "@tiptap/react": "2.23.0",
+    "@xyflow/react": "12.8.2",
     "isbot": "5.1.28",
     "parse5": "7.3.0",
     "punycode": "2.3.1",
@@ -41,6 +42,7 @@
     "sass": "1.89.2",
     "sass-loader": "16.0.5",
     "sharp": "0.34.2",
+    "telegram-standard-bot-api": "1.0.7",
     "zod": "3.25.57",
     "zustand": "5.0.3"
   },

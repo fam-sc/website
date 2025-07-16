@@ -7,7 +7,6 @@ import React, { Key, ReactNode } from 'react';
 import { Link } from 'react-router';
 
 import { getMediaFileUrl } from '@/api/media';
-import { MediaFilePath } from '@/api/media';
 import { classNames } from '@/utils/classNames';
 
 import { Image } from '../Image';
@@ -52,7 +51,7 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
       return (
         <Image
           multiple={node.sizes.map(({ width, height }) => ({
-            src: getMediaFileUrl(`${node.filePath}/${width}` as MediaFilePath),
+            src: getMediaFileUrl(`${node.filePath}/${width}`),
             width,
             height,
           }))}

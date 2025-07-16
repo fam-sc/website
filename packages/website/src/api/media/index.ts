@@ -1,17 +1,4 @@
-type MediaSection = 'events' | 'gallery' | 'user' | 'rich-text-image';
-type ImageWithSize = `${string}/${number}`;
-type MediaPathMap = {
-  events: ImageWithSize | `${string}/${number}.png`;
-  gallery: ImageWithSize;
-  'rich-text-image': ImageWithSize;
-  user: string;
-};
-
-export type MediaFileSubPath = `${MediaSection}/${string}`;
-
-export type MediaFilePath = {
-  [K in MediaSection]: `${K}/${MediaPathMap[K]}`;
-}[MediaSection];
+import { MediaFilePath } from './types';
 
 export function getMediaBaseUrl(): string {
   return import.meta.env.VITE_MEDIA_URL;
@@ -19,4 +6,14 @@ export function getMediaBaseUrl(): string {
 
 export function getMediaFileUrl(path: MediaFilePath): string {
   return `${getMediaBaseUrl()}/${path}`;
+}
+
+export async function putMediaFileViaUrl(
+  bucket: R2Bucket,
+  key: string,
+  url: string
+) {
+  const response = await fetch(url);
+
+  await bucket.put(key, response.body);
 }

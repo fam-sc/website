@@ -1,4 +1,4 @@
-import { NodeType } from '@/components/BotFlowBoard/types';
+import { NodeType } from '@/components/botFlow/BotFlowBoard/types';
 
 export interface BotFlow {
   steps: Step[];
@@ -20,7 +20,7 @@ export type Position = {
 
 export type PositionMap = Record<
   NodeType,
-  Record<string, Position | undefined>
+  Record<number, Position | undefined>
 >;
 
 export type BotFlowOutMeta = {
@@ -40,19 +40,19 @@ export type Sticker = {
 };
 
 export type Step = {
-  id: string;
+  id: number;
   text: string;
   options: Option[];
 };
 
 export type Option = {
-  id: string;
+  id: number;
   text: string;
-  nextStepId: string | null;
-  receptacleId: string | null;
+  nextStepId: number | null;
+  receptacleId: number | null;
 };
 
 export type Receptacle = {
-  id: string;
-  emojiId: string;
+  id: number;
+  emojiId: string | null;
 };

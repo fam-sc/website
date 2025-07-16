@@ -1,6 +1,6 @@
 import { getApiSecretToken } from '@shared/api/telegram/request';
-import { Update } from '@shared/api/telegram/types';
 import { badRequest } from '@shared/responses';
+import { Update } from 'telegram-standard-bot-api/types';
 
 import { handleUpdate } from '@/controller';
 

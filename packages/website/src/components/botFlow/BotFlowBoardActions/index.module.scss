@@ -1,0 +1,19 @@
+@use '../../../theme/utils' as *;
+
+.root {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+}
+
+.changed-status {
+  font-family: monospace;
+  height: fit-content;
+}
+
+.action-button {
+  @include size(40px);
+}

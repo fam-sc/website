@@ -1,8 +1,8 @@
 import { Repository } from '@data/repo';
-import { Message, Update } from '@shared/api/telegram/types';
 import { Lesson } from '@shared-schedule/types';
 import { bot } from 'telegram-standard-bot-api';
 import { sendMessage } from 'telegram-standard-bot-api/methods';
+import { Message, Update } from 'telegram-standard-bot-api/types';
 
 import { getMessage } from './messages';
 
@@ -16,8 +16,13 @@ export async function handleUpdate(update: Update) {
 
 async function handleMessage(message: Message) {
   if (message.text !== undefined && message.text.startsWith('/start')) {
+    const fromId = message.from?.id;
+    if (fromId === undefined) {
+      return;
+    }
+
     const repo = Repository.openConnection();
-    const user = await repo.users().findByScheduleBotUserId(message.from.id);
+    const user = await repo.users().findByScheduleBotUserId(fromId);
 
     const isGreeting = user === null;
     const text = getMessage(isGreeting ? 'greeting' : 'already-linked-account');
@@ -38,7 +43,7 @@ async function handleMessage(message: Message) {
         }
       : undefined;
 
-    await bot(sendMessage({ chat_id: message.from.id, text, ...extra }));
+    await bot(sendMessage({ chat_id: fromId, text, ...extra }));
   }
 }
 

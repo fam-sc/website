@@ -1,48 +1,80 @@
 'use server';
 
-import {
-  fetchMediaObject,
-  getMediaFileUrl,
-  listMediaFiles,
-  putMediaFileViaUrl,
-  putMediaObject,
-} from '../media';
-import { getFileDownloadUrlById, getForumTopicIconStickers } from '../telegram';
-import { Sticker } from '../telegram/types';
+import { getFileDownloadUrlById } from '@shared/api/telegram/utils';
+import { createTelegramBot, TelegramBot } from 'telegram-standard-bot-api';
+import { getForumTopicIconStickers } from 'telegram-standard-bot-api/methods';
+import { Sticker } from 'telegram-standard-bot-api/types';
 
-import { BotRepository } from '@/botData/repo';
 import {
   BotFlowWithInMeta,
   BotFlowWithOutMeta,
   PositionMap,
 } from '@/botFlow/types';
 
-const NODE_POSITIONS_PATH = 'bot-flow/node-positions.json';
-const STICKER_PREFIX = 'bot-flow/tg-sticker';
+import { getMediaFileUrl, putMediaFileViaUrl } from '../media';
+import { MediaFilePath } from '../media/types';
+import {
+  getInternalBotFlowConfig,
+  putInternalBotFlowConfig,
+} from './internalClient';
+import { BotFlowConfig } from './types';
 
-function getStickerPath(value: Sticker): string {
-  return `${STICKER_PREFIX}/${value.file_unique_id}`;
+const NODE_POSITIONS_PATH: MediaFilePath = 'bot-flow/node-positions.json';
+
+function getStickerPath(value: Sticker): MediaFilePath {
+  return `bot-flow/tg-sticker/${value.file_unique_id}`;
 }
 
 function getExternalUrl(value: Sticker): string {
   return getMediaFileUrl(getStickerPath(value));
 }
 
-export async function getBotFlow(): Promise<BotFlowWithOutMeta> {
-  const [stickers, mediaStickers] = await Promise.all([
-    getForumTopicIconStickers(),
-    listMediaFiles(STICKER_PREFIX),
-  ]);
+async function listMediaStickers(bucket: R2Bucket): Promise<string[]> {
+  const { objects } = await bucket.list({ prefix: `bot-flow/tg-sticker` });
 
+  return objects.map(({ key }) => key);
+}
+
+async function getNodePositions(bucket: R2Bucket): Promise<PositionMap> {
+  const object = await bucket.get(NODE_POSITIONS_PATH);
+  const data = await object?.json<PositionMap>();
+
+  return data ?? { option: {}, receptacle: {}, step: {} };
+}
+
+async function putNodePositions(bucket: R2Bucket, positions: PositionMap) {
+  await bucket.put(NODE_POSITIONS_PATH, JSON.stringify(positions));
+}
+
+async function downloadStickers(
+  bot: TelegramBot,
+  bucket: R2Bucket,
+  stickers: Sticker[],
+  currentStickers: string[]
+) {
   await Promise.all(
     stickers
-      .filter((sticker) => !mediaStickers.includes(getStickerPath(sticker)))
+      .filter((sticker) => !currentStickers.includes(getStickerPath(sticker)))
       .map(async (sticker) => {
-        const url = await getFileDownloadUrlById(sticker.thumbnail.file_id);
+        const fileId = sticker.thumbnail?.file_id;
 
-        await putMediaFileViaUrl(getStickerPath(sticker), url);
+        if (fileId !== undefined) {
+          const url = await getFileDownloadUrlById(bot, fileId);
+
+          await putMediaFileViaUrl(bucket, getStickerPath(sticker), url);
+        }
       })
   );
+}
+
+export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
+  const bucket = env.MEDIA_BUCKET;
+  const bot = createTelegramBot({ apiKey: env.TG_BOT_KEY });
+
+  const [stickers, mediaStickers] = await Promise.all([
+    bot(getForumTopicIconStickers()),
+    listMediaStickers(bucket),
+  ]);
 
   const icons = stickers.map((value) => {
     return {
@@ -53,14 +85,13 @@ export async function getBotFlow(): Promise<BotFlowWithOutMeta> {
     };
   });
 
-  const repo = BotRepository.createConnection();
-  const [steps, options, receptables] = await Promise.all([
-    repo.steps.getAll(),
-    repo.options.getAll(),
-    repo.receptacles.getAll(),
+  const [config, positions] = await Promise.all([
+    getInternalBotFlowConfig(env.HELPDESK_API_KEY),
+    getNodePositions(bucket),
+    downloadStickers(bot, bucket, stickers, mediaStickers),
   ]);
 
-  const positions = await fetchMediaObject<PositionMap>(NODE_POSITIONS_PATH);
+  const { steps, receptacles, options } = config;
 
   return {
     steps: steps.map((step) => ({
@@ -77,94 +108,46 @@ export async function getBotFlow(): Promise<BotFlowWithOutMeta> {
           };
         }),
     })),
-    receptables: receptables.map((value) => ({
+    receptables: receptacles.map((value) => ({
       id: value.id,
-      emojiId: value.emoji_id.toString(),
+      emojiId: value.emoji_id,
     })),
     meta: { icons, positions },
   };
 }
 
-function mapKeys<T>(
-  map: Record<string, T>,
-  keyMap: Record<string, string>
-): Record<string, T> {
-  const result: Record<string, T> = {};
-
-  for (const key in map) {
-    result[keyMap[key]] = map[key];
-  }
-
-  return result;
-}
-
-export async function saveBotFlow({
-  steps,
-  receptables,
-  meta,
-}: BotFlowWithInMeta): Promise<BotFlowWithInMeta> {
-  const repo = BotRepository.createConnection();
-
-  const stepIdMap = await repo.steps.upsert(
-    steps.map((step) => ({
-      id: step.id,
-      templated: false,
-      text: step.text,
-    }))
-  );
-
-  const receptacleIdMap = await repo.receptacles.upsert(
-    receptables.map((receptacle) => ({
-      id: receptacle.id,
-      emoji_id: receptacle.emojiId,
-      announcement_text: '',
-      chat_id: 0,
-      reply_text: null,
-      text: null,
-    }))
-  );
-
-  const options = steps.flatMap((step) =>
+export async function saveBotFlow(env: Env, inBotFlow: BotFlowWithInMeta) {
+  const options: BotFlowConfig['options'] = inBotFlow.steps.flatMap((step) =>
     step.options.map((option) => {
       return {
         id: option.id,
-        templated: false,
         text: option.text,
-        step_id: stepIdMap[step.id],
-        next_step_id:
-          option.nextStepId === null ? null : stepIdMap[option.nextStepId],
-        receptacle_id:
-          option.receptacleId === null
-            ? null
-            : receptacleIdMap[option.receptacleId],
+        step_id: step.id,
+        next_step_id: option.nextStepId,
+        receptacle_id: option.receptacleId,
       };
     })
   );
 
-  const optionIdMap = await repo.options.upsert(options);
+  const receptacles: BotFlowConfig['receptacles'] = inBotFlow.receptables.map(
+    (receptacle) => ({
+      id: receptacle.id,
+      text: null,
+      announcement_text: null,
+      reply_text: null,
+      emoji_id: receptacle.emojiId,
+    })
+  );
 
-  const { positions } = meta;
-  const newPositions: PositionMap = {
-    step: mapKeys(positions.step, stepIdMap),
-    receptacle: mapKeys(positions.receptacle, receptacleIdMap),
-    option: mapKeys(positions.option, optionIdMap),
-  };
+  const steps: BotFlowConfig['steps'] = inBotFlow.steps.map(({ id, text }) => ({
+    id,
+    text,
+  }));
 
-  await putMediaObject(NODE_POSITIONS_PATH, newPositions);
+  const newConfig = { steps, options, receptacles };
 
-  return {
-    steps: steps.map((step) => ({
-      id: stepIdMap[step.id],
-      text: step.text,
-      options: step.options.map(({ id, ...rest }) => ({
-        id: optionIdMap[id],
-        ...rest,
-      })),
-    })),
-    receptables: receptables.map(({ id, ...rest }) => ({
-      id: receptacleIdMap[id],
-      ...rest,
-    })),
-    meta: { positions: newPositions },
-  };
+  await Promise.all([
+    putInternalBotFlowConfig(env.HELPDESK_API_KEY, newConfig),
+    putNodePositions(env.MEDIA_BUCKET, inBotFlow.meta.positions),
+  ]);
 }

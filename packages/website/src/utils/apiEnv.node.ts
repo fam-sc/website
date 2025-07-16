@@ -16,6 +16,8 @@ export function getApiEnv(): Env {
     TURNSTILE_SECRET_KEY: '',
     SCHEDULE_BOT_ACCESS_KEY: getEnvChecked('SCHEDULE_BOT_ACCESS_KEY'),
     ADMIN_BOT_ACCESS_KEY: getEnvChecked('ADMIN_BOT_ACCESS_KEY'),
+    HELPDESK_API_KEY: getEnvChecked('HELPDESK_API_KEY'),
+    TG_BOT_KEY: getEnvChecked('TG_BOT_TOKEN'),
     MEDIA_BUCKET: bucket,
     DB: getDatabase(),
     IMAGES: {} as ImagesBinding,

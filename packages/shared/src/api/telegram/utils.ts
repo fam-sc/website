@@ -1,5 +1,5 @@
-import { bot } from 'telegram-standard-bot-api';
-import { deleteMessage } from 'telegram-standard-bot-api/methods';
+import { bot, TelegramBot } from 'telegram-standard-bot-api';
+import { deleteMessage, getFile } from 'telegram-standard-bot-api/methods';
 
 export async function deleteMessagesAcrossChats(
   messages: { chatId: number; messageId: number }[]
@@ -13,4 +13,16 @@ export async function deleteMessagesAcrossChats(
   } catch (error: unknown) {
     console.error(error);
   }
+}
+
+export async function getFileDownloadUrlById(
+  bot: TelegramBot,
+  file_id: string
+): Promise<string> {
+  const { file_path } = await bot(getFile({ file_id }));
+  if (file_path === undefined) {
+    throw new Error('No file_path');
+  }
+
+  return `https://api.telegram.org/file/bot/${file_path}`;
 }

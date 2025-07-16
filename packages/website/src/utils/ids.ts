@@ -1,4 +1,4 @@
-function hasId(values: { id: string }[], id: string): boolean {
+function hasId<T>(values: { id: T }[], id: T): boolean {
   for (const value of values) {
     if (value.id === id) {
       return true;
@@ -8,12 +8,10 @@ function hasId(values: { id: string }[], id: string): boolean {
   return false;
 }
 
-export function findNextId(prefix: string, values: { id: string }[]): string {
+export function findNextId(values: { id: string }[]): number {
   for (let index = 0; ; index++) {
-    const id = `${prefix}-${index}`;
-
-    if (!hasId(values, id)) {
-      return id;
+    if (!hasId(values, index.toString())) {
+      return index;
     }
   }
 }
