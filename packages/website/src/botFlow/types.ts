@@ -38,9 +38,7 @@ export type BotFlowOutMeta = {
 
 export type Sticker = {
   id: string;
-  source: string;
-  width: number;
-  height: number;
+  mediaId: string;
 };
 
 export const option = object({

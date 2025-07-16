@@ -1,3 +1,4 @@
+import { getMediaFileUrl } from '@/api/media';
 import { Sticker } from '@/botFlow/types';
 import { Image, ImageProps } from '@/components/Image';
 import { classNames } from '@/utils/classNames';
@@ -16,9 +17,7 @@ export function StickerImage({
   return (
     <Image
       className={classNames(className, styles.sticker)}
-      src={sticker.source}
-      width={sticker.width}
-      height={sticker.height}
+      src={getMediaFileUrl(`bot-flow/tg-sticker/${sticker.mediaId}`)}
       {...rest}
     />
   );

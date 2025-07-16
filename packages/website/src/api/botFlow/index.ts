@@ -12,7 +12,7 @@ import {
   PositionMap,
 } from '@/botFlow/types';
 
-import { getMediaFileUrl, putMediaFileViaUrl } from '../media';
+import { putMediaFileViaUrl } from '../media';
 import { MediaFilePath } from '../media/types';
 import {
   getInternalBotFlowConfig,
@@ -24,10 +24,6 @@ const NODE_POSITIONS_PATH: MediaFilePath = 'bot-flow/node-positions.json';
 
 function getStickerPath(value: Sticker): MediaFilePath {
   return `bot-flow/tg-sticker/${value.file_unique_id}`;
-}
-
-function getExternalUrl(value: Sticker): string {
-  return getMediaFileUrl(getStickerPath(value));
 }
 
 async function listMediaStickers(bucket: R2Bucket): Promise<string[]> {
@@ -77,14 +73,10 @@ export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
     listMediaStickers(bucket),
   ]);
 
-  const icons = stickers.map((value) => {
-    return {
-      id: value.custom_emoji_id as string,
-      source: getExternalUrl(value),
-      width: 512,
-      height: 512,
-    };
-  });
+  const icons = stickers.map((value) => ({
+    id: value.custom_emoji_id as string,
+    mediaId: value.file_unique_id,
+  }));
 
   const [config, positions] = await Promise.all([
     getInternalBotFlowConfig(env.HELPDESK_API_KEY),
