@@ -41,7 +41,7 @@
     "react-router": "7.6.3",
     "sass": "1.89.2",
     "sass-loader": "16.0.5",
-    "sharp": "0.34.2",
+    "sharp": "0.34.3",
     "telegram-standard-bot-api": "1.0.7",
     "zod": "3.25.57",
     "zustand": "5.0.3"
