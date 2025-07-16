@@ -1,45 +1,94 @@
-import { useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   fetchBotFlow,
   updateBotFlow,
   updateBotFlowMeta,
 } from '@/api/botFlow/client';
-import { BotFlowWithOutMeta } from '@/botFlow/types';
+import { BotFlowWithInMeta } from '@/botFlow/types';
+import { ErrorMessage } from '@/components/ErrorMessage';
+import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
+import { useDataLoader } from '@/hooks/useDataLoader';
 
 import { BotFlowBoard } from '../BotFlowBoard';
 import { ChangeType } from '../BotFlowBoard/changes';
 import styles from './index.module.scss';
 
+type BoardState = 'pending' | 'error-get' | 'error-update' | 'success';
+
 export function BotFlowBoardController() {
-  const [flow, setFlow] = useState<BotFlowWithOutMeta>();
-  const [isPending, startTransition] = useTransition();
+  const [state, setState] = useState<BoardState>('pending');
+  const [flowState, refresh] = useDataLoader(fetchBotFlow);
+
+  const lastFlowToSave = useRef<{
+    flow: BotFlowWithInMeta;
+    changes: ChangeType;
+  } | null>(null);
 
   useEffect(() => {
-    startTransition(async () => {
-      const flow = await fetchBotFlow();
+    const newState =
+      flowState === 'pending'
+        ? 'pending'
+        : flowState === 'error'
+          ? 'error-get'
+          : 'success';
 
-      startTransition(() => {
-        setFlow(flow);
-      });
-    });
-  }, []);
+    setState(newState);
+  }, [flowState]);
+
+  const saveFlow = useCallback(
+    async (newFlow: BotFlowWithInMeta, changes: ChangeType) => {
+      lastFlowToSave.current = { flow: newFlow, changes };
+
+      setState('pending');
+
+      try {
+        await ((changes & ChangeType.POSITION) !== 0
+          ? updateBotFlowMeta(newFlow.meta)
+          : updateBotFlow(newFlow));
+
+        setState('success');
+      } catch (error: unknown) {
+        console.error(error);
+
+        setState('error-update');
+      }
+    },
+    []
+  );
+
+  const onRetrySaveFlow = useCallback(async () => {
+    const lastFlow = lastFlowToSave.current;
+    if (lastFlow !== null) {
+      await saveFlow(lastFlow.flow, lastFlow.changes);
+    }
+  }, [saveFlow]);
 
   return (
     <div className={styles.root}>
-      <div data-visible={isPending} className={styles['loading-pane']} />
+      {state !== 'success' && (
+        <div className={styles['overlay-pane']}>
+          {state === 'pending' ? (
+            <IndeterminateCircularProgress
+              className={styles['loading-indicator']}
+            />
+          ) : state === 'error-get' ? (
+            <ErrorMessage className={styles['error-message']} onRetry={refresh}>
+              Не вдалось завантажити конфіг бота
+            </ErrorMessage>
+          ) : (
+            <ErrorMessage
+              className={styles['error-message']}
+              onRetry={onRetrySaveFlow}
+            >
+              Не вдалось зберегти конфіг бота
+            </ErrorMessage>
+          )}
+        </div>
+      )}
 
-      {flow && (
-        <BotFlowBoard
-          flow={flow}
-          onSave={(newFlow, changes) => {
-            startTransition(async () => {
-              await ((changes & ChangeType.POSITION) !== 0
-                ? updateBotFlowMeta(newFlow.meta)
-                : updateBotFlow(newFlow));
-            });
-          }}
-        />
+      {typeof flowState === 'object' && (
+        <BotFlowBoard initialFlow={flowState.value} onSave={saveFlow} />
       )}
     </div>
   );

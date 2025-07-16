@@ -25,7 +25,7 @@ import { createFlowStore, FlowState, FlowStoreContext } from './store';
 import { nodeTypes } from './types';
 
 export type FlowchartBoardProps = {
-  flow: BotFlowWithOutMeta;
+  initialFlow: BotFlowWithOutMeta;
 
   onSave?: (flow: BotFlowWithInMeta, changes: ChangeType) => void;
 };
@@ -41,9 +41,13 @@ const selector = (state: FlowState) => ({
   addEmptyNode: state.addEmptyNode,
 });
 
-export function BotFlowBoard({ flow, onSave }: FlowchartBoardProps) {
-  const initialNodes = useMemo(() => botFlowToNodes(flow), [flow]);
-  const initialEdges = useMemo(() => botFlowToEdges(flow), [flow]);
+export function BotFlowBoard({ initialFlow, onSave }: FlowchartBoardProps) {
+  const [initialNodes, initialEdges] = useMemo(
+    () => [botFlowToNodes(initialFlow), botFlowToEdges(initialFlow)],
+    // Only compute nodes and edges for initial value of initialFlow
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const store = useRef(createFlowStore({ initialEdges, initialNodes })).current;
   const {

@@ -4,7 +4,7 @@
   position: relative;
 }
 
-.loading-pane {
+.overlay-pane {
   z-index: 99;
   width: 100%;
   height: 100%;
@@ -12,9 +12,20 @@
   left: 0;
   top: 0;
 
-  background: #00000070;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  &[data-visible='false'] {
-    display: none;
-  }
+  background: #00000070;
+}
+
+.loading-indicator {
+  width: 4em;
+  height: 4em;
+}
+
+.error-message {
+  padding: 1em;
+  background-color: var(--color-background-dark);
+  border-radius: 1em;
 }

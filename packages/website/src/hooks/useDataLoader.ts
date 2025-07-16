@@ -13,7 +13,7 @@ type ResultArray<T> = [DataState<T>, () => void, Dispatch<T>];
 
 export function useDataLoader<T>(
   loader: () => Promise<T>,
-  deps: DependencyList
+  deps: DependencyList = []
 ): ResultArray<T> {
   const [state, setState] = useState<DataState<T>>('pending');
 
