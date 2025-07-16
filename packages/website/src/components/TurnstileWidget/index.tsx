@@ -17,7 +17,6 @@ export function TurnstileWidget({ onSuccess, ...rest }: TurnstileWidgetProps) {
   const id = useId();
 
   useEffect(() => {
-    // eslint-disable-next-line unicorn/prefer-global-this
     const { turnstile } = window;
 
     turnstile.ready(() => {

@@ -4,15 +4,14 @@ import {
   Background,
   BackgroundVariant,
   Controls,
-  Edge,
-  Node,
   ReactFlow,
 } from '@xyflow/react';
-import React, { useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 import { BotFlowWithInMeta, BotFlowWithOutMeta } from '@/botFlow/types';
+import { usePreventLeaving } from '@/hooks/usePreventLeaving';
 
 import { BotFlowBoardActions } from '../BotFlowBoardActions';
 import {
@@ -41,13 +40,8 @@ const selector = (state: FlowState) => ({
 });
 
 export function BotFlowBoard({ flow, onSave }: FlowchartBoardProps) {
-  const initialNodes = useMemo((): Node[] => {
-    return botFlowToNodes(flow);
-  }, [flow]);
-
-  const initialEdges = useMemo((): Edge[] => {
-    return botFlowToEdges(flow);
-  }, [flow]);
+  const initialNodes = useMemo(() => botFlowToNodes(flow), [flow]);
+  const initialEdges = useMemo(() => botFlowToEdges(flow), [flow]);
 
   const store = useRef(createFlowStore({ initialEdges, initialNodes })).current;
   const {
@@ -60,13 +54,19 @@ export function BotFlowBoard({ flow, onSave }: FlowchartBoardProps) {
     addEmptyNode,
   } = useStore(store, useShallow(selector));
 
+  const onSaveAction = useCallback(() => {
+    onSave?.(reactFlowToBotFlow(nodes, edges));
+  }, [edges, nodes, onSave]);
+
+  usePreventLeaving(isChanged);
+
   return (
     <FlowStoreContext.Provider value={store}>
       <div className={styles.root}>
         <BotFlowBoardActions
           isChanged={isChanged}
           onAdd={addEmptyNode}
-          onSave={() => onSave?.(reactFlowToBotFlow(nodes, edges))}
+          onSave={onSaveAction}
         />
         <ReactFlow
           className={styles.flow}
