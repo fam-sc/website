@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode, useId } from 'react';
+import { createPortal } from 'react-dom';
 
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
@@ -28,12 +29,14 @@ export function ModalDialog({
 
   useScrollbar(false);
 
-  return (
+  return createPortal(
     <ModalOverlay className={styles.overlay} effect="tint">
       <div className={styles.dialog} role="dialog" aria-labelledby={titleId}>
         <div className={styles.header}>
           {title === undefined ? undefined : (
-            <Typography variant="h5">{title}</Typography>
+            <Typography variant="h5" id={titleId}>
+              {title}
+            </Typography>
           )}
 
           <IconButton
@@ -51,6 +54,7 @@ export function ModalDialog({
 
         {footer && <div className={styles.footer}>{footer}</div>}
       </div>
-    </ModalOverlay>
+    </ModalOverlay>,
+    document.body
   );
 }

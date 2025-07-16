@@ -1,0 +1,25 @@
+.root {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.flow {
+  --xy-attribution-background-color: var(--color-background-dark);
+  --xy-controls-button-background-color: var(--color-background);
+  --xy-controls-button-background-color-hover-props: var(
+    --color-background-dark
+  );
+
+  width: 100%;
+  flex-basis: auto;
+
+  :global(.react-flow__attribution) {
+    a {
+      color: var(--color-text-on-background) !important;
+      font-family: var(--font-murs-gothic);
+    }
+  }
+}

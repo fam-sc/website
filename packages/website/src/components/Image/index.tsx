@@ -8,7 +8,7 @@ interface ImgPropsWithMultiple extends ImgProps {
   multiple?: ImageInfo[];
 }
 
-interface ImageWithSizesProps extends Omit<ImgProps, 'sizes'> {
+interface ImageWithSizesProps extends Omit<ImgProps, 'sizes' | 'loading'> {
   sizes?: string | ImageSizes;
 }
 
@@ -23,6 +23,7 @@ export function Image(props: ImageProps) {
   const imgProps = {
     ...props,
     sizes: resolveSizes(props.sizes),
+    loading: 'lazy',
   } as ImgPropsWithMultiple;
 
   if ('multiple' in imgProps) {

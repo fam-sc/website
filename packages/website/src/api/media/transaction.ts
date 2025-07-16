@@ -1,4 +1,4 @@
-import { MediaFilePath } from '.';
+import { MediaFilePath } from './types';
 
 type TransactionOperation = {
   run: () => Promise<unknown>;

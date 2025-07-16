@@ -4,9 +4,9 @@ import { resolveImageSizes } from '@shared/image/breakpoints';
 import { getImageSize } from '@shared/image/size';
 import { RichTextString } from '@shared/richText/types';
 
-import { MediaFileSubPath } from '@/api/media';
 import { putMultipleSizedImages } from '@/api/media/multiple';
 import { MediaTransaction } from '@/api/media/transaction';
+import { MediaSubPathWithImageSize } from '@/api/media/types';
 
 import { getImageSizeMap, ImageSizeMap } from './analysis';
 
@@ -65,7 +65,7 @@ async function hydrateRichTextBase(
       const sizes = resolveImageSizes(imageSize);
 
       const id = randomUUID();
-      const path: MediaFileSubPath = `rich-text-image/${id}`;
+      const path: MediaSubPathWithImageSize = `rich-text-image/${id}`;
 
       await putMultipleSizedImages(
         context.env,

@@ -112,4 +112,10 @@ $variants: ('solid', 'outlined', 'flat');
       background-color: var(--color-background-dark);
     }
   }
+
+  &-variant-flat-inverted {
+    &:hover:not(:disabled) {
+      background-color: #dcdcdc;
+    }
+  }
 }

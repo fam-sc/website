@@ -1,15 +1,14 @@
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
 import { NewUserEventPayload } from '@shared/api/adminbot/types';
-import {
-  CallbackQuery,
-  Message,
-  SendMessageExtra,
-  Update,
-} from '@shared/api/telegram/types';
 import { deleteMessagesAcrossChats } from '@shared/api/telegram/utils';
 import { bot } from 'telegram-standard-bot-api';
 import { sendMessage } from 'telegram-standard-bot-api/methods';
+import {
+  CallbackQuery,
+  Message,
+  Update,
+} from 'telegram-standard-bot-api/types';
 
 import {
   createApproveUserCallback,
@@ -34,8 +33,13 @@ export async function handleUpdate(update: Update) {
 
 async function handleMessage(message: Message) {
   if (message.text !== undefined && message.text.startsWith('/start')) {
+    const fromId = message.from?.id;
+    if (fromId === undefined) {
+      return;
+    }
+
     const repo = Repository.openConnection();
-    const user = await repo.users().findByAdminBotUserId(message.from.id);
+    const user = await repo.users().findByAdminBotUserId(fromId);
 
     const isGreeting = user === null;
     const text = getMessage(isGreeting ? 'greeting' : 'already-linked-account');
@@ -56,7 +60,7 @@ async function handleMessage(message: Message) {
         }
       : undefined;
 
-    await bot(sendMessage({ chat_id: message.from.id, text, ...extra }));
+    await bot(sendMessage({ chat_id: fromId, text, ...extra }));
   }
 }
 
@@ -95,7 +99,7 @@ export async function handleNewUserEvent(user: NewUserInfo) {
 
   const text = createText();
 
-  const extra: SendMessageExtra = {
+  const extra = {
     reply_markup: {
       inline_keyboard: [
         [

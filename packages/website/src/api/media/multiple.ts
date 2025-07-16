@@ -1,12 +1,12 @@
 import { ImageSize } from '@shared/image/types';
 import { resizeImage } from 'virtual:api/media/resize';
 
-import { MediaFileSubPath } from '.';
 import { MediaTransaction } from './transaction';
+import { MediaSubPathWithImageSize } from './types';
 
 export async function putMultipleSizedImages(
   env: Env,
-  path: MediaFileSubPath,
+  path: MediaSubPathWithImageSize,
   content: Uint8Array,
   sizes: ImageSize[],
   mediaTransaction: MediaTransaction

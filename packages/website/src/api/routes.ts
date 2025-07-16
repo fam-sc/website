@@ -24,3 +24,4 @@ import './users/botAuth/route';
 import './users/approveList/route';
 import './users/[id]/disapprove/route';
 import './users/[id]/role/route';
+import './botFlow/route';

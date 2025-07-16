@@ -1,9 +1,11 @@
 import React, {
   CSSProperties,
   Key,
+  MouseEvent,
   ReactElement,
   ReactNode,
   RefObject,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -12,10 +14,12 @@ import React, {
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
 import { classNames } from '@/utils/classNames';
 
+import { List } from '../List';
 import { Typography } from '../Typography';
 import styles from './index.module.scss';
 
-type Position = 'top' | 'right' | 'bottom' | 'left';
+export type Position = 'top' | 'right' | 'bottom' | 'left';
+export type Alignment = 'low' | 'high';
 
 export type DropdownProps<T extends { id: Key }> = {
   style?: CSSProperties;
@@ -25,6 +29,7 @@ export type DropdownProps<T extends { id: Key }> = {
   renderItem: (value: T) => ReactNode;
   onAction?: (id: T['id']) => void;
   position?: Position;
+  alignment?: Alignment;
   children: ReactElement<{
     onClick: () => void;
     'aria-haspopup'?: string;
@@ -35,6 +40,7 @@ export type DropdownProps<T extends { id: Key }> = {
 export function Dropdown<T extends { id: Key }>({
   items,
   position = 'bottom',
+  alignment = 'low',
   className,
   style,
   renderItem,
@@ -42,7 +48,24 @@ export function Dropdown<T extends { id: Key }>({
   children,
 }: DropdownProps<T>) {
   const triggerRef = useRef<HTMLElement>(null);
+
   const [isOpen, setOpen] = useState(false);
+
+  const onTrigger = useCallback(() => {
+    setOpen((state) => !state);
+  }, []);
+
+  const onItemAction = useCallback(
+    (event: MouseEvent) => {
+      const { target } = event;
+      const { key } = (target as HTMLElement).dataset;
+
+      if (key !== undefined) {
+        onAction?.(key as T['id']);
+      }
+    },
+    [onAction]
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -62,17 +85,16 @@ export function Dropdown<T extends { id: Key }>({
       {React.cloneElement(children, {
         ref: triggerRef,
         'aria-haspopup': 'menu',
-        onClick: () => {
-          setOpen((state) => !state);
-        },
+        onClick: onTrigger,
       })}
 
       {isOpen && (
-        <ul
+        <List
           role="menu"
           className={classNames(
             styles.menu,
-            styles[`menu-position-${position}`]
+            styles[`menu-position-${position}`],
+            styles[`menu-align-${alignment}`]
           )}
         >
           {items.map((item) => (
@@ -81,14 +103,13 @@ export function Dropdown<T extends { id: Key }>({
               role="option"
               tabindex="0"
               key={item.id}
-              onClick={() => {
-                onAction?.(item.id);
-              }}
+              data-key={item.id}
+              onClick={onItemAction}
             >
               {renderItem(item)}
             </Typography>
           ))}
-        </ul>
+        </List>
       )}
     </div>
   );
