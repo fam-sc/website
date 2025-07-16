@@ -1,4 +1,8 @@
-import { BotFlowWithInMeta, BotFlowWithOutMeta } from '@/botFlow/types';
+import {
+  BotFlowInMeta,
+  BotFlowWithInMeta,
+  BotFlowWithOutMeta,
+} from '@/botFlow/types';
 
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 
@@ -9,6 +13,15 @@ export function fetchBotFlow(): Promise<BotFlowWithOutMeta> {
 export function updateBotFlow(value: BotFlowWithInMeta) {
   return apiCheckedFetch(`/botFlow`, {
     method: 'PUT',
-    body: JSON.stringify(value),
+    body: value,
+    json: true,
+  });
+}
+
+export function updateBotFlowMeta(value: BotFlowInMeta) {
+  return apiCheckedFetch(`/botFlow/meta`, {
+    method: 'PUT',
+    body: value,
+    json: true,
   });
 }

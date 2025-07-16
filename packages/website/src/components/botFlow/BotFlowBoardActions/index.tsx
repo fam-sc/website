@@ -49,10 +49,12 @@ export function BotFlowBoardActions({
   return (
     <div className={styles.root}>
       {isChanged && (
-        <Typography className={styles['changed-status']}>Not saved</Typography>
+        <Typography className={styles['changed-status']}>
+          Не збережено
+        </Typography>
       )}
 
-      <ActionButton icon={SaveIcon} onClick={onSave} />
+      <ActionButton icon={SaveIcon} onClick={onSave} disabled={!isChanged} />
 
       <Dropdown
         position="bottom"

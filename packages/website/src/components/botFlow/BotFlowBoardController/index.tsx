@@ -1,9 +1,14 @@
 import { useEffect, useState, useTransition } from 'react';
 
-import { fetchBotFlow, updateBotFlow } from '@/api/botFlow/client';
+import {
+  fetchBotFlow,
+  updateBotFlow,
+  updateBotFlowMeta,
+} from '@/api/botFlow/client';
 import { BotFlowWithOutMeta } from '@/botFlow/types';
 
 import { BotFlowBoard } from '../BotFlowBoard';
+import { ChangeType } from '../BotFlowBoard/changes';
 import styles from './index.module.scss';
 
 export function BotFlowBoardController() {
@@ -27,9 +32,11 @@ export function BotFlowBoardController() {
       {flow && (
         <BotFlowBoard
           flow={flow}
-          onSave={(newFlow) => {
+          onSave={(newFlow, changes) => {
             startTransition(async () => {
-              await updateBotFlow(newFlow);
+              await ((changes & ChangeType.POSITION) !== 0
+                ? updateBotFlowMeta(newFlow.meta)
+                : updateBotFlow(newFlow));
             });
           }}
         />

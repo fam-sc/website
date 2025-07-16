@@ -6,6 +6,7 @@ import { getForumTopicIconStickers } from 'telegram-standard-bot-api/methods';
 import { Sticker } from 'telegram-standard-bot-api/types';
 
 import {
+  BotFlowInMeta,
   BotFlowWithInMeta,
   BotFlowWithOutMeta,
   PositionMap,
@@ -117,6 +118,7 @@ export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
 }
 
 export async function saveBotFlow(env: Env, inBotFlow: BotFlowWithInMeta) {
+  console.log(inBotFlow);
   const options: BotFlowConfig['options'] = inBotFlow.steps.flatMap((step) =>
     step.options.map((option) => {
       return {
@@ -148,6 +150,10 @@ export async function saveBotFlow(env: Env, inBotFlow: BotFlowWithInMeta) {
 
   await Promise.all([
     putInternalBotFlowConfig(env.HELPDESK_API_KEY, newConfig),
-    putNodePositions(env.MEDIA_BUCKET, inBotFlow.meta.positions),
+    saveBotFlowMeta(env, inBotFlow.meta),
   ]);
+}
+
+export async function saveBotFlowMeta(env: Env, meta: BotFlowInMeta) {
+  await putNodePositions(env.MEDIA_BUCKET, meta.positions);
 }

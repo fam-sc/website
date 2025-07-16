@@ -14,6 +14,7 @@ import { BotFlowWithInMeta, BotFlowWithOutMeta } from '@/botFlow/types';
 import { usePreventLeaving } from '@/hooks/usePreventLeaving';
 
 import { BotFlowBoardActions } from '../BotFlowBoardActions';
+import { ChangeType } from './changes';
 import {
   botFlowToEdges,
   botFlowToNodes,
@@ -26,11 +27,11 @@ import { nodeTypes } from './types';
 export type FlowchartBoardProps = {
   flow: BotFlowWithOutMeta;
 
-  onSave?: (flow: BotFlowWithInMeta) => void;
+  onSave?: (flow: BotFlowWithInMeta, changes: ChangeType) => void;
 };
 
 const selector = (state: FlowState) => ({
-  isChanged: state.isChanged,
+  changes: state.changes,
   nodes: state.nodes,
   edges: state.edges,
   setUnchanged: state.setUnchanged,
@@ -46,7 +47,7 @@ export function BotFlowBoard({ flow, onSave }: FlowchartBoardProps) {
 
   const store = useRef(createFlowStore({ initialEdges, initialNodes })).current;
   const {
-    isChanged,
+    changes,
     edges,
     nodes,
     setUnchanged,
@@ -57,9 +58,11 @@ export function BotFlowBoard({ flow, onSave }: FlowchartBoardProps) {
   } = useStore(store, useShallow(selector));
 
   const onSaveAction = useCallback(() => {
-    onSave?.(reactFlowToBotFlow(nodes, edges));
+    onSave?.(reactFlowToBotFlow(nodes, edges), changes);
     setUnchanged();
-  }, [edges, nodes, onSave, setUnchanged]);
+  }, [changes, edges, nodes, onSave, setUnchanged]);
+
+  const isChanged = changes !== ChangeType.NONE;
 
   usePreventLeaving(isChanged);
 

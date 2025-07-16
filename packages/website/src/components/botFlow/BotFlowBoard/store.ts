@@ -11,13 +11,13 @@ import {
 import { createContext, useContext } from 'react';
 import { createStore } from 'zustand';
 
-import { isAllDimensionChanges } from '@/utils/flow';
 import { findNextId } from '@/utils/ids';
 
+import { ChangeType, getNodesChangeType } from './changes';
 import { NodeType } from './types';
 
 export type FlowState = {
-  isChanged: boolean;
+  changes: ChangeType;
   nodes: Node[];
   edges: Edge[];
 
@@ -44,27 +44,27 @@ export function createFlowStore({
   initialEdges: Edge[];
 }) {
   return createStore<FlowState>()((set, get) => ({
-    isChanged: false,
+    changes: ChangeType.NONE,
     nodes: initialNodes,
     edges: initialEdges,
     setUnchanged: () => {
-      set({ isChanged: false });
+      set({ changes: ChangeType.NONE });
     },
     onNodesChange: (changes) => {
       set({
-        isChanged: get().isChanged || !isAllDimensionChanges(changes),
+        changes: get().changes | getNodesChangeType(changes),
         nodes: applyNodeChanges(changes, get().nodes),
       });
     },
     onEdgesChange: (changes) => {
       set({
-        isChanged: true,
+        changes: get().changes | ChangeType.DATA,
         edges: applyEdgeChanges(changes, get().edges),
       });
     },
     onConnect: (connection) => {
       set({
-        isChanged: true,
+        changes: get().changes | ChangeType.DATA,
         edges: addEdge(connection, get().edges),
       });
     },
@@ -76,7 +76,7 @@ export function createFlowStore({
     },
     onNodeTextChanged: (id, text) => {
       set({
-        isChanged: true,
+        changes: get().changes | ChangeType.DATA,
         nodes: get().nodes.map((node) => {
           return node.id === id
             ? { ...node, data: { ...node.data, text } }
@@ -86,7 +86,7 @@ export function createFlowStore({
     },
     onReceptacleEmojiChanged: (id, emojiId) => {
       set({
-        isChanged: true,
+        changes: get().changes | ChangeType.DATA,
         nodes: get().nodes.map((node) => {
           return node.id === id
             ? { ...node, data: { ...node.data, emojiId } }
@@ -109,14 +109,14 @@ export function createFlowStore({
         }
       }
 
-      const nodes = get().nodes;
+      const { nodes, changes } = get();
 
       set({
-        isChanged: true,
+        changes: changes | ChangeType.DATA,
         nodes: [
           ...nodes,
           {
-            id: findNextId(nodes).toString(),
+            id: findNextId(nodes),
             data: nodeData,
             type,
             position: { x: 0, y: 0 },

@@ -1,5 +1,6 @@
 import {
   array,
+  extend,
   infer as zodInfer,
   nullable,
   number,
@@ -20,7 +21,7 @@ const position = object({
 
 export type Position = zodInfer<typeof position>;
 
-const positionTypeMap = record(number(), optional(position));
+const positionTypeMap = record(string(), optional(position));
 
 const positionMap = object({
   step: positionTypeMap,
@@ -79,8 +80,7 @@ export const botFlowInMeta = object({
 
 export type BotFlowInMeta = zodInfer<typeof botFlowInMeta>;
 
-export const botFlowWithInMeta = object({
-  ...botFlow.shape,
+export const botFlowWithInMeta = extend(botFlow, {
   meta: botFlowInMeta,
 });
 

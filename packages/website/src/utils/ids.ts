@@ -8,10 +8,12 @@ function hasId<T>(values: { id: T }[], id: T): boolean {
   return false;
 }
 
-export function findNextId(values: { id: string }[]): number {
+export function findNextId(values: { id: string }[]): string {
   for (let index = 0; ; index++) {
-    if (!hasId(values, index.toString())) {
-      return index;
+    const id = index.toString();
+
+    if (!hasId(values, id)) {
+      return id;
     }
   }
 }
