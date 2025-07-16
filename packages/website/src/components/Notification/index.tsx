@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useMemo, useState } from 'react';
 
 import { classNames } from '@/utils/classNames';
+import { contextUseFactory } from '@/utils/react/contextFactory';
 
 import { Typography } from '../Typography';
 import styles from './index.module.scss';
-import { contextUseFactory } from '@/utils/react/contextFactory';
 
 export type NotificationType = 'plain' | 'error';
 
@@ -22,9 +22,9 @@ export type NotificationManager = {
   show(message: string, type: NotificationType): void;
 };
 
-export const NotificationContext = createContext<
-  NotificationManager | null
->(null);
+export const NotificationContext = createContext<NotificationManager | null>(
+  null
+);
 
 export function Notification({ message, type, isVisible }: NotificationProps) {
   return (
@@ -74,4 +74,7 @@ export function NotificationWrapper({ children }: NotificationWrapperProps) {
   );
 }
 
-export const useNotification = contextUseFactory(NotificationContext, 'NotificationContext');
+export const useNotification = contextUseFactory(
+  NotificationContext,
+  'NotificationContext'
+);

@@ -12,10 +12,10 @@ import { createContext } from 'react';
 import { createStore } from 'zustand';
 
 import { findNextId } from '@/utils/ids';
+import { contextUseFactory } from '@/utils/react/contextFactory';
 
 import { ChangeType, getNodesChangeType } from './changes';
 import { NodeType } from './types';
-import { contextUseFactory } from '@/utils/react/contextFactory';
 
 export type FlowState = {
   changes: ChangeType;
@@ -130,4 +130,7 @@ export function createFlowStore({
 
 export const FlowStoreContext = createContext<FlowStore | null>(null);
 
-export const useFlowStore = contextUseFactory(FlowStoreContext, 'FlowStoreContext');
+export const useFlowStore = contextUseFactory(
+  FlowStoreContext,
+  'FlowStoreContext'
+);

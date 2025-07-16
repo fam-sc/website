@@ -1,4 +1,4 @@
-import { Context, useContext } from "react";
+import { Context, useContext } from 'react';
 
 export function contextUseFactory<T>(context: Context<T | null>, name: string) {
   return () => {
@@ -8,5 +8,5 @@ export function contextUseFactory<T>(context: Context<T | null>, name: string) {
     }
 
     return value;
-  }
+  };
 }
