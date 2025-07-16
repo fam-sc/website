@@ -20,6 +20,8 @@ export type FlowState = {
   isChanged: boolean;
   nodes: Node[];
   edges: Edge[];
+
+  setUnchanged: () => void;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -45,6 +47,9 @@ export function createFlowStore({
     isChanged: false,
     nodes: initialNodes,
     edges: initialEdges,
+    setUnchanged: () => {
+      set({ isChanged: false });
+    },
     onNodesChange: (changes) => {
       set({
         isChanged: get().isChanged || !isAllDimensionChanges(changes),

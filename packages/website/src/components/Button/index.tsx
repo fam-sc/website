@@ -4,7 +4,7 @@ import { impersonatedComponent } from '@/utils/impersonation';
 import { Typography } from '../Typography';
 import styles from './index.module.scss';
 
-type ButtonVariant = 'flat' | 'solid' | 'outlined';
+type ButtonVariant = 'flat' | 'solid' | 'outlined' | 'flat-inverted';
 type ButtonColor = 'primary';
 
 export interface ButtonProps {

@@ -1,0 +1,5 @@
+@use '../../../theme/utils' as *;
+
+.sticker {
+  @include size(40px);
+}

@@ -33,6 +33,7 @@ const selector = (state: FlowState) => ({
   isChanged: state.isChanged,
   nodes: state.nodes,
   edges: state.edges,
+  setUnchanged: state.setUnchanged,
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
@@ -48,6 +49,7 @@ export function BotFlowBoard({ flow, onSave }: FlowchartBoardProps) {
     isChanged,
     edges,
     nodes,
+    setUnchanged,
     onConnect,
     onEdgesChange,
     onNodesChange,
@@ -56,7 +58,8 @@ export function BotFlowBoard({ flow, onSave }: FlowchartBoardProps) {
 
   const onSaveAction = useCallback(() => {
     onSave?.(reactFlowToBotFlow(nodes, edges));
-  }, [edges, nodes, onSave]);
+    setUnchanged();
+  }, [edges, nodes, onSave, setUnchanged]);
 
   usePreventLeaving(isChanged);
 
