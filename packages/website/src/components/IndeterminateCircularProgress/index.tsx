@@ -8,6 +8,7 @@ export interface IndeterminateCircularProgressProps
   extends HTMLAttributes<SVGElement> {
   ref?: Ref<SVGSVGElement>;
   className?: string;
+  size?: 'sm' | 'md';
 }
 
 const STROKE_WIDTH = 3;
@@ -18,12 +19,17 @@ const VIEWBOX = `0 0 ${SIZE} ${SIZE}`;
 export function IndeterminateCircularProgress({
   className,
   ref,
+  size = 'sm',
   ...rest
 }: IndeterminateCircularProgressProps) {
   return (
     <svg
       ref={ref}
-      className={classNames(styles.root, className)}
+      className={classNames(
+        styles.root,
+        styles[`root-size-${size}`],
+        className
+      )}
       viewBox={VIEWBOX}
       {...rest}
     >

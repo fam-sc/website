@@ -69,9 +69,7 @@ export function BotFlowBoardController() {
       {state !== 'success' && (
         <div className={styles['overlay-pane']}>
           {state === 'pending' ? (
-            <IndeterminateCircularProgress
-              className={styles['loading-indicator']}
-            />
+            <IndeterminateCircularProgress />
           ) : state === 'error-get' ? (
             <ErrorMessage className={styles['error-message']} onRetry={refresh}>
               Не вдалось завантажити конфіг бота

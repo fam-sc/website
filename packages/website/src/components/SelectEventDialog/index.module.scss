@@ -1,15 +1,9 @@
-@use '../../theme/utils' as *;
-
 .content {
   display: flex;
   align-items: center;
   justify-content: center;
 
   margin-bottom: 8px;
-}
-
-.loading-indicator {
-  @include size(3em);
 }
 
 .list {

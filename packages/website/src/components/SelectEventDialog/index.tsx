@@ -55,9 +55,7 @@ export function SelectEventDialog({
       }
     >
       {events === undefined ? (
-        <IndeterminateCircularProgress
-          className={styles['loading-indicator']}
-        />
+        <IndeterminateCircularProgress />
       ) : (
         <List
           className={styles.list}

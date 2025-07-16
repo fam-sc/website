@@ -22,6 +22,7 @@ function LoadMarker({ ref }: LoadMarkerProps) {
   return (
     <IndeterminateCircularProgress
       className={styles['load-marker']}
+      size="sm"
       ref={ref}
     />
   );

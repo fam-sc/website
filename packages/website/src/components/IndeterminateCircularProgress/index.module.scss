@@ -2,6 +2,17 @@
   animation: rotate 2s linear infinite;
   fill: none;
 
+  width: var(--size);
+  height: var(--size);
+
+  &-size-sm {
+    --size: 2em;
+  }
+
+  &-size-md {
+    --size: 4em;
+  }
+
   circle {
     stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
