@@ -25,7 +25,7 @@ export function DataLoadingContainer<T>({
   return (
     <div className={classNames(styles.root, className)}>
       {value === 'pending' ? (
-        <IndeterminateCircularProgress className={styles.progress} />
+        <IndeterminateCircularProgress />
       ) : value === 'error' ? (
         <ErrorMessage className={styles.error} onRetry={onRetry}>
           Сталася помилка при завантаженні даних

@@ -49,7 +49,7 @@ export function BaseBotPage({ type, auth, error }: BaseBotPageProps) {
       {error === BotPageError.INVALID_PARAMS ? (
         <Typography>Неправильне посилання</Typography>
       ) : state === 'loading' ? (
-        <IndeterminateCircularProgress className={styles.progress} />
+        <IndeterminateCircularProgress />
       ) : state === 'error' ? (
         <ErrorMessage onRetry={doLoad}>Сталася помилка</ErrorMessage>
       ) : (

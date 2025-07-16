@@ -1,6 +1,7 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode } from 'react';
 
 import { UserWithRoleAndAvatar } from '@/api/users/types';
+import { contextUseFactory } from '@/utils/react/contextFactory';
 
 export type AuthContextInfo = {
   user: UserWithRoleAndAvatar | null;
@@ -18,12 +19,4 @@ export function AuthProvider({
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuthInfo(): AuthContextInfo {
-  const result = useContext(AuthContext);
-
-  if (result === null) {
-    throw new Error('AuthContext in not in the tree');
-  }
-
-  return result;
-}
+export const useAuthInfo = contextUseFactory(AuthContext, 'AuthContext');

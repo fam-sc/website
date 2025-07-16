@@ -8,10 +8,11 @@ import {
   OnEdgesChange,
   OnNodesChange,
 } from '@xyflow/react';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { createStore } from 'zustand';
 
 import { findNextId } from '@/utils/ids';
+import { contextUseFactory } from '@/utils/react/contextFactory';
 
 import { ChangeType, getNodesChangeType } from './changes';
 import { NodeType } from './types';
@@ -129,11 +130,7 @@ export function createFlowStore({
 
 export const FlowStoreContext = createContext<FlowStore | null>(null);
 
-export function useFlowStore(): FlowStore {
-  const result = useContext(FlowStoreContext);
-  if (result === null) {
-    throw new Error('No FlowStoreContext in the tree');
-  }
-
-  return result;
-}
+export const useFlowStore = contextUseFactory(
+  FlowStoreContext,
+  'FlowStoreContext'
+);

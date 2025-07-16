@@ -18,7 +18,7 @@ export default function Page() {
   return (
     <div className={styles.root}>
       {state === 'pending' ? (
-        <IndeterminateCircularProgress className={styles.progress} />
+        <IndeterminateCircularProgress />
       ) : state === 'success' ? (
         <Typography>
           Успішно! Ви можете закрити цю сторінку та повернутися до бота

@@ -34,7 +34,7 @@ export default function Page() {
   return (
     <div className={styles.root}>
       {state === 'pending' ? (
-        <IndeterminateCircularProgress className={styles.progress} />
+        <IndeterminateCircularProgress />
       ) : state === 'error' ? (
         <Typography variant="h5">
           Сталася помилка. Перевірте чи ви ввели правильне посилання
