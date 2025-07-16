@@ -14,7 +14,7 @@ export const step = object({
 
 export type Step = zodInfer<typeof step>;
 
-export const receptable = object({
+export const receptacle = object({
   id: number(),
   announcement_text: nullable(string()),
   emoji_id: nullable(string()),
@@ -22,7 +22,7 @@ export const receptable = object({
   text: nullable(string()),
 });
 
-export type Receptacle = zodInfer<typeof receptable>;
+export type Receptacle = zodInfer<typeof receptacle>;
 
 export const answerOption = object({
   id: number(),
@@ -36,7 +36,7 @@ export type AnswerOption = zodInfer<typeof answerOption>;
 
 export const botFlowConfig = object({
   options: array(answerOption),
-  receptacles: array(receptable),
+  receptacles: array(receptacle),
   steps: array(step),
 });
 

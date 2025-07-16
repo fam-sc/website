@@ -29,15 +29,7 @@ export function BotFlowBoardController() {
           flow={flow}
           onSave={(newFlow) => {
             startTransition(async () => {
-              const { steps, receptables, meta } = await updateBotFlow(newFlow);
-
-              startTransition(() => {
-                setFlow({
-                  steps,
-                  receptables,
-                  meta: { icons: flow.meta.icons, positions: meta.positions },
-                });
-              });
+              await updateBotFlow(newFlow);
             });
           }}
         />

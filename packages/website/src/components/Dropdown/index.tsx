@@ -1,10 +1,13 @@
 import React, {
   CSSProperties,
   Key,
+  MouseEvent,
   ReactElement,
   ReactNode,
   RefObject,
+  useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
@@ -12,10 +15,12 @@ import React, {
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
 import { classNames } from '@/utils/classNames';
 
+import { List } from '../List';
 import { Typography } from '../Typography';
 import styles from './index.module.scss';
 
 type Position = 'top' | 'right' | 'bottom' | 'left';
+type Alignment = 'low' | 'high';
 
 export type DropdownProps<T extends { id: Key }> = {
   style?: CSSProperties;
@@ -32,6 +37,20 @@ export type DropdownProps<T extends { id: Key }> = {
   }>;
 };
 
+function getHorizontalAlignment(element: HTMLElement): Alignment {
+  const bounds = element.getBoundingClientRect();
+  const width = window.innerWidth;
+
+  console.log(bounds.right);
+  console.log(width);
+
+  if (bounds.right <= width) {
+    return 'high';
+  }
+
+  return 'low';
+}
+
 export function Dropdown<T extends { id: Key }>({
   items,
   position = 'bottom',
@@ -42,7 +61,34 @@ export function Dropdown<T extends { id: Key }>({
   children,
 }: DropdownProps<T>) {
   const triggerRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+
   const [isOpen, setOpen] = useState(false);
+  const [alignment, setAlignment] = useState<Alignment>('low');
+
+  useLayoutEffect(() => {
+    const list = listRef.current;
+
+    if (list && isOpen && (position === 'top' || position === 'bottom')) {
+      setAlignment(getHorizontalAlignment(list));
+    }
+  }, [isOpen, position]);
+
+  const onTrigger = useCallback(() => {
+    setOpen((state) => !state);
+  }, []);
+
+  const onItemAction = useCallback(
+    (event: MouseEvent) => {
+      const { target } = event;
+      const { key } = (target as HTMLElement).dataset;
+
+      if (key !== undefined) {
+        onAction?.(key as T['id']);
+      }
+    },
+    [onAction]
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -57,22 +103,24 @@ export function Dropdown<T extends { id: Key }>({
     }
   }, [isOpen]);
 
+  console.log(alignment);
+
   return (
     <div className={classNames(styles.root, className)} style={style}>
       {React.cloneElement(children, {
         ref: triggerRef,
         'aria-haspopup': 'menu',
-        onClick: () => {
-          setOpen((state) => !state);
-        },
+        onClick: onTrigger,
       })}
 
       {isOpen && (
-        <ul
+        <List
+          ref={listRef}
           role="menu"
           className={classNames(
             styles.menu,
-            styles[`menu-position-${position}`]
+            styles[`menu-position-${position}`],
+            styles[`menu-align-${alignment}`]
           )}
         >
           {items.map((item) => (
@@ -81,14 +129,13 @@ export function Dropdown<T extends { id: Key }>({
               role="option"
               tabindex="0"
               key={item.id}
-              onClick={() => {
-                onAction?.(item.id);
-              }}
+              data-key={item.id}
+              onClick={onItemAction}
             >
               {renderItem(item)}
             </Typography>
           ))}
-        </ul>
+        </List>
       )}
     </div>
   );

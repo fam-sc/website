@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { Typography } from '@/components/Typography';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { SaveIcon } from '@/icons/SaveIcon';
 import { SvgProps } from '@/icons/types';
@@ -47,7 +48,9 @@ export function BotFlowBoardActions({
 }: BotFlowBoardActionsProps) {
   return (
     <div className={styles.root}>
-      {isChanged && <p className={styles['changed-status']}>Not saved</p>}
+      {isChanged && (
+        <Typography className={styles['changed-status']}>Not saved</Typography>
+      )}
 
       <ActionButton icon={SaveIcon} onClick={onSave} />
 

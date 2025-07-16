@@ -108,7 +108,7 @@ export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
           };
         }),
     })),
-    receptables: receptacles.map((value) => ({
+    receptacles: receptacles.map((value) => ({
       id: value.id,
       emojiId: value.emoji_id,
     })),
@@ -129,7 +129,7 @@ export async function saveBotFlow(env: Env, inBotFlow: BotFlowWithInMeta) {
     })
   );
 
-  const receptacles: BotFlowConfig['receptacles'] = inBotFlow.receptables.map(
+  const receptacles: BotFlowConfig['receptacles'] = inBotFlow.receptacles.map(
     (receptacle) => ({
       id: receptacle.id,
       text: null,

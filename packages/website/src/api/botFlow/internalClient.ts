@@ -25,6 +25,7 @@ export async function putInternalBotFlowConfig(
   config: BotFlowConfig
 ) {
   return checkedFetch(CONFIG_URL, {
+    method: 'PUT',
     headers: authorization(apiKey),
     body: config,
     json: true,

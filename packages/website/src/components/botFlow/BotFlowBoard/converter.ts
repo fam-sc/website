@@ -51,7 +51,7 @@ function getNodePositions(nodes: Node[]): Record<string, Position> {
 
 export function botFlowToNodes({
   steps,
-  receptables,
+  receptacles,
   meta,
 }: BotFlowWithOutMeta): Node[] {
   return [
@@ -77,7 +77,7 @@ export function botFlowToNodes({
         })
       ),
     ]),
-    receptables.map((value, index) => ({
+    receptacles.map((value, index) => ({
       id: `receptacle-${value.id}`,
       type: 'receptacle',
       position: getPositionOrDefault(meta, 'receptacle', value.id, {
@@ -165,7 +165,7 @@ export function reactFlowToBotFlow(
       text: node.data.text as string,
       options: findNodeOptions(node.id, nodes, edges),
     })),
-    receptables: receptacleNodes.map((node) => ({
+    receptacles: receptacleNodes.map((node) => ({
       id: getUnprefixedId(node.id),
       emojiId: node.data.emojiId as string,
     })),

@@ -30,7 +30,7 @@
     overflow: hidden;
   }
 
-   &::after {
+  &::after {
     content: attr(data-value) ' ';
     visibility: hidden;
     white-space: pre-wrap;
@@ -38,7 +38,8 @@
     padding: 0.5em;
   }
 
-  &::after, .root {
+  &::after,
+  .root {
     grid-area: 1 / 1;
   }
 }

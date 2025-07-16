@@ -1,35 +1,38 @@
-import { NodeType } from '@/components/botFlow/BotFlowBoard/types';
-
-export interface BotFlow {
-  steps: Step[];
-  receptables: Receptacle[];
-}
+import {
+  array,
+  infer as zodInfer,
+  nullable,
+  number,
+  object,
+  optional,
+  record,
+  string,
+} from 'zod/v4-mini';
 
 export interface BotFlowWithOutMeta extends BotFlow {
   meta: BotFlowOutMeta;
 }
 
-export interface BotFlowWithInMeta extends BotFlow {
-  meta: BotFlowInMeta;
-}
+const position = object({
+  x: number(),
+  y: number(),
+});
 
-export type Position = {
-  x: number;
-  y: number;
-};
+export type Position = zodInfer<typeof position>;
 
-export type PositionMap = Record<
-  NodeType,
-  Record<number, Position | undefined>
->;
+const positionTypeMap = record(number(), optional(position));
+
+const positionMap = object({
+  step: positionTypeMap,
+  receptacle: positionTypeMap,
+  option: positionTypeMap,
+});
+
+export type PositionMap = zodInfer<typeof positionMap>;
 
 export type BotFlowOutMeta = {
   icons: Sticker[];
   positions: PositionMap | undefined;
-};
-
-export type BotFlowInMeta = {
-  positions: PositionMap;
 };
 
 export type Sticker = {
@@ -39,20 +42,46 @@ export type Sticker = {
   height: number;
 };
 
-export type Step = {
-  id: number;
-  text: string;
-  options: Option[];
-};
+export const option = object({
+  id: number(),
+  text: string(),
+  nextStepId: nullable(number()),
+  receptacleId: nullable(number()),
+});
 
-export type Option = {
-  id: number;
-  text: string;
-  nextStepId: number | null;
-  receptacleId: number | null;
-};
+export type Option = zodInfer<typeof option>;
 
-export type Receptacle = {
-  id: number;
-  emojiId: string | null;
-};
+export const receptacle = object({
+  id: number(),
+  emojiId: nullable(string()),
+});
+
+export type Receptacle = zodInfer<typeof receptacle>;
+
+export const step = object({
+  id: number(),
+  text: string(),
+  options: array(option),
+});
+
+export type Step = zodInfer<typeof step>;
+
+export const botFlow = object({
+  steps: array(step),
+  receptacles: array(receptacle),
+});
+
+export type BotFlow = zodInfer<typeof botFlow>;
+
+export const botFlowInMeta = object({
+  positions: positionMap,
+});
+
+export type BotFlowInMeta = zodInfer<typeof botFlowInMeta>;
+
+export const botFlowWithInMeta = object({
+  ...botFlow.shape,
+  meta: botFlowInMeta,
+});
+
+export type BotFlowWithInMeta = zodInfer<typeof botFlowWithInMeta>;

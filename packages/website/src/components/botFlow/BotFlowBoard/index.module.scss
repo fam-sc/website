@@ -9,7 +9,9 @@
 .flow {
   --xy-attribution-background-color: var(--color-background-dark);
   --xy-controls-button-background-color: var(--color-background);
-  --xy-controls-button-background-color-hover-props: var(--color-background-dark);
+  --xy-controls-button-background-color-hover-props: var(
+    --color-background-dark
+  );
 
   width: 100%;
   flex-basis: auto;
