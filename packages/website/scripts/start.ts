@@ -20,12 +20,7 @@ async function run() {
 
   process.env.NODE_ENV = 'production';
 
-  const buildPathArg = process.argv[2];
-  if (!buildPathArg) {
-    return;
-  }
-
-  const buildPath = path.resolve(buildPathArg);
+  const buildPath = path.join(import.meta.dirname, '../build/server/index.js');
 
   console.log('Importing the build');
   const build = (await import(
@@ -45,7 +40,7 @@ async function run() {
   app.use(express.static('public', { maxAge: '1h' }));
   app.use(mogran('tiny'));
   app.use(
-    '*',
+    '/{*splat}',
     createRequestHandler({
       build,
       mode: process.env.NODE_ENV,
