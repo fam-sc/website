@@ -1,54 +1,25 @@
-.signupForm {
+.root {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: stretch;
   max-width: 400px;
-  padding: 20px;
-  background-color: var(--color-background);
-  color: var(--color-text-on-background);
-  border-radius: 12px;
-  box-sizing: border-box;
-  gap: 1em;
+  gap: 1.5em;
 
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     padding: 15px;
-    margin: 1.5rem auto;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 100%;
-    margin: 1rem 0.5rem;
-    padding: 10px;
-    border-radius: 8px;
   }
 }
 
-.formTitle {
-  padding: 20px 0;
-  font-size: 32px;
-  font-weight: bold;
-
-  @media (max-width: 768px) {
-    font-size: 28px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 24px;
-  }
+.title {
+  text-align: center;
 }
 
-.formGroup {
+.input-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 10px;
 
-  @media (max-width: 480px) {
-    gap: 10px;
-    margin-bottom: 15px;
+  & *:nth-child(2) {
+    width: unset;
+    justify-self: stretch;
   }
-}
-
-.turnstile-widget {
-  margin-bottom: 1em;
 }

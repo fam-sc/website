@@ -1,6 +1,6 @@
 import { normalizeGuid } from '@shared/guid';
 import { emailRegex, telnumRegex } from '@shared/string/regex';
-import { useCallback, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { SignUpData } from '@/api/auth/types';
@@ -16,9 +16,28 @@ import { pick } from '@/utils/object/pick';
 
 import { ErrorBoard } from '../ErrorBoard';
 import { GroupSelect } from '../GroupSelect';
+import { Labeled } from '../Labeled';
 import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
 import styles from './index.module.scss';
+
+function FieldBlock({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <Labeled
+      title={title}
+      titleVariant="bodyLarge"
+      className={styles['input-group']}
+    >
+      {children}
+    </Labeled>
+  );
+}
 
 export function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -87,59 +106,45 @@ export function SignUpForm() {
   };
 
   return (
-    <div className={styles.signupForm}>
-      <div className={styles.formTitle}>
-        <Typography as="strong" variant="h4">
-          Створіть акаунт
-        </Typography>
-      </div>
+    <div className={styles.root}>
+      <Typography as="strong" variant="h4">
+        Створіть акаунт
+      </Typography>
 
-      <div className={styles.formGroup}>
-        <Typography as="label" variant="bodyLarge">
-          Прізвище
-        </Typography>
+      <FieldBlock title="Прізвище">
         <TextInput
           name="lastName"
           value={formData.lastName}
           onChange={handleChange}
         />
+      </FieldBlock>
 
-        <Typography as="label" variant="bodyLarge">
-          Ім’я
-        </Typography>
+      <FieldBlock title="Ім’я">
         <TextInput
           name="firstName"
           value={formData.firstName}
           onChange={handleChange}
         />
+      </FieldBlock>
 
-        <Typography as="label" variant="bodyLarge">
-          По батькові
-        </Typography>
+      <FieldBlock title="По батькові">
         <TextInput
           name="parentName"
           value={formData.parentName}
           onChange={handleChange}
         />
-      </div>
+      </FieldBlock>
 
-      <div className={styles.formGroup}>
-        <Typography as="label" variant="bodyLarge">
-          Група (АА-11)
-        </Typography>
-
+      <FieldBlock title="Група (АА-11)">
         <GroupSelect
           selectedId={group}
           onSelected={useCallback((group) => {
             setGroup(group.campusId);
           }, [])}
         />
-      </div>
+      </FieldBlock>
 
-      <div className={styles.formGroup}>
-        <Typography as="label" variant="bodyLarge">
-          Пошта
-        </Typography>
+      <FieldBlock title="Пошта">
         <TextInput
           name="email"
           type="email"
@@ -147,10 +152,9 @@ export function SignUpForm() {
           value={formData.email}
           onChange={handleChange}
         />
+      </FieldBlock>
 
-        <Typography as="label" variant="bodyLarge">
-          Номер телефону
-        </Typography>
+      <FieldBlock title="Номер телефону">
         <TextInput
           name="phone"
           type="tel"
@@ -158,35 +162,29 @@ export function SignUpForm() {
           value={formData.phone}
           onChange={handleChange}
         />
-      </div>
+      </FieldBlock>
 
-      <div className={styles.formGroup}>
-        <Typography as="label" variant="bodyLarge">
-          Пароль
-        </Typography>
+      <FieldBlock title="Пароль">
         <PasswordInput
           name="password"
           autoComplete="new-password"
           value={formData.password}
           onChange={handleChange}
         />
+      </FieldBlock>
 
-        <Typography as="label" variant="bodyLarge">
-          Підтвердіть пароль
-        </Typography>
+      <FieldBlock title="Підтвердіть пароль">
         <PasswordInput
           name="confirmPassword"
           autoComplete="current-password"
           value={formData.confirmPassword}
           onChange={handleChange}
         />
-      </div>
+      </FieldBlock>
 
-      <div className={styles.formGroup}>
-        <Checkbox checked={agreeToTerms} onCheckedChanged={setAgreeToTerms}>
-          Даю згоду на обробку персональних даних
-        </Checkbox>
-      </div>
+      <Checkbox checked={agreeToTerms} onCheckedChanged={setAgreeToTerms}>
+        Даю згоду на обробку персональних даних
+      </Checkbox>
 
       {import.meta.env.VITE_HOST === 'cf' && (
         <TurnstileWidget

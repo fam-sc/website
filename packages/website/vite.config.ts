@@ -17,7 +17,7 @@ export default defineConfig((env) => ({
   },
   css: {
     modules: {
-      generateScopedName: cssNameGenerator()
+      generateScopedName: cssNameGenerator(),
     },
   },
   ssr:

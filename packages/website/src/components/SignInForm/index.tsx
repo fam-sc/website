@@ -1,5 +1,5 @@
 import { emailRegex } from '@shared/string/regex';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { signIn } from '@/api/users/client';
 import { Button } from '@/components/Button';
@@ -9,10 +9,29 @@ import { Typography } from '@/components/Typography';
 import { useTestRegex } from '@/hooks/useTestRegex';
 import { useTurnstile } from '@/hooks/useTurnstile';
 
+import { Labeled } from '../Labeled';
 import { Link } from '../Link';
 import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
 import styles from './index.module.scss';
+
+function InputGroup({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <Labeled
+      title={title}
+      titleVariant="bodyLarge"
+      className={styles['input-group']}
+    >
+      {children}
+    </Labeled>
+  );
+}
 
 export function SignInForm() {
   const [email, setEmail] = useState('');
@@ -42,33 +61,24 @@ export function SignInForm() {
   };
 
   return (
-    <div className={styles.signinForm}>
-      <div className={styles.formTitle}>
-        <Typography as="strong" variant="h4" className="formTitle">
-          З Поверненням!
-        </Typography>
-      </div>
-      <div className={styles.formGroup}>
-        <Typography as="label" variant="bodyLarge">
-          Пошта
-        </Typography>
+    <div className={styles.root}>
+      <Typography as="strong" variant="h4" className={styles.title}>
+        З Поверненням!
+      </Typography>
+
+      <InputGroup title="Пошта">
         <TextInput
           value={email}
           onTextChanged={setEmail}
           error={!isEmailValid}
         />
-      </div>
+      </InputGroup>
 
-      <div className={styles.formGroup}>
-        <Typography as="label" variant="bodyLarge">
-          Пароль
-        </Typography>
+      <InputGroup title="Пароль">
         <PasswordInput value={password} onTextChanged={setPassword} />
-      </div>
+      </InputGroup>
 
-      <div className={styles.formGroup}>
-        <Link to="/forgot-password">Забули пароль?</Link>
-      </div>
+      <Link to="/forgot-password">Забули пароль?</Link>
 
       {import.meta.env.VITE_HOST === 'cf' && (
         <TurnstileWidget
@@ -77,19 +87,17 @@ export function SignInForm() {
         />
       )}
 
-      <div className={styles.formGroup}>
-        <Button
-          onClick={handleSubmit}
-          buttonVariant="solid"
-          disabled={
-            !isEmailValid ||
-            password.length === 0 ||
-            (import.meta.env.VITE_HOST === 'cf' && turnstileToken === null)
-          }
-        >
-          Увійти
-        </Button>
-      </div>
+      <Button
+        onClick={handleSubmit}
+        buttonVariant="solid"
+        disabled={
+          !isEmailValid ||
+          password.length === 0 ||
+          (import.meta.env.VITE_HOST === 'cf' && turnstileToken === null)
+        }
+      >
+        Увійти
+      </Button>
     </div>
   );
 }

@@ -24,6 +24,7 @@ export function SearchableSelect<K extends string>({
   selectedItem,
   placeholder,
   search,
+  disabled,
   ...rest
 }: SearchableSelectProps<K>) {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +70,7 @@ export function SearchableSelect<K extends string>({
         styles.header,
         query.length > 0 && styles['header-active']
       )}
+      disabled={disabled}
       {...rest}
     >
       <Typography
@@ -76,6 +78,7 @@ export function SearchableSelect<K extends string>({
         type="search"
         value={query}
         onChange={onQueryChange}
+        disabled={disabled}
       />
 
       <Typography>{title}</Typography>

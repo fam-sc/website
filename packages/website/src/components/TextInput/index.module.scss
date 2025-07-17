@@ -15,7 +15,11 @@
 
   &-variant-bordered {
     border: $border-decl;
-    border-radius: 0.5em;
+
+    &,
+    input {
+      border-radius: 0.5em;
+    }
   }
 
   &-variant-underline {

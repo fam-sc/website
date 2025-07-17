@@ -1,0 +1,57 @@
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
+
+.root {
+  $side-border: #ff0 2px solid;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 1em;
+  padding: 2em;
+
+  .main {
+    display: flex;
+    justify-content: center;
+    border-bottom: $side-border;
+    padding-bottom: 2em;
+  }
+
+  @include breakpoint-up('md') {
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(2, 1fr);
+
+    .main,
+    .other {
+      grid-row: 1;
+      align-self: center;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    &-left {
+      .main {
+        grid-column: 1;
+        border-right: $side-border;
+      }
+
+      .other {
+        grid-column: 2;
+      }
+    }
+
+    &-right {
+      .main {
+        grid-column: 2;
+        border-left: $side-border;
+      }
+
+      .other {
+        grid-column: 1;
+      }
+    }
+  }
+}
