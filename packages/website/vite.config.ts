@@ -6,6 +6,7 @@ import { manifestPlugin } from './vite-plugins/manifest';
 import { imagePlugin } from './vite-plugins/image';
 import { multienvPlugin } from './vite-plugins/multienv';
 import { templatePlugin } from './vite-plugins/template';
+import { cssNameGenerator } from './vite-plugins/css';
 
 const isLocal = process.env.LOCAL === '1';
 
@@ -13,6 +14,11 @@ export default defineConfig((env) => ({
   build: {
     outDir: 'build',
     minify: 'esbuild',
+  },
+  css: {
+    modules: {
+      generateScopedName: cssNameGenerator()
+    },
   },
   ssr:
     env.command === 'build' && isLocal

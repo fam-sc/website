@@ -32,7 +32,10 @@ function extractReplacements(content: string): string[] {
   return [...replacements];
 }
 
-function contentToModuleExport(content: string, type: ContentType): string {
+export function contentToModuleExport(
+  content: string,
+  type: ContentType
+): string {
   const replacements = extractReplacements(content);
   let minHtml = content;
 

@@ -12,13 +12,16 @@ const virtualModules: VirtualModule[] = [
 
 export function multienvPlugin(): Plugin {
   let host: string | undefined;
+  const isLocal = process.env.LOCAL === '1';
 
   return {
     name: 'multienv-plugin',
     enforce: 'pre',
     configResolved(config) {
+      const { mode } = config;
+
       host =
-        config.mode === 'staging' || config.mode === 'production'
+        (mode === 'staging' || mode === 'production') && !isLocal
           ? 'cf'
           : 'node';
     },

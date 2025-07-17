@@ -1,5 +1,3 @@
-'use server';
-
 import { getFileDownloadUrlById } from '@shared/api/telegram/utils';
 import { createTelegramBot, TelegramBot } from 'telegram-standard-bot-api';
 import { getForumTopicIconStickers } from 'telegram-standard-bot-api/methods';
