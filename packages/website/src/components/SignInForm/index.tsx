@@ -7,6 +7,7 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { TextInput } from '@/components/TextInput';
 import { Typography } from '@/components/Typography';
 import { useTestRegex } from '@/hooks/useTestRegex';
+import { useTurnstile } from '@/hooks/useTurnstile';
 
 import { Link } from '../Link';
 import { useNotification } from '../Notification';
@@ -16,7 +17,7 @@ import styles from './index.module.scss';
 export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileToken, refreshTurnstile, turnstile] = useTurnstile();
 
   const isEmailValid = useTestRegex(email, emailRegex);
 
@@ -35,6 +36,8 @@ export default function SignInForm() {
       })
       .catch(() => {
         notification.show('Неправильний email або пароль', 'error');
+
+        refreshTurnstile();
       });
   };
 
@@ -70,7 +73,7 @@ export default function SignInForm() {
       {import.meta.env.VITE_HOST === 'cf' && (
         <TurnstileWidget
           className={styles['turnstile-widget']}
-          onSuccess={setTurnstileToken}
+          {...turnstile}
         />
       )}
 

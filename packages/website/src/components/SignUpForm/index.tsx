@@ -11,6 +11,7 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { TextInput } from '@/components/TextInput';
 import { Typography } from '@/components/Typography';
 import { useTestRegex } from '@/hooks/useTestRegex';
+import { useTurnstile } from '@/hooks/useTurnstile';
 import { pick } from '@/utils/object/pick';
 
 import { ErrorBoard } from '../ErrorBoard';
@@ -19,7 +20,7 @@ import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
 import styles from './index.module.scss';
 
-export default function SignUpForm() {
+export function SignUpForm() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -32,7 +33,7 @@ export default function SignUpForm() {
 
   const [group, setGroup] = useState<string>();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileToken, refreshTurnstile, turnstile] = useTurnstile();
 
   const [actionInProgress, setActionInProgress] = useState(false);
 
@@ -79,6 +80,8 @@ export default function SignUpForm() {
       })
       .catch(() => {
         setActionInProgress(false);
+        refreshTurnstile();
+
         notification.show('Сталася помилка', 'error');
       });
   };
@@ -188,7 +191,7 @@ export default function SignUpForm() {
       {import.meta.env.VITE_HOST === 'cf' && (
         <TurnstileWidget
           className={styles['turnstile-widget']}
-          onSuccess={setTurnstileToken}
+          {...turnstile}
         />
       )}
 
