@@ -1,6 +1,6 @@
 import { LinkButton } from '@/components/LinkButton';
-import SignInForm from '@/components/SignInForm';
-import SignUpForm from '@/components/SignUpForm';
+import { SignInForm } from '@/components/SignInForm';
+import { SignUpForm } from '@/components/SignUpForm';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 

@@ -1,4 +1,4 @@
-import { useEffect, useId } from 'react';
+import { RefObject, useEffect, useId, useImperativeHandle } from 'react';
 
 import { Turnstile } from '@/api/turnstile/client';
 import { PropsMap } from '@/types/react';
@@ -9,18 +9,35 @@ declare global {
   }
 }
 
-export interface TurnstileWidgetProps extends Omit<PropsMap['div'], 'id'> {
+export type TurnstileWidgetRefType = {
+  refresh: () => void;
+};
+
+export interface TurnstileWidgetProps
+  extends Omit<PropsMap['div'], 'id' | 'ref'> {
+  ref?: RefObject<TurnstileWidgetRefType | null>;
   onSuccess: (token: string) => void;
 }
 
-export function TurnstileWidget({ onSuccess, ...rest }: TurnstileWidgetProps) {
+export function TurnstileWidget({
+  ref,
+  onSuccess,
+  ...rest
+}: TurnstileWidgetProps) {
   const id = useId();
+  const selector = `#${id}`;
+
+  useImperativeHandle(ref, () => ({
+    refresh: () => {
+      window.turnstile.reset(selector);
+    },
+  }));
 
   useEffect(() => {
     const { turnstile } = window;
 
     turnstile.ready(() => {
-      turnstile.render(`#${id}`, {
+      turnstile.render(selector, {
         sitekey: import.meta.env.VITE_CF_TURNSTILE_SITEKEY,
         size: 'normal',
         theme: 'dark',
@@ -31,7 +48,7 @@ export function TurnstileWidget({ onSuccess, ...rest }: TurnstileWidgetProps) {
 
     return () => {
       try {
-        turnstile.reset(`#${id}`);
+        turnstile.remove(selector);
       } catch (error: unknown) {
         console.error(error);
       }

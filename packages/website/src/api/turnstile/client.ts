@@ -10,5 +10,6 @@ export interface Turnstile {
       callback: (token: string) => void;
     }
   ): void;
+  remove(widgetId: string): void;
   reset(widgetId: string): void;
 }
