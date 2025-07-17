@@ -14,7 +14,7 @@ import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
 import styles from './index.module.scss';
 
-export default function SignInForm() {
+export function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [turnstileToken, refreshTurnstile, turnstile] = useTurnstile();
