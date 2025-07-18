@@ -5,7 +5,7 @@ import { PollQuestionBuilder, PollQuestionBuilderProps } from '.';
 import { QuestionBuildItem } from './item';
 
 function Component(props: PollQuestionBuilderProps) {
-  const [value, setValue] = useState<QuestionBuildItem>({ title: '' });
+  const [value, setValue] = useState<QuestionBuildItem>({ key: 1, title: '' });
 
   return (
     <PollQuestionBuilder {...props} value={value} onValueChanged={setValue} />

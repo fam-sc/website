@@ -12,13 +12,15 @@
   }
 }
 
-.remove-container {
+.top-header {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-
   padding: 0.25em 0.5em;
   margin-bottom: 0.25em;
+
+  .remove {
+    margin-left: auto;
+  }
 }
 
 .header {
@@ -31,8 +33,7 @@
     align-items: center;
 
     margin-bottom: 1em;
-    padding: 0 1.5em 1em 1.5em;
-    
+    padding: 0 1.5em 1em;
   }
 
   .title {
@@ -48,12 +49,13 @@
 
   .type-select {
     min-width: 200px;
+
     // width: 20%;
   }
 }
 
 .content-wrapper {
-  padding: 0 1em 1em 1em;
+  padding: 0 1em 1em;
 
   @include breakpoint-up('md') {
     padding: 0 1.5em;

@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, RefObject } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
 
+import { DragHandle } from '../DragHandle';
 import { IconButton } from '../IconButton';
 import { QuestionDescriptor, QuestionType } from '../PollQuestion/types';
 import { Select } from '../Select';
@@ -15,6 +16,8 @@ import { QuestionBuildItem } from './item';
 export type PollQuestionBuilderProps = {
   className?: string;
   disabled?: boolean;
+
+  handleRef?: RefObject<HTMLButtonElement | null>;
 
   isError?: boolean;
   value: QuestionBuildItem;
@@ -65,6 +68,7 @@ const contentTypeItems = questionTypes.map((type) => ({
 export function PollQuestionBuilder({
   className,
   disabled,
+  handleRef,
   isError,
   value,
   onValueChanged,
@@ -85,8 +89,14 @@ export function PollQuestionBuilder({
         className
       )}
     >
-      <div className={styles['remove-container']}>
-        <IconButton onClick={onRemove}>
+      <div className={styles['top-header']}>
+        {handleRef && <DragHandle ref={handleRef} />}
+
+        <IconButton
+          onClick={onRemove}
+          title="Видалити питання"
+          className={styles.remove}
+        >
           <CloseIcon />
         </IconButton>
       </div>

@@ -1,6 +1,9 @@
+import { Key } from 'react';
+
 import { QuestionDescriptor } from '../PollQuestion/types';
 
 export type QuestionBuildItem = {
+  key: Key;
   title: string;
   descriptor?: QuestionDescriptor;
 };
