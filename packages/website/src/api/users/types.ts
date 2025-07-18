@@ -1,4 +1,7 @@
 import { UserRole } from '@data/types/user';
+import { infer as zodInfer } from 'zod/v4-mini';
+
+import type { changePasswordPayload } from './payloads';
 
 export interface UserInfo {
   id: number;
@@ -38,3 +41,5 @@ export type UserSelfInfo = {
   role: UserRole;
   hasAvatar: boolean;
 };
+
+export type ChangePasswordPayload = zodInfer<typeof changePasswordPayload>;

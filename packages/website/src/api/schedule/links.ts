@@ -1,4 +1,4 @@
-import { lessonType } from '@/api/schedule/types';
+import { lessonType } from '@shared-schedule/schema';
 
 import { UpdateScheduleLinksPayload } from './payloads';
 

@@ -1,4 +1,5 @@
-import { IpResponse, ipResponse } from './types';
+import { ipResponse } from './schema';
+import { IpResponse } from './types';
 
 export async function getIpLocation(ip: string): Promise<IpResponse | null> {
   const response = await fetch(`http://ip-api.com/json/${ip}`);

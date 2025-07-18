@@ -1,6 +1,7 @@
 import { checkedFetch, fetchObject } from '@shared/fetch';
 
-import { BotFlowConfig, botFlowConfig } from './types';
+import { botFlowConfig } from './schema';
+import { BotFlowConfig } from './types';
 
 const CONFIG_URL = 'https://bot.sc-fam.workers.dev/config';
 

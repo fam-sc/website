@@ -1,18 +1,9 @@
-import {
-  array,
-  infer as zodInfer,
-  nullable,
-  number,
-  object,
-  string,
-} from 'zod/v4-mini';
+import { array, nullable, number, object, string } from 'zod/v4-mini';
 
 export const step = object({
   id: number(),
   text: string(),
 });
-
-export type Step = zodInfer<typeof step>;
 
 export const receptacle = object({
   id: number(),
@@ -22,8 +13,6 @@ export const receptacle = object({
   text: nullable(string()),
 });
 
-export type Receptacle = zodInfer<typeof receptacle>;
-
 export const answerOption = object({
   id: number(),
   text: string(),
@@ -32,12 +21,8 @@ export const answerOption = object({
   step_id: number(),
 });
 
-export type AnswerOption = zodInfer<typeof answerOption>;
-
 export const botFlowConfig = object({
   options: array(answerOption),
   receptacles: array(receptacle),
   steps: array(step),
 });
-
-export type BotFlowConfig = zodInfer<typeof botFlowConfig>;

@@ -5,7 +5,7 @@ import { app } from '@/api/app';
 import { hashPassword } from '@/api/auth/password';
 import { ApiErrorCode } from '@/api/errorCodes';
 
-import { resetPasswordPayload } from './types';
+import { resetPasswordPayload } from './schema';
 
 app.post('/users/resetPassword', async (request) => {
   const rawPayload = await request.json();

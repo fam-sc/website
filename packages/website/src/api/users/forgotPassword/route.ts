@@ -6,9 +6,9 @@ import { app } from '@/api/app';
 import { sendMail } from '@/api/mail';
 import { verifyTurnstileTokenByHost } from '@/api/turnstile/verify';
 
-import mailHtml from './mail.html?t';
-import mailText from './mail.txt?t';
-import { forgotPasswordPayload } from './types';
+import mailHtml from './assets/mail.html?t';
+import mailText from './assets/mail.txt?t';
+import { forgotPasswordPayload } from './schema';
 
 // 10 minutes
 const EXPIRATION_DURATION = 10 * 60 * 1000;

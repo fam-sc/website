@@ -1,4 +1,5 @@
-import { Time, timeBreakpoints } from '@shared/api/campus/types';
+import { Time } from '@shared/api/campus/types';
+import { timeBreakpoints } from '@shared-schedule/constants';
 
 import { Day } from '@/api/schedule/types';
 import { CurrentLesson } from '@/components/ScheduleGrid';

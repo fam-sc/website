@@ -1,30 +1,25 @@
 import { EventStatus } from '@data/types';
 import { getAllFiles } from '@shared/formData';
 import { richText } from '@shared/richText/zod';
-import { coerce, literal, object, pipe, string, union, z } from 'zod/v4-mini';
+import { coerce, literal, object, pipe, string, union } from 'zod/v4-mini';
+
+import {
+  AddEventPayload,
+  EditEventPayload,
+  WithDescriptionFiles,
+} from './types';
 
 const status = union([
   literal(EventStatus.PENDING),
   literal(EventStatus.ENDED),
 ]);
 
-const payloadSchema = object({
+export const payloadSchema = object({
   status,
   title: string(),
   date: pipe(string(), coerce.date()),
   description: richText,
 });
-
-type WithDescriptionFiles<Image extends File | undefined> = z.infer<
-  typeof payloadSchema
-> & {
-  image: Image;
-  descriptionFiles: File[];
-};
-
-export type AddEventPayload = WithDescriptionFiles<File>;
-
-export type EditEventPayload = WithDescriptionFiles<File | undefined>;
 
 function parseAbstractPayload<Image extends File | undefined>(
   formData: FormData,

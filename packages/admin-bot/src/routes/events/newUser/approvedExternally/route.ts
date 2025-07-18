@@ -1,4 +1,4 @@
-import { newUserApprovedExternallyEventPayload } from '@shared/api/adminbot/types';
+import { newUserApprovedExternallyEventPayload } from '@shared/api/adminbot/schema';
 import { badRequest, unauthorized } from '@shared/responses';
 
 import { isAuthorizedRequest } from '@/auth';

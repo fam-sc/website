@@ -1,4 +1,4 @@
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
 import { useCallback, useEffect, useState } from 'react';
 
 import { BotType } from '@/api/users/botAuth/types';

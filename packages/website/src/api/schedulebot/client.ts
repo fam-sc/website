@@ -1,4 +1,4 @@
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
 import { checkedFetch } from '@shared/fetch';
 
 export function authorizeScheduleBot(

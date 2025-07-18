@@ -3,7 +3,8 @@ import { badRequest } from '@shared/responses';
 
 import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';
-import { addPollPayload } from '@/api/polls/types';
+
+import { addPollPayload } from './schema';
 
 app.post('/polls', async (request) => {
   const rawPayload = await request.json();

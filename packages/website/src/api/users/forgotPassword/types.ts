@@ -1,12 +1,5 @@
-import { emailRegex } from '@shared/string/regex';
-import { nullable, object, regex, string, z } from 'zod/v4-mini';
+import { infer as zodInfer } from 'zod/v4-mini';
 
-const turnstileToken =
-  import.meta.env.VITE_HOST === 'cf' ? string() : nullable(string());
+import type { forgotPasswordPayload } from './schema';
 
-export const forgotPasswordPayload = object({
-  email: string().check(regex(emailRegex)),
-  turnstileToken,
-});
-
-export type ForgotPasswordPayload = z.infer<typeof forgotPasswordPayload>;
+export type ForgotPasswordPayload = zodInfer<typeof forgotPasswordPayload>;

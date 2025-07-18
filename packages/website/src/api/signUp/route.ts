@@ -4,7 +4,7 @@ import { badRequest, conflict } from '@shared/responses';
 
 import { app } from '@/api/app';
 import { hashPassword } from '@/api/auth/password';
-import { SignUpDataSchema } from '@/api/auth/types';
+import { SignUpDataSchema } from '@/api/auth/schema';
 import { checkFacultyGroupExists } from '@/api/groups/get';
 
 import { sendMail } from '../mail';

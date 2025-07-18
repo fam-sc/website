@@ -1,10 +1,6 @@
-import {
-  Day,
-  DaySchedule,
-  Lesson,
-  Time,
-  timeBreakpoints,
-} from '@/api/schedule/types';
+import { timeBreakpoints } from '@shared-schedule/constants';
+
+import { Day, DaySchedule, Lesson, Time } from '@/api/schedule/types';
 
 export type IndexedLesson = { index: number; value: Lesson };
 

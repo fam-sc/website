@@ -1,8 +1,5 @@
-import { object, string, z } from 'zod/v4-mini';
+import { infer as zodInfer } from 'zod/v4-mini';
 
-export const resetPasswordPayload = object({
-  token: string(),
-  newPassword: string(),
-});
+import type { resetPasswordPayload } from './schema';
 
-export type ResetPasswordPayload = z.infer<typeof resetPasswordPayload>;
+export type ResetPasswordPayload = zodInfer<typeof resetPasswordPayload>;

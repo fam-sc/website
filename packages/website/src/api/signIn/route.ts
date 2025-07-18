@@ -4,7 +4,7 @@ import { badRequest, unauthorized } from '@shared/responses';
 import { app } from '@/api/app';
 import { getSessionId, newSessionId, setSessionId } from '@/api/auth';
 import { verifyPassword } from '@/api/auth/password';
-import { SignInDataSchema } from '@/api/auth/types';
+import { SignInDataSchema } from '@/api/auth/schema';
 
 import { verifyTurnstileTokenByHost } from '../turnstile/verify';
 

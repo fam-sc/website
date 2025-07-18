@@ -1,4 +1,4 @@
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
 import { parseInt } from '@shared/parseInt';
 import { searchParamsToObject } from '@shared/searchParams';
 

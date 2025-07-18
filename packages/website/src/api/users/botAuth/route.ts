@@ -1,10 +1,8 @@
 import { UserCollection } from '@data/collections/users';
 import { Repository } from '@data/repo';
 import { UserRole } from '@data/types/user';
-import {
-  TelegramBotAuthPayload,
-  telegramBotAuthPayload,
-} from '@shared/api/telegram/auth';
+import { telegramBotAuthPayload } from '@shared/api/telegram/auth/schema';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
 import { badRequest, unauthorized } from '@shared/responses';
 
 import { authorizeAdminBot } from '@/api/adminbot/client';

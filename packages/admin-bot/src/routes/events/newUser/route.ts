@@ -1,4 +1,4 @@
-import { newUserEventPayload } from '@shared/api/adminbot/types';
+import { newUserEventPayload } from '@shared/api/adminbot/schema';
 import { getIpLocation } from '@shared/api/ip';
 import { badRequest, unauthorized } from '@shared/responses';
 

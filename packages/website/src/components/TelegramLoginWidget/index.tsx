@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/prefer-dom-node-dataset */
 
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
 import { useEffect, useId, useRef } from 'react';
 
 type CallbackType = (user: TelegramBotAuthPayload) => void;

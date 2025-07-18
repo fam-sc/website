@@ -1,19 +1,6 @@
-import { number, object, optional, string, z } from 'zod/v4-mini';
-
-import { hash, verifyHmac } from '../../crypto';
-import { parseHexString } from '../../string/hex';
-
-export const telegramBotAuthPayload = object({
-  id: number(),
-  username: string(),
-  first_name: string(),
-  auth_date: number(),
-  hash: string(),
-  last_name: optional(string()),
-  photo_url: optional(string()),
-});
-
-export type TelegramBotAuthPayload = z.infer<typeof telegramBotAuthPayload>;
+import { hash, verifyHmac } from '../../../crypto';
+import { parseHexString } from '../../../string/hex';
+import { TelegramBotAuthPayload } from './types';
 
 function createCheckString(data: TelegramBotAuthPayload): string {
   const parts = [

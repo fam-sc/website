@@ -15,8 +15,8 @@ import { MediaFilePath } from '../media/types';
 import {
   getInternalBotFlowConfig,
   putInternalBotFlowConfig,
-} from './internalClient';
-import { BotFlowConfig } from './types';
+} from './internal/client';
+import { BotFlowConfig } from './internal/types';
 
 const NODE_POSITIONS_PATH: MediaFilePath = 'bot-flow/node-positions.json';
 

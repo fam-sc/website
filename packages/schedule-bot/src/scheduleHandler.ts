@@ -1,9 +1,10 @@
 import { Repository } from '@data/repo';
 import { User } from '@data/types/user';
 import { getCurrentTime } from '@shared/api/campus';
-import { CurrentTime, Time, timeBreakpoints } from '@shared/api/campus/types';
+import { CurrentTime, Time } from '@shared/api/campus/types';
 import { getTrueCurrentTime } from '@shared/api/time';
 import { findNearestTimePoint } from '@shared/chrono/time';
+import { timeBreakpoints } from '@shared-schedule/constants';
 import { getScheduleForGroup } from '@shared-schedule/get';
 import { Schedule } from '@shared-schedule/types';
 

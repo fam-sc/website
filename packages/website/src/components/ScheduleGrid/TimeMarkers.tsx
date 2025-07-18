@@ -1,4 +1,4 @@
-import { timeBreakpoints } from '@shared/api/campus/types';
+import { timeBreakpoints } from '@shared-schedule/constants';
 import { ReactNode } from 'react';
 
 import { Typography } from '../Typography';

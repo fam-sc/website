@@ -1,8 +1,8 @@
 import { UserRole } from '@data/types/user';
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
 
 import type { SignInData, SignUpData } from '@/api/auth/types';
-import type { ChangePasswordPayload } from '@/api/users/payloads';
+import type { ChangePasswordPayload } from '@/api/users/types';
 import { UserInfo, UserPersonalInfo } from '@/api/users/types';
 import { UserInfoWithRole } from '@/api/users/types';
 

@@ -1,12 +1,7 @@
+import { timeBreakpoints } from '@shared-schedule/constants';
 import { useMemo } from 'react';
 
-import {
-  Day,
-  DaySchedule,
-  Lesson,
-  Time,
-  timeBreakpoints,
-} from '@/api/schedule/types';
+import { Day, DaySchedule, Lesson, Time } from '@/api/schedule/types';
 import { classNames } from '@/utils/classNames';
 
 import { DayMarker } from './DayMarker';

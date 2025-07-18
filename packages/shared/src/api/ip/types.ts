@@ -1,11 +1,5 @@
-import { enum as zodEnum, object, string, z } from 'zod/v4-mini';
+import { infer as zodInfer } from 'zod/v4-mini';
 
-export const ipResponse = object({
-  status: zodEnum(['success', 'fail']),
-  query: string(),
-  country: string(),
-  regionName: string(),
-  city: string(),
-});
+import type { ipResponse } from './schema';
 
-export type IpResponse = z.infer<typeof ipResponse>;
+export type IpResponse = zodInfer<typeof ipResponse>;

@@ -1,14 +1,13 @@
-import { Time } from '@shared/api/campus/types';
-import { z } from 'zod/v4-mini';
+import type { Time } from '@shared/api/campus/types';
+import { infer as zodInfer } from 'zod/v4-mini';
+
+import type { lessonType } from './schema';
 
 export type { Time } from '@shared/api/campus/types';
-export { timeBreakpoints } from '@shared/api/campus/types';
 
 export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-export const lessonType = z.enum(['lec', 'prac', 'lab']);
-
-export type LessonType = z.infer<typeof lessonType>;
+export type LessonType = zodInfer<typeof lessonType>;
 
 export type ScheduleTeacher = {
   name: string;

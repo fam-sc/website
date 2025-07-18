@@ -1,4 +1,5 @@
-import { Time, timeBreakpoints } from '@shared/api/campus/types';
+import { timeBreakpoints } from '@shared-schedule/constants';
+import { Time } from '@shared-schedule/types';
 
 import { Day } from '@/api/schedule/types';
 import { classNames } from '@/utils/classNames';

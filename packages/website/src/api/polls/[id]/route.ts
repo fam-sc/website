@@ -5,8 +5,8 @@ import { badRequest, notFound } from '@shared/responses';
 import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';
 import { ApiErrorCode } from '@/api/errorCodes';
-import { submitPollPayload } from '@/api/polls/types';
 
+import { submitPollPayload } from '../schema';
 import { isValidAnswers } from './validation';
 
 app.post('/polls/:id', async (request, { params: { id } }) => {

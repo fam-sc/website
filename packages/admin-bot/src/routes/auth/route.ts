@@ -1,7 +1,5 @@
-import {
-  telegramBotAuthPayload,
-  verifyAuthorizationHash,
-} from '@shared/api/telegram/auth';
+import { verifyAuthorizationHash } from '@shared/api/telegram/auth';
+import { telegramBotAuthPayload } from '@shared/api/telegram/auth/schema';
 import { badRequest, unauthorized } from '@shared/responses';
 
 import { isAuthorizedRequest } from '@/auth';

@@ -2,7 +2,7 @@ import {
   NewUserApprovedExternallyEventPayload,
   NewUserEventPayload,
 } from '@shared/api/adminbot/types';
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth';
+import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
 import { checkedFetch } from '@shared/fetch';
 
 function authRequest(path: string, payload: object, accessKey: string) {
