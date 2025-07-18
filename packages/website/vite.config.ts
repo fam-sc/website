@@ -7,6 +7,7 @@ import { imagePlugin } from './vite-plugins/image';
 import { multienvPlugin } from './vite-plugins/multienv';
 import { templatePlugin } from './vite-plugins/template';
 import { cssNameGenerator } from './vite-plugins/css';
+import { markdownPlugin } from './vite-plugins/markdown';
 
 const isLocal = process.env.LOCAL === '1';
 
@@ -34,6 +35,7 @@ export default defineConfig((env) => ({
     ...(env.command === 'build' && !isLocal
       ? [cloudflare({ viteEnvironment: { name: 'ssr' } })]
       : []),
+    markdownPlugin('./src/markdown/config.tsx'),
     reactRouter(),
     manifestPlugin(),
     imagePlugin(),

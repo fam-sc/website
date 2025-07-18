@@ -22,12 +22,11 @@
   @include desktop-view {
     margin: 6em 5em;
   }
-}
 
-.greeting-header {
-  display: block;
-
-  margin-bottom: 1em;
+  h4 {
+    display: block;
+    margin-bottom: 0.5em;
+  }
 }
 
 .invitation {

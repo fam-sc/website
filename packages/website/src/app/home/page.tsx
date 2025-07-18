@@ -3,26 +3,13 @@ import { Image } from '@/components/Image';
 import { Swiper } from '@/components/Swiper';
 import { TextWithImage } from '@/components/TextWithImage';
 import { Title } from '@/components/Title';
-import { Typography } from '@/components/Typography';
 import InvitationImage from '@/images/logo-2.png?multiple';
 import SwiperImage1 from '@/images/swiper/1.jpg?multiple';
 import SwiperImage2 from '@/images/swiper/2.jpg?multiple';
 import SwiperImage3 from '@/images/swiper/3.png?multiple';
 
-import greeting from './greetingText.json';
+import GreetingContent from './greeting.md?react';
 import styles from './page.module.scss';
-
-function GreetingText() {
-  return (
-    <ColumnText className={styles.greeting} variant="bodyLarge">
-      <Typography as="span" variant="h4" className={styles['greeting-header']}>
-        Потужнічі в СР ФПМ
-      </Typography>
-
-      {greeting.text}
-    </ColumnText>
-  );
-}
 
 export default function HomePage() {
   return (
@@ -39,13 +26,14 @@ export default function HomePage() {
           <Image
             multiple={images}
             sizes={{ default: '30vw' }}
-            alt=""
             draggable={false}
           />
         )}
       />
 
-      <GreetingText />
+      <ColumnText className={styles.greeting} variant="bodyLarge">
+        <GreetingContent />
+      </ColumnText>
 
       <TextWithImage
         className={styles.invitation}

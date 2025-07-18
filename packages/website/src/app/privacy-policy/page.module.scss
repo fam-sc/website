@@ -1,23 +1,38 @@
-.privacyWrapper {
+.root {
   max-width: 800px;
   margin: 0 auto;
   padding: 40px 20px;
-  background-color: var(--color-background);
-  color: var(--color-text-on-background-dark);
-}
 
-.title {
-  margin-bottom: 24px;
-  text-align: center;
-}
+  p {
+    margin-bottom: 0.5em;
+  }
 
-.subtitle {
-  margin-top: 32px;
-  margin-bottom: 12px;
-  font-weight: bold;
-}
+  h3,
+  h4 {
+    margin-bottom: 0.25em;
+  }
 
-.paragraph {
-  margin-bottom: 16px;
-  line-height: 1.6;
+  h3 {
+    text-align: center;
+  }
+
+  h4 {
+    margin-top: 0.5em;
+  }
+
+  ul,
+  li {
+    text-align: start;
+  }
+
+  ul {
+    list-style-position: outside;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+
+    li {
+      margin-left: 1em;
+    }
+  }
 }

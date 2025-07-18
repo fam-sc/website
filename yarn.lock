@@ -3009,6 +3009,7 @@ __metadata:
     dotenv: "npm:17.2.0"
     express: "npm:5.1.0"
     isbot: "npm:5.1.28"
+    marked: "npm:16.1.0"
     morgan: "npm:1.10.0"
     parse5: "npm:8.0.0"
     punycode: "npm:2.3.1"
@@ -8160,6 +8161,15 @@ __metadata:
   bin:
     markdown-it: bin/markdown-it.mjs
   checksum: 10c0/9a6bb444181d2db7016a4173ae56a95a62c84d4cbfb6916a399b11d3e6581bf1cc2e4e1d07a2f022ae72c25f56db90fbe1e529fca16fbf9541659dc53480d4b4
+  languageName: node
+  linkType: hard
+
+"marked@npm:16.1.0":
+  version: 16.1.0
+  resolution: "marked@npm:16.1.0"
+  bin:
+    marked: bin/marked.js
+  checksum: 10c0/c8628fd4d54221113ab3b2ff8c8226e989f6f7482c3eee1650454dab165dc502b3a176aad0f8c8b91a8a23c15bc7ec48d426ac211604b53169af92077ed483a1
   languageName: node
   linkType: hard
 
