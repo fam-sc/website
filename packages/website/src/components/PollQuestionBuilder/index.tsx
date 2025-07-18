@@ -1,12 +1,14 @@
 import { FC } from 'react';
 
+import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
 
-import { Checkbox } from '../Checkbox';
-import { OptionListBuilder } from '../OptionListBuilder';
+import { IconButton } from '../IconButton';
 import { QuestionDescriptor, QuestionType } from '../PollQuestion/types';
 import { Select } from '../Select';
 import { TextInput } from '../TextInput';
+import { CheckboxContent, MultiCheckboxContent, RadioContent } from './content';
+import { ContentTypeProps } from './content/types';
 import styles from './index.module.scss';
 import { QuestionBuildItem } from './item';
 
@@ -17,91 +19,48 @@ export type PollQuestionBuilderProps = {
   isError?: boolean;
   value: QuestionBuildItem;
   onValueChanged: (value: QuestionBuildItem) => void;
+  onRemove: () => void;
 };
 
-type ContentTypeProps<T extends QuestionType> = {
-  disabled?: boolean;
-
-  descriptor: QuestionDescriptor<T>;
-  onDescriptorChanged: (value: QuestionDescriptor<T>) => void;
+type ContentConfig<T extends QuestionType> = {
+  title: string;
+  emptyDescription: () => QuestionDescriptor<T>;
+  component: FC<ContentTypeProps<T>>;
 };
 
-type ContentComponentMap = {
-  [T in QuestionType]: FC<ContentTypeProps<T>>;
+type ContentConfigMap = {
+  [T in QuestionType]: ContentConfig<T>;
 };
 
-const questionTypeTitles: Record<QuestionType, string> = {
-  text: 'Текст',
-  checkbox: 'Прапорець',
-  multicheckbox: 'Вибір (багато варіантів)',
-  radio: 'Вибір (один варіант)',
+const contentConfig: ContentConfigMap = {
+  text: {
+    title: 'Текст',
+    emptyDescription: () => ({ type: 'text' }),
+    component: () => null,
+  },
+  checkbox: {
+    title: 'Прапорець',
+    emptyDescription: () => ({ type: 'checkbox', requiredTrue: false }),
+    component: CheckboxContent,
+  },
+  multicheckbox: {
+    title: 'Вибір (багато варіантів)',
+    emptyDescription: () => ({ type: 'multicheckbox', options: [] }),
+    component: MultiCheckboxContent,
+  },
+  radio: {
+    title: 'Вибір (один варіант)',
+    emptyDescription: () => ({ type: 'radio', options: [] }),
+    component: RadioContent,
+  },
 };
 
-const questionTypes = Object.keys(questionTypeTitles) as QuestionType[];
+const questionTypes = Object.keys(contentConfig) as QuestionType[];
 
-function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(
-  type: T
-) {
-  // eslint-disable-next-line react/display-name
-  return ({
-    disabled,
-    descriptor,
-    onDescriptorChanged,
-  }: ContentTypeProps<T>) => {
-    return (
-      <OptionListBuilder
-        disabled={disabled}
-        items={descriptor.options.map(({ title }) => title)}
-        onItemsChanged={(items) => {
-          onDescriptorChanged({
-            type,
-            options: items.map((title, id) => ({ id, title })),
-          });
-        }}
-      />
-    );
-  };
-}
-
-function CheckboxContent({
-  descriptor,
-  onDescriptorChanged,
-  disabled,
-}: ContentTypeProps<'checkbox'>) {
-  return (
-    <Checkbox
-      disabled={disabled}
-      checked={descriptor.requiredTrue}
-      onCheckedChanged={(state) => {
-        onDescriptorChanged({ type: 'checkbox', requiredTrue: state });
-      }}
-    >
-      {`Обов'язково має бути включеним`}
-    </Checkbox>
-  );
-}
-
-function getEmptyDescriptor(type: QuestionType): QuestionDescriptor {
-  switch (type) {
-    case 'text': {
-      return { type };
-    }
-    case 'multicheckbox':
-    case 'radio': {
-      return { type, options: [] };
-    }
-    case 'checkbox': {
-      return { type, requiredTrue: false };
-    }
-  }
-}
-
-const contentComponentMap: ContentComponentMap = {
-  text: () => null,
-  checkbox: CheckboxContent,
-  multicheckbox: optionListBuilderWrapper('multicheckbox'),
-  radio: optionListBuilderWrapper('radio'),
-};
+const contentTypeItems = questionTypes.map((type) => ({
+  key: type,
+  title: contentConfig[type].title,
+}));
 
 export function PollQuestionBuilder({
   className,
@@ -109,12 +68,14 @@ export function PollQuestionBuilder({
   isError,
   value,
   onValueChanged,
+  onRemove,
 }: PollQuestionBuilderProps) {
-  const Content = value.descriptor
-    ? (contentComponentMap[value.descriptor.type] as FC<
-        ContentTypeProps<QuestionType>
-      >)
-    : null;
+  const { descriptor } = value;
+  const config = descriptor ? contentConfig[descriptor.type] : null;
+
+  const Content = config?.component as
+    | FC<ContentTypeProps<QuestionType>>
+    | undefined;
 
   return (
     <div
@@ -124,10 +85,16 @@ export function PollQuestionBuilder({
         className
       )}
     >
+      <div className={styles['remove-container']}>
+        <IconButton onClick={onRemove}>
+          <CloseIcon />
+        </IconButton>
+      </div>
+
       <div className={styles.header}>
         <TextInput
           variant="underline"
-          className={styles['title']}
+          className={styles.title}
           value={value.title}
           placeholder="Питання"
           disabled={disabled}
@@ -139,26 +106,28 @@ export function PollQuestionBuilder({
         <Select
           className={styles['type-select']}
           placeholder="Виберіть тип"
-          selectedItem={value.descriptor?.type}
+          selectedItem={descriptor?.type}
           disabled={disabled}
-          items={questionTypes.map((type) => ({
-            key: type,
-            title: questionTypeTitles[type],
-          }))}
+          items={contentTypeItems}
           onItemSelected={(type) => {
-            onValueChanged({ ...value, descriptor: getEmptyDescriptor(type) });
+            onValueChanged({
+              ...value,
+              descriptor: contentConfig[type].emptyDescription(),
+            });
           }}
         />
       </div>
 
-      {Content && value.descriptor ? (
-        <Content
-          disabled={disabled}
-          descriptor={value.descriptor}
-          onDescriptorChanged={(descriptor) => {
-            onValueChanged({ ...value, descriptor });
-          }}
-        />
+      {Content && descriptor ? (
+        <div className={styles['content-wrapper']}>
+          <Content
+            disabled={disabled}
+            descriptor={descriptor}
+            onDescriptorChanged={(descriptor) => {
+              onValueChanged({ ...value, descriptor });
+            }}
+          />
+        </div>
       ) : null}
     </div>
   );

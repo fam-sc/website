@@ -30,6 +30,12 @@ export function PollBuilder({
                 value={item}
                 disabled={disabled}
                 isError={!isValidItem(item)}
+                onRemove={() => {
+                  const copy = [...items];
+                  copy.splice(i, 1);
+
+                  onItemsChanged(copy);
+                }}
                 onValueChanged={(value) => {
                   const copy = [...items];
                   copy[i] = value;
