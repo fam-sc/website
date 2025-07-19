@@ -1,23 +1,29 @@
-import { AriaAttributes, FC, useId } from 'react';
+import { AriaAttributes, FC, useCallback, useId } from 'react';
+
+import {
+  QuestionAnswer,
+  QuestionDescriptor,
+  QuestionType,
+} from '@/services/polls/types';
 
 import { Checkbox } from '../Checkbox';
 import { Typography } from '../Typography';
 import { MultiCheckboxContent } from './content/MultiCheckbox';
 import { RadioContent } from './content/Radio';
+import { ScoreContent } from './content/Score';
 import { TextContent } from './content/Text';
 import { ContentComponentMap, ContentTypeProps } from './content/types';
 import styles from './index.module.scss';
-import { QuestionAnswer, QuestionDescriptor, QuestionType } from './types';
 
-export * from './types';
-
-export interface PollQuestionProps<T extends QuestionType> {
+export interface PollQuestionProps<T extends QuestionType, Data = unknown> {
   disabled?: boolean;
 
   title: string;
+  data: Data;
+
   descriptor: QuestionDescriptor<T>;
   answer: QuestionAnswer<T> | undefined;
-  onAnswerChanged: (value: QuestionAnswer<T>) => void;
+  onAnswerChanged: (value: QuestionAnswer<T>, data: Data) => void;
 }
 
 interface CheckboxQuestionProps extends AriaAttributes {
@@ -32,14 +38,14 @@ function CheckboxQuestion({
   onAnswerChanged,
   ...rest
 }: CheckboxQuestionProps) {
+  const onCheckedChanged = useCallback(
+    (status: boolean) => onAnswerChanged({ status }),
+    [onAnswerChanged]
+  );
+
   return (
     <div className={styles.root} {...rest}>
-      <Checkbox
-        checked={answer.status}
-        onCheckedChanged={(status) => {
-          onAnswerChanged({ status });
-        }}
-      >
+      <Checkbox checked={answer.status} onCheckedChanged={onCheckedChanged}>
         {title}
       </Checkbox>
     </div>
@@ -50,24 +56,33 @@ const contentComponentMap: ContentComponentMap = {
   text: TextContent,
   multicheckbox: MultiCheckboxContent,
   radio: RadioContent,
+  score: ScoreContent,
 };
 
-export function PollQuestion<T extends QuestionType>({
+export function PollQuestion<T extends QuestionType, Data>({
   disabled,
   title,
   descriptor,
   answer,
+  data,
   onAnswerChanged,
-}: PollQuestionProps<T>) {
-  const type = descriptor.type;
+}: PollQuestionProps<T, Data>) {
+  const { type } = descriptor;
   const titleId = useId();
+
+  const onAnswerChangedWithData = useCallback(
+    (answer: QuestionAnswer<T>) => {
+      onAnswerChanged(answer, data);
+    },
+    [data, onAnswerChanged]
+  );
 
   if (type === 'checkbox') {
     return (
       <CheckboxQuestion
         title={title}
         answer={answer as QuestionAnswer<'checkbox'>}
-        onAnswerChanged={onAnswerChanged}
+        onAnswerChanged={onAnswerChangedWithData}
       />
     );
   }
@@ -86,7 +101,7 @@ export function PollQuestion<T extends QuestionType>({
         disabled={disabled}
         descriptor={descriptor}
         answer={answer}
-        onAnswerChanged={onAnswerChanged}
+        onAnswerChanged={onAnswerChangedWithData}
         aria-labelledby={titleId}
       />
     </fieldset>

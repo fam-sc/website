@@ -1,29 +1,34 @@
-import { Checkbox } from '../../Checkbox';
-import { OptionListBuilder } from '../../OptionListBuilder';
-import { ContentTypeProps } from './types';
+import { useCallback } from 'react';
 
-function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(
-  type: T
-) {
-  // eslint-disable-next-line react/display-name
-  return ({
-    disabled,
-    descriptor,
-    onDescriptorChanged,
-  }: ContentTypeProps<T>) => {
-    return (
-      <OptionListBuilder
-        disabled={disabled}
-        items={descriptor.options.map(({ title }) => title)}
-        onItemsChanged={(items) => {
-          onDescriptorChanged({
-            type,
-            options: items.map((title, id) => ({ id, title })),
-          });
-        }}
-      />
-    );
-  };
+import { Checkbox } from '@/components/Checkbox';
+import { ScoreSelect } from '@/components/ScoreSelect';
+import { multipleSelection } from '@/components/ScoreSelect/adapter';
+import { scores } from '@/services/polls/constants';
+
+import { OptionListBuilder } from '../../OptionListBuilder';
+import { ContentComponent, ContentTypeProps } from './types';
+
+function OptionListBuilderContent({
+  disabled,
+  descriptor: { options },
+  onDescriptorChanged,
+}: ContentTypeProps<'multicheckbox' | 'radio'>) {
+  const onItemsChanged = useCallback(
+    (items: string[]) => {
+      onDescriptorChanged({
+        options: items.map((title, id) => ({ id, title })),
+      });
+    },
+    [onDescriptorChanged]
+  );
+
+  return (
+    <OptionListBuilder
+      disabled={disabled}
+      items={options.map(({ title }) => title)}
+      onItemsChanged={onItemsChanged}
+    />
+  );
 }
 
 export function CheckboxContent({
@@ -31,18 +36,48 @@ export function CheckboxContent({
   onDescriptorChanged,
   disabled,
 }: ContentTypeProps<'checkbox'>) {
+  const onCheckedChanged = useCallback(
+    (state: boolean) => {
+      onDescriptorChanged({ requiredTrue: state });
+    },
+    [onDescriptorChanged]
+  );
+
   return (
     <Checkbox
       disabled={disabled}
       checked={descriptor.requiredTrue}
-      onCheckedChanged={(state) => {
-        onDescriptorChanged({ type: 'checkbox', requiredTrue: state });
-      }}
+      onCheckedChanged={onCheckedChanged}
     >
       {`Обов'язково має бути включеним`}
     </Checkbox>
   );
 }
 
-export const MultiCheckboxContent = optionListBuilderWrapper('multicheckbox');
-export const RadioContent = optionListBuilderWrapper('radio');
+export function ScoreContent({
+  descriptor,
+  onDescriptorChanged,
+  disabled,
+}: ContentTypeProps<'score'>) {
+  console.log(descriptor);
+
+  const onSelectedChanged = useCallback(
+    (items: number[]) => onDescriptorChanged({ items }),
+    [onDescriptorChanged]
+  );
+
+  return (
+    <ScoreSelect
+      adapter={multipleSelection}
+      items={scores}
+      selected={descriptor.items}
+      onSelectedChanged={onSelectedChanged}
+      disabled={disabled}
+    />
+  );
+}
+
+export const MultiCheckboxContent =
+  OptionListBuilderContent as ContentComponent<'multicheckbox'>;
+export const RadioContent =
+  OptionListBuilderContent as ContentComponent<'radio'>;

@@ -1,6 +1,6 @@
 import { MouseEvent, useCallback, useState } from 'react';
 
-import { Sticker } from '@/botFlow/types';
+import { Sticker } from '@/api/botFlow/types';
 import { Button } from '@/components/Button';
 import { ModalDialog } from '@/components/ModalDialog';
 

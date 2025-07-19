@@ -1,6 +1,6 @@
 import { infer as zodInfer } from 'zod/v4-mini';
 
-import {
+import type {
   botFlow,
   botFlowInMeta,
   botFlowWithInMeta,

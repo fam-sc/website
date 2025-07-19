@@ -7,7 +7,7 @@ import {
   BotFlowWithOutMeta,
   Option,
   Position,
-} from '@/botFlow/types';
+} from '@/api/botFlow/types';
 
 import { NodeType } from './types';
 

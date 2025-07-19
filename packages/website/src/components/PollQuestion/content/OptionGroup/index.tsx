@@ -1,4 +1,4 @@
-import { Choice } from '../../types';
+import { Choice } from '../../../../services/polls/types';
 import styles from './index.module.scss';
 
 type OptionGroupProps = {

@@ -5,7 +5,7 @@ import {
   updateBotFlow,
   updateBotFlowMeta,
 } from '@/api/botFlow/client';
-import { BotFlowWithInMeta } from '@/botFlow/types';
+import { BotFlowWithInMeta } from '@/api/botFlow/types';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { useDataLoader } from '@/hooks/useDataLoader';

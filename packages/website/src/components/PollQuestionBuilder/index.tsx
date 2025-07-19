@@ -1,17 +1,26 @@
-import { FC, RefObject } from 'react';
+import { FC, RefObject, useCallback } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
+import { QuestionBuildItem } from '@/services/polls/buildItem';
+import {
+  QuestionDescriptor,
+  QuestionDescriptorContent,
+  QuestionType,
+} from '@/services/polls/types';
 import { classNames } from '@/utils/classNames';
 
 import { DragHandle } from '../DragHandle';
 import { IconButton } from '../IconButton';
-import { QuestionDescriptor, QuestionType } from '../PollQuestion/types';
 import { Select } from '../Select';
 import { TextInput } from '../TextInput';
-import { CheckboxContent, MultiCheckboxContent, RadioContent } from './content';
+import {
+  CheckboxContent,
+  MultiCheckboxContent,
+  RadioContent,
+  ScoreContent,
+} from './content';
 import { ContentTypeProps } from './content/types';
 import styles from './index.module.scss';
-import { QuestionBuildItem } from './item';
 
 export type PollQuestionBuilderProps = {
   className?: string;
@@ -21,14 +30,17 @@ export type PollQuestionBuilderProps = {
 
   isError?: boolean;
   value: QuestionBuildItem;
-  onValueChanged: (value: QuestionBuildItem) => void;
-  onRemove: () => void;
+  onValueChanged: (
+    changes: Partial<QuestionBuildItem>,
+    key: string | number
+  ) => void;
+  onRemove: (key: string | number) => void;
 };
 
 type ContentConfig<T extends QuestionType> = {
   title: string;
-  emptyDescription: () => QuestionDescriptor<T>;
-  component: FC<ContentTypeProps<T>>;
+  emptyDescriptor: QuestionDescriptorContent<T>;
+  component?: FC<ContentTypeProps<T>>;
 };
 
 type ContentConfigMap = {
@@ -38,32 +50,49 @@ type ContentConfigMap = {
 const contentConfig: ContentConfigMap = {
   text: {
     title: 'Текст',
-    emptyDescription: () => ({ type: 'text' }),
-    component: () => null,
+    emptyDescriptor: {},
   },
   checkbox: {
     title: 'Прапорець',
-    emptyDescription: () => ({ type: 'checkbox', requiredTrue: false }),
+    emptyDescriptor: { requiredTrue: false },
     component: CheckboxContent,
   },
   multicheckbox: {
     title: 'Вибір (багато варіантів)',
-    emptyDescription: () => ({ type: 'multicheckbox', options: [] }),
+    emptyDescriptor: { options: [] },
     component: MultiCheckboxContent,
   },
   radio: {
     title: 'Вибір (один варіант)',
-    emptyDescription: () => ({ type: 'radio', options: [] }),
+    emptyDescriptor: { options: [] },
     component: RadioContent,
+  },
+  score: {
+    title: 'Оцінка',
+    emptyDescriptor: { items: [] },
+    component: ScoreContent,
   },
 };
 
-const questionTypes = Object.keys(contentConfig) as QuestionType[];
+function createDescriptorFromContent<T extends QuestionType>(
+  type: T,
+  content: QuestionDescriptorContent<T>
+): QuestionDescriptor<T> {
+  return { type, ...content };
+}
 
-const contentTypeItems = questionTypes.map((type) => ({
-  key: type,
-  title: contentConfig[type].title,
-}));
+function createEmptyDescriptor<T extends QuestionType>(
+  type: T
+): QuestionDescriptor<T> {
+  return createDescriptorFromContent(type, contentConfig[type].emptyDescriptor);
+}
+
+const contentTypeItems = Object.entries(contentConfig).map(
+  ([key, { title }]) => ({
+    key: key as QuestionType,
+    title,
+  })
+);
 
 export function PollQuestionBuilder({
   className,
@@ -74,12 +103,45 @@ export function PollQuestionBuilder({
   onValueChanged,
   onRemove,
 }: PollQuestionBuilderProps) {
-  const { descriptor } = value;
-  const config = descriptor ? contentConfig[descriptor.type] : null;
+  const { key, descriptor } = value;
+  const type = descriptor?.type;
+  const config = type ? contentConfig[type] : null;
 
   const Content = config?.component as
     | FC<ContentTypeProps<QuestionType>>
     | undefined;
+
+  const keyedOnValueChanged = useCallback(
+    (changes: Partial<QuestionBuildItem>) => onValueChanged(changes, key),
+    [key, onValueChanged]
+  );
+
+  const onTitleChanged = useCallback(
+    (title: string) => keyedOnValueChanged({ title }),
+    [keyedOnValueChanged]
+  );
+
+  const onTypeChanged = useCallback(
+    (type: QuestionType) => {
+      keyedOnValueChanged({
+        descriptor: createEmptyDescriptor(type),
+      });
+    },
+    [keyedOnValueChanged]
+  );
+
+  const onDescriptorChanged = useCallback(
+    (content: QuestionDescriptorContent) => {
+      if (type) {
+        keyedOnValueChanged({
+          descriptor: createDescriptorFromContent(type, content),
+        });
+      }
+    },
+    [type, keyedOnValueChanged]
+  );
+
+  const onRemoveClick = useCallback(() => onRemove(key), [key, onRemove]);
 
   return (
     <div
@@ -93,7 +155,7 @@ export function PollQuestionBuilder({
         {handleRef && <DragHandle ref={handleRef} />}
 
         <IconButton
-          onClick={onRemove}
+          onClick={onRemoveClick}
           title="Видалити питання"
           className={styles.remove}
         >
@@ -108,37 +170,28 @@ export function PollQuestionBuilder({
           value={value.title}
           placeholder="Питання"
           disabled={disabled}
-          onTextChanged={(title) => {
-            onValueChanged({ ...value, title });
-          }}
+          onTextChanged={onTitleChanged}
         />
 
         <Select
           className={styles['type-select']}
           placeholder="Виберіть тип"
-          selectedItem={descriptor?.type}
+          selectedItem={type}
           disabled={disabled}
           items={contentTypeItems}
-          onItemSelected={(type) => {
-            onValueChanged({
-              ...value,
-              descriptor: contentConfig[type].emptyDescription(),
-            });
-          }}
+          onItemSelected={onTypeChanged}
         />
       </div>
 
-      {Content && descriptor ? (
+      {Content && descriptor && (
         <div className={styles['content-wrapper']}>
           <Content
             disabled={disabled}
             descriptor={descriptor}
-            onDescriptorChanged={(descriptor) => {
-              onValueChanged({ ...value, descriptor });
-            }}
+            onDescriptorChanged={onDescriptorChanged}
           />
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

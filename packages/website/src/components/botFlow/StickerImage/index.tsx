@@ -1,5 +1,5 @@
+import { Sticker } from '@/api/botFlow/types';
 import { getMediaFileUrl } from '@/api/media';
-import { Sticker } from '@/botFlow/types';
 import { Image, ImageProps } from '@/components/Image';
 import { classNames } from '@/utils/classNames';
 

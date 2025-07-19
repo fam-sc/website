@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { QuestionAnswer } from '../PollQuestion/types';
+import { getEmptyAnswer } from '@/services/polls/answer';
+
+import { QuestionAnswer } from '../../services/polls/types';
 import { PollQuestionList, PollQuestionListProps } from '.';
 
 function Component(props: PollQuestionListProps) {
-  const [answers, setAnswers] = useState<QuestionAnswer[]>([]);
+  const [answers, setAnswers] = useState<QuestionAnswer[]>(() =>
+    props.items.map(({ descriptor }) => getEmptyAnswer(descriptor.type))
+  );
 
   return (
     <PollQuestionList
@@ -41,6 +45,14 @@ export const Primary: Story = {
       {
         title: 'Question 3',
         descriptor: { type: 'radio', options: items },
+      },
+      {
+        title: 'Question 4',
+        descriptor: { type: 'checkbox', requiredTrue: false },
+      },
+      {
+        title: 'Question 5',
+        descriptor: { type: 'score', items: [1, 2, 3, 4, 5] },
       },
     ],
   },

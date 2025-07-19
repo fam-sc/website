@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Sticker } from '@/botFlow/types';
+import { Sticker } from '@/api/botFlow/types';
 import { Typography } from '@/components/Typography';
 
 import { Button } from '../../Button';

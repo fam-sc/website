@@ -67,6 +67,12 @@ export default tseslint.config(
       'import/no-anonymous-default-export': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      '@typescript-eslint/no-confusing-void-expression': [
+        'error',
+        {
+          ignoreVoidReturningFunctions: true,
+        },
+      ],
     },
   },
   // prettier must be at the end

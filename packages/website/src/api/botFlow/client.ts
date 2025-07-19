@@ -2,7 +2,7 @@ import {
   BotFlowInMeta,
   BotFlowWithInMeta,
   BotFlowWithOutMeta,
-} from '@/botFlow/types';
+} from '@/api/botFlow/types';
 
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 

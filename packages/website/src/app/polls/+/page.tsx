@@ -6,11 +6,8 @@ import type { AddPollPayload } from '@/api/polls/types';
 import { Button } from '@/components/Button';
 import { useNotification } from '@/components/Notification';
 import { PollBuilder } from '@/components/PollBuilder';
-import {
-  isValidItem,
-  QuestionBuildItem,
-} from '@/components/PollQuestionBuilder/item';
 import { TextInput } from '@/components/TextInput';
+import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
 
 import styles from './page.module.scss';
 
@@ -28,9 +25,9 @@ export default function Page() {
   const submit = useCallback(() => {
     setIsActionPending(true);
 
-    const questions = items.map((item) => ({
-      title: item.title,
-      ...item.descriptor,
+    const questions = items.map(({ title, descriptor }) => ({
+      title,
+      ...descriptor,
     })) as AddPollPayload['questions'];
 
     addPoll({ title, questions })

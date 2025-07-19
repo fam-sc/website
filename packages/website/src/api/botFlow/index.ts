@@ -8,7 +8,7 @@ import {
   BotFlowWithInMeta,
   BotFlowWithOutMeta,
   PositionMap,
-} from '@/botFlow/types';
+} from '@/api/botFlow/types';
 
 import { putMediaFileViaUrl } from '../media';
 import { MediaFilePath } from '../media/types';

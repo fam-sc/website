@@ -10,7 +10,7 @@ import { useCallback, useMemo, useRef } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
-import { BotFlowWithInMeta, BotFlowWithOutMeta } from '@/botFlow/types';
+import { BotFlowWithInMeta, BotFlowWithOutMeta } from '@/api/botFlow/types';
 import { usePreventLeaving } from '@/hooks/usePreventLeaving';
 
 import { BotFlowBoardActions } from '../BotFlowBoardActions';

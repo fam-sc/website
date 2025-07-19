@@ -32,14 +32,24 @@ type TypeMap = {
       status: boolean;
     };
   };
+  score: {
+    descriptor: {
+      items: number[];
+    };
+    answer: {
+      selected: number | undefined;
+    };
+  };
 };
 
 export type QuestionType = keyof TypeMap;
 
+export type QuestionDescriptorContent<T extends QuestionType = QuestionType> = {
+  [K in T]: TypeMap[K]['descriptor'];
+}[T];
+
 export type QuestionDescriptor<T extends QuestionType = QuestionType> = {
-  [K in T]: TypeMap[K]['descriptor'] & {
-    type: K;
-  };
+  [K in T]: TypeMap[K]['descriptor'] & { type: K };
 }[T];
 
 export type QuestionAnswer<T extends QuestionType = QuestionType> =

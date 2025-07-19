@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { QuestionBuildItem } from '../PollQuestionBuilder/item';
+import { QuestionBuildItem } from '@/services/polls/buildItem';
+
 import { PollBuilder, PollBuilderProps } from '.';
 
 function Component(props: PollBuilderProps) {

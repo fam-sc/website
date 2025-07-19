@@ -1,6 +1,10 @@
 import { AriaAttributes, FC } from 'react';
 
-import { QuestionAnswer, QuestionDescriptor, QuestionType } from '../types';
+import {
+  QuestionAnswer,
+  QuestionDescriptor,
+  QuestionType,
+} from '@/services/polls/types';
 
 export interface ContentTypeProps<T extends QuestionType = QuestionType>
   extends AriaAttributes {

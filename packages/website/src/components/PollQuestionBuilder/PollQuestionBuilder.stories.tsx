@@ -1,14 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
+import { QuestionBuildItem } from '@/services/polls/buildItem';
+
 import { PollQuestionBuilder, PollQuestionBuilderProps } from '.';
-import { QuestionBuildItem } from './item';
 
 function Component(props: PollQuestionBuilderProps) {
   const [value, setValue] = useState<QuestionBuildItem>({ key: 1, title: '' });
 
   return (
-    <PollQuestionBuilder {...props} value={value} onValueChanged={setValue} />
+    <PollQuestionBuilder
+      {...props}
+      value={value}
+      onValueChanged={(changes) => {
+        setValue((value) => ({ ...value, ...changes }));
+      }}
+    />
   );
 }
 

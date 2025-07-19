@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useCallback, useRef } from 'react';
 
 import { PlusIcon } from '@/icons/PlusIcon';
+import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
 import { classNames } from '@/utils/classNames';
 
 import { DraggableList } from '../DraggableList';
 import { IconButton } from '../IconButton';
 import { PollQuestionBuilder } from '../PollQuestionBuilder';
-import { isValidItem, QuestionBuildItem } from '../PollQuestionBuilder/item';
 import styles from './index.module.scss';
 
 export type PollBuilderProps = {
@@ -32,6 +32,22 @@ export function PollBuilder({
     ]);
   }, [onItemsChanged]);
 
+  const onRemove = useCallback(
+    (key: string | number) => {
+      onItemsChanged((items) => items.filter((item) => item.key !== key));
+    },
+    [onItemsChanged]
+  );
+
+  const onItemChanged = useCallback(
+    (changes: Partial<QuestionBuildItem>, key: string | number) => {
+      onItemsChanged((items) =>
+        items.map((item) => (item.key === key ? { ...item, ...changes } : item))
+      );
+    },
+    [onItemsChanged]
+  );
+
   return (
     <div className={classNames(styles.root, className)}>
       {items.length > 0 && (
@@ -40,24 +56,15 @@ export function PollBuilder({
           items={items}
           onItemsChanged={onItemsChanged}
         >
-          {(item, i, handleRef) => (
+          {(item, _, handleRef) => (
             <PollQuestionBuilder
+              key={item.key}
               value={item}
               disabled={disabled}
               isError={!isValidItem(item)}
               handleRef={handleRef}
-              onRemove={() => {
-                const copy = [...items];
-                copy.splice(i, 1);
-
-                onItemsChanged(copy);
-              }}
-              onValueChanged={(value) => {
-                const copy = [...items];
-                copy[i] = value;
-
-                onItemsChanged(copy);
-              }}
+              onRemove={onRemove}
+              onValueChanged={onItemChanged}
             />
           )}
         </DraggableList>

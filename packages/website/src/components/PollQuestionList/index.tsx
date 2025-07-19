@@ -1,17 +1,12 @@
+import { Dispatch, SetStateAction, useCallback } from 'react';
+
+import { QuestionItem } from '@/services/polls/question';
+import { QuestionAnswer } from '@/services/polls/types';
 import { classNames } from '@/utils/classNames';
 
 import { List } from '../List';
-import {
-  PollQuestion,
-  QuestionAnswer,
-  QuestionDescriptor,
-} from '../PollQuestion';
+import { PollQuestion } from '../PollQuestion';
 import styles from './index.module.scss';
-
-type QuestionItem = {
-  title: string;
-  descriptor: QuestionDescriptor;
-};
 
 export type PollQuestionListProps = {
   className?: string;
@@ -19,7 +14,7 @@ export type PollQuestionListProps = {
 
   items: QuestionItem[];
   answers: QuestionAnswer[];
-  onAnswersChanged: (value: QuestionAnswer[]) => void;
+  onAnswersChanged: Dispatch<SetStateAction<QuestionAnswer[]>>;
 };
 
 export function PollQuestionList({
@@ -29,21 +24,28 @@ export function PollQuestionList({
   answers,
   onAnswersChanged,
 }: PollQuestionListProps) {
+  const onItemChanged = useCallback(
+    (answer: QuestionAnswer, index: number) => {
+      onAnswersChanged((answers) => {
+        const copy = [...answers];
+        copy[index] = answer;
+
+        return copy;
+      });
+    },
+    [onAnswersChanged]
+  );
+
   return (
     <List className={classNames(styles.root, className)}>
-      {items.map(({ title, descriptor }, i) => (
+      {items.map((item, i) => (
         <li key={i}>
           <PollQuestion
             disabled={disabled}
-            descriptor={descriptor}
             answer={answers[i]}
-            title={title}
-            onAnswerChanged={(answer) => {
-              const copy = [...answers];
-              copy[i] = answer;
-
-              onAnswersChanged(copy);
-            }}
+            data={i}
+            onAnswerChanged={onItemChanged}
+            {...item}
           />
         </li>
       ))}

@@ -1,9 +1,7 @@
-import { Key } from 'react';
-
-import { QuestionDescriptor } from '../PollQuestion/types';
+import { QuestionDescriptor } from '@/services/polls/types';
 
 export type QuestionBuildItem = {
-  key: Key;
+  key: string | number;
   title: string;
   descriptor?: QuestionDescriptor;
 };
@@ -17,6 +15,9 @@ export function isValidItem({ title, descriptor }: QuestionBuildItem): boolean {
     case 'multicheckbox':
     case 'radio': {
       return descriptor.options.length > 0;
+    }
+    case 'score': {
+      return descriptor.items.length > 0;
     }
     default: {
       return true;

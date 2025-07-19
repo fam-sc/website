@@ -7,9 +7,10 @@ function Component(props: PollQuestionProps<'text'>) {
   const [text, setText] = useState<string>('');
 
   return (
-    <PollQuestion<'text'>
+    <PollQuestion
       {...props}
       descriptor={{ type: 'text' }}
+      data={null}
       answer={{ text: text }}
       onAnswerChanged={({ text }) => {
         setText(text);
