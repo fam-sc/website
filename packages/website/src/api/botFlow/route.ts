@@ -3,7 +3,7 @@ import { badRequest, ok } from '@shared/responses';
 import { ZodMiniType } from 'zod/v4-mini';
 
 import { getBotFlow, saveBotFlow, saveBotFlowMeta } from '@/api/botFlow';
-import { botFlowInMeta, botFlowWithInMeta } from '@/botFlow/schema';
+import { botFlowInMeta, botFlowWithInMeta } from '@/api/botFlow/schema';
 
 import { app } from '../app';
 import { authRoute } from '../authRoute';

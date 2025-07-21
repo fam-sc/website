@@ -18,23 +18,26 @@ export type PollWithEndDateAndRespondents = {
   respondents: Pick<PollRespondent, 'userId'>[];
 };
 
-export type PollQuestionOption = {
-  title: string;
+type OptionContent = {
+  options: {
+    title: string;
+  }[];
 };
 
-export type PollQuestion = { title: string } & (
-  | { type: 'text' }
-  | {
-      type: 'multicheckbox' | 'radio';
-      options: PollQuestionOption[];
-    }
-  | {
-      type: 'checkbox';
-      requiredTrue: boolean;
-    }
-);
+type PollQuestionContentMap = {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  text: {};
+  multicheckbox: OptionContent;
+  radio: OptionContent;
+  checkbox: { requiredTrue: boolean };
+  score: { items: number[] };
+};
 
-export type PollType = PollQuestion['type'];
+type PollQuestionType = keyof PollQuestionContentMap;
+
+export type PollQuestion<T extends PollQuestionType = PollQuestionType> = {
+  [K in T]: { type: K; title: string } & PollQuestionContentMap[K];
+}[T];
 
 export type RawPollRespondent = {
   pollId: number;
@@ -68,4 +71,7 @@ export type PollRespondentAnswer = {
 
   // if question's type is multicheckbox.
   selectedIndices?: number[];
+
+  // if question's type is score.
+  selected?: number;
 };

@@ -1,5 +1,7 @@
 import { infer as zodInfer } from 'zod/v4-mini';
 
+import { QuestionType } from '@/services/polls/types';
+
 import type {
   addPollPayload,
   poll,
@@ -7,7 +9,12 @@ import type {
   submitPollPayload,
 } from './schema';
 
-export type PollQuestion = zodInfer<typeof question>;
+type QuestionSchema = zodInfer<typeof question>;
+
+export type PollQuestion<T extends QuestionType = QuestionType> = {
+  [K in T]: Extract<QuestionSchema, { type: T }>;
+}[T];
+
 export type Poll = zodInfer<typeof poll>;
 export type AddPollPayload = zodInfer<typeof addPollPayload>;
 export type SubmitPollPayload = zodInfer<typeof submitPollPayload>;

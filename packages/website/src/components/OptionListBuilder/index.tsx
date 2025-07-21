@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { RefObject, useCallback, useLayoutEffect, useRef } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
@@ -16,6 +16,61 @@ export type OptionListBuilderProps = {
   onItemsChanged?: (items: string[]) => void;
 };
 
+type OptionProps = {
+  text: string;
+  disabled?: boolean;
+  index: number;
+
+  inputRef?: RefObject<HTMLInputElement | null>;
+  onTextChanged?: (value: string, index: number) => void;
+  onRemove: (index: number) => void;
+};
+
+function Option({
+  index,
+  text,
+  disabled,
+  inputRef,
+  onTextChanged,
+  onRemove,
+}: OptionProps) {
+  const onInputTextChanged = useCallback(
+    (text: string) => {
+      onTextChanged?.(text, index);
+    },
+    [onTextChanged, index]
+  );
+
+  const onRemoveClick = useCallback(() => {
+    onRemove(index);
+  }, [onRemove, index]);
+
+  return (
+    <li>
+      <div>
+        <TextInput
+          ref={inputRef}
+          disabled={disabled}
+          className={styles.input}
+          variant="underline"
+          value={text}
+          onTextChanged={onInputTextChanged}
+        />
+
+        <IconButton
+          className={styles.remove}
+          disabled={disabled}
+          hover="fill"
+          title="Видалити елемент"
+          onClick={onRemoveClick}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+    </li>
+  );
+}
+
 export function OptionListBuilder({
   className,
   disabled,
@@ -24,6 +79,26 @@ export function OptionListBuilder({
 }: OptionListBuilderProps) {
   const lastInputRef = useRef<HTMLInputElement>(null);
   const addingNewItemRef = useRef<boolean>(false);
+
+  const onItemChanged = useCallback(
+    (text: string, index: number) => {
+      const copy = [...items];
+      copy[index] = text;
+
+      onItemsChanged?.(copy);
+    },
+    [items, onItemsChanged]
+  );
+
+  const onRemoveItem = useCallback(
+    (index: number) => {
+      const copy = [...items];
+      copy.splice(index, 1);
+
+      onItemsChanged?.(copy);
+    },
+    [items, onItemsChanged]
+  );
 
   useLayoutEffect(() => {
     if (addingNewItemRef.current) {
@@ -35,38 +110,15 @@ export function OptionListBuilder({
   return (
     <Typography as="ol" className={classNames(styles.root, className)}>
       {items.map((item, i) => (
-        <li key={i}>
-          <div>
-            <TextInput
-              ref={i === items.length - 1 ? lastInputRef : undefined}
-              disabled={disabled}
-              className={styles.input}
-              variant="underline"
-              value={item}
-              onTextChanged={(text) => {
-                const copy = [...items];
-                copy[i] = text;
-
-                onItemsChanged?.(copy);
-              }}
-            />
-
-            <IconButton
-              className={styles.remove}
-              disabled={disabled}
-              hover="fill"
-              title="Видалити елемент"
-              onClick={() => {
-                const copy = [...items];
-                copy.splice(i, 1);
-
-                onItemsChanged?.(copy);
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </li>
+        <Option
+          key={i}
+          index={i}
+          text={item}
+          disabled={disabled}
+          onTextChanged={onItemChanged}
+          onRemove={onRemoveItem}
+          inputRef={i === items.length ? lastInputRef : undefined}
+        />
       ))}
 
       <li key="add-option">

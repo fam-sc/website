@@ -1,0 +1,57 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.choice {
+  --border-color: var(--color-text-on-background);
+  --shadow-blur: 1px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  background-clip: content-box;
+  border: 2px solid var(--border-color);
+  box-shadow: 0 0 var(--shadow-blur) var(--border-color);
+  border-radius: 50%;
+
+  aspect-ratio: 1 / 1;
+
+  min-width: 2.5em;
+
+  transition:
+    background-color 0.1s linear,
+    border-color 0.1s linear;
+
+  input {
+    appearance: none;
+  }
+
+  &:hover {
+    --border-color: var(--color-text-on-background-dark);
+  }
+
+  &-checked {
+    --border-color: var(--color-primary);
+    --shadow-blur: 4px;
+
+    background: var(--color-background-dark);
+
+    &:hover {
+      --border-color: var(--color-primary-dark);
+    }
+  }
+
+  &-disabled {
+    cursor: default;
+
+    &:hover {
+      --border-color: var(--color-text-on-background);
+    }
+  }
+}

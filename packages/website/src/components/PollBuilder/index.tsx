@@ -1,9 +1,12 @@
+import { Dispatch, SetStateAction, useCallback, useRef } from 'react';
+
 import { PlusIcon } from '@/icons/PlusIcon';
+import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
 import { classNames } from '@/utils/classNames';
 
+import { DraggableList } from '../DraggableList';
 import { IconButton } from '../IconButton';
 import { PollQuestionBuilder } from '../PollQuestionBuilder';
-import { isValidItem, QuestionBuildItem } from '../PollQuestionBuilder/item';
 import styles from './index.module.scss';
 
 export type PollBuilderProps = {
@@ -11,7 +14,7 @@ export type PollBuilderProps = {
   disabled?: boolean;
 
   items: QuestionBuildItem[];
-  onItemsChanged: (items: QuestionBuildItem[]) => void;
+  onItemsChanged: Dispatch<SetStateAction<QuestionBuildItem[]>>;
 };
 
 export function PollBuilder({
@@ -20,35 +23,58 @@ export function PollBuilder({
   items,
   onItemsChanged,
 }: PollBuilderProps) {
+  const lastItemIndex = useRef(0);
+
+  const onAddItem = useCallback(() => {
+    onItemsChanged((items) => [
+      ...items,
+      { key: lastItemIndex.current++, title: '' },
+    ]);
+  }, [onItemsChanged]);
+
+  const onRemove = useCallback(
+    (key: string | number) => {
+      onItemsChanged((items) => items.filter((item) => item.key !== key));
+    },
+    [onItemsChanged]
+  );
+
+  const onItemChanged = useCallback(
+    (changes: Partial<QuestionBuildItem>, key: string | number) => {
+      onItemsChanged((items) =>
+        items.map((item) => (item.key === key ? { ...item, ...changes } : item))
+      );
+    },
+    [onItemsChanged]
+  );
+
   return (
     <div className={classNames(styles.root, className)}>
       {items.length > 0 && (
-        <ul className={styles.items}>
-          {items.map((item, i) => (
-            <li key={i}>
-              <PollQuestionBuilder
-                value={item}
-                disabled={disabled}
-                isError={!isValidItem(item)}
-                onValueChanged={(value) => {
-                  const copy = [...items];
-                  copy[i] = value;
-
-                  onItemsChanged(copy);
-                }}
-              />
-            </li>
-          ))}
-        </ul>
+        <DraggableList
+          className={styles.items}
+          items={items}
+          onItemsChanged={onItemsChanged}
+        >
+          {(item, _, handleRef) => (
+            <PollQuestionBuilder
+              key={item.key}
+              value={item}
+              disabled={disabled}
+              isError={!isValidItem(item)}
+              handleRef={handleRef}
+              onRemove={onRemove}
+              onValueChanged={onItemChanged}
+            />
+          )}
+        </DraggableList>
       )}
 
       <IconButton
         disabled={disabled}
         className={styles.add}
         title="Додати питання"
-        onClick={() => {
-          onItemsChanged([...items, { title: '' }]);
-        }}
+        onClick={onAddItem}
       >
         <PlusIcon />
       </IconButton>

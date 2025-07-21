@@ -1,120 +1,147 @@
-import { FC } from 'react';
+import { FC, RefObject, useCallback } from 'react';
 
+import { CloseIcon } from '@/icons/CloseIcon';
+import { QuestionBuildItem } from '@/services/polls/buildItem';
+import {
+  QuestionDescriptor,
+  QuestionDescriptorContent,
+  QuestionType,
+} from '@/services/polls/types';
 import { classNames } from '@/utils/classNames';
 
-import { Checkbox } from '../Checkbox';
-import { OptionListBuilder } from '../OptionListBuilder';
-import { QuestionDescriptor, QuestionType } from '../PollQuestion/types';
+import { DragHandle } from '../DragHandle';
+import { IconButton } from '../IconButton';
 import { Select } from '../Select';
 import { TextInput } from '../TextInput';
+import {
+  CheckboxContent,
+  MultiCheckboxContent,
+  RadioContent,
+  ScoreContent,
+} from './content';
+import { ContentTypeProps } from './content/types';
 import styles from './index.module.scss';
-import { QuestionBuildItem } from './item';
 
 export type PollQuestionBuilderProps = {
   className?: string;
   disabled?: boolean;
 
+  handleRef?: RefObject<HTMLButtonElement | null>;
+
   isError?: boolean;
   value: QuestionBuildItem;
-  onValueChanged: (value: QuestionBuildItem) => void;
+  onValueChanged: (
+    changes: Partial<QuestionBuildItem>,
+    key: string | number
+  ) => void;
+  onRemove: (key: string | number) => void;
 };
 
-type ContentTypeProps<T extends QuestionType> = {
-  disabled?: boolean;
-
-  descriptor: QuestionDescriptor<T>;
-  onDescriptorChanged: (value: QuestionDescriptor<T>) => void;
+type ContentConfig<T extends QuestionType> = {
+  title: string;
+  emptyDescriptor: QuestionDescriptorContent<T>;
+  component?: FC<ContentTypeProps<T>>;
 };
 
-type ContentComponentMap = {
-  [T in QuestionType]: FC<ContentTypeProps<T>>;
+type ContentConfigMap = {
+  [T in QuestionType]: ContentConfig<T>;
 };
 
-const questionTypeTitles: Record<QuestionType, string> = {
-  text: 'Текст',
-  checkbox: 'Прапорець',
-  multicheckbox: 'Вибір (багато варіантів)',
-  radio: 'Вибір (один варіант)',
+const contentConfig: ContentConfigMap = {
+  text: {
+    title: 'Текст',
+    emptyDescriptor: {},
+  },
+  checkbox: {
+    title: 'Прапорець',
+    emptyDescriptor: { requiredTrue: false },
+    component: CheckboxContent,
+  },
+  multicheckbox: {
+    title: 'Вибір (багато варіантів)',
+    emptyDescriptor: { options: [] },
+    component: MultiCheckboxContent,
+  },
+  radio: {
+    title: 'Вибір (один варіант)',
+    emptyDescriptor: { options: [] },
+    component: RadioContent,
+  },
+  score: {
+    title: 'Оцінка',
+    emptyDescriptor: { items: [] },
+    component: ScoreContent,
+  },
 };
 
-const questionTypes = Object.keys(questionTypeTitles) as QuestionType[];
+function createDescriptorFromContent<T extends QuestionType>(
+  type: T,
+  content: QuestionDescriptorContent<T>
+): QuestionDescriptor<T> {
+  return { type, ...content };
+}
 
-function optionListBuilderWrapper<T extends 'multicheckbox' | 'radio'>(
+function createEmptyDescriptor<T extends QuestionType>(
   type: T
-) {
-  // eslint-disable-next-line react/display-name
-  return ({
-    disabled,
-    descriptor,
-    onDescriptorChanged,
-  }: ContentTypeProps<T>) => {
-    return (
-      <OptionListBuilder
-        disabled={disabled}
-        items={descriptor.options.map(({ title }) => title)}
-        onItemsChanged={(items) => {
-          onDescriptorChanged({
-            type,
-            options: items.map((title, id) => ({ id, title })),
-          });
-        }}
-      />
-    );
-  };
+): QuestionDescriptor<T> {
+  return createDescriptorFromContent(type, contentConfig[type].emptyDescriptor);
 }
 
-function CheckboxContent({
-  descriptor,
-  onDescriptorChanged,
-  disabled,
-}: ContentTypeProps<'checkbox'>) {
-  return (
-    <Checkbox
-      disabled={disabled}
-      checked={descriptor.requiredTrue}
-      onCheckedChanged={(state) => {
-        onDescriptorChanged({ type: 'checkbox', requiredTrue: state });
-      }}
-    >
-      {`Обов'язково має бути включеним`}
-    </Checkbox>
-  );
-}
-
-function getEmptyDescriptor(type: QuestionType): QuestionDescriptor {
-  switch (type) {
-    case 'text': {
-      return { type };
-    }
-    case 'multicheckbox':
-    case 'radio': {
-      return { type, options: [] };
-    }
-    case 'checkbox': {
-      return { type, requiredTrue: false };
-    }
-  }
-}
-
-const contentComponentMap: ContentComponentMap = {
-  text: () => null,
-  checkbox: CheckboxContent,
-  multicheckbox: optionListBuilderWrapper('multicheckbox'),
-  radio: optionListBuilderWrapper('radio'),
-};
+const contentTypeItems = Object.entries(contentConfig).map(
+  ([key, { title }]) => ({
+    key: key as QuestionType,
+    title,
+  })
+);
 
 export function PollQuestionBuilder({
   className,
   disabled,
+  handleRef,
   isError,
   value,
   onValueChanged,
+  onRemove,
 }: PollQuestionBuilderProps) {
-  const Content = value.descriptor
-    ? (contentComponentMap[value.descriptor.type] as FC<
-        ContentTypeProps<QuestionType>
-      >)
-    : null;
+  const { key, descriptor } = value;
+  const type = descriptor?.type;
+  const config = type ? contentConfig[type] : null;
+
+  const Content = config?.component as
+    | FC<ContentTypeProps<QuestionType>>
+    | undefined;
+
+  const keyedOnValueChanged = useCallback(
+    (changes: Partial<QuestionBuildItem>) => onValueChanged(changes, key),
+    [key, onValueChanged]
+  );
+
+  const onTitleChanged = useCallback(
+    (title: string) => keyedOnValueChanged({ title }),
+    [keyedOnValueChanged]
+  );
+
+  const onTypeChanged = useCallback(
+    (type: QuestionType) => {
+      keyedOnValueChanged({
+        descriptor: createEmptyDescriptor(type),
+      });
+    },
+    [keyedOnValueChanged]
+  );
+
+  const onDescriptorChanged = useCallback(
+    (content: QuestionDescriptorContent) => {
+      if (type) {
+        keyedOnValueChanged({
+          descriptor: createDescriptorFromContent(type, content),
+        });
+      }
+    },
+    [type, keyedOnValueChanged]
+  );
+
+  const onRemoveClick = useCallback(() => onRemove(key), [key, onRemove]);
 
   return (
     <div
@@ -124,42 +151,47 @@ export function PollQuestionBuilder({
         className
       )}
     >
+      <div className={styles['top-header']}>
+        {handleRef && <DragHandle ref={handleRef} />}
+
+        <IconButton
+          onClick={onRemoveClick}
+          title="Видалити питання"
+          className={styles.remove}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+
       <div className={styles.header}>
         <TextInput
           variant="underline"
-          className={styles['title']}
+          className={styles.title}
           value={value.title}
           placeholder="Питання"
           disabled={disabled}
-          onTextChanged={(title) => {
-            onValueChanged({ ...value, title });
-          }}
+          onTextChanged={onTitleChanged}
         />
 
         <Select
           className={styles['type-select']}
           placeholder="Виберіть тип"
-          selectedItem={value.descriptor?.type}
+          selectedItem={type}
           disabled={disabled}
-          items={questionTypes.map((type) => ({
-            key: type,
-            title: questionTypeTitles[type],
-          }))}
-          onItemSelected={(type) => {
-            onValueChanged({ ...value, descriptor: getEmptyDescriptor(type) });
-          }}
+          items={contentTypeItems}
+          onItemSelected={onTypeChanged}
         />
       </div>
 
-      {Content && value.descriptor ? (
-        <Content
-          disabled={disabled}
-          descriptor={value.descriptor}
-          onDescriptorChanged={(descriptor) => {
-            onValueChanged({ ...value, descriptor });
-          }}
-        />
-      ) : null}
+      {Content && descriptor && (
+        <div className={styles['content-wrapper']}>
+          <Content
+            disabled={disabled}
+            descriptor={descriptor}
+            onDescriptorChanged={onDescriptorChanged}
+          />
+        </div>
+      )}
     </div>
   );
 }

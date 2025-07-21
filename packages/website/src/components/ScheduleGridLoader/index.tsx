@@ -1,7 +1,7 @@
 import { getSchedule } from '@/api/schedule/client';
 import { Schedule } from '@/api/schedule/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
-import { broadcastUpdatedLesson } from '@/utils/schedule/broadcast';
+import { broadcastUpdatedLesson } from '@/services/schedule/broadcast';
 
 import { DataLoadingContainer } from '../DataLoadingContainer';
 import { CurrentLesson, ScheduleGrid } from '../ScheduleGrid';

@@ -1,48 +1,36 @@
 import { PollQuestion, PollRespondentAnswer } from '@data/types/poll';
 
-function isValidIndexInOptions(index: number, length: number): boolean {
-  return Number.isInteger(index) && index >= 0 && index < length;
+import { QuestionType } from '@/services/polls/types';
+
+type ValidatorMap = {
+  [K in QuestionType]: (
+    answer: PollRespondentAnswer,
+    question: PollQuestion<K>
+  ) => boolean;
+};
+
+function isValidIndexInOptions(index: number, values: unknown[]): boolean {
+  return Number.isInteger(index) && index >= 0 && index < values.length;
 }
 
-export function isValidAnswer(
-  question: PollQuestion,
+const validators: ValidatorMap = {
+  text: ({ text }) => text !== undefined,
+  checkbox: ({ status }, { requiredTrue }) =>
+    status !== undefined && (!requiredTrue || status),
+  multicheckbox: ({ selectedIndices }, { options }) =>
+    selectedIndices !== undefined &&
+    selectedIndices.every((index) => isValidIndexInOptions(index, options)),
+  radio: ({ selectedIndex }, { options }) =>
+    selectedIndex !== undefined &&
+    isValidIndexInOptions(selectedIndex, options),
+  score: ({ selected }, { items }) => items.includes(selected),
+};
+
+export function isValidAnswer<T extends QuestionType>(
+  question: PollQuestion<T>,
   answer: PollRespondentAnswer
 ): boolean {
-  switch (question.type) {
-    case 'text': {
-      return answer.text !== undefined;
-    }
-    case 'checkbox': {
-      if (answer.status === undefined) {
-        return false;
-      }
-
-      if (question.requiredTrue) {
-        return answer.status;
-      }
-
-      return true;
-    }
-    case 'multicheckbox': {
-      if (answer.selectedIndices === undefined) {
-        return false;
-      }
-
-      return answer.selectedIndices.every((index) =>
-        isValidIndexInOptions(index, question.options.length)
-      );
-    }
-    case 'radio': {
-      if (answer.selectedIndex === undefined) {
-        return false;
-      }
-
-      return isValidIndexInOptions(
-        answer.selectedIndex,
-        question.options.length
-      );
-    }
-  }
+  return validators[question.type](answer, question);
 }
 
 export function isValidAnswers(

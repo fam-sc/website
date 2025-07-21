@@ -1,7 +1,7 @@
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { useStore } from 'zustand';
 
-import { Sticker } from '@/botFlow/types';
+import { Sticker } from '@/api/botFlow/types';
 
 import { useFlowStore } from '../BotFlowBoard/store';
 import { NodeContainer } from '../NodeContainer';

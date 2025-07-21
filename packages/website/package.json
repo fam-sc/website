@@ -14,6 +14,9 @@
     "db:init": "tsx ./scripts/initDatabase.ts"
   },
   "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "1.7.4",
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "1.1.0",
+    "@atlaskit/pragmatic-drag-and-drop-live-region": "1.3.0",
     "@react-router/node": "7.7.0",
     "@tiptap/core": "3.0.7",
     "@tiptap/extension-blockquote": "3.0.7",
