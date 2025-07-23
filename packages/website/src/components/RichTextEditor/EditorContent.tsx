@@ -8,9 +8,9 @@ import { ObjectUrlManager } from '@/utils/objectUrlManager';
 
 import { FileDrop } from '../FileDrop';
 import { useNotification } from '../Notification';
-import richTextStyles from '../RichText/index.module.scss';
+import richTextStyles from '../RichText/RichText.module.scss';
 import { Typography } from '../Typography';
-import typographyStyles from '../Typography/index.module.scss';
+import typographyStyles from '../Typography/Typography.module.scss';
 import styles from './EditorContent.module.scss';
 
 export interface EditorContentProps {
