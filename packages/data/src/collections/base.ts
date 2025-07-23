@@ -45,6 +45,19 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return { changes: meta.changes };
     }
 
+    protected updateWhereAction(
+      conditions: Conditions<Raw>,
+      value: Partial<Raw>
+    ) {
+      return query
+        .first(
+          this.client
+            .prepare(buildUpdateWhereQuery(tableName, conditions, value))
+            .bind(...Object.values(value), ...getConditionsBinding(conditions))
+        )
+        .map((_, [result]) => ({ changes: result.meta.changes }));
+    }
+
     protected selectAllAction<R = Raw>(
       sql: string,
       bindings?: unknown[]

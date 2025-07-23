@@ -1,4 +1,3 @@
-import { valueIn } from '../sqlite/modifier';
 import { DataQuery } from '../sqlite/query';
 import { TableDescriptor } from '../sqlite/types';
 import { Group } from '../types';
@@ -18,10 +17,6 @@ export class GroupCollection extends EntityCollection<Group>('groups') {
 
   findByCampusId(campusId: string) {
     return this.findOneWhereAction({ campusId });
-  }
-
-  findByIds(ids: string[]) {
-    return this.findManyWhereAction({ campusId: valueIn(ids) });
   }
 
   groupExists(campusId: string): DataQuery<boolean> {

@@ -1,6 +1,5 @@
-import { CachedExternalApi } from '@data/cache';
 import { Repository } from '@data/repo';
-import { ScheduleWithTeachers as DataScheduleWithTeachers } from '@data/types/schedule';
+import { ScheduleWithTeachers } from '@data/types/schedule';
 import { getLessons } from '@shared/api/campus';
 
 import { getTeachers } from './teachers';
@@ -14,46 +13,41 @@ import { Schedule as ApiSchedule } from './types';
 // 7 days
 const SCHEDULE_INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;
 
-class ScheduleExternalApi extends CachedExternalApi<DataScheduleWithTeachers> {
-  private groupId: string;
+async function getDataSchedule(
+  groupId: string
+): Promise<ScheduleWithTeachers | null> {
+  const repo = Repository.openConnection();
+  const schedule = await repo.schedule().getSchedule(groupId).get();
+  const now = Date.now();
 
-  constructor(groupId: string, repo?: Repository) {
-    super('schedule', SCHEDULE_INVALIDATE_TIME, repo);
-
-    this.groupId = groupId;
-  }
-
-  protected fetchFromRepo(repo: Repository) {
-    return repo.schedule().findByGroupWithTeachers(this.groupId);
-  }
-
-  protected async fetchFromExternalApi(): Promise<DataScheduleWithTeachers> {
-    const campusSchedule = await getLessons(this.groupId);
+  if (
+    schedule !== null &&
+    now - schedule.lastUpdateTime > SCHEDULE_INVALIDATE_TIME
+  ) {
+    const campusSchedule = await getLessons(groupId);
     const teachers = await getTeachers(getUniqueTeachers(campusSchedule));
+    const newSchedule = campusScheduleToDataSchedule(campusSchedule, teachers);
 
-    return campusScheduleToDataSchedule(campusSchedule, teachers);
+    const [links] = await repo.batch([
+      repo.schedule().getLinks(groupId),
+      repo.schedule().updateLastUpdateTime(groupId, now),
+      ...repo.schedule().upsertWeeks(newSchedule),
+      ...repo.scheduleTeachers().insertFromSchedule(newSchedule),
+    ]);
+
+    return { ...newSchedule, links };
   }
 
-  protected putToRepo(repo: Repository, value: DataScheduleWithTeachers) {
-    return [
-      ...repo.schedule().upsertWeeks(value),
-      ...repo.scheduleTeachers().insertFromSchedule(value),
-    ];
-  }
+  return schedule;
 }
-
-const getDataSchedule = CachedExternalApi.accessor(ScheduleExternalApi);
 
 export async function getScheduleForGroup(
   groupId: string
-): Promise<ApiSchedule> {
-  const repo = Repository.openConnection();
-  const dataSchedule = await getDataSchedule(groupId, repo);
-  let { links } = dataSchedule;
-
-  if (links === undefined) {
-    links = await repo.schedule().getLinks(groupId);
+): Promise<ApiSchedule | null> {
+  const dataSchedule = await getDataSchedule(groupId);
+  if (dataSchedule === null) {
+    return null;
   }
 
-  return dataScheduleToApiSchedule(dataSchedule, links ?? {});
+  return dataScheduleToApiSchedule(dataSchedule);
 }

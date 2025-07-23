@@ -115,6 +115,7 @@ export function campusScheduleToDataSchedule(
   teachers: Teacher[]
 ): DataScheduleWithTeachers {
   return {
+    lastUpdateTime: 0,
     groupCampusId: value.groupCode,
     weeks: [value.scheduleFirstWeek, value.scheduleSecondWeek].map((schedule) =>
       schedule.map((day) => campusDayScheduleToDaySchedule(day, teachers))
@@ -144,15 +145,16 @@ function dataScheduleWeekToApiScheduleWeek(
 }
 
 export function dataScheduleToApiSchedule(
-  value: Omit<DataScheduleWithTeachers, 'links'>,
-  links: Record<LessonId, string>
+  schedule: DataScheduleWithTeachers
 ): ApiSchedule {
-  const weeks = value.weeks.map((days) =>
+  const links = schedule.links ?? {};
+
+  const weeks = schedule.weeks.map((days) =>
     days.map((value) => dataScheduleWeekToApiScheduleWeek(value, links))
   );
 
   return {
-    groupCampusId: value.groupCampusId,
+    groupCampusId: schedule.groupCampusId,
     weeks: weeks as ApiSchedule['weeks'],
   };
 }

@@ -3,7 +3,6 @@ import './events/route';
 import './gallery/route';
 import './gallery/[id]/route';
 import './groups/route';
-import './groups/[id]/route';
 import './polls/route';
 import './polls/[id]/route';
 import './polls/[id]/close/route';

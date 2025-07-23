@@ -5,7 +5,6 @@ import { badRequest, conflict } from '@shared/responses';
 import { app } from '@/api/app';
 import { hashPassword } from '@/api/auth/password';
 import { SignUpDataSchema } from '@/api/auth/schema';
-import { checkFacultyGroupExists } from '@/api/groups/get';
 
 import { sendMail } from '../mail';
 import { verifyTurnstileTokenByHost } from '../turnstile/verify';
@@ -62,12 +61,11 @@ app.post('/signUp', async (request, { env }) => {
   }
 
   const passwordHash = await hashPassword(password);
-
   const pendingToken = await newPendingToken();
 
   const repo = Repository.openConnection();
 
-  const groupExists = await checkFacultyGroupExists(academicGroup, repo);
+  const groupExists = await repo.groups().groupExists(academicGroup).get();
   if (!groupExists) {
     return badRequest({ message: 'Unknown academic group' });
   }

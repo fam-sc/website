@@ -1,5 +1,5 @@
 import { and, or } from '../sqlite/conditions';
-import { notEquals, notNull } from '../sqlite/modifier';
+import { notNull } from '../sqlite/modifier';
 import { TableDescriptor } from '../sqlite/types';
 import {
   RawUser,
@@ -83,18 +83,20 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
   }
 
   async findAllNonApprovedUsers(academicGroup?: string): Promise<ShortUser[]> {
-    const result = await this.findManyWhere(
-      academicGroup ? { academicGroup } : {},
-      [
-        'id',
-        'academicGroup',
-        'firstName',
-        'lastName',
-        'parentName',
-        'email',
-        'role',
-        'hasAvatar',
-      ]
+    const filters = [`role=${UserRole.STUDENT_NON_APPROVED}`];
+    const bindings = [];
+
+    if (academicGroup !== undefined) {
+      filters.push(`academicGroup=?`);
+      bindings.push(academicGroup);
+    }
+
+    const result = await this.selectAll(
+      `SELECT id, firstName, lastName, parentName, email, hasAvatar, coalesce(groups.name, '') as academicGroup
+      FROM users
+      RIGHT JOIN groups ON groups.campusId = users.academicGroup
+      WHERE ${filters.join(' AND ')}`,
+      bindings
     );
 
     return result.map(({ hasAvatar, ...rest }) => ({
@@ -136,21 +138,13 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
   }
 
   async getPage(index: number, size: number) {
-    const result = await this.getPageBase(
-      index * size,
-      size,
-      { role: notEquals(UserRole.ADMIN) },
-      [
-        'id',
-        'firstName',
-        'lastName',
-        'parentName',
-        'academicGroup',
-        'email',
-        'role',
-        'hasAvatar',
-      ]
-    ).get();
+    const result = await this.selectAll(
+      `SELECT id, firstName, lastName, parentName, coalesce(groups.name, '') as academicGroup, email, role, hasAvatar
+      FROM users
+      RIGHT JOIN groups ON groups.campusId = users.academicGroup
+      WHERE role != ${UserRole.ADMIN}
+      LIMIT ${size} OFFSET ${index * size}`
+    );
 
     return result.map(({ hasAvatar, ...rest }) => ({
       hasAvatar: hasAvatar === 1,
