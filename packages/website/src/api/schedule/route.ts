@@ -17,6 +17,9 @@ app.get('/schedule', async (request) => {
   }
 
   const result = await getScheduleForGroup(normalizeGuid(group));
+  if (result === null) {
+    return notFound();
+  }
 
   return ok(result);
 });

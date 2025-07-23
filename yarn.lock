@@ -5645,6 +5645,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"data-sync@workspace:packages/data-sync":
+  version: 0.0.0-use.local
+  resolution: "data-sync@workspace:packages/data-sync"
+  dependencies:
+    "@types/node": "npm:24.0.14"
+    dotenv: "npm:17.2.0"
+    tsx: "npm:4.20.3"
+    typescript: "npm:5.8.3"
+    wrangler: "npm:4.24.4"
+  languageName: unknown
+  linkType: soft
+
 "data-view-buffer@npm:^1.0.2":
   version: 1.0.2
   resolution: "data-view-buffer@npm:1.0.2"

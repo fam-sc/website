@@ -16,6 +16,7 @@ export default tseslint.config(
       '**/*/worker-configuration.d.ts',
       '*/**/dist/',
       '*/**/vite.config.ts',
+      '*/**/.wrangler',
       'node_modules',
       'eslint.config.mts',
       'vitest.config.ts',

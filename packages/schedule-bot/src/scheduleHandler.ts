@@ -30,7 +30,9 @@ async function getScheduleMap(
   const result: Record<string, Schedule> = {};
 
   for (const schedule of schedules) {
-    result[schedule.groupCampusId] = schedule;
+    if (schedule) {
+      result[schedule.groupCampusId] = schedule;
+    }
   }
 
   return result;

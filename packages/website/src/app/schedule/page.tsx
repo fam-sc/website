@@ -5,7 +5,6 @@ import { shortenGuid } from '@shared/guid';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { getFacultyGroupById } from '@/api/groups/get';
 import { Group } from '@/api/groups/types';
 import { updateScheduleLinks } from '@/api/schedule/client';
 import { Schedule } from '@/api/schedule/types';
@@ -47,7 +46,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   const group =
     groupId !== null
-      ? await getFacultyGroupById(groupId, repository(context))
+      ? await repository(context).groups().findByCampusId(groupId).get()
       : null;
 
   return { initialWeek: currentWeek, initialGroup: group };

@@ -1,0 +1,26 @@
+name: Deploy data sync
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/data-sync/*'
+  
+jobs:
+  deploy-media-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: v22.14.0
+          cache: 'npm'
+      - run: corepack enable
+      - name: Install dependencies
+        run: yarn workspaces focus @sc-fam/data-sync
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            workingDirectory: ./packages/data-sync

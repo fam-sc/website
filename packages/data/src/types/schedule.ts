@@ -31,6 +31,7 @@ export type DaySchedule<T = Lesson> = {
 export type ScheduleWeek<T = Lesson> = DaySchedule<T>[];
 
 export type Schedule<T = Lesson> = {
+  lastUpdateTime: number;
   groupCampusId: string;
   weeks: [ScheduleWeek<T>, ScheduleWeek<T>];
 
@@ -42,6 +43,7 @@ export type Schedule<T = Lesson> = {
 export type ScheduleWithTeachers = Schedule<LessonWithTeacher>;
 
 export type RawSchedule = {
+  lastUpdateTime: number;
   groupCampusId: string;
   links: string | null | undefined;
 };

@@ -1,0 +1,17 @@
+{
+  "name": "data-sync",
+  "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "build:no-emit": "tsc --noEmit",
+    "dev": "wrangler dev --test-scheduled",
+    "dev:remote": "yarn dev --remote",
+    "typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.14",
+    "dotenv": "17.2.0",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "wrangler": "4.24.4"
+  }
+}

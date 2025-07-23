@@ -43,12 +43,11 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
     return {
       groupCampusId: 'TEXT NOT NULL PRIMARY KEY',
       links: 'TEXT',
+      lastUpdateTime: 'INTEGER NOT NULL',
     };
   }
 
-  findByGroupWithTeachers(
-    groupCampusId: string
-  ): DataQuery<ScheduleWithTeachers | null> {
+  getSchedule(groupCampusId: string): DataQuery<ScheduleWithTeachers | null> {
     type R = RawLesson & {
       lesson_name: string;
       teacher_link: string | null;
@@ -62,9 +61,12 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
       [groupCampusId]
     );
 
-    const linksQuery = this.findOneWhereAction({ groupCampusId }, ['links']);
+    const metaQuery = this.findOneWhereAction({ groupCampusId }, [
+      'links',
+      'lastUpdateTime',
+    ]);
 
-    return query.merge([scheduleQuery, linksQuery]).map(([lessons, links]) => {
+    return query.merge([scheduleQuery, metaQuery]).map(([lessons, meta]) => {
       return lessons.length > 0
         ? {
             groupCampusId,
@@ -79,7 +81,8 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
                 },
               })
             ),
-            links: links && links.links ? JSON.parse(links.links) : null,
+            links: meta && meta.links ? JSON.parse(meta.links) : null,
+            lastUpdateTime: meta?.lastUpdateTime ?? 0,
           }
         : null;
     });
@@ -116,14 +119,14 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
     );
   }
 
-  async getLinks(groupCampusId: string): Promise<Record<LessonId, string>> {
-    const links = await this.findOneWhere({ groupCampusId }, ['links']);
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return links && links.links ? JSON.parse(links.links) : {};
+  updateLastUpdateTime(groupCampusId: string, time: number) {
+    return this.updateWhereAction({ groupCampusId }, { lastUpdateTime: time });
   }
 
-  // findSchedulesWithGroupIds(ids: string[]) {
-  //   return this.find({ groupCampusId: { $in: ids } });
-  // }
+  getLinks(groupCampusId: string): DataQuery<Record<LessonId, string>> {
+    return this.findOneWhereAction({ groupCampusId }, ['links']).map(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      (result) => (result && result.links ? JSON.parse(result.links) : {})
+    );
+  }
 }

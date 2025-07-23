@@ -13,7 +13,6 @@ import { ScheduleCollection } from './collections/schedule';
 import { ScheduleLessonCollection } from './collections/scheduleLessons';
 import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
-import { UpdateTimeCollection } from './collections/updateTime';
 import { UserCollection } from './collections/users';
 import { DataQueryArray } from './sqlite/query';
 import { buildCreateTableQuery } from './sqlite/queryBuilder';
@@ -29,7 +28,6 @@ const collectionTypes = [
   ScheduleCollection,
   ScheduleLessonCollection,
   ScheduleTeacherCollection,
-  UpdateTimeCollection,
   GroupCollection,
   PollCollection,
   PollRespondentCollection,
@@ -72,7 +70,6 @@ export class Repository {
   sessions = this.collection(SessionCollection);
   schedule = this.collection(ScheduleCollection);
   scheduleTeachers = this.collection(ScheduleTeacherCollection);
-  updateTime = this.collection(UpdateTimeCollection);
   groups = this.collection(GroupCollection);
   polls = this.collection(PollCollection);
   forgotPasswordEntries = this.collection(ForgotPasswordCollection);
