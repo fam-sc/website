@@ -6,8 +6,8 @@
     "dev": "yarn workspace @sc-fam/website dev",
     "build": "yarn workspace @sc-fam/website build",
     "start": "yarn workspace @sc-fam/website start",
-    "lint": "eslint --cache --cache-location .eslintcache && stylelint --cache \"**/*.{css,scss}\" && prettier --check \"**.{json,css,scss,md}\" && yarn workspaces foreach --all -p run build:no-emit",
-    "lint:fix": "eslint --cache --cache-location .eslintcache --fix . && stylelint --cache --fix \"**/*.{css,scss}\" && prettier --write \"**/*.{js,mjs,jsx,ts,mts,tsx,json,css,scss,md}\"",
+    "lint": "tsx ./scripts/lint.ts",
+    "lint:fix": "yarn lint --fix",
     "typegen": "yarn workspaces foreach --all -p run typegen",
     "test": "vitest --run"
   },
