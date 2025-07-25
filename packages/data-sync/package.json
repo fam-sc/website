@@ -1,5 +1,5 @@
 {
-  "name": "data-sync",
+  "name": "@sc-fam/data-sync",
   "packageManager": "yarn@4.9.2",
   "scripts": {
     "build:no-emit": "tsc --noEmit",

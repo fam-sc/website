@@ -2949,6 +2949,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sc-fam/data-sync@workspace:packages/data-sync":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/data-sync@workspace:packages/data-sync"
+  dependencies:
+    "@types/node": "npm:24.0.14"
+    dotenv: "npm:17.2.0"
+    tsx: "npm:4.20.3"
+    typescript: "npm:5.8.3"
+    wrangler: "npm:4.24.4"
+  languageName: unknown
+  linkType: soft
+
 "@sc-fam/data@workspace:*, @sc-fam/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@sc-fam/data@workspace:packages/data"
@@ -5657,18 +5669,6 @@ __metadata:
   checksum: 10c0/4c2647e0f42acaee7d068756c1d396e296c3556f9c8314bac1ac63ffb236217ef0e7e58602b18bb2173deec7ec8e0cac8e27cccf8f5526666b4ff11a13ad54a3
   languageName: node
   linkType: hard
-
-"data-sync@workspace:packages/data-sync":
-  version: 0.0.0-use.local
-  resolution: "data-sync@workspace:packages/data-sync"
-  dependencies:
-    "@types/node": "npm:24.0.14"
-    dotenv: "npm:17.2.0"
-    tsx: "npm:4.20.3"
-    typescript: "npm:5.8.3"
-    wrangler: "npm:4.24.4"
-  languageName: unknown
-  linkType: soft
 
 "data-view-buffer@npm:^1.0.2":
   version: 1.0.2
