@@ -4,7 +4,7 @@ import path from 'node:path';
 import { yarn } from './process';
 
 const BUILD_SCRIPT = 'build:no-emit';
-const STYLELINT_PATTERN = `'**/*.{css,scss}`;
+const STYLELINT_PATTERN = `**/*.{css,scss}`;
 
 // Only check files that ESLint prettier plugin doesn't check.
 const PRETTIER_PATTERN = '**.{json,css,scss,md}';
