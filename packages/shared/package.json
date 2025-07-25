@@ -1,8 +1,10 @@
 {
   "name": "@sc-fam/shared",
   "packageManager": "yarn@4.9.2",
+  "type": "module",
   "scripts": {
-    "build:no-emit": "tsc --noEmit"
+    "build:no-emit": "tsc --noEmit",
+    "prebuild": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.846.0",
@@ -11,5 +13,47 @@
   },
   "devDependencies": {
     "typescript": "5.8.3"
+  },
+  "exports": {
+    "./*": {
+      "import": "./dist/*",
+      "types": "./dist/*"
+    },
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./string": {
+      "import": "./dist/string/index.js",
+      "types": "./dist/string/index.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/errors/index.js",
+      "types": "./dist/errors/index.d.ts"
+    },
+    "./cloudflare": {
+      "import": "./dist/cloudflare/index.js",
+      "types": "./dist/cloudflare/index.d.ts"
+    },
+    "./richText": {
+      "import": "./dist/richText/index.js",
+      "types": "./dist/richText/index.d.ts"
+    },
+    "./chrono": {
+      "import": "./dist/chrono/index.js",
+      "types": "./dist/chrono/index.d.ts"
+    },
+    "./crypto": {
+      "import": "./dist/crypto/index.js",
+      "types": "./dist/crypto/index.d.ts"
+    },
+    "./image": {
+      "import": "./dist/image/index.js",
+      "types": "./dist/image/index.d.ts"
+    },
+    "./collections": {
+      "import": "./dist/collections/index.js",
+      "types": "./dist/collections/index.d.ts"
+    }
   }
 }

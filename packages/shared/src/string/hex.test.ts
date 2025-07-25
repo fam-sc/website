@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { parseHexString, toHexString } from './hex';
+import { parseHexString, toHexString } from './hex.js';
 
 test.each<[number[]]>([
   [[]],

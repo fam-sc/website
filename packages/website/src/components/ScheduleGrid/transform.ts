@@ -1,4 +1,4 @@
-import { timeBreakpoints } from '@shared-schedule/constants';
+import { timeBreakpoints } from '@sc-fam/shared-schedule';
 
 import { Day, DaySchedule, Lesson, Time } from '@/api/schedule/types';
 

@@ -1,4 +1,4 @@
-import { IpResponse } from '@shared/api/ip/types';
+import { IpResponse } from '@sc-fam/shared/api/ip/types.js';
 
 export function prettyIpLocation(
   location: IpResponse | null,

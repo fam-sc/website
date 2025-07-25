@@ -1,7 +1,6 @@
-import { UserRole } from '@data/types/user';
-import { normalizeGuid } from '@shared/guid';
-import { badRequest, notFound, ok } from '@shared/responses';
-import { getScheduleForGroup } from '@shared-schedule/get';
+import { UserRole } from '@sc-fam/data';
+import { badRequest, normalizeGuid, notFound, ok } from '@sc-fam/shared';
+import { getScheduleForGroup } from '@sc-fam/shared-schedule';
 
 import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';

@@ -1,10 +1,13 @@
-import { UserRole } from '@data/types/user';
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
+import { UserRole } from '@sc-fam/data';
+import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
 
-import type { SignInData, SignUpData } from '@/api/auth/types';
-import type { ChangePasswordPayload } from '@/api/users/types';
-import { UserInfo, UserPersonalInfo } from '@/api/users/types';
-import { UserInfoWithRole } from '@/api/users/types';
+import { SignInData, SignUpData } from '@/api/auth/types';
+import { ChangePasswordPayload } from '@/api/users/types';
+import {
+  UserInfo,
+  UserInfoWithRole,
+  UserPersonalInfo,
+} from '@/api/users/types';
 
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 import { BotType } from './botAuth/types';

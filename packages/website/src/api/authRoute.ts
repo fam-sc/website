@@ -1,6 +1,5 @@
-import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
-import { unauthorized } from '@shared/responses';
+import { Repository, UserRole } from '@sc-fam/data';
+import { unauthorized } from '@sc-fam/shared';
 
 import { getSessionId } from '@/api/auth';
 

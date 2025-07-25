@@ -1,7 +1,7 @@
-import { UserRole } from '@data/types/user';
-import { getCurrentTime } from '@shared/api/campus';
-import { getTrueCurrentTime } from '@shared/api/time';
-import { shortenGuid } from '@shared/guid';
+import { UserRole } from '@sc-fam/data';
+import { shortenGuid } from '@sc-fam/shared';
+import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
+import { getTrueCurrentTime } from '@sc-fam/shared/api/time/index.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 

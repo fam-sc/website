@@ -1,4 +1,4 @@
-import { RichTextAtomNode, RichTextString } from './types';
+import { RichTextAtomNode, RichTextString } from './types.js';
 
 function normalizeWhitespaces(text: string): string {
   return text.replaceAll(/\s+/g, ' ').trim();

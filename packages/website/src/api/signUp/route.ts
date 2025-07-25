@@ -1,6 +1,6 @@
-import { Repository } from '@data/repo';
-import { randomBytes } from '@shared/crypto/random';
-import { badRequest, conflict } from '@shared/responses';
+import { Repository } from '@sc-fam/data';
+import { badRequest, conflict } from '@sc-fam/shared';
+import { randomBytes } from '@sc-fam/shared/crypto';
 
 import { app } from '@/api/app';
 import { hashPassword } from '@/api/auth/password';

@@ -1,6 +1,5 @@
-import { Repository } from '@data/repo';
-import { ScheduleWithTeachers } from '@data/types/schedule';
-import { getLessons } from '@shared/api/campus';
+import { Repository, ScheduleWithTeachers } from '@sc-fam/data';
+import { getLessons } from '@sc-fam/shared/api/campus/index.js';
 
 import { getTeachers } from './teachers';
 import {

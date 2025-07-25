@@ -1,6 +1,6 @@
-import { EventStatus } from '@data/types';
-import { getAllFiles } from '@shared/formData';
-import { richText } from '@shared/richText/zod';
+import { EventStatus } from '@sc-fam/data';
+import { getAllFiles } from '@sc-fam/shared';
+import { richText } from '@sc-fam/shared/richText/zod.js';
 import { coerce, literal, object, pipe, string, union } from 'zod/v4-mini';
 
 import {

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { formPersonName } from './person';
+import { formPersonName } from './person.js';
 
 describe('formPersonName', () => {
   test('with parent name', () => {

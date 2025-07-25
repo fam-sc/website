@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { normalizeGuid, shortenGuid } from './guid';
+import { normalizeGuid, shortenGuid } from './guid.js';
 
 test.each<[string, string]>([
   ['00000001-0000-0000-0000-000000000000', '1'],

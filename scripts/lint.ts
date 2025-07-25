@@ -1,29 +1,13 @@
-import { execFile } from 'node:child_process';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 
+import { yarn } from './process';
+
 const BUILD_SCRIPT = 'build:no-emit';
-const STYLELINT_PATTERN = `'**/*.{css,scss}`;
+const STYLELINT_PATTERN = `**/*.{css,scss}`;
 
 // Only check files that ESLint prettier plugin doesn't check.
 const PRETTIER_PATTERN = '**.{json,css,scss,md}';
-
-function execFileAsync(file: string, args: string[], cwd?: string) {
-  return new Promise((resolve, reject) => {
-    execFile(file, args, { cwd, shell: true }, (error, stdout, stderr) => {
-      if (error) {
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-        reject(error);
-      } else {
-        resolve(`${stdout}\n${stderr}`);
-      }
-    });
-  });
-}
-
-function yarn(args: string[], cwd?: string) {
-  return execFileAsync('yarn', args, cwd);
-}
 
 async function hasScript(filePath: string, name: string): Promise<boolean> {
   type Package = {
@@ -44,8 +28,12 @@ async function buildAllPackages() {
     packageNames.map(async (name) => {
       const cwd = path.join(packagesDir, name);
 
-      if (await hasScript(path.join(cwd, 'package.json'), BUILD_SCRIPT)) {
-        await yarn([BUILD_SCRIPT], cwd);
+      try {
+        if (await hasScript(path.join(cwd, 'package.json'), BUILD_SCRIPT)) {
+          await yarn([BUILD_SCRIPT], cwd);
+        }
+      } catch (error: unknown) {
+        throw new Error(`Build failed on '${name}' package`, { cause: error });
       }
     })
   );

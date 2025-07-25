@@ -1,4 +1,4 @@
-import { mapObjectToArray } from '@shared/collections/mapObject';
+import { mapObjectToArray } from '@sc-fam/shared/collections';
 import { Editor } from '@tiptap/core';
 import { useEditorState } from '@tiptap/react';
 import { FC } from 'react';

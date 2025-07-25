@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { richTextToHtml } from './htmlBuilder';
-import { RichTextString } from './types';
+import { richTextToHtml } from './htmlBuilder.js';
+import { RichTextString } from './types.js';
 
 test.each<[RichTextString, string]>([
   ['123', '123'],

@@ -16,6 +16,8 @@ jobs:
       - run: corepack enable
       - name: Install dependencies
         run: yarn workspaces focus @sc-fam/website
+      - name: Prebuild
+        run: yarn prebuild
       - name: Build
         working-directory: ./packages/website
         run: yarn storybook:build

@@ -5,7 +5,7 @@ import { expect, test } from 'vitest';
 
 import { verifyAuthorizationHash } from '.';
 
-const envFilePath = './packages/schedule-bot/.env.local';
+const envFilePath = './packages/schedule-bot/.env.local.js';
 
 if (fs.existsSync(envFilePath)) {
   config({ path: envFilePath, quiet: true });

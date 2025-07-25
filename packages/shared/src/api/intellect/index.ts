@@ -3,8 +3,8 @@
 import { array, ZodMiniType } from 'zod/v4-mini';
 
 import { fetchObject } from '../../fetch';
-import { lecturer } from './schema';
-import { ApiResponse, Lecturer } from './types';
+import { lecturer } from './schema.js';
+import { ApiResponse, Lecturer } from './types.js';
 
 const BASE_URL = `https://api.campus.kpi.ua/intellect/v2`;
 

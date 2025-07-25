@@ -1,12 +1,13 @@
-import { Repository } from '@data/repo';
-import { User } from '@data/types/user';
-import { getCurrentTime } from '@shared/api/campus';
-import { CurrentTime, Time } from '@shared/api/campus/types';
-import { getTrueCurrentTime } from '@shared/api/time';
-import { findNearestTimePoint } from '@shared/chrono/time';
-import { timeBreakpoints } from '@shared-schedule/constants';
-import { getScheduleForGroup } from '@shared-schedule/get';
-import { Schedule } from '@shared-schedule/types';
+import { Repository, User } from '@sc-fam/data';
+import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
+import { CurrentTime, Time } from '@sc-fam/shared/api/campus/types.js';
+import { getTrueCurrentTime } from '@sc-fam/shared/api/time/index.js';
+import { findNearestTimePoint } from '@sc-fam/shared/chrono';
+import {
+  getScheduleForGroup,
+  Schedule,
+  timeBreakpoints,
+} from '@sc-fam/shared-schedule';
 
 import { handleTimeTrigger } from './controller';
 

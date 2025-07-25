@@ -1,4 +1,4 @@
-import { getConnectingIp } from '@shared/cloudflare/request';
+import { getConnectingIp } from '@sc-fam/shared/cloudflare';
 
 type SiteverifyResponse = {
   success: boolean;

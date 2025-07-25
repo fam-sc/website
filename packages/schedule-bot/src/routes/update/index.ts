@@ -1,4 +1,4 @@
-import { bootstrapHandleUpdate } from '@shared/api/telegram/bot/update';
+import { bootstrapHandleUpdate } from '@sc-fam/shared/api/telegram/bot/update.js';
 
 import { handleUpdate } from '@/controller';
 

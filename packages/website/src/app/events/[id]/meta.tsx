@@ -1,7 +1,7 @@
-import { Event } from '@data/types';
-import { nearestSize } from '@shared/image/utils';
-import { richTextToPlainText } from '@shared/richText/plainTransform';
-import { shortenByWord } from '@shared/string/shortenByWord';
+import { Event } from '@sc-fam/data';
+import { nearestSize } from '@sc-fam/shared/image';
+import { richTextToPlainText } from '@sc-fam/shared/richText';
+import { shortenByWord } from '@sc-fam/shared/string';
 import { useMemo } from 'react';
 
 import { getMediaFileUrl } from '@/api/media';

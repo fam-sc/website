@@ -1,4 +1,4 @@
-import { Repository } from '@data/repo';
+import { Repository } from '@sc-fam/data';
 
 import { app } from '@/api/app';
 import { getSessionId, SESSION_ID_COOKIE } from '@/api/auth';

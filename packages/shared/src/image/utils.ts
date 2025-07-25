@@ -1,4 +1,4 @@
-import { ImageSize } from './types';
+import { ImageSize } from './types.js';
 
 export function nearestSize(
   sizes: ImageSize[],

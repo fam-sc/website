@@ -1,7 +1,6 @@
-import { UserRole } from '@data/types/user';
-import { formatDateTime } from '@shared/chrono/date';
-import { parseInt } from '@shared/parseInt';
-import { notFound } from '@shared/responses';
+import { UserRole } from '@sc-fam/data';
+import { notFound, parseInt } from '@sc-fam/shared';
+import { formatDateTime } from '@sc-fam/shared/chrono';
 import { useState } from 'react';
 import { redirect } from 'react-router';
 

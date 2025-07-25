@@ -1,6 +1,6 @@
-import { newUserEventPayload } from '@shared/api/adminbot/schema';
-import { getIpLocation } from '@shared/api/ip';
-import { badRequest, unauthorized } from '@shared/responses';
+import { badRequest, unauthorized } from '@sc-fam/shared';
+import { newUserEventPayload } from '@sc-fam/shared/api/adminbot/schema.js';
+import { getIpLocation } from '@sc-fam/shared/api/ip/index.js';
 
 import { isAuthorizedRequest } from '@/auth';
 import { handleNewUserEvent } from '@/controller';

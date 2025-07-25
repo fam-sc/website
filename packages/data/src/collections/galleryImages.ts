@@ -1,7 +1,11 @@
-import { ImageSize } from '@shared/image/types';
+import { ImageSize } from '@sc-fam/shared/image';
 
 import { TableDescriptor } from '../sqlite/types';
-import { GalleryImage, GalleryImageWithEvent, RawGalleryImage } from '../types';
+import {
+  GalleryImage,
+  GalleryImageWithEvent,
+  RawGalleryImage,
+} from '../types/common';
 import { EntityCollection } from './base';
 
 export class GalleryImageCollection extends EntityCollection<RawGalleryImage>(

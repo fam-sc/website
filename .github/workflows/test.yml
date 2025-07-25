@@ -15,6 +15,8 @@ jobs:
       - run: corepack enable
       - name: Install dependencies
         run: yarn install --immutable
+      - name: Prebuild
+        run: yarn prebuild
       - name: Install Playwright
         run: yarn playwright install
       - name: Test

@@ -1,10 +1,7 @@
-import '@/api/routes';
-
-import { Repository } from '@data/repo';
-import { internalServerError } from '@shared/responses';
-import type { EntryContext } from 'react-router';
-import { redirect } from 'react-router';
-import { AppLoadContext } from 'react-router';
+import { Repository } from '@sc-fam/data';
+import { internalServerError } from '@sc-fam/shared';
+import { EntryContext } from 'react-router';
+import { AppLoadContext, redirect } from 'react-router';
 import { getApiEnv } from 'virtual:utils/apiEnv';
 import { renderResponse } from 'virtual:utils/reactDomEnv';
 

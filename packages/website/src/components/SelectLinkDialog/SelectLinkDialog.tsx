@@ -1,4 +1,4 @@
-import { urlRegex } from '@shared/string/regex';
+import { urlRegex } from '@sc-fam/shared/string';
 import { useMemo, useState } from 'react';
 
 import { Button } from '../Button';

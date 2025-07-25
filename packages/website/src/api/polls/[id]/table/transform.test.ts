@@ -1,4 +1,4 @@
-import { PollQuestion } from '@data/types/poll';
+import { PollQuestion } from '@sc-fam/data';
 import { describe, expect, test } from 'vitest';
 
 import { answerToString, pollResultsToTable } from './transform';

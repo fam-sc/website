@@ -1,6 +1,6 @@
-import { Repository } from '@data/repo';
-import { getImageMimeType } from '@shared/image/mime';
-import { unauthorized } from '@shared/responses';
+import { Repository } from '@sc-fam/data';
+import { unauthorized } from '@sc-fam/shared';
+import { getImageMimeType } from '@sc-fam/shared/image';
 
 import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';

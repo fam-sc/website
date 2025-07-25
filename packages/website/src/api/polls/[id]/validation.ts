@@ -1,4 +1,4 @@
-import { PollQuestion, PollRespondentAnswer } from '@data/types/poll';
+import { PollQuestion, PollRespondentAnswer } from '@sc-fam/data';
 
 import { QuestionType } from '@/services/polls/types';
 

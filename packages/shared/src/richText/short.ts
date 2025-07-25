@@ -1,7 +1,7 @@
 import { Ending } from '../string/ending';
 import { shortenByWord } from '../string/shortenByWord';
-import { richTextCharacterLength } from './length';
-import { RichTextAtomNode, RichTextString } from './types';
+import { richTextCharacterLength } from './length.js';
+import { RichTextAtomNode, RichTextString } from './types.js';
 
 export function shortenRichText(
   value: RichTextAtomNode,

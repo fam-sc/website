@@ -1,6 +1,6 @@
-import { isJpeg } from './formats/jpeg';
-import { isPng } from './formats/png';
-import { isWebp } from './formats/webp';
+import { isJpeg } from './formats/jpeg.js';
+import { isPng } from './formats/png.js';
+import { isWebp } from './formats/webp.js';
 
 type ImageFormat = 'jpeg' | 'png' | 'webp';
 export type ImageMimeType = `image/${ImageFormat}`;

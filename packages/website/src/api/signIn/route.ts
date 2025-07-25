@@ -1,5 +1,5 @@
-import { Repository } from '@data/repo';
-import { badRequest, unauthorized } from '@shared/responses';
+import { Repository } from '@sc-fam/data';
+import { badRequest, unauthorized } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 import { getSessionId, newSessionId, setSessionId } from '@/api/auth';

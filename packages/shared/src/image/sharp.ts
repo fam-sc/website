@@ -7,7 +7,7 @@ import sharp, {
   WebpOptions,
 } from 'sharp';
 
-import { ImageSize } from './types';
+import { ImageSize } from './types.js';
 
 export function outputFormat(
   sharp: Sharp,

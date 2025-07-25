@@ -1,5 +1,5 @@
 import { methodNotAllowed, notFound } from '../responses';
-import { HttpMethod } from './types';
+import { HttpMethod } from './types.js';
 
 type Params<P extends string[] = string[]> = Record<P[number], string>;
 

@@ -1,10 +1,10 @@
-import { EventStatus } from '@data/types';
-import { ImageSize } from '@shared/image/types';
-import { RichTextString } from '@shared/richText/types';
+import { EventStatus } from '@sc-fam/data';
+import { ImageSize } from '@sc-fam/shared/image';
+import { RichTextString } from '@sc-fam/shared/richText';
 import { infer as zodInfer } from 'zod/v4-mini';
 
 import type { payloadSchema } from './payloads';
-export type { EventStatus } from '@data/types';
+export type { EventStatus } from '@sc-fam/data';
 
 export type ShortEvent = {
   id: string;

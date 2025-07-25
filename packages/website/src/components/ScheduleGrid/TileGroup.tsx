@@ -1,5 +1,4 @@
-import { timeBreakpoints } from '@shared-schedule/constants';
-import { Time } from '@shared-schedule/types';
+import { Time, timeBreakpoints } from '@sc-fam/shared-schedule';
 
 import { Day } from '@/api/schedule/types';
 import { classNames } from '@/utils/classNames';

@@ -1,8 +1,6 @@
-import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
-import { resolveImageSizes } from '@shared/image/breakpoints';
-import { getImageSize } from '@shared/image/size';
-import { badRequest, ok } from '@shared/responses';
+import { Repository, UserRole } from '@sc-fam/data';
+import { badRequest, ok } from '@sc-fam/shared';
+import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
 
 import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';

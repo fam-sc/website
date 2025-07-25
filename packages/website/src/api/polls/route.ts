@@ -1,5 +1,5 @@
-import { UserRole } from '@data/types/user';
-import { badRequest } from '@shared/responses';
+import { UserRole } from '@sc-fam/data';
+import { badRequest } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';

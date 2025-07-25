@@ -1,4 +1,4 @@
-import { D1Database, D1Result } from '@shared/cloudflare/d1/types';
+import { D1Database, D1Result } from '@sc-fam/shared/cloudflare';
 
 import { DataQueryArray } from '../sqlite/query';
 

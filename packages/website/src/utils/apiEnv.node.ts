@@ -1,5 +1,5 @@
-import { ApiR2Bucket } from '@shared/cloudflare/r2/api';
-import { getEnvChecked } from '@shared/env';
+import { getEnvChecked } from '@sc-fam/shared';
+import { ApiR2Bucket } from '@sc-fam/shared/cloudflare';
 
 import { getDatabase } from './d1Db';
 

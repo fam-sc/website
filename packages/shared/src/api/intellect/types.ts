@@ -2,7 +2,7 @@
 
 import { infer as zodInfer } from 'zod/v4-mini';
 
-import type { lecturer } from './schema';
+import type { lecturer } from './schema.js';
 
 export type ApiResponse<T> = {
   data: T;

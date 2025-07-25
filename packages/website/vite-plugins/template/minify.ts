@@ -1,7 +1,6 @@
 // Simple attempt at minifying HTML
 
-import { parse } from 'parse5';
-import { DefaultTreeAdapterTypes } from 'parse5';
+import { DefaultTreeAdapterTypes, parse } from 'parse5'; // Simple attempt at minifying HTML
 
 export function minifyInlineCss(text: string): string {
   let result = text

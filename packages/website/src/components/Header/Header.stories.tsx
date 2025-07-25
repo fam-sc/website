@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@sc-fam/data';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { AuthProvider } from '@/auth/context';

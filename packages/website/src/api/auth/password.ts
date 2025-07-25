@@ -1,4 +1,4 @@
-import { parseHexString, toHexString } from '@shared/string/hex';
+import { parseHexString, toHexString } from '@sc-fam/shared/string';
 
 const ITERATIONS = 100_000;
 const SALT_LENGTH = 16;

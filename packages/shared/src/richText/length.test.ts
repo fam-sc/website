@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { richTextCharacterLength } from './length';
-import { RichTextString } from './types';
+import { richTextCharacterLength } from './length.js';
+import { RichTextString } from './types.js';
 
 test.each<[RichTextString, number]>([
   ['abc', 3],

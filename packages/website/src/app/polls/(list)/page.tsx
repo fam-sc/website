@@ -1,6 +1,5 @@
-import { UserRole } from '@data/types/user';
-import { coerce } from '@shared/math';
-import { parseInt } from '@shared/parseInt';
+import { UserRole } from '@sc-fam/data';
+import { coerce, parseInt } from '@sc-fam/shared';
 import { redirect } from 'react-router';
 
 import { useAuthInfo } from '@/auth/context';

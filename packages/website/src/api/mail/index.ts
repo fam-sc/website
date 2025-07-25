@@ -1,4 +1,4 @@
-import { checkedFetch } from '@shared/fetch';
+import { checkedFetch } from '@sc-fam/shared';
 
 type ResendBody = {
   from: string;

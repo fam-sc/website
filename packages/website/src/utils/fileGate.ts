@@ -1,4 +1,4 @@
-import { isValidImageUrlForBrowser } from '@shared/image/browserValidation';
+import { isValidImageUrlForBrowser } from '@sc-fam/shared/image';
 
 export type FileGate = {
   acceptTypes: string;

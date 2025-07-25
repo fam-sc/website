@@ -1,1 +1,1 @@
-export { timeBreakpoints } from '@shared/api/campus/constants';
+export { timeBreakpoints } from '@sc-fam/shared/api/campus/constants.js';

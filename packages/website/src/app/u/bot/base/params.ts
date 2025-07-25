@@ -1,6 +1,5 @@
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
-import { parseInt } from '@shared/parseInt';
-import { searchParamsToObject } from '@shared/searchParams';
+import { parseInt, searchParamsToObject } from '@sc-fam/shared';
+import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
 
 import { BotPageError } from '.';
 

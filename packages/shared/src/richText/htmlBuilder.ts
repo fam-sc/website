@@ -1,4 +1,4 @@
-import { RichTextAtomNode, RichTextNode } from './types';
+import { RichTextAtomNode, RichTextNode } from './types.js';
 
 interface HtmlBuilderOptions {
   mediaUrl: string;

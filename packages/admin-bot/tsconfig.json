@@ -10,9 +10,7 @@
     "moduleResolution": "bundler",
     "types": ["./worker-configuration.d.ts", "./env.d.ts"],
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["../shared/src/*"],
-      "@data/*": ["../data/src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["./src", "./worker-configuration.d.ts"],

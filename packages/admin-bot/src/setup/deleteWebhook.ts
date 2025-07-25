@@ -1,3 +1,3 @@
-import { runDeleteWebhook } from '@shared/api/telegram/bot/setup';
+import { runDeleteWebhook } from '@sc-fam/shared/api/telegram/bot/setup.js';
 
 void runDeleteWebhook();

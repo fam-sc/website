@@ -1,4 +1,4 @@
-import { ImageSize } from './types';
+import { ImageSize } from './types.js';
 
 const breakpoints = [300, 600, 900, 1200, 1536];
 

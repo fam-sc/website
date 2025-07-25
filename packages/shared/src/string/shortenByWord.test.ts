@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { shortenByWord } from './shortenByWord';
+import { shortenByWord } from './shortenByWord.js';
 
 describe('shortenByWord', () => {
   test.each<[string, string]>([

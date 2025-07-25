@@ -1,4 +1,4 @@
-import { coerce, lerp } from '@shared/math';
+import { coerce, lerp } from '@sc-fam/shared';
 
 import { createTouchManager, TouchManager } from './touchManager';
 

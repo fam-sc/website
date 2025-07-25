@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@sc-fam/data';
 import { expect, test } from 'vitest';
 
 import { getMinRoleForRoute } from './permissions';

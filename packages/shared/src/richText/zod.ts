@@ -15,7 +15,11 @@ import {
   ZodMiniType,
 } from 'zod/v4-mini';
 
-import { RichTextAtomNode, RichTextNode, supportedRichTextTags } from './types';
+import {
+  RichTextAtomNode,
+  RichTextNode,
+  supportedRichTextTags,
+} from './types.js';
 
 const dimension = number().check(positive(), int());
 

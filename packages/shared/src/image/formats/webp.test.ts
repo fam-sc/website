@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 
 import { expect, test } from 'vitest';
 
-import { getSize } from './webp';
+import { getSize } from './webp.js';
 
 test('size', async () => {
   const content = await fs.readFile(

@@ -1,4 +1,4 @@
-import { NewUserEventPayload } from '@shared/api/adminbot/types';
+import { NewUserEventPayload } from '@sc-fam/shared/api/adminbot/types.js';
 
 import {
   notifyNewUserCreated,

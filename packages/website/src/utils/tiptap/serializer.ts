@@ -4,7 +4,7 @@ import {
   RichTextElementNode,
   RichTextString,
   supportedRichTextTags,
-} from '@shared/richText/types';
+} from '@sc-fam/shared/richText';
 import { DOMSerializer, Fragment, Schema } from '@tiptap/pm/model';
 
 import { getMediaBaseUrl } from '@/api/media';

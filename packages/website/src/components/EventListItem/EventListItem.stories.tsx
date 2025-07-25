@@ -1,4 +1,4 @@
-import { EventStatus } from '@data/types';
+import { EventStatus } from '@sc-fam/data';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { EventListItem } from '.';

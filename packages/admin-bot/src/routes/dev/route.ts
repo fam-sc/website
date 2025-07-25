@@ -1,5 +1,4 @@
-import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
+import { Repository, UserRole } from '@sc-fam/data';
 
 import { app } from '../app';
 

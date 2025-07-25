@@ -1,5 +1,5 @@
-import { UserRole } from '@data/types/user';
-import { badRequest, ok } from '@shared/responses';
+import { UserRole } from '@sc-fam/data';
+import { badRequest, ok } from '@sc-fam/shared';
 import { ZodMiniType } from 'zod/v4-mini';
 
 import { getBotFlow, saveBotFlow, saveBotFlowMeta } from '@/api/botFlow';

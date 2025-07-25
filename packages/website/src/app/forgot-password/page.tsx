@@ -1,4 +1,4 @@
-import { emailRegex } from '@shared/string/regex';
+import { emailRegex } from '@sc-fam/shared/string';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 

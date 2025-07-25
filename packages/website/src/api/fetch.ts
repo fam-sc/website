@@ -1,5 +1,8 @@
-import { encodeInitBodyToJson, ExtendedRequestInit } from '@shared/fetch';
-import { isErrorResponseBody } from '@shared/responses';
+import {
+  encodeInitBodyToJson,
+  ExtendedRequestInit,
+  isErrorResponseBody,
+} from '@sc-fam/shared';
 
 import { ApiError } from '@/api/error';
 

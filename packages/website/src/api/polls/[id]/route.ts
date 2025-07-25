@@ -1,6 +1,5 @@
-import { UserRole } from '@data/types/user';
-import { parseInt } from '@shared/parseInt';
-import { badRequest, notFound } from '@shared/responses';
+import { UserRole } from '@sc-fam/data';
+import { badRequest, notFound, parseInt } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';

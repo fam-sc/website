@@ -1,6 +1,6 @@
 import { hash, verifyHmac } from '../../../crypto';
 import { parseHexString } from '../../../string/hex';
-import { TelegramBotAuthPayload } from './types';
+import { TelegramBotAuthPayload } from './types.js';
 
 function createCheckString(data: TelegramBotAuthPayload): string {
   const parts = [

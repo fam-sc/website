@@ -1,6 +1,5 @@
-import { Repository } from '@data/repo';
-import { shortenGuid } from '@shared/guid';
-import { ok } from '@shared/responses';
+import { Repository } from '@sc-fam/data';
+import { ok, shortenGuid } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 

@@ -1,5 +1,5 @@
-import { Repository } from '@data/repo';
-import { ok, unauthorized } from '@shared/responses';
+import { Repository } from '@sc-fam/data';
+import { ok, unauthorized } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';

@@ -10,6 +10,9 @@
     "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
   },
   "dependencies": {
+    "@sc-fam/data": "workspace:*",
+    "@sc-fam/shared": "workspace:*",
+    "@sc-fam/shared-schedule": "workspace:*",
     "telegram-standard-bot-api": "1.0.8",
     "wrangler": "4.24.4"
   },

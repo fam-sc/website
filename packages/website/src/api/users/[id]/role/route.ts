@@ -1,8 +1,5 @@
-import { Repository } from '@data/repo';
-import { isUserRole } from '@data/types/user';
-import { UserRole } from '@data/types/user';
-import { parseInt } from '@shared/parseInt';
-import { badRequest, notFound, unauthorized } from '@shared/responses';
+import { isUserRole, Repository, UserRole } from '@sc-fam/data';
+import { badRequest, notFound, parseInt, unauthorized } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 import { onNewUserApprovedExternally } from '@/api/appEvents/newUser';

@@ -1,6 +1,2 @@
-export function isErrorWithCode(
-  value: unknown,
-  target: number | string
-): boolean {
-  return (value as { code: number } | undefined)?.code === target;
-}
+export { isErrorWithCode } from './code.js';
+export { isFileNotFoundError } from './node.js';

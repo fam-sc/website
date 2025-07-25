@@ -1,4 +1,4 @@
-import { emailRegex } from '@shared/string/regex';
+import { emailRegex } from '@sc-fam/shared/string';
 import { ReactNode, useState } from 'react';
 
 import { signIn } from '@/api/users/client';

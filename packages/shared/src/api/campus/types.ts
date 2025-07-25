@@ -9,7 +9,7 @@ import type {
   teacherPairType,
   time,
   weekday,
-} from './schema';
+} from './schema.js';
 
 export type Weekday = zodInfer<typeof weekday>;
 export type Time = zodInfer<typeof time>;

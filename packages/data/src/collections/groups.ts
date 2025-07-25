@@ -1,6 +1,6 @@
 import { DataQuery } from '../sqlite/query';
 import { TableDescriptor } from '../sqlite/types';
-import { Group } from '../types';
+import { Group } from '../types/common';
 import { EntityCollection } from './base';
 
 export class GroupCollection extends EntityCollection<Group>('groups') {

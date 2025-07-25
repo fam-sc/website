@@ -1,4 +1,4 @@
-import { bufferToReadableStream } from '@shared/stream';
+import { bufferToReadableStream } from '@sc-fam/shared';
 import sharp from 'sharp';
 
 export async function resizeImage(

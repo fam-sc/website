@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { capitalizeFirstLetter } from './capitalizeFirstLetter';
+import { capitalizeFirstLetter } from './capitalizeFirstLetter.js';
 
 test.each([
   ['abc', 'Abc'],

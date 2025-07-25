@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { coerce, lerp } from './math';
+import { coerce, lerp } from './math.js';
 
 test.each([
   [0, 1],

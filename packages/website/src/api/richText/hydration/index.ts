@@ -1,8 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
-import { resolveImageSizes } from '@shared/image/breakpoints';
-import { getImageSize } from '@shared/image/size';
-import { RichTextString } from '@shared/richText/types';
+import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
+import { RichTextString } from '@sc-fam/shared/richText';
 
 import { putMultipleSizedImages } from '@/api/media/multiple';
 import { MediaTransaction } from '@/api/media/transaction';

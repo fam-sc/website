@@ -1,6 +1,6 @@
-import { Event } from '@data/types';
-import { formatDateTime } from '@shared/chrono/date';
-import { shortenRichText } from '@shared/richText/short';
+import { Event } from '@sc-fam/data';
+import { formatDateTime } from '@sc-fam/shared/chrono';
+import { shortenRichText } from '@sc-fam/shared/richText';
 
 import { getMediaFileUrl } from '@/api/media';
 import { EventListItem } from '@/components/EventListItem';

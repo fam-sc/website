@@ -1,7 +1,6 @@
-import { Repository } from '@data/repo';
-import { EventStatus } from '@data/types';
-import { parseInt } from '@shared/parseInt';
-import { richTextToHtml } from '@shared/richText/htmlBuilder';
+import { EventStatus, Repository } from '@sc-fam/data';
+import { parseInt } from '@sc-fam/shared';
+import { richTextToHtml } from '@sc-fam/shared/richText';
 import { useCallback, useRef, useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
 
