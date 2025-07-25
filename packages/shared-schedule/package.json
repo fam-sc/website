@@ -1,6 +1,7 @@
 {
   "name": "@sc-fam/shared-schedule",
   "packageManager": "yarn@4.9.2",
+  "type": "module",
   "scripts": {
     "prebuild": "tsc",
     "build:no-emit": "tsc --noEmit"

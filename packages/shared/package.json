@@ -1,6 +1,7 @@
 {
   "name": "@sc-fam/shared",
   "packageManager": "yarn@4.9.2",
+  "type": "module",
   "scripts": {
     "build:no-emit": "tsc --noEmit",
     "prebuild": "tsc --project tsconfig.build.json"
@@ -25,6 +26,10 @@
     "./string": {
       "import": "./dist/string/index.js",
       "types": "./dist/string/index.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/errors/index.js",
+      "types": "./dist/errors/index.d.ts"
     },
     "./cloudflare": {
       "import": "./dist/cloudflare/index.js",

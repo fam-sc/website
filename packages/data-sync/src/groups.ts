@@ -1,5 +1,5 @@
 import { Group, Repository } from '@sc-fam/data';
-import { getGroups } from '@sc-fam/shared/api/campus';
+import { getGroups } from '@sc-fam/shared/api/campus/index.js';
 
 const FACULTY = 'ФПМ';
 

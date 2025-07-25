@@ -3,7 +3,7 @@ import { RichTextString } from '@sc-fam/shared/richText';
 
 import { UserRole } from './user';
 
-export const enum EventStatus {
+export enum EventStatus {
   PENDING = 0,
   ENDED = 1,
 }

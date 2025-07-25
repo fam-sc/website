@@ -1,6 +1,6 @@
 import { Repository, User } from '@sc-fam/data';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
-import { CurrentTime, Time } from '@sc-fam/shared/api/campus/types.js.js';
+import { CurrentTime, Time } from '@sc-fam/shared/api/campus/types.js';
 import { getTrueCurrentTime } from '@sc-fam/shared/api/time/index.js';
 import { findNearestTimePoint } from '@sc-fam/shared/chrono';
 import {

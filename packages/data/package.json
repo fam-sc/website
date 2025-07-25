@@ -1,6 +1,7 @@
 {
   "name": "@sc-fam/data",
   "packageManager": "yarn@4.9.2",
+  "type": "module",
   "scripts": {
     "prebuild": "tsc --project tsconfig.build.json",
     "build:no-emit": "tsc --noEmit"

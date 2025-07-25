@@ -2,11 +2,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { xxh3 } from '@node-rs/xxhash';
+import { isFileNotFoundError } from '@sc-fam/shared/errors';
 import type { ImageSize } from '@sc-fam/shared/image';
+import { resizeImage } from '@sc-fam/shared/image/sharp.js';
 import { FormatEnum } from 'sharp';
-
-import { isFileNotFoundError } from '../../../shared/src/errors/node';
-import { resizeImage } from '../../../shared/src/image/sharp';
 
 type CacheEntry = {
   hash: string;

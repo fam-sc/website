@@ -1,23 +1,13 @@
-import { Repository } from '@sc-fam/data'
-import { internalServerError } from '@sc-fam/shared'
-import { EntryContext } from 'react-router'
-import { redirect, AppLoadContext } from 'react-router'
-import { getApiEnv } from 'virtual:utils/apiEnv'
-import { renderResponse } from 'virtual:utils/reactDomEnv'
-import { app } from '@/api/app'
-import { redirects } from './redirects'import '@/api/routes';
+import { Repository } from '@sc-fam/data';
+import { internalServerError } from '@sc-fam/shared';
+import { EntryContext } from 'react-router';
+import { AppLoadContext, redirect } from 'react-router';
+import { getApiEnv } from 'virtual:utils/apiEnv';
+import { renderResponse } from 'virtual:utils/reactDomEnv';
 
+import { app } from '@/api/app';
 
-
-
-
-
-
-
-
-
-
-
+import { redirects } from './redirects';
 
 export default async function handleRequest(
   request: Request,

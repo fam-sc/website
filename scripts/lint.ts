@@ -40,30 +40,26 @@ async function buildAllPackages() {
 }
 
 async function main() {
-  try {
-    const fix = process.argv[2] == '--fix';
+  const fix = process.argv[2] == '--fix';
 
-    if (fix) {
-      await yarn([
-        'eslint',
-        '--cache',
-        '--cache-location',
-        '.eslintcache',
-        '--fix',
-      ]);
+  if (fix) {
+    await yarn([
+      'eslint',
+      '--cache',
+      '--cache-location',
+      '.eslintcache',
+      '--fix',
+    ]);
 
-      await yarn(['stylelint', '--cache', STYLELINT_PATTERN, '--fix']);
-      await yarn(['prettier', '--cache', '--write', PRETTIER_PATTERN]);
-    } else {
-      await Promise.all([
-        yarn(['eslint', '--cache', '--cache-location', '.eslintcache']),
-        yarn(['stylelint', '--cache', STYLELINT_PATTERN]),
-        yarn(['prettier', '--cache', '--check', PRETTIER_PATTERN]),
-        buildAllPackages(),
-      ]);
-    }
-  } catch (error: unknown) {
-    console.error(`Lint failed:\n${error}`);
+    await yarn(['stylelint', '--cache', STYLELINT_PATTERN, '--fix']);
+    await yarn(['prettier', '--cache', '--write', PRETTIER_PATTERN]);
+  } else {
+    await Promise.all([
+      yarn(['eslint', '--cache', '--cache-location', '.eslintcache']),
+      yarn(['stylelint', '--cache', STYLELINT_PATTERN]),
+      yarn(['prettier', '--cache', '--check', PRETTIER_PATTERN]),
+      buildAllPackages(),
+    ]);
   }
 }
 

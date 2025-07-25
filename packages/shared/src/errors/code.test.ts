@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { isErrorWithCode } from '.';
+import { isErrorWithCode } from './code';
 
 describe('isErrorWithCode', () => {
   test.each([[''], [1], [null], [undefined], [{ abc: 1 }]])(
