@@ -3,11 +3,12 @@ import { execFile } from 'node:child_process';
 export function execFileAsync(file: string, args: string[], cwd?: string) {
   return new Promise((resolve, reject) => {
     execFile(file, args, { cwd, shell: true }, (error, stdout, stderr) => {
+      const message = `${stdout}\n${stderr}`;
+
       if (error) {
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-        reject(error);
+        reject(new Error(message, { cause: error }));
       } else {
-        resolve(`${stdout}\n${stderr}`);
+        resolve(message);
       }
     });
   });

@@ -2,17 +2,22 @@ import path from 'node:path';
 
 import { yarn } from './process';
 
-const PACKAGES = [['shared'], ['shared-schedule', 'data']];
+const PACKAGES = ['shared', 'data', 'shared-schedule'];
 
 async function runBuild(packageName: string) {
-  const cwd = path.join('packages', packageName);
+  try {
+    const cwd = path.join('packages', packageName);
 
-  await yarn(['build:no-emit'], cwd);
+    await yarn(['prebuild'], cwd);
+  } catch (error: unknown) {
+    throw new Error(`Build failed on ${packageName} package`, { cause: error });
+  }
 }
 
 async function main() {
-  for (const group of PACKAGES) {
-    await Promise.all(group.map((packageName) => runBuild(packageName)));
+  for (const packageName of PACKAGES) {
+    console.log(`> Building ${packageName}`);
+    await runBuild(packageName);
   }
 }
 
