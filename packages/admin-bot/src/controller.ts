@@ -1,7 +1,6 @@
-import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
-import { NewUserEventPayload } from '@shared/api/adminbot/types';
-import { deleteMessagesAcrossChats } from '@shared/api/telegram/utils';
+import { Repository, UserRole } from '@sc-fam/data';
+import { NewUserEventPayload } from '@sc-fam/shared/api/adminbot/types.js';
+import { deleteMessagesAcrossChats } from '@sc-fam/shared/api/telegram/utils.js';
 import { bot } from 'telegram-standard-bot-api';
 import { sendMessage } from 'telegram-standard-bot-api/methods';
 import {

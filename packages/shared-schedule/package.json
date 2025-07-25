@@ -1,4 +1,22 @@
 {
-  "name": "shared-schedule",
-  "packageManager": "yarn@4.9.2"
+  "name": "@sc-fam/shared-schedule",
+  "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "prebuild": "tsc",
+    "build:no-emit": "tsc --noEmit"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./schema": {
+      "import": "./dist/schema.js",
+      "types": "./dist/schema.d.ts"
+    }
+  },
+  "dependencies": {
+    "@sc-fam/data": "workspace:*",
+    "@sc-fam/shared": "workspace:*"
+  }
 }

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { shortenRichText } from './short';
-import { RichTextString } from './types';
+import { shortenRichText } from './short.js';
+import { RichTextString } from './types.js';
 
 const MAX_LENGTH = 20;
 

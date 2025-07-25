@@ -1,4 +1,4 @@
-import { EventStatus } from '@data/types';
+import { EventStatus } from '@sc-fam/data';
 
 import { classNames } from '@/utils/classNames';
 

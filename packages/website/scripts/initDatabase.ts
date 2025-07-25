@@ -1,6 +1,6 @@
-import { Repository } from '@data/repo';
-import { ApiD1Database } from '@shared/cloudflare/d1/api';
-import { getEnvChecked } from '@shared/env';
+import { Repository } from '@sc-fam/data';
+import { getEnvChecked } from '@sc-fam/shared';
+import { ApiD1Database } from '@sc-fam/shared/cloudflare';
 import { config } from 'dotenv';
 
 async function main() {

@@ -1,4 +1,4 @@
-import { getFileDownloadUrlById } from '@shared/api/telegram/utils';
+import { getFileDownloadUrlById } from '@sc-fam/shared/api/telegram/utils.js';
 import { createTelegramBot, TelegramBot } from 'telegram-standard-bot-api';
 import { getForumTopicIconStickers } from 'telegram-standard-bot-api/methods';
 import { Sticker } from 'telegram-standard-bot-api/types';

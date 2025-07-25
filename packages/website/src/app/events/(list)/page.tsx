@@ -1,11 +1,8 @@
-import { Event, EventStatus } from '@data/types';
-import { UserRole } from '@data/types/user';
-import { formatDateTime } from '@shared/chrono/date';
-import { ImageSize } from '@shared/image/types';
-import { coerce } from '@shared/math';
-import { parseInt } from '@shared/parseInt';
-import { shortenRichText } from '@shared/richText/short';
-import { RichTextString } from '@shared/richText/types';
+import { Event, EventStatus, UserRole } from '@sc-fam/data';
+import { coerce, parseInt } from '@sc-fam/shared';
+import { formatDateTime } from '@sc-fam/shared/chrono';
+import { ImageSize } from '@sc-fam/shared/image';
+import { RichTextString, shortenRichText } from '@sc-fam/shared/richText';
 import { redirect } from 'react-router';
 
 import { getMediaFileUrl } from '@/api/media';

@@ -1,7 +1,5 @@
-import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
-import { formPersonName } from '@shared/person';
-import { ok, unauthorized } from '@shared/responses';
+import { Repository, UserRole } from '@sc-fam/data';
+import { formPersonName, ok, unauthorized } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';

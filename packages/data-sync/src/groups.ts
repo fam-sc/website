@@ -1,6 +1,5 @@
-import { Repository } from '@data/repo';
-import { Group } from '@data/types';
-import { getGroups } from '@shared/api/campus';
+import { Group, Repository } from '@sc-fam/data';
+import { getGroups } from '@sc-fam/shared/api/campus';
 
 const FACULTY = 'ФПМ';
 

@@ -1,4 +1,4 @@
-import { checkedFetch, fetchObject } from '@shared/fetch';
+import { checkedFetch, fetchObject } from '@sc-fam/shared';
 
 import { botFlowConfig } from './schema';
 import { BotFlowConfig } from './types';

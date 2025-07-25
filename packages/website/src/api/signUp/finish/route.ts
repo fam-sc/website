@@ -1,7 +1,6 @@
-import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
-import { getConnectingIp } from '@shared/cloudflare/request';
-import { badRequest, conflict } from '@shared/responses';
+import { Repository, UserRole } from '@sc-fam/data';
+import { badRequest, conflict } from '@sc-fam/shared';
+import { getConnectingIp } from '@sc-fam/shared/cloudflare';
 
 import { app } from '@/api/app';
 import { onNewUserCreated } from '@/api/appEvents/newUser';

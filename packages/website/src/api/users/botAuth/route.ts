@@ -1,9 +1,7 @@
-import { UserCollection } from '@data/collections/users';
-import { Repository } from '@data/repo';
-import { UserRole } from '@data/types/user';
-import { telegramBotAuthPayload } from '@shared/api/telegram/auth/schema';
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
-import { badRequest, unauthorized } from '@shared/responses';
+import { EntityCollectionByKey, Repository, UserRole } from '@sc-fam/data';
+import { badRequest, unauthorized } from '@sc-fam/shared';
+import { telegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/schema.js';
+import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
 
 import { authorizeAdminBot } from '@/api/adminbot/client';
 import { app } from '@/api/app';
@@ -15,7 +13,7 @@ import { BotType, isBotType } from './types';
 type BotInfo = {
   authorize: (payload: TelegramBotAuthPayload, env: Env) => Promise<Response>;
   updateUser: (
-    users: UserCollection,
+    users: EntityCollectionByKey<'users'>,
     id: number,
     telegramUserId: number
   ) => Promise<unknown>;

@@ -1,5 +1,5 @@
-import { Repository } from '@data/repo';
-import { Lesson } from '@shared-schedule/types';
+import { Repository } from '@sc-fam/data';
+import { Lesson } from '@sc-fam/shared-schedule/';
 import { bot } from 'telegram-standard-bot-api';
 import { sendMessage } from 'telegram-standard-bot-api/methods';
 import { Message, Update } from 'telegram-standard-bot-api/types';

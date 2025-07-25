@@ -1,13 +1,13 @@
 import path from 'node:path';
 
-import type { ImageSize } from '@shared/image/types';
+import {
+  getTargetSize,
+  ImageSize,
+  resolveImageWidths,
+} from '@sc-fam/shared/image';
 import sharp, { FormatEnum } from 'sharp';
 import { Plugin, ResolvedConfig } from 'vite';
 
-import {
-  getTargetSize,
-  resolveImageWidths,
-} from '../../../shared/src/image/breakpoints';
 import { CachedResizer } from './cache';
 import { MetaEntry, withWidth } from './utils';
 

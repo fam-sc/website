@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { repeatJoin } from './repeatJoin';
+import { repeatJoin } from './repeatJoin.js';
 
 test.each<[string, string, number, string]>([
   ['a', ',', 3, 'a,a,a'],

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { isValidImageUrlForBrowser } from './browserValidation';
+import { isValidImageUrlForBrowser } from './browserValidation.js';
 
 async function passImageThroughObjectUrl(url: string): Promise<string> {
   const response = await fetch(url);

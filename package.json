@@ -9,6 +9,7 @@
     "lint": "tsx ./scripts/lint.ts",
     "lint:fix": "yarn lint --fix",
     "typegen": "yarn workspaces foreach --all -p run typegen",
+    "prebuild": "tsx ./scripts/prebuild.ts",
     "test": "vitest --run"
   },
   "devDependencies": {
@@ -36,6 +37,7 @@
     "stylelint": "16.21.0",
     "stylelint-config-standard-scss": "15.0.1",
     "stylelint-scss": "6.12.1",
+    "tsx": "4.20.3",
     "typescript": "5.8.3",
     "typescript-eslint": "8.37.0",
     "vite": "7.0.4",

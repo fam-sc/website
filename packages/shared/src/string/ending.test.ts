@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { withEnding } from './ending';
+import { withEnding } from './ending.js';
 
 describe('withEnding', () => {
   test('none', () => {

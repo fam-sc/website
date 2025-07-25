@@ -1,6 +1,6 @@
-import { EventStatus } from '@data/types';
-import { ImageSize } from '@shared/image/types';
-import { RichTextString } from '@shared/richText/types';
+import { EventStatus } from '@sc-fam/data';
+import { ImageSize } from '@sc-fam/shared/image';
+import { RichTextString } from '@sc-fam/shared/richText';
 import { Link } from 'react-router';
 
 import { EventStatusMarker } from '@/components/EventStatusMarker';

@@ -1,6 +1,6 @@
-import { Repository } from '@data/repo';
-import { randomBytes } from '@shared/crypto/random';
-import { badRequest, unauthorized } from '@shared/responses';
+import { Repository } from '@sc-fam/data';
+import { badRequest, unauthorized } from '@sc-fam/shared';
+import { randomBytes } from '@sc-fam/shared/crypto';
 
 import { app } from '@/api/app';
 import { sendMail } from '@/api/mail';

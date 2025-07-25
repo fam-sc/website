@@ -1,9 +1,9 @@
+import { checkedFetch } from '@sc-fam/shared';
 import {
   NewUserApprovedExternallyEventPayload,
   NewUserEventPayload,
-} from '@shared/api/adminbot/types';
-import { TelegramBotAuthPayload } from '@shared/api/telegram/auth/types';
-import { checkedFetch } from '@shared/fetch';
+} from '@sc-fam/shared/api/adminbot/types.js';
+import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
 
 function authRequest(path: string, payload: object, accessKey: string) {
   return checkedFetch(`https://admin-bot.sc-fam.org${path}`, {

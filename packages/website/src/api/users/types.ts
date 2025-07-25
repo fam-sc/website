@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@sc-fam/data';
 import { infer as zodInfer } from 'zod/v4-mini';
 
 import type { changePasswordPayload } from './payloads';

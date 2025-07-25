@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { joinArray } from './joinArray';
+import { joinArray } from './joinArray.js';
 
 test.each<[number[], number[]]>([
   [[], []],

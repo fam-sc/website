@@ -1,4 +1,4 @@
-import { joinArray } from '@shared/collections/joinArray';
+import { joinArray } from '@sc-fam/shared/collections';
 
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
 import { PropsMap } from '@/types/react';

@@ -1,4 +1,4 @@
-import { emailRegex, telnumRegex } from '@shared/string/regex';
+import { emailRegex, telnumRegex } from '@sc-fam/shared/string';
 import { nullable, object, regex, string } from 'zod/v4-mini';
 
 const turnstileToken =

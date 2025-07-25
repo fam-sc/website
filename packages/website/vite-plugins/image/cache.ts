@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { xxh3 } from '@node-rs/xxhash';
-import type { ImageSize } from '@shared/image/types';
+import type { ImageSize } from '@sc-fam/shared/image';
 import { FormatEnum } from 'sharp';
 
 import { isFileNotFoundError } from '../../../shared/src/errors/node';

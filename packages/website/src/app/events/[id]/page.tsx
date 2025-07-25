@@ -1,6 +1,5 @@
-import { UserRole } from '@data/types/user';
-import { parseInt } from '@shared/parseInt';
-import { notFound } from '@shared/responses';
+import { UserRole } from '@sc-fam/data';
+import { notFound, parseInt } from '@sc-fam/shared';
 import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 

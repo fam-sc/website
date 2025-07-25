@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { isErrorResponseBody, notFound, ok } from './responses';
+import { isErrorResponseBody, notFound, ok } from './responses.js';
 
 test.each<[unknown, boolean]>([
   [{ message: 'Text' }, true],

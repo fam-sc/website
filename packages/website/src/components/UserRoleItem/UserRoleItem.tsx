@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@sc-fam/data';
 
 import { Select } from '../Select';
 import { UserInfoItem, UserInfoItemProps } from '../UserInfoItem';

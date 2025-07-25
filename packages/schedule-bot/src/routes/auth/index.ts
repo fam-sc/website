@@ -1,6 +1,6 @@
-import { verifyAuthorizationHash } from '@shared/api/telegram/auth';
-import { telegramBotAuthPayload } from '@shared/api/telegram/auth/schema';
-import { badRequest, unauthorized } from '@shared/responses';
+import { badRequest, unauthorized } from '@sc-fam/shared';
+import { verifyAuthorizationHash } from '@sc-fam/shared/api/telegram/auth/index.js';
+import { telegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/schema.js';
 import { bot } from 'telegram-standard-bot-api';
 
 import { handleAuth } from '@/controller';

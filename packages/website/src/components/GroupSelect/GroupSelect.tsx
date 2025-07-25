@@ -1,4 +1,4 @@
-import { shortenGuid } from '@shared/guid';
+import { shortenGuid } from '@sc-fam/shared';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { getGroups } from '@/api/groups/client';

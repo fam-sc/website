@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { emailRegex, urlRegex } from './regex';
+import { emailRegex, urlRegex } from './regex.js';
 
 describe('url', () => {
   test.each<[string]>([

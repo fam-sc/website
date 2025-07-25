@@ -1,6 +1,6 @@
 import './routes';
 
-import { Repository } from '@data/repo';
+import { Repository } from '@sc-fam/data';
 import { bot } from 'telegram-standard-bot-api';
 
 import { app } from './routes/app';

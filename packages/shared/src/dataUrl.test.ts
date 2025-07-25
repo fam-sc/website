@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { getDataUrlContent } from './dataUrl';
+import { getDataUrlContent } from './dataUrl.js';
 
 describe('getDataUrlContent', () => {
   test('ok', () => {

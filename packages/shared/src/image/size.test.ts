@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 
 import { expect, test } from 'vitest';
 
-import { getImageSize } from './size';
+import { getImageSize } from './size.js';
 
 test('size', async () => {
   for (const name of ['jpeg', 'png', 'webp']) {

@@ -1,4 +1,4 @@
-import { ImageSize } from '@shared/image/types';
+import { ImageSize } from '@sc-fam/shared/image';
 import { FormatEnum } from 'sharp';
 
 export interface MetaEntry extends ImageSize {

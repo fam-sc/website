@@ -1,4 +1,4 @@
-import { lessonType } from '@shared-schedule/schema';
+import { lessonType } from '@sc-fam/shared-schedule/schema';
 
 import { UpdateScheduleLinksPayload } from './payloads';
 

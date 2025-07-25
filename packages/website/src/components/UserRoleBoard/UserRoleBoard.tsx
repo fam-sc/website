@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@sc-fam/data';
 
 import { UserInfoWithRole } from '@/api/users/types';
 import { classNames } from '@/utils/classNames';

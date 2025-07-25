@@ -1,4 +1,4 @@
-import { bufferToReadableStream } from '@shared/stream';
+import { bufferToReadableStream } from '@sc-fam/shared';
 
 export async function resizeImage(
   env: Env,

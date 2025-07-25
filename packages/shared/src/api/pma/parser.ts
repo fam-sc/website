@@ -1,4 +1,4 @@
-import { Block, BlockCollection, PageData } from './types';
+import { Block, BlockCollection, PageData } from './types.js';
 
 const NEXT_DATA_PATTERN =
   /<script id="__NEXT_DATA__" type="application\/json">(\{.+\})<\/script>/;

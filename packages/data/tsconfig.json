@@ -3,14 +3,13 @@
     "target": "ES2020",
     "outDir": "dist",
     "esModuleInterop": true,
+    "declaration": true,
+    "incremental": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "paths": {
-      "@shared/*": ["../shared/src/*"]
-    }
+    "module": "preserve",
+    "moduleResolution": "bundler"
   },
   "include": ["./src"],
   "exclude": ["./node_modules"]

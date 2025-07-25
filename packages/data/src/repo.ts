@@ -1,4 +1,4 @@
-import { D1Database, D1Result } from '@shared/cloudflare/d1/types';
+import { D1Database, D1Result } from '@sc-fam/shared/cloudflare';
 
 import { AdminBotNewUserMessagesCollection } from './collections/adminBotNewUserMessages';
 import { EntityCollectionClass } from './collections/base';
@@ -34,6 +34,14 @@ const collectionTypes = [
   ForgotPasswordCollection,
   AdminBotNewUserMessagesCollection,
 ];
+
+export type EntityRepositoryKey = {
+  [K in keyof Repository]: Repository[K] extends () => unknown ? K : never;
+}[keyof Repository];
+
+export type EntityCollectionByKey<K extends EntityRepositoryKey> = ReturnType<
+  Repository[K]
+>;
 
 export class Repository {
   private client: D1Database;

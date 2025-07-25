@@ -11,8 +11,8 @@
     "types": ["./worker-configuration.d.ts"],
     "paths": {
       "@/*": ["./src/*"],
-      "@shared/*": ["../shared/src/*"],
-      "@data/*": ["../data/src/*"]
+      "@sc-fam/shared/*": ["../shared/src/*"],
+      "@sc-fam/data/*": ["../data/src/*"]
     }
   },
   "include": ["./src", "./worker-configuration.d.ts"],

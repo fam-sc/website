@@ -1,5 +1,5 @@
-import { ImageSize } from '@shared/image/types';
-import { RichTextString } from '@shared/richText/types';
+import { ImageSize } from '@sc-fam/shared/image';
+import { RichTextString } from '@sc-fam/shared/richText';
 
 export type ImageSizeMap = Record<string, ImageSize[] | undefined>;
 

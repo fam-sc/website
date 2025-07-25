@@ -1,5 +1,5 @@
-import { newUserApprovedExternallyEventPayload } from '@shared/api/adminbot/schema';
-import { badRequest, unauthorized } from '@shared/responses';
+import { badRequest, unauthorized } from '@sc-fam/shared';
+import { newUserApprovedExternallyEventPayload } from '@sc-fam/shared/api/adminbot/schema.js';
 
 import { isAuthorizedRequest } from '@/auth';
 import { handleNewUserApprovedExternally } from '@/controller';

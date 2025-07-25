@@ -1,4 +1,4 @@
-import { D1PreparedStatement, D1Result } from '@shared/cloudflare/d1/types';
+import { D1PreparedStatement, D1Result } from '@sc-fam/shared/cloudflare';
 
 type Mapping<T, R> = (value: T, result: D1Result[]) => R;
 

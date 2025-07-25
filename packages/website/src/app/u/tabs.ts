@@ -1,4 +1,4 @@
-import { UserRole } from '@data/types/user';
+import { UserRole } from '@sc-fam/data';
 
 export type TabInfo = {
   href: string;

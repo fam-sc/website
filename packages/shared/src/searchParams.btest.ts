@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { searchParamsToObject } from './searchParams';
+import { searchParamsToObject } from './searchParams.js';
 
 test.each<[Record<string, string>]>([
   [{}],

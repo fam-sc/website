@@ -1,5 +1,5 @@
-import { normalizeGuid } from '@shared/guid';
-import { emailRegex, telnumRegex } from '@shared/string/regex';
+import { normalizeGuid } from '@sc-fam/shared';
+import { emailRegex, telnumRegex } from '@sc-fam/shared/string';
 import { ReactNode, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 

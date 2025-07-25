@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-import { redirect } from 'react-router';
-import { Outlet } from 'react-router';
+import { Outlet, redirect } from 'react-router';
 
 import { getSessionId } from '@/api/auth';
 import { repository } from '@/utils/repo';

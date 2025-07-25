@@ -1,5 +1,5 @@
 import { TableDescriptor } from '../sqlite/types';
-import { AuthSession } from '../types';
+import { AuthSession } from '../types/common';
 import { User, UserPersonalInfo, UserWithRoleAndAvatar } from '../types/user';
 import { EntityCollection } from './base';
 

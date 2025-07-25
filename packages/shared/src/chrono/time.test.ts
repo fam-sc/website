@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { findNearestTimePoint, Time } from './time';
+import { findNearestTimePoint, Time } from './time.js';
 
 const points: Time[] = [
   '8:30',

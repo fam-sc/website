@@ -1,3 +1,5 @@
+export { isFileNotFoundError } from './node.js';
+
 export function isErrorWithCode(
   value: unknown,
   target: number | string

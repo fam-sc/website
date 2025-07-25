@@ -18,6 +18,8 @@ jobs:
       - run: corepack enable
       - name: Install dependencies
         run: yarn workspaces focus @sc-fam/media-worker
+      - name: Prebuild
+        run: yarn prebuild
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:

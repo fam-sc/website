@@ -1,4 +1,4 @@
-import { ImageSize } from '@shared/image/types';
+import { ImageSize } from '@sc-fam/shared/image';
 
 export type ImageSizes = Record<number | 'default', `${number}vw`>;
 

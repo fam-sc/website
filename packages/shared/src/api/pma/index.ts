@@ -1,5 +1,5 @@
-import { findNextDataBlock } from './parser';
-import { Discipline, NameWithLink, Teacher } from './types';
+import { findNextDataBlock } from './parser.js';
+import { Discipline, NameWithLink, Teacher } from './types.js';
 
 const SITE_URL = 'https://pma.fpm.kpi.ua';
 

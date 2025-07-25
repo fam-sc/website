@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { getAllFiles } from './formData';
+import { getAllFiles } from './formData.js';
 
 function createFile(content: string): File {
   return new File([content], 'some-file');

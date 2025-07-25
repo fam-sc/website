@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 
 import { expect, test } from 'vitest';
 
-import { getSize } from './png';
+import { getSize } from './png.js';
 
 test('size', async () => {
   const content = await fs.readFile(

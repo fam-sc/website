@@ -1,4 +1,4 @@
-import { D1Database, D1PreparedStatement } from '@shared/cloudflare/d1/types';
+import { D1Database, D1PreparedStatement } from '@sc-fam/shared/cloudflare';
 
 import { Conditions, getConditionsBinding } from '../sqlite/conditions';
 import { DataQuery, DataQueryContext, query } from '../sqlite/query';
@@ -21,7 +21,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
   type Fields<S = Raw> = (keyof S & string)[] | '*';
 
   return class {
-    protected client: D1Database;
+    client: D1Database;
     queryContext: DataQueryContext;
 
     constructor(client: D1Database) {
@@ -33,10 +33,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       };
     }
 
-    protected async updateWhere(
-      conditions: Conditions<Raw>,
-      value: Partial<Raw>
-    ) {
+    async updateWhere(conditions: Conditions<Raw>, value: Partial<Raw>) {
       const { meta } = await this.client
         .prepare(buildUpdateWhereQuery(tableName, conditions, value))
         .bind(...Object.values(value), ...getConditionsBinding(conditions))
@@ -45,10 +42,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return { changes: meta.changes };
     }
 
-    protected updateWhereAction(
-      conditions: Conditions<Raw>,
-      value: Partial<Raw>
-    ) {
+    updateWhereAction(conditions: Conditions<Raw>, value: Partial<Raw>) {
       return query
         .first(
           this.client
@@ -58,17 +52,14 @@ export function EntityCollection<Raw extends object>(tableName: string) {
         .map((_, [result]) => ({ changes: result.meta.changes }));
     }
 
-    protected selectAllAction<R = Raw>(
+    selectAllAction<R = Raw>(
       sql: string,
       bindings?: unknown[]
     ): DataQuery<R[]> {
       return query.all(this.client.prepare(sql).bind(...(bindings ?? [])));
     }
 
-    protected async selectAll<R = Raw>(
-      sql: string,
-      bindings?: unknown[]
-    ): Promise<R[]> {
+    async selectAll<R = Raw>(sql: string, bindings?: unknown[]): Promise<R[]> {
       const { results } = await this.client
         .prepare(sql)
         .bind(...(bindings ?? []))
@@ -77,14 +68,14 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return results;
     }
 
-    protected selectOneAction<R = Raw>(
+    selectOneAction<R = Raw>(
       sql: string,
       bindings: unknown[] = []
     ): DataQuery<R | null> {
       return query.first(this.client.prepare(sql).bind(...bindings));
     }
 
-    protected async selectOne<R = Raw>(
+    async selectOne<R = Raw>(
       sql: string,
       bindings: unknown[] = []
     ): Promise<R | null> {
@@ -94,7 +85,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
         .first<R>();
     }
 
-    private insertBaseAction<R extends keyof Raw & string>(
+    insertBaseAction<R extends keyof Raw & string>(
       flavor: InsertFlavor,
       value: Partial<Raw>,
       returning?: R
@@ -112,7 +103,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       });
     }
 
-    private async insertBase<R extends keyof Raw & string>(
+    async insertBase<R extends keyof Raw & string>(
       flavor: InsertFlavor,
       value: Partial<Raw>,
       returning?: R
@@ -159,7 +150,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.insertBaseAction('INSERT OR REPLACE', value, returning);
     }
 
-    private insertManyBaseAction<R extends keyof Raw & string>(
+    insertManyBaseAction<R extends keyof Raw & string>(
       flavor: InsertFlavor,
       values: Partial<Raw>[],
       returning?: R
@@ -169,7 +160,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       );
     }
 
-    private async insertManyBase<R extends keyof Raw & string>(
+    async insertManyBase<R extends keyof Raw & string>(
       flavor: InsertFlavor,
       values: Partial<Raw>[],
       returning?: R
@@ -216,7 +207,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.insertManyBaseAction('INSERT OR REPLACE', values, returning);
     }
 
-    private prepareFindWhereStatement<R extends Raw>(
+    prepareFindWhereStatement<R extends Raw>(
       conditions: Conditions<R>,
       fields?: Fields<Partial<Raw>>
     ): D1PreparedStatement {
@@ -260,7 +251,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return query.all(this.prepareFindWhereStatement(conditions, fields));
     }
 
-    protected getPageBase<K extends keyof Raw & string = keyof Raw & string>(
+    getPageBase<K extends keyof Raw & string = keyof Raw & string>(
       offset: number,
       size: number,
       conditions: Conditions<Raw> = {},
@@ -304,7 +295,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.findManyWhereAction({}, fields);
     }
 
-    protected createTable(schema: TableDescriptor<Raw>) {
+    createTable(schema: TableDescriptor<Raw>) {
       return this.client.exec(buildCreateTableQuery(tableName, schema));
     }
 

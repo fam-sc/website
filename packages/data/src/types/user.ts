@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-export const enum UserRole {
+export enum UserRole {
   STUDENT_NON_APPROVED = -1,
   STUDENT = 0,
   GROUP_HEAD = 1,

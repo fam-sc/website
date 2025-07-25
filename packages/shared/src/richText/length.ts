@@ -1,4 +1,4 @@
-import { RichTextString } from './types';
+import { RichTextString } from './types.js';
 
 export function richTextCharacterLength(value: RichTextString): number {
   if (typeof value === 'string') {

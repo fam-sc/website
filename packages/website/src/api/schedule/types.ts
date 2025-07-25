@@ -1,1 +1,1 @@
-export * from '@shared-schedule/types';
+export type * from '@sc-fam/shared-schedule';

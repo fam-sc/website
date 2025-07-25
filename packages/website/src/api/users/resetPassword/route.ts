@@ -1,5 +1,5 @@
-import { Repository } from '@data/repo';
-import { badRequest } from '@shared/responses';
+import { Repository } from '@sc-fam/data';
+import { badRequest } from '@sc-fam/shared';
 
 import { app } from '@/api/app';
 import { hashPassword } from '@/api/auth/password';

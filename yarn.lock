@@ -2949,10 +2949,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sc-fam/data@workspace:packages/data":
+"@sc-fam/data@workspace:*, @sc-fam/data@workspace:packages/data":
   version: 0.0.0-use.local
   resolution: "@sc-fam/data@workspace:packages/data"
   dependencies:
+    "@sc-fam/shared": "workspace:*"
     typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
@@ -2978,6 +2979,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sc-fam/schedule-bot@workspace:packages/schedule-bot"
   dependencies:
+    "@sc-fam/data": "workspace:*"
+    "@sc-fam/shared": "workspace:*"
+    "@sc-fam/shared-schedule": "workspace:*"
     "@types/node": "npm:24.0.14"
     dotenv: "npm:17.2.0"
     telegram-standard-bot-api: "npm:1.0.8"
@@ -2987,7 +2991,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sc-fam/shared@workspace:packages/shared":
+"@sc-fam/shared-schedule@workspace:*, @sc-fam/shared-schedule@workspace:packages/shared-schedule":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/shared-schedule@workspace:packages/shared-schedule"
+  dependencies:
+    "@sc-fam/data": "workspace:*"
+    "@sc-fam/shared": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"@sc-fam/shared@workspace:*, @sc-fam/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@sc-fam/shared@workspace:packages/shared"
   dependencies:
@@ -9924,6 +9937,7 @@ __metadata:
     stylelint: "npm:16.21.0"
     stylelint-config-standard-scss: "npm:15.0.1"
     stylelint-scss: "npm:6.12.1"
+    tsx: "npm:4.20.3"
     typescript: "npm:5.8.3"
     typescript-eslint: "npm:8.37.0"
     vite: "npm:7.0.4"
@@ -10039,12 +10053,6 @@ __metadata:
   checksum: 10c0/68733173026766fa0d9ecaeb07f0483f4c2dc70ca376b3b7c40b7cda909f94b0918f6c5ad5ce27a9160bdfb475efaa9d5e705a11d8eaae18f9835d20976028bc
   languageName: node
   linkType: hard
-
-"shared-schedule@workspace:packages/shared-schedule":
-  version: 0.0.0-use.local
-  resolution: "shared-schedule@workspace:packages/shared-schedule"
-  languageName: unknown
-  linkType: soft
 
 "sharp@npm:0.34.3":
   version: 0.34.3

@@ -18,12 +18,8 @@
     "types": ["vite/client", "./worker-configuration.d.ts"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@data/*": ["../data/src/*"],
-      "@shared/*": ["../shared/src/*"],
-      "@shared-schedule/*": ["../shared-schedule/src/*"]
-    },
-    "isolatedModules": true
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "**/*",

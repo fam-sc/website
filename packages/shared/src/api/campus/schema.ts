@@ -10,7 +10,7 @@ import {
   union,
 } from 'zod/v4-mini';
 
-import { timeBreakpoints } from './constants';
+import { timeBreakpoints } from './constants.js';
 
 export const weekday = zodEnum(['Пн', 'Вв', 'Ср', 'Чт', 'Пт', 'Сб']);
 export const time = zodEnum(timeBreakpoints);

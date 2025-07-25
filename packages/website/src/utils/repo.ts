@@ -1,4 +1,4 @@
-import { Repository } from '@data/repo';
+import { Repository } from '@sc-fam/data';
 import { AppLoadContext } from 'react-router';
 
 import { getDatabase } from './d1Db';

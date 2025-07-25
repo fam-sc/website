@@ -3,7 +3,7 @@ import {
   D1ExecResult,
   D1PreparedStatement,
   D1Result,
-} from './types';
+} from './types.js';
 
 type D1Response<T> = { result: D1Result<T>[] };
 

@@ -1,9 +1,9 @@
-import type { Time } from '@shared/api/campus/types';
+import type { Time } from '@sc-fam/shared/api/campus/types.js';
 import { infer as zodInfer } from 'zod/v4-mini';
 
 import type { lessonType } from './schema';
 
-export type { Time } from '@shared/api/campus/types';
+export type { Time } from '@sc-fam/shared/api/campus/types.js';
 
 export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 

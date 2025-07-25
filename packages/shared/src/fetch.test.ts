@@ -5,7 +5,7 @@ import {
   ensureOkResponse,
   ExtendedRequestInit,
   getJsonOrError,
-} from './fetch';
+} from './fetch.js';
 
 describe('getJsonOrError', () => {
   test('ok', async () => {

@@ -17,7 +17,7 @@ import {
   R2ObjectBody,
   R2Objects,
   R2PutOptions,
-} from './types';
+} from './types.js';
 
 function notImplemented(): never {
   throw new Error('Method not implemented.');

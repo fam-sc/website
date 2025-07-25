@@ -1,9 +1,6 @@
-import { Event } from '@data/types';
-import { UserRole } from '@data/types/user';
-import { resolveImageSizes } from '@shared/image/breakpoints';
-import { getImageSize } from '@shared/image/size';
-import { parseInt } from '@shared/parseInt';
-import { notFound } from '@shared/responses';
+import { Event, UserRole } from '@sc-fam/data';
+import { notFound, parseInt } from '@sc-fam/shared';
+import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
 
 import { app } from '@/api/app';
 import { authRoute } from '@/api/authRoute';

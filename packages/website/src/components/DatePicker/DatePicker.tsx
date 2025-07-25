@@ -1,4 +1,4 @@
-import { toLocalISOString } from '@shared/chrono/date';
+import { toLocalISOString } from '@sc-fam/shared/chrono';
 
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';

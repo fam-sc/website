@@ -1,11 +1,11 @@
-import { RichTextString } from '@shared/richText/types';
+import { RichTextString } from '@sc-fam/shared/richText';
 
 import {
   buildCountWhereQuery,
   buildGetPageQuery,
 } from '../sqlite/queryBuilder';
 import { TableDescriptor } from '../sqlite/types';
-import { Event, RawEvent } from '../types';
+import { Event, RawEvent } from '../types/common';
 import { EntityCollection } from './base';
 
 function mapRawEvent(event: RawEvent): Event {

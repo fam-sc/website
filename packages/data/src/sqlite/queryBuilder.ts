@@ -1,4 +1,4 @@
-import { repeatJoin } from '@shared/string/repeatJoin';
+import { repeatJoin } from '@sc-fam/shared/string';
 
 import { Conditions, conditionsToExpression } from './conditions';
 import { qMarks } from './expression';

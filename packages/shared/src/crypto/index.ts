@@ -1,3 +1,5 @@
+export { randomBytes } from './random.js';
+
 export function hash(
   data: string,
   hashId: string = 'SHA-256'

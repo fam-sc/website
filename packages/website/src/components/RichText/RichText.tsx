@@ -2,7 +2,7 @@ import {
   RichTextElementNode,
   RichTextNode,
   RichTextString,
-} from '@shared/richText/types';
+} from '@sc-fam/shared/richText';
 import React, { Key, ReactNode } from 'react';
 import { Link } from 'react-router';
 

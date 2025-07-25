@@ -2,9 +2,9 @@ import {
   AnonymousPollRespondent,
   PollQuestion,
   PollRespondentAnswer,
-} from '@data/types/poll';
-import { formatDateTime } from '@shared/chrono/date';
-import { indexMany } from '@shared/collections/indexMany';
+} from '@sc-fam/data';
+import { formatDateTime } from '@sc-fam/shared/chrono';
+import { indexMany } from '@sc-fam/shared/collections';
 
 import { PollResultsTable } from '@/api/polls/types';
 import { QuestionType } from '@/services/polls/types';

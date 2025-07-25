@@ -5,22 +5,22 @@ import {
   LessonType,
   LessonWithTeacher,
   ScheduleWithTeachers as DataScheduleWithTeachers,
-} from '@data/types/schedule';
+} from '@sc-fam/data';
 import {
   DaySchedule as CampusDaySchedule,
   LessonSchedule,
   TeacherPairTag,
   Weekday,
-} from '@shared/api/campus/types';
+} from '@sc-fam/shared/api/campus/types.js';
+import { Teacher } from '@sc-fam/shared/api/pma/types.js';
 
-import { Teacher } from '../../shared/src/api/pma/types';
 import {
   DaySchedule as ApiDaySchedule,
   LessonType as ApiLessonType,
   Schedule as ApiSchedule,
 } from './types';
 
-export function campusDayToWeekdayNumber(value: Weekday): Day {
+function campusDayToWeekdayNumber(value: Weekday): Day {
   switch (value) {
     case 'Пн': {
       return 1;

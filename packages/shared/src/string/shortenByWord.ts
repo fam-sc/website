@@ -1,4 +1,4 @@
-import { Ending, withEnding } from './ending';
+import { Ending, withEnding } from './ending.js';
 
 const DELIMITER_REGEX = /[\s.,;:()[\]]/;
 
