@@ -1,3 +1,5 @@
+import '../api/routes';
+
 import { Repository } from '@sc-fam/data';
 import { internalServerError } from '@sc-fam/shared';
 import { EntryContext } from 'react-router';
