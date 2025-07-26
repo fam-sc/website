@@ -9,7 +9,8 @@
     "lint": "tsx ./scripts/lint.ts",
     "lint:fix": "yarn lint --fix",
     "typegen": "yarn workspaces foreach --all -p run typegen",
-    "prebuild": "tsx ./scripts/prebuild.ts",
+    "prebuild": "yarn tsc --build tsconfig.packages.json --declaration",
+    "prebuild:watch": "yarn prebuild --watch",
     "test": "vitest --run"
   },
   "devDependencies": {

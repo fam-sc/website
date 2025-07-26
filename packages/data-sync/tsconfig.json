@@ -14,5 +14,6 @@
     }
   },
   "include": ["./src", "./worker-configuration.d.ts"],
-  "exclude": ["./node_modules"]
+  "exclude": ["./node_modules"],
+  "references": [{ "path": "../data" }, { "path": "../shared" }]
 }

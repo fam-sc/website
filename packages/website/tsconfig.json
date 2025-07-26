@@ -28,5 +28,10 @@
     "./.storybook/**/*",
     ".react-router/types/**/*"
   ],
-  "exclude": ["storybook-static", "build"]
+  "exclude": ["storybook-static", "build"],
+  "references": [
+    { "path": "../shared" },
+    { "path": "../data" },
+    { "path": "../shared-schedule" }
+  ]
 }

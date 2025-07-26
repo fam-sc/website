@@ -9,7 +9,8 @@
     "declaration": true,
     "module": "preserve",
     "moduleResolution": "bundler",
-    "types": ["vite/client"]
+    "composite": true,
+    "rootDir": "./src"
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./node_modules"]

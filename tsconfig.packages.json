@@ -1,0 +1,8 @@
+{
+  "references": [
+    { "path": "./packages/shared" },
+    { "path": "./packages/data" },
+    { "path": "./packages/shared-schedule" }
+  ],
+  "include": []
+}

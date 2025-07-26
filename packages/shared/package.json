@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build:no-emit": "tsc --noEmit",
-    "prebuild": "tsc --project tsconfig.build.json"
+    "build": "tsc --project tsconfig.build.json",
+    "dev": "yarn build --watch"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.846.0",

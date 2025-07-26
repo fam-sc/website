@@ -14,5 +14,9 @@
     "tsx": "4.20.3",
     "typescript": "5.8.3",
     "wrangler": "4.24.4"
+  },
+  "dependencies": {
+    "@sc-fam/data": "workspace:*",
+    "@sc-fam/shared": "workspace:*"
   }
 }

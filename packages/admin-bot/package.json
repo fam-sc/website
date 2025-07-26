@@ -17,6 +17,8 @@
     "wrangler": "4.24.4"
   },
   "dependencies": {
+    "@sc-fam/data": "workspace:*",
+    "@sc-fam/shared": "workspace:*",
     "telegram-standard-bot-api": "1.0.8"
   }
 }

@@ -30,7 +30,7 @@ async function buildAllPackages() {
 
       try {
         if (await hasScript(path.join(cwd, 'package.json'), BUILD_SCRIPT)) {
-          await yarn([BUILD_SCRIPT], cwd);
+          await phase(`Build '${name}'`, [BUILD_SCRIPT], cwd);
         }
       } catch (error: unknown) {
         throw new Error(`Build failed on '${name}' package`, { cause: error });
@@ -39,11 +39,16 @@ async function buildAllPackages() {
   );
 }
 
+async function phase(name: string, args: string[], cwd?: string) {
+  await yarn(args, cwd);
+  console.log(`> ${name} finished`);
+}
+
 async function main() {
   const fix = process.argv[2] == '--fix';
 
   if (fix) {
-    await yarn([
+    await phase('eslint', [
       'eslint',
       '--cache',
       '--cache-location',
@@ -51,13 +56,28 @@ async function main() {
       '--fix',
     ]);
 
-    await yarn(['stylelint', '--cache', STYLELINT_PATTERN, '--fix']);
-    await yarn(['prettier', '--cache', '--write', PRETTIER_PATTERN]);
+    await phase('stylelint', [
+      'stylelint',
+      '--cache',
+      STYLELINT_PATTERN,
+      '--fix',
+    ]);
+    await phase('prettier', [
+      'prettier',
+      '--cache',
+      '--write',
+      PRETTIER_PATTERN,
+    ]);
   } else {
     await Promise.all([
-      yarn(['eslint', '--cache', '--cache-location', '.eslintcache']),
-      yarn(['stylelint', '--cache', STYLELINT_PATTERN]),
-      yarn(['prettier', '--cache', '--check', PRETTIER_PATTERN]),
+      phase('eslint', [
+        'eslint',
+        '--cache',
+        '--cache-location',
+        '.eslintcache',
+      ]),
+      phase('stylelint', ['stylelint', '--cache', STYLELINT_PATTERN]),
+      phase('prettier', ['prettier', '--cache', '--check', PRETTIER_PATTERN]),
       buildAllPackages(),
     ]);
   }

@@ -3,8 +3,9 @@
   "packageManager": "yarn@4.9.2",
   "type": "module",
   "scripts": {
-    "prebuild": "tsc",
-    "build:no-emit": "tsc --noEmit"
+    "build:no-emit": "tsc --noEmit",
+    "build": "tsc",
+    "dev": "yarn build --watch"
   },
   "exports": {
     ".": {

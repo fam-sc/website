@@ -1,9 +1,0 @@
-.yarn
-**/.next
-**/node_modules
-**/tsconfig.tsbuildinfo
-**/dist
-**/.wrangler
-**/.eslintcache
-
-.git

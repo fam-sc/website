@@ -2,7 +2,7 @@
   "name": "@sc-fam/website",
   "type": "module",
   "scripts": {
-    "dev": "react-router dev",
+    "dev": "tsx ./scripts/dev.ts",
     "build": "react-router build",
     "build:no-emit": "tsc --noEmit",
     "start": "tsx ./scripts/start.ts",
