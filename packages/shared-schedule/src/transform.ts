@@ -14,81 +14,45 @@ import {
 } from '@sc-fam/shared/api/campus/types.js';
 import { Teacher } from '@sc-fam/shared/api/pma/types.js';
 
+import { lessonId } from './lesson';
 import {
   DaySchedule as ApiDaySchedule,
   LessonType as ApiLessonType,
   Schedule as ApiSchedule,
 } from './types';
 
+const campusDayMap: Record<Weekday, Day> = {
+  Пн: 1,
+  Вв: 2,
+  Ср: 3,
+  Чт: 4,
+  Пт: 5,
+  Сб: 6,
+};
+
+const campusLessonTypeToDataLessonTypeMap: Record<TeacherPairTag, LessonType> =
+  {
+    lec: LessonType.LECTURE,
+    lab: LessonType.LAB,
+    prac: LessonType.PRACTICE,
+  };
+
+const dataLessonTypeToApiMap: Record<LessonType, ApiLessonType> = {
+  [LessonType.LECTURE]: 'lec',
+  [LessonType.PRACTICE]: 'prac',
+  [LessonType.LAB]: 'lab',
+};
+
 function campusDayToWeekdayNumber(value: Weekday): Day {
-  switch (value) {
-    case 'Пн': {
-      return 1;
-    }
-    case 'Вв': {
-      return 2;
-    }
-    case 'Ср': {
-      return 3;
-    }
-    case 'Чт': {
-      return 4;
-    }
-    case 'Пт': {
-      return 5;
-    }
-    case 'Сб': {
-      return 6;
-    }
-  }
+  return campusDayMap[value];
 }
 
 function campusLessonTypeToDataLessonType(type: TeacherPairTag): LessonType {
-  switch (type) {
-    case 'lec': {
-      return LessonType.LECTURE;
-    }
-    case 'prac': {
-      return LessonType.PRACTICE;
-    }
-    case 'lab': {
-      return LessonType.LAB;
-    }
-  }
+  return campusLessonTypeToDataLessonTypeMap[type];
 }
 
 function dataLessonTypeToApi(type: LessonType): ApiLessonType {
-  switch (type) {
-    case LessonType.LECTURE: {
-      return 'lec';
-    }
-    case LessonType.PRACTICE: {
-      return 'prac';
-    }
-    case LessonType.LAB: {
-      return 'lab';
-    }
-  }
-}
-
-function getUniqueTeachersFromWeek(
-  week: { pairs: { teacherName: string }[] }[],
-  out: Set<string>
-) {
-  for (const { pairs } of week) {
-    for (const { teacherName } of pairs) {
-      out.add(teacherName);
-    }
-  }
-}
-
-export function getUniqueTeachers(value: LessonSchedule): Set<string> {
-  const result = new Set<string>();
-
-  getUniqueTeachersFromWeek(value.scheduleFirstWeek, result);
-  getUniqueTeachersFromWeek(value.scheduleSecondWeek, result);
-
-  return result;
+  return dataLessonTypeToApiMap[type];
 }
 
 export function campusDayScheduleToDaySchedule(
@@ -131,13 +95,14 @@ function dataScheduleWeekToApiScheduleWeek(
   return {
     day,
     lessons: lessons.map(({ teacher, type, name, ...rest }) => {
-      const link = links[`${type}-${name}-${teacher.name}`];
+      const lessonType = dataLessonTypeToApi(type);
+      const link = links[lessonId(lessonType, name, teacher.name)];
 
       return {
         ...rest,
+        type: lessonType,
         teacher,
         name,
-        type: dataLessonTypeToApi(type),
         link,
       };
     }),

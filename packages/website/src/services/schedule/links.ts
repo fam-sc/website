@@ -1,5 +1,6 @@
+import { lessonId, Schedule } from '@sc-fam/shared-schedule';
+
 import { UpdateScheduleLinksPayload } from '@/api/schedule/payloads';
-import { Schedule } from '@/api/schedule/types';
 
 export function scheduleToUpdateLinksPayload(
   value: Schedule
@@ -10,7 +11,7 @@ export function scheduleToUpdateLinksPayload(
     for (const { lessons } of week) {
       for (const { type, name, teacher, link } of lessons) {
         if (link !== undefined) {
-          result[`${type}-${name}-${teacher.name}`] = link;
+          result[lessonId(type, name, teacher.name)] = link;
         }
       }
     }

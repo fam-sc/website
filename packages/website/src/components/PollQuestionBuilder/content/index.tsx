@@ -59,8 +59,6 @@ export function ScoreContent({
   onDescriptorChanged,
   disabled,
 }: ContentTypeProps<'score'>) {
-  console.log(descriptor);
-
   const onSelectedChanged = useCallback(
     (items: number[]) => onDescriptorChanged({ items }),
     [onDescriptorChanged]

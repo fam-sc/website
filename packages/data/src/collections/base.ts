@@ -150,6 +150,13 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.insertBaseAction('INSERT OR REPLACE', value, returning);
     }
 
+    insertOrIgnoreAction<R extends keyof Raw & string>(
+      value: Partial<Raw>,
+      returning?: R
+    ): DataQuery<Raw[R] | undefined> {
+      return this.insertBaseAction('INSERT OR IGNORE', value, returning);
+    }
+
     insertManyBaseAction<R extends keyof Raw & string>(
       flavor: InsertFlavor,
       values: Partial<Raw>[],

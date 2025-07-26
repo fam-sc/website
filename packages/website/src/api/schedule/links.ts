@@ -1,6 +1,17 @@
-import { lessonType } from '@sc-fam/shared-schedule/schema';
-
 import { UpdateScheduleLinksPayload } from './payloads';
+import { LessonType } from './types';
+
+function isValidLessonType(value: string): value is LessonType {
+  switch (value) {
+    case 'prac':
+    case 'lec':
+    case 'lab': {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 function isValidLessonId(value: unknown): boolean {
   if (value !== null) {
@@ -13,7 +24,7 @@ function isValidLessonId(value: unknown): boolean {
       return false;
     }
 
-    return lessonType.safeParse(parts[0]).success;
+    return isValidLessonType(parts[0]);
   }
 
   return true;

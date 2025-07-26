@@ -1,11 +1,10 @@
 import { Repository, ScheduleWithTeachers } from '@sc-fam/data';
 import { getLessons } from '@sc-fam/shared/api/campus/index.js';
 
-import { getTeachers } from './teachers';
+import { getTeachers, getUniqueTeachers } from './teachers';
 import {
   campusScheduleToDataSchedule,
   dataScheduleToApiSchedule,
-  getUniqueTeachers,
 } from './transform';
 import { Schedule as ApiSchedule } from './types';
 
@@ -20,7 +19,7 @@ async function getDataSchedule(
   const now = Date.now();
 
   if (
-    schedule !== null &&
+    schedule === null ||
     now - schedule.lastUpdateTime > SCHEDULE_INVALIDATE_TIME
   ) {
     const campusSchedule = await getLessons(groupId);
@@ -29,6 +28,7 @@ async function getDataSchedule(
 
     const [links] = await repo.batch([
       repo.schedule().getLinks(groupId),
+      repo.schedule().insertPlaceholder(groupId),
       repo.schedule().updateLastUpdateTime(groupId, now),
       ...repo.schedule().upsertWeeks(newSchedule),
       ...repo.scheduleTeachers().insertFromSchedule(newSchedule),

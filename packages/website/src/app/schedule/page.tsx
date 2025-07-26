@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router';
 import { Group } from '@/api/groups/types';
 import { updateScheduleLinks } from '@/api/schedule/client';
 import { Schedule } from '@/api/schedule/types';
-import { scheduleToUpdateLinksPayload } from '@/api/schedule/utils';
 import { useAuthInfo } from '@/auth/context';
 import { Button } from '@/components/Button';
 import { GroupSelect } from '@/components/GroupSelect';
@@ -20,6 +19,7 @@ import { Title } from '@/components/Title';
 import { useInterval } from '@/hooks/useInterval';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { EditIcon } from '@/icons/EditIcon';
+import { scheduleToUpdateLinksPayload } from '@/services/schedule/links';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';

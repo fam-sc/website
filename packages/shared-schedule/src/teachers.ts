@@ -1,3 +1,4 @@
+import { LessonSchedule } from '@sc-fam/shared/api/campus/types.js';
 import { findTeacherByName } from '@sc-fam/shared/api/intellect/index.js';
 import { getIntellectProfileUrl } from '@sc-fam/shared/api/intellect/url.js';
 import { getTeachers as getPmaTeachers } from '@sc-fam/shared/api/pma/index.js';
@@ -29,4 +30,24 @@ export async function getTeachers(names: Iterable<string>): Promise<Teacher[]> {
   );
 
   return teachers;
+}
+
+function getUniqueTeachersFromWeek(
+  week: { pairs: { teacherName: string }[] }[],
+  out: Set<string>
+) {
+  for (const { pairs } of week) {
+    for (const { teacherName } of pairs) {
+      out.add(teacherName);
+    }
+  }
+}
+
+export function getUniqueTeachers(value: LessonSchedule): Set<string> {
+  const result = new Set<string>();
+
+  getUniqueTeachersFromWeek(value.scheduleFirstWeek, result);
+  getUniqueTeachersFromWeek(value.scheduleSecondWeek, result);
+
+  return result;
 }

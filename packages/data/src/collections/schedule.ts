@@ -112,6 +112,10 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
     ];
   }
 
+  insertPlaceholder(groupCampusId: string) {
+    return this.insertOrIgnoreAction({ groupCampusId, lastUpdateTime: 0 });
+  }
+
   updateLinks(groupCampusId: string, links: Schedule['links']) {
     return this.updateWhere(
       { groupCampusId },

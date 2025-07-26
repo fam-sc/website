@@ -4,7 +4,7 @@ import { Conditions, conditionsToExpression } from './conditions';
 import { qMarks } from './expression';
 import { TableDescriptor } from './types';
 
-export type InsertFlavor = 'INSERT' | 'INSERT OR REPLACE';
+export type InsertFlavor = 'INSERT' | 'INSERT OR REPLACE' | 'INSERT OR IGNORE';
 
 type Fields<T> = (T & string)[] | '*';
 type Keyword = 'WHERE' | 'RETURNING' | 'LIMIT' | 'OFFSET';
