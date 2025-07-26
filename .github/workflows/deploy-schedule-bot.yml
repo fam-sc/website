@@ -5,6 +5,10 @@ on:
       - main
     paths:
       - 'packages/schedule-bot/*'
+      # schedule-bot dependencies
+      - 'packages/shared/*'
+      - 'packages/data/*'
+      - 'packages/shared-schedule/*'
   
 jobs:
   deploy-schedule-bot:

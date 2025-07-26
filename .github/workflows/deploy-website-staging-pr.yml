@@ -2,11 +2,10 @@ name: Deploy website (staging in PR)
 on:
   pull_request:
     branches:
-    - master
-  push:
+      - main
     paths:
       - 'packages/**'
-  
+
 jobs:
   deploy-website-staging:
     runs-on: ubuntu-latest

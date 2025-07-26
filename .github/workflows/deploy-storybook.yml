@@ -2,7 +2,7 @@ name: Deploy storybook
 on:
   push:
     paths:
-      - "./packages/website/src/components/**"
+      - "./packages/website/**"
 
 jobs:
   deploy:

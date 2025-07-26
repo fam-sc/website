@@ -5,6 +5,8 @@ on:
       - main
     paths:
       - 'packages/data-sync/*'
+      # data-sync dependencies
+      - 'packages/shared/*'
   
 jobs:
   deploy-data-sync:
