@@ -5,6 +5,7 @@ import type {
   daySchedule,
   group,
   lessonSchedule,
+  teacherPair,
   teacherPairTag,
   teacherPairType,
   time,
@@ -16,6 +17,7 @@ export type Time = zodInfer<typeof time>;
 export type Group = zodInfer<typeof group>;
 export type DaySchedule = zodInfer<typeof daySchedule>;
 export type LessonSchedule = zodInfer<typeof lessonSchedule>;
+export type TeacherPair = zodInfer<typeof teacherPair>;
 export type TeacherPairType = zodInfer<typeof teacherPairType>;
 export type TeacherPairTag = zodInfer<typeof teacherPairTag>;
 export type CurrentTime = zodInfer<typeof currentTime>;

@@ -5,7 +5,7 @@ export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 // `${type}-${name}-${teacher.name}`
 export type LessonId = string;
 
-export const enum LessonType {
+export enum LessonType {
   LECTURE = 0,
   PRACTICE = 1,
   LAB = 2,

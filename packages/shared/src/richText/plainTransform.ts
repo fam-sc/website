@@ -1,25 +1,24 @@
 import { RichTextAtomNode, RichTextString } from './types.js';
+import { getRichTextChildren } from './utils.js';
 
 function normalizeWhitespaces(text: string): string {
   return text.replaceAll(/\s+/g, ' ').trim();
 }
 
-function transformNodeArrayToPlainText(nodes: RichTextAtomNode[]): string {
-  return normalizeWhitespaces(
-    nodes.map((part) => richTextToPlainText(part)).join(' ')
-  );
+function nodeArrayToPlainText(nodes: RichTextAtomNode[]): string {
+  return nodes.map((part) => worker(part)).join(' ');
+}
+
+function worker(text: RichTextString): string {
+  if (typeof text === 'string') {
+    return text;
+  }
+
+  const children = getRichTextChildren(text);
+
+  return children.length > 0 ? nodeArrayToPlainText(children) : '';
 }
 
 export function richTextToPlainText(text: RichTextString): string {
-  if (typeof text === 'string') {
-    return normalizeWhitespaces(text);
-  }
-
-  if (Array.isArray(text)) {
-    return transformNodeArrayToPlainText(text);
-  }
-
-  return 'children' in text && text.children
-    ? transformNodeArrayToPlainText(text.children)
-    : '';
+  return normalizeWhitespaces(worker(text));
 }

@@ -13,7 +13,7 @@ function isValidLessonType(value: string): value is LessonType {
   return false;
 }
 
-function isValidLessonId(value: unknown): boolean {
+export function isValidLessonId(value: unknown): boolean {
   if (value !== null) {
     if (typeof value !== 'string') {
       return false;
@@ -33,8 +33,8 @@ function isValidLessonId(value: unknown): boolean {
 export function isValidPayload(
   payload: unknown
 ): payload is UpdateScheduleLinksPayload {
-  if (typeof payload === 'object') {
-    for (const [key, value] of Object.entries(payload as object)) {
+  if (typeof payload === 'object' && payload !== null) {
+    for (const [key, value] of Object.entries(payload)) {
       if (!isValidLessonId(key) || typeof value !== 'string') {
         return false;
       }

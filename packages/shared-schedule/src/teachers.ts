@@ -5,8 +5,6 @@ import { getTeachers as getPmaTeachers } from '@sc-fam/shared/api/pma/index.js';
 import { Teacher } from '@sc-fam/shared/api/pma/types.js';
 import { convertToKeyMap } from '@sc-fam/shared/collections';
 
-export type TeacherMap = Map<string, Teacher>;
-
 export async function getTeachers(names: Iterable<string>): Promise<Teacher[]> {
   const pmaTeachers = convertToKeyMap(await getPmaTeachers(), 'name');
 
