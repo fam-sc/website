@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { RichText } from '.';
+import { testRichText } from './guideTest';
 
 export default {
   component: RichText,
@@ -66,5 +67,11 @@ export const All: Story = {
         },
       ],
     },
+  },
+};
+
+export const Guide: Story = {
+  args: {
+    text: testRichText,
   },
 };

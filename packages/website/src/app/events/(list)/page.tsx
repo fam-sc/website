@@ -23,7 +23,7 @@ function toClientEvent(event: Event) {
     id: event.id,
     status: event.status,
     title: event.title,
-    date: formatDateTime(new Date(event.date)),
+    date: formatDateTime(event.date),
     description: shortenRichText(event.description, 200, 'ellipsis'),
     images: event.images,
   };

@@ -1,10 +1,11 @@
-import { ImageSize } from '@sc-fam/shared/image';
 import { RichTextString } from '@sc-fam/shared/richText';
 import { Link } from 'react-router';
 
 import { RichText } from '@/components/RichText';
 import { Typography } from '@/components/Typography';
 import { EventIcon } from '@/icons/EventIcon';
+import { classNames } from '@/utils/classNames';
+import { ImageInfo } from '@/utils/image/types';
 
 import { Image } from '../Image';
 import styles from './GuideListItem.module.scss';
@@ -14,9 +15,7 @@ export type GuideListItemProps = {
   title: string;
   createdAt: string;
   description: RichTextString;
-  images: (ImageSize & {
-    src: string;
-  })[];
+  images: ImageInfo[] | null;
 };
 
 export function GuideListItem({
@@ -27,8 +26,14 @@ export function GuideListItem({
   description,
 }: GuideListItemProps) {
   return (
-    <Link className={styles.root} to={`/guides/${id}`}>
-      <Image multiple={images} sizes={{ default: '20vw' }} />
+    <Link
+      className={classNames(
+        styles.root,
+        images === null && styles[`root-no-image`]
+      )}
+      to={`/guides/${id}`}
+    >
+      {images && <Image multiple={images} sizes={{ default: '20vw' }} />}
 
       <Typography className={styles.title} variant="h5">
         {title}

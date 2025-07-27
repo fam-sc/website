@@ -52,7 +52,7 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
     }
     case '#placeholder-image':
     case '#unsized-image': {
-      throw new Error('Unexpected node type');
+      return null;
     }
     default: {
       return renderElementNode(node);

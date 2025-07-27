@@ -7,10 +7,10 @@ export type RawGuide = {
   createdAtDate: number;
   updatedAtDate: number;
   description: string;
-  images: string;
+  images: string | null;
 };
 
 export type Guide = Omit<RawGuide, 'description' | 'images'> & {
   description: RichTextString;
-  images: ImageSize[];
+  images: ImageSize[] | null;
 };

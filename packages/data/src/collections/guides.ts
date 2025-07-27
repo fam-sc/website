@@ -1,18 +1,26 @@
-import { RichTextString } from '@sc-fam/shared/richText/types.js';
+import { ImageSize } from '@sc-fam/shared/image';
+import { RichTextString } from '@sc-fam/shared/richText';
 
-import {
-  buildCountWhereQuery,
-  buildGetPageQuery,
-} from '../sqlite/queryBuilder';
 import { TableDescriptor } from '../sqlite/types';
 import { Guide, RawGuide } from '../types';
 import { EntityCollection } from './base';
+
+function mapImages<E extends null | undefined>(
+  images: ImageSize[] | E
+): string | E {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (images === undefined || images === null) {
+    return images;
+  }
+
+  return JSON.stringify(images);
+}
 
 function mapRawGuide(guide: RawGuide): Guide {
   return {
     ...guide,
     description: JSON.parse(guide.description),
-    images: JSON.parse(guide.images),
+    images: guide.images !== null ? JSON.parse(guide.images) : null,
   };
 }
 
@@ -24,7 +32,7 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
       title: 'TEXT NOT NULL',
       createdAtDate: 'INTEGER NOT NULL',
       updatedAtDate: 'INTEGER NOT NULL',
-      images: 'TEXT NOT NULL',
+      images: 'TEXT',
     };
   }
 
@@ -34,7 +42,7 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
       {
         description:
           description !== undefined ? JSON.stringify(description) : undefined,
-        images: images !== undefined ? JSON.stringify(images) : undefined,
+        images: mapImages(images),
         ...rest,
       }
     );
@@ -48,7 +56,7 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
     return this.insert(
       {
         description: JSON.stringify(description),
-        images: JSON.stringify(images),
+        images: mapImages(images),
         ...rest,
       },
       'id'
@@ -69,14 +77,14 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
   }
 
   async getPage(index: number, size: number) {
-    const [count, guides] = await this.client.batch([
-      this.client.prepare(buildCountWhereQuery('guides')),
-      this.client.prepare(buildGetPageQuery('guides', index * size, size)),
-    ]);
+    const { total, items } = await this.getPageWithTotalSize(index, size, {
+      key: 'createdAtDate',
+      type: 'DESC',
+    });
 
     return {
-      total: (count.results[0] as { count: number }).count,
-      items: guides.results.map((item) => mapRawGuide(item as RawGuide)),
+      total,
+      items: items.map((item) => mapRawGuide(item)),
     };
   }
 }

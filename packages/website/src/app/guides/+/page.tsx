@@ -59,8 +59,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
   const errorAlert = useNotification();
 
-  const [image, setImage] = useSelectableImage(
-    () => guide && sizesToImages(`guides/${guide.id}`, guide.images)
+  const [image, setImage] = useSelectableImage(() =>
+    guide && guide.images
+      ? sizesToImages(`guides/${guide.id}`, guide.images)
+      : undefined
   );
   const imageFileRef = useRef<File>(undefined);
 
@@ -120,61 +122,48 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
         items={[
           title.length === 0 && 'Пустий заголовок',
           isDescriptionEmpty && 'Пустий опис',
-          image === undefined && 'Немає картинки',
         ]}
       />
 
       <Button
         className={styles['save-edit-button']}
-        disabled={
-          actionPending ||
-          title.length === 0 ||
-          isDescriptionEmpty ||
-          image === undefined
-        }
+        disabled={actionPending || title.length === 0 || isDescriptionEmpty}
         buttonVariant="solid"
         onClick={() => {
           const { current: image } = imageFileRef;
 
           setActionPending(true);
 
-          let promise: Promise<void> | undefined;
-
           const description = descriptionRef.current?.getRichText();
           if (!description) {
             throw new Error('Description is null');
           }
 
-          if (guide === undefined) {
-            if (image !== undefined) {
-              promise = addGuide({
-                title,
-                image,
-                description: description.value,
-                descriptionFiles: description.files,
-              });
-            }
-          } else {
-            promise = editGuide(guide.id, {
-              title,
-              image,
-              description: description.value,
-              descriptionFiles: description.files,
+          const promise =
+            guide === undefined
+              ? addGuide({
+                  title,
+                  image,
+                  description: description.value,
+                  descriptionFiles: description.files,
+                })
+              : editGuide(guide.id, {
+                  title,
+                  image,
+                  description: description.value,
+                  descriptionFiles: description.files,
+                });
+
+          promise
+            .then(() => {
+              return navigate('/guides');
+            })
+            .catch((error: unknown) => {
+              console.error(error);
+
+              errorAlert.show('Сталася помилка при збережені даних', 'error');
+              setActionPending(false);
             });
-          }
-
-          if (promise) {
-            promise
-              .then(() => {
-                return navigate('/guides');
-              })
-              .catch((error: unknown) => {
-                console.error(error);
-
-                errorAlert.show('Сталася помилка при збережені даних', 'error');
-                setActionPending(false);
-              });
-          }
         }}
       >
         {guide ? 'Зберегти' : 'Додати'}

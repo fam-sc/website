@@ -21,6 +21,17 @@ export const Primary: Story = {
         height: 640,
       },
     ],
-    title: 'Event title',
+    title: 'Guide title',
+  },
+};
+
+export const NoImage: Story = {
+  args: {
+    id: 1,
+    createdAt: '11 травня',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit praesentium, esse dolores officia qui quidem animi ea doloremque suscipit neque laboriosam natus perferendis consequuntur ad, cum id quae sint molestias.',
+    images: null,
+    title: 'Guide title',
   },
 };

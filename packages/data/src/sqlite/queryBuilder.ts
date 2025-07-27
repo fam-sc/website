@@ -1,13 +1,25 @@
 import { repeatJoin } from '@sc-fam/shared/string';
 
-import { Conditions, conditionsToExpression } from './conditions';
+import {
+  Conditions,
+  conditionsToExpression,
+  RawConditions,
+} from './conditions';
 import { qMarks } from './expression';
 import { TableDescriptor } from './types';
 
 export type InsertFlavor = 'INSERT' | 'INSERT OR REPLACE' | 'INSERT OR IGNORE';
+export type OrderingType = 'ASC' | 'DESC';
 
-type Fields<T> = (T & string)[] | '*';
-type Keyword = 'WHERE' | 'RETURNING' | 'LIMIT' | 'OFFSET';
+export type RawOrdering<K extends string = string> = {
+  key: K;
+  type: OrderingType;
+};
+
+export type Ordering<T> = RawOrdering<keyof T & string>;
+export type Fields<T = string> = (T & string)[] | '*';
+
+type Keyword = 'WHERE' | 'RETURNING' | 'LIMIT' | 'OFFSET' | 'ORDER BY';
 
 function withKeyword(
   prefix: string,
@@ -21,7 +33,7 @@ function joinColumns(array: string[]): string {
   return array.map((item) => `"${item}"`).join(',');
 }
 
-function resolveFields(fields: Fields<string> | undefined): string {
+function resolveFields(fields: Fields | undefined): string {
   return Array.isArray(fields) ? joinColumns(fields) : '*';
 }
 
@@ -29,11 +41,11 @@ function selectFromTable(columns: string, tableName: string): string {
   return `SELECT ${columns} FROM "${tableName}"`;
 }
 
-export function buildGeneralInsertQuery<T extends object>(
+export function buildGeneralInsertQuery(
   flavor: InsertFlavor,
   tableName: string,
-  value: T,
-  returning?: keyof T & string
+  value: object,
+  returning?: string
 ): string {
   const keys = Object.keys(value);
   const columns = joinColumns(keys);
@@ -45,11 +57,11 @@ export function buildGeneralInsertQuery<T extends object>(
   );
 }
 
-export function buildGeneralInsertManyQuery<T extends object>(
+export function buildGeneralInsertManyQuery(
   flavor: InsertFlavor,
   tableName: string,
-  values: T[],
-  returning?: keyof T & string
+  values: object[],
+  returning?: string
 ) {
   const [template] = values;
   const keys = Object.keys(template);
@@ -67,10 +79,10 @@ export function buildGeneralInsertManyQuery<T extends object>(
   );
 }
 
-export function buildFindWhereQuery<T>(
+export function buildFindWhereQuery(
   tableName: string,
-  conditions: Conditions<T>,
-  fields?: Fields<keyof T>
+  conditions: RawConditions,
+  fields?: Fields
 ): string {
   return withKeyword(
     selectFromTable(resolveFields(fields), tableName),
@@ -79,9 +91,9 @@ export function buildFindWhereQuery<T>(
   );
 }
 
-export function buildCountWhereQuery<T>(
+export function buildCountWhereQuery(
   tableName: string,
-  conditions?: Conditions<T>
+  conditions?: RawConditions
 ): string {
   return withKeyword(
     selectFromTable(`COUNT(*) as count`, tableName),
@@ -90,32 +102,43 @@ export function buildCountWhereQuery<T>(
   );
 }
 
-export function buildGetPageQuery(
-  tableName: string,
-  offset: number,
-  size: number,
-  conditions?: Conditions<unknown>,
-  fields?: Fields<unknown>
-): string {
+type GetPageOptions = {
+  tableName: string;
+  offset: number;
+  size: number;
+  conditions?: RawConditions;
+  fields?: Fields;
+  ordering?: RawOrdering;
+};
+
+export function buildGetPageQuery(options: GetPageOptions): string {
+  const { offset, ordering } = options;
+
   return withKeyword(
     withKeyword(
       withKeyword(
-        selectFromTable(resolveFields(fields), tableName),
-        'WHERE',
-        conditionsToExpression(conditions)
+        withKeyword(
+          selectFromTable(resolveFields(options.fields), options.tableName),
+          'WHERE',
+          conditionsToExpression(options.conditions)
+        ),
+        'ORDER BY',
+        ordering !== undefined
+          ? `"${ordering.key}" ${ordering.type}`
+          : undefined
       ),
       'LIMIT',
-      size
+      options.size
     ),
     'OFFSET',
     offset > 0 ? offset : undefined
   );
 }
 
-export function buildUpdateWhereQuery<T extends object>(
+export function buildUpdateWhereQuery(
   tableName: string,
-  conditions: Conditions<T>,
-  updated: Partial<T>
+  conditions: Conditions<object>,
+  updated: Partial<object>
 ): string {
   const set = Object.entries(updated)
     .map(([key, value]) => (value !== undefined ? `"${key}"=?` : undefined))

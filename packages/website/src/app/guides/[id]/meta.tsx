@@ -15,9 +15,12 @@ export function GuideMeta({ guide }: { guide: Guide }) {
   );
 
   const ogImage = useMemo(() => {
-    const size = nearestSize(guide.images, 1920);
+    if (guide.images) {
+      const size = nearestSize(guide.images, 1920);
 
-    return getMediaFileUrl(`guides/${guide.id}/${size.width}`);
+      return getMediaFileUrl(`guides/${guide.id}/${size.width}`);
+    }
+    return null;
   }, [guide]);
 
   return (
@@ -26,7 +29,7 @@ export function GuideMeta({ guide }: { guide: Guide }) {
 
       <meta property="description" content={shortDescription} />
       <meta property="og:description" content={shortDescription} />
-      <meta property="og:image" content={ogImage} />
+      {ogImage !== null && <meta property="og:image" content={ogImage} />}
 
       <TelegramInstantViewMeta />
     </>

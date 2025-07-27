@@ -23,8 +23,10 @@ app.post('/guides', async (request, { env }) => {
     files: descriptionFiles,
   });
 
-  const imageBuffer = await image.bytes();
-  const sizes = resolveImageSizes(getImageSize(imageBuffer));
+  const imageBuffer = await image?.bytes();
+  const sizes = imageBuffer
+    ? resolveImageSizes(getImageSize(imageBuffer))
+    : null;
 
   return await authRoute(request, UserRole.ADMIN, async (repo) => {
     const now = Date.now();
@@ -36,13 +38,15 @@ app.post('/guides', async (request, { env }) => {
       images: sizes,
     });
 
-    await putMultipleSizedImages(
-      env,
-      `guides/${id}`,
-      imageBuffer,
-      sizes,
-      mediaTransaction
-    );
+    if (imageBuffer && sizes) {
+      await putMultipleSizedImages(
+        env,
+        `guides/${id}`,
+        imageBuffer,
+        sizes,
+        mediaTransaction
+      );
+    }
 
     await mediaTransaction.commit();
 

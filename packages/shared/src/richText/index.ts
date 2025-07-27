@@ -1,4 +1,5 @@
 export { richTextToHtml } from './htmlBuilder.js';
+export { parseHtmlToRichText } from './htmlParser.js';
 export { richTextCharacterLength } from './length.js';
 export { richTextToPlainText } from './plainTransform.js';
 export { shortenRichText } from './short.js';

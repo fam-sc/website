@@ -16,12 +16,6 @@ export type MediaSubPathWithImageSize = {
     : never;
 }[keyof MediaPathMap];
 
-export type MediaSubPathExceptImageSize = {
-  [K in keyof MediaPathMap]: MediaPathMap[K] extends ImageWithSize
-    ? `${K}/${string}`
-    : never;
-}[keyof MediaPathMap];
-
 type MediaFilePathBuilder<T> = T extends string
   ? T
   : T extends unknown[]

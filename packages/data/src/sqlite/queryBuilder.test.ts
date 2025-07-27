@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { Conditions } from './conditions';
+import { Conditions, RawConditions } from './conditions';
 import { Modifier, notEquals } from './modifier';
 import {
   buildCountWhereQuery,
@@ -83,7 +83,7 @@ describe('buildGeneralInsertManyQuery', () => {
   });
 });
 
-test.each<[Conditions<object>, ('a' | 'b')[] | '*', string]>([
+test.each<[RawConditions, ('a' | 'b')[] | '*', string]>([
   [{}, '*', 'SELECT * FROM "table"'],
   [{}, ['a'], 'SELECT "a" FROM "table"'],
   [{}, ['a', 'b'], 'SELECT "a","b" FROM "table"'],
@@ -95,11 +95,7 @@ test.each<[Conditions<object>, ('a' | 'b')[] | '*', string]>([
     'SELECT * FROM "table" WHERE "a"=? AND "b"!=?',
   ],
 ])('buildFindWhereQuery', (conditions, fields, expected) => {
-  const actual = buildFindWhereQuery<{ a: number; b: number }>(
-    'table',
-    conditions,
-    fields
-  );
+  const actual = buildFindWhereQuery('table', conditions, fields);
 
   expect(actual).toEqual(expected);
 });
@@ -143,8 +139,14 @@ test.each<[number, number, Conditions<unknown>, string[] | '*', string]>([
     ['a', 'b'],
     'SELECT "a","b" FROM "table" WHERE "a"=? LIMIT 5 OFFSET 1',
   ],
-])('buildGetPageQuery', (offset, count, conditions, fields, expected) => {
-  const actual = buildGetPageQuery('table', offset, count, conditions, fields);
+])('buildGetPageQuery', (offset, size, conditions, fields, expected) => {
+  const actual = buildGetPageQuery({
+    tableName: 'table',
+    offset,
+    size,
+    conditions,
+    fields,
+  });
 
   expect(actual).toEqual(expected);
 });

@@ -1,6 +1,6 @@
 import { Guide, UserRole } from '@sc-fam/data';
 import { coerce, parseInt } from '@sc-fam/shared';
-import { formatDateTime } from '@sc-fam/shared/chrono';
+import { formatDate } from '@sc-fam/shared/chrono';
 import { shortenRichText } from '@sc-fam/shared/richText';
 import { redirect } from 'react-router';
 
@@ -23,8 +23,8 @@ function toClientGuide(guide: Guide) {
   return {
     id: guide.id,
     title: guide.title,
-    createdAt: formatDateTime(new Date(guide.createdAtDate)),
-    updatedAt: formatDateTime(new Date(guide.updatedAtDate)),
+    createdAt: formatDate(guide.createdAtDate),
+    updatedAt: formatDate(guide.updatedAtDate),
     description: shortenRichText(guide.description, 200, 'ellipsis'),
     images: guide.images,
   };
@@ -77,7 +77,7 @@ export default function Page({
             <GuideListItem
               {...rest}
               id={id}
-              images={sizesToImages(`guides/${id}`, images)}
+              images={images ? sizesToImages(`guides/${id}`, images) : null}
             />
           </li>
         ))}

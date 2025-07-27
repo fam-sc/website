@@ -1,4 +1,5 @@
 @use '../../theme/breakpoints' as *;
+@use 'sass:list';
 
 @mixin desktop-view() {
   @include breakpoint-up('md') {
@@ -20,7 +21,7 @@
   row-gap: 1em;
 
   @include desktop-view {
-    grid-template-columns: 20% 1fr;
+    grid-template-columns: var(--columns-desktop, 20% 1fr);
     grid-template-rows: fit-content(2em) 1fr fit-content(1em) fit-content(1em);
 
     column-gap: 1em;
@@ -45,16 +46,18 @@
   }
 }
 
-.title,
-.description,
-.date,
-.status {
+.root-no-image {
+  --columns-desktop: 1fr;
+  --content-column: 1;
+}
+
+.title, .description, .date, .status {
   grid-column: 1;
-  grid-row: var(--position);
+  grid-row: var(--element-row);
 
   @include desktop-view {
-    grid-row: calc(var(--position) - 1);
-    grid-column: 2;
+    grid-row: calc(var(--element-row) - 1);
+    grid-column: var(--content-column, 2);
   }
 }
 
@@ -63,15 +66,10 @@
 }
 
 .description {
-  --position: 3;
+  --element-row: 3;
 }
 
 .date {
-  --position: 4;
+  --element-row: 4;
 }
 
-.status {
-  --position: 5;
-
-  width: fit-content;
-}

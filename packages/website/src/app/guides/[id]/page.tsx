@@ -93,10 +93,12 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
         )}
       </div>
 
-      <Image
-        className={styles.image}
-        multiple={sizesToImages(`guides/${guide.id}`, guide.images)}
-      />
+      {guide.images && (
+        <Image
+          className={styles.image}
+          multiple={sizesToImages(`guides/${guide.id}`, guide.images)}
+        />
+      )}
 
       <RichText text={guide.description} />
 

@@ -5,7 +5,7 @@ import { ImageIcon } from '@/icons/ImageIcon';
 import { imageFileGate } from '@/utils/fileGate';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
 
-import { FileUploadDialog } from '../FileUploadDialog';
+import { FileUploadDialog } from '../../FileUploadDialog';
 import { ToggleButton } from './ToggleButton';
 
 export type InsertImageButtonProps = {

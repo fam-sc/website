@@ -1,0 +1,13 @@
+@use '../../../theme/utils' as *;
+@use '../../../theme/typography' as *;
+
+.root {
+  display: flex;
+  flex-flow: row wrap;
+
+  box-shadow: 0 1px 5px #000;
+
+  &-zero-scroll {
+    box-shadow: none;
+  }
+}
