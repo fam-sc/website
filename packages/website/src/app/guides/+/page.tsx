@@ -1,17 +1,15 @@
-import { EventStatus, Repository } from '@sc-fam/data';
+import { Repository } from '@sc-fam/data';
 import { parseInt } from '@sc-fam/shared';
 import { richTextToHtml } from '@sc-fam/shared/richText';
 import { useCallback, useRef, useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
 
-import { addEvent, editEvent } from '@/api/events/client';
+import { addGuide, editGuide } from '@/api/guides/client';
 import { Button } from '@/components/Button';
-import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { Labeled } from '@/components/Labeled';
 import { useNotification } from '@/components/Notification';
-import { OptionSwitch } from '@/components/OptionSwitch';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
@@ -22,17 +20,16 @@ import { repository } from '@/utils/repo';
 import { Route } from './+types/page';
 import styles from './page.module.scss';
 
-async function getClientEvent(repo: Repository, id: number) {
+async function getClientGuide(repo: Repository, id: number) {
   try {
-    const editEvent = await repo.events().findById(id);
+    const editGuide = await repo.guides().findById(id);
 
-    return editEvent
+    return editGuide
       ? {
           id,
-          title: editEvent.title,
-          date: editEvent.date,
-          images: editEvent.images,
-          description: richTextToHtml(editEvent.description, {
+          title: editGuide.title,
+          images: editGuide.images,
+          description: richTextToHtml(editGuide.description, {
             mediaUrl: import.meta.env.VITE_MEDIA_URL,
           }),
         }
@@ -44,34 +41,32 @@ async function getClientEvent(repo: Repository, id: number) {
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
-  const editEventId = parseInt(searchParams.get('edit'));
+  const editGuideId = parseInt(searchParams.get('edit'));
 
   const repo = repository(context);
-  const event =
-    editEventId !== undefined
-      ? await getClientEvent(repo, editEventId)
+  const guide =
+    editGuideId !== undefined
+      ? await getClientGuide(repo, editGuideId)
       : undefined;
 
-  if (event === undefined && editEventId !== undefined) {
-    return redirect('/events/+');
+  if (guide === undefined && editGuideId !== undefined) {
+    return redirect('/guides/+');
   }
 
-  return { event };
+  return { guide };
 }
 
-export default function Page({ loaderData: { event } }: Route.ComponentProps) {
+export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
   const errorAlert = useNotification();
 
   const [image, setImage] = useSelectableImage(
-    () => event && sizesToImages(`events/${event.id}`, event.images)
+    () => guide && sizesToImages(`guides/${guide.id}`, guide.images)
   );
   const imageFileRef = useRef<File>(undefined);
 
-  const [title, setTitle] = useState(event?.title ?? '');
-  const [date, setDate] = useState(event ? new Date(event.date) : new Date());
-  const [status, setStatus] = useState(EventStatus.PENDING);
+  const [title, setTitle] = useState(guide?.title ?? '');
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(
-    event === undefined
+    guide === undefined
   );
   const descriptionRef = useRef<RichTextEditorRef | null>(null);
 
@@ -82,7 +77,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   return (
     <div className={styles.root}>
       <Title>
-        {event !== undefined ? 'Редагування події' : 'Додати подію'}
+        {guide !== undefined ? 'Редагування події' : 'Додати подію'}
       </Title>
 
       <TextInput
@@ -110,34 +105,12 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
         />
       </Labeled>
 
-      <Labeled title="Дата">
-        <DatePicker
-          disabled={actionPending}
-          className={styles.date}
-          value={date}
-          onValueChanged={setDate}
-        />
-      </Labeled>
-
-      <Labeled title="Статус">
-        <OptionSwitch
-          options={[EventStatus.PENDING, EventStatus.ENDED]}
-          selected={status}
-          renderOption={useCallback(
-            (status: EventStatus) =>
-              status === EventStatus.PENDING ? 'Очікується' : 'Закінчилась',
-            []
-          )}
-          onOptionSelected={setStatus}
-        />
-      </Labeled>
-
       <Labeled title="Опис">
         <RichTextEditor
           ref={descriptionRef}
           disabled={actionPending}
           className={styles.description}
-          text={event?.description ?? ''}
+          text={guide?.description ?? ''}
           onIsEmptyChanged={setIsDescriptionEmpty}
         />
       </Labeled>
@@ -172,23 +145,19 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
             throw new Error('Description is null');
           }
 
-          if (event === undefined) {
+          if (guide === undefined) {
             if (image !== undefined) {
-              promise = addEvent({
+              promise = addGuide({
                 title,
-                date,
                 image,
-                status,
                 description: description.value,
                 descriptionFiles: description.files,
               });
             }
           } else {
-            promise = editEvent(event.id, {
+            promise = editGuide(guide.id, {
               title,
-              date,
               image,
-              status,
               description: description.value,
               descriptionFiles: description.files,
             });
@@ -197,7 +166,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
           if (promise) {
             promise
               .then(() => {
-                void navigate('/events');
+                return navigate('/guides');
               })
               .catch((error: unknown) => {
                 console.error(error);
@@ -208,7 +177,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
           }
         }}
       >
-        {event ? 'Зберегти' : 'Додати'}
+        {guide ? 'Зберегти' : 'Додати'}
       </Button>
     </div>
   );

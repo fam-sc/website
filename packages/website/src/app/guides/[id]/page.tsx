@@ -3,11 +3,10 @@ import { notFound, parseInt } from '@sc-fam/shared';
 import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
-import { deleteEvent } from '@/api/events/client';
+import { deleteGuide } from '@/api/guides/client';
 import { useAuthInfo } from '@/auth/context';
 import { Article } from '@/components/Article';
 import { ConfirmationDialog } from '@/components/ConfirmationDialog';
-import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { Image } from '@/components/Image';
 import { useNotification } from '@/components/Notification';
 import { RichText } from '@/components/RichText';
@@ -19,7 +18,7 @@ import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
-import { EventMeta } from './meta';
+import { GuideMeta } from './meta';
 import styles from './page.module.scss';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
@@ -29,16 +28,16 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   }
 
   const repo = repository(context);
-  const event = await repo.events().findById(id);
+  const guide = await repo.guides().findById(id);
 
-  if (event === null) {
+  if (guide === null) {
     return notFound();
   }
 
-  return { event };
+  return { guide };
 }
 
-export default function Page({ loaderData: { event } }: Route.ComponentProps) {
+export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
   const [isDeleteDialogShown, setDeleteDialogShown] = useState(false);
   const navigate = useNavigate();
   const notification = useNotification();
@@ -54,31 +53,31 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
     setDeleteDialogShown(false);
   }, []);
 
-  const onDeleteEvent = useCallback(() => {
-    deleteEvent(event.id)
+  const onDeleteGuide = useCallback(() => {
+    deleteGuide(guide.id)
       .then(() => {
         notification.show('Видалено', 'plain');
 
-        return navigate('/events');
+        return navigate('/guides');
       })
       .catch((error: unknown) => {
         console.error(error);
 
         notification.show('Сталася помилка при видаленні', 'error');
       });
-  }, [event.id, navigate, notification]);
+  }, [guide.id, navigate, notification]);
 
   return (
     <Article className={styles.root}>
-      <EventMeta event={event} />
+      <GuideMeta guide={guide} />
 
       <div className={styles.header}>
-        <Typography variant="h4">{event.title}</Typography>
+        <Typography variant="h4">{guide.title}</Typography>
 
         {canEdit && (
           <div className={styles['modify-buttons']}>
             <Link
-              to={`/events/+?edit=${event.id}`}
+              to={`/guides/+?edit=${guide.id}`}
               className={styles['modify-button']}
             >
               <EditIcon />
@@ -94,20 +93,18 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
         )}
       </div>
 
-      <EventStatusMarker className={styles.status} status={event.status} />
-
       <Image
         className={styles.image}
-        multiple={sizesToImages(`events/${event.id}`, event.images)}
+        multiple={sizesToImages(`guides/${guide.id}`, guide.images)}
       />
 
-      <RichText text={event.description} />
+      <RichText text={guide.description} />
 
       {isDeleteDialogShown && (
         <ConfirmationDialog
-          title="Ви справді хочете видалити подію?"
+          title="Ви справді хочете видалити гайд?"
           onClose={onClose}
-          onConfirm={onDeleteEvent}
+          onConfirm={onDeleteGuide}
         />
       )}
     </Article>

@@ -2,13 +2,13 @@ import { Event } from '@sc-fam/data';
 import { formatDateTime } from '@sc-fam/shared/chrono';
 import { shortenRichText } from '@sc-fam/shared/richText';
 
-import { getMediaFileUrl } from '@/api/media';
 import { EventListItem } from '@/components/EventListItem';
 import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 import { UsefulLinkList } from '@/components/UsefulLinkList';
+import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -55,11 +55,7 @@ export default function Page({
             <EventListItem
               {...rest}
               id={id}
-              images={images.map(({ width, height }) => ({
-                src: getMediaFileUrl(`events/${id}/${width}`),
-                width,
-                height,
-              }))}
+              images={sizesToImages(`events/${id}`, images)}
             />
           </li>
         ))}

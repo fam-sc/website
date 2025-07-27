@@ -6,8 +6,8 @@ import {
 import React, { Key, ReactNode } from 'react';
 import { Link } from 'react-router';
 
-import { getMediaFileUrl } from '@/api/media';
 import { classNames } from '@/utils/classNames';
+import { sizesToImages } from '@/utils/image/transform';
 
 import { Image } from '../Image';
 import { Typography } from '../Typography';
@@ -48,15 +48,7 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
 
   switch (node.name) {
     case '#image': {
-      return (
-        <Image
-          multiple={node.sizes.map(({ width, height }) => ({
-            src: getMediaFileUrl(`${node.filePath}/${width}`),
-            width,
-            height,
-          }))}
-        />
-      );
+      return <Image multiple={sizesToImages(node.filePath, node.sizes)} />;
     }
     case '#placeholder-image':
     case '#unsized-image': {

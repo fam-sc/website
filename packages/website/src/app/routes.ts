@@ -13,6 +13,11 @@ export default [
     route(':id', 'events/[id]/page.tsx'),
     index('events/(list)/page.tsx'),
   ]),
+  ...prefix('guides', [
+    route('+', 'guides/+/page.tsx'),
+    route(':id', 'guides/[id]/page.tsx'),
+    index('guides/(list)/page.tsx'),
+  ]),
   ...prefix('gallery', [
     route('upload', 'gallery/upload/page.tsx'),
     index('gallery/(main)/page.tsx'),

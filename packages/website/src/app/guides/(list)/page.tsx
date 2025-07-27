@@ -1,16 +1,17 @@
-import { Event, UserRole } from '@sc-fam/data';
+import { Guide, UserRole } from '@sc-fam/data';
 import { coerce, parseInt } from '@sc-fam/shared';
 import { formatDateTime } from '@sc-fam/shared/chrono';
 import { shortenRichText } from '@sc-fam/shared/richText';
 import { redirect } from 'react-router';
 
 import { useAuthInfo } from '@/auth/context';
-import { EventListItem } from '@/components/EventListItem';
+import { GuideListItem } from '@/components/GuideListItem';
 import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { Pagination } from '@/components/Pagination';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { sizesToImages } from '@/utils/image/transform';
+import { createPageUrl } from '@/utils/page';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -18,14 +19,14 @@ import styles from './page.module.scss';
 
 const ITEMS_PER_PAGE = 5;
 
-function toClientEvent(event: Event) {
+function toClientGuide(guide: Guide) {
   return {
-    id: event.id,
-    status: event.status,
-    title: event.title,
-    date: formatDateTime(new Date(event.date)),
-    description: shortenRichText(event.description, 200, 'ellipsis'),
-    images: event.images,
+    id: guide.id,
+    title: guide.title,
+    createdAt: formatDateTime(new Date(guide.createdAtDate)),
+    updatedAt: formatDateTime(new Date(guide.updatedAtDate)),
+    description: shortenRichText(guide.description, 200, 'ellipsis'),
+    images: guide.images,
   };
 }
 
@@ -36,7 +37,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   const repo = repository(context);
   const { total: totalItems, items } = await repo
-    .events()
+    .guides()
     .getPage(page - 1, ITEMS_PER_PAGE);
 
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -45,11 +46,11 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   page = coerce(page, 1, totalPages);
 
   if (oldPage !== page) {
-    return redirect(`/events/?page=${page}`);
+    return redirect(`/guides/?page=${page}`);
   }
 
   return {
-    items: items.map((event) => toClientEvent(event)),
+    items: items.map((item) => toClientGuide(item)),
     page,
     totalPages,
   };
@@ -64,7 +65,7 @@ export default function Page({
   return (
     <div className={styles.root}>
       {canAddEvent && (
-        <LinkButton hasIcon className={styles['add-event']} to="/events/+">
+        <LinkButton hasIcon className={styles['add-guide']} to="/guides/+">
           <PlusIcon aria-hidden />
           Додати
         </LinkButton>
@@ -73,10 +74,10 @@ export default function Page({
       <List className={styles.list}>
         {items.map(({ id, images, ...rest }) => (
           <li key={id}>
-            <EventListItem
+            <GuideListItem
               {...rest}
               id={id}
-              images={sizesToImages(`events/${id}`, images)}
+              images={sizesToImages(`guides/${id}`, images)}
             />
           </li>
         ))}
@@ -87,7 +88,7 @@ export default function Page({
           className={styles.pagination}
           current={page}
           total={totalPages}
-          getLink={(page) => (page === 1 ? '/events' : `/events?page=${page}`)}
+          getLink={(page) => createPageUrl('/guides', page)}
         />
       )}
     </div>

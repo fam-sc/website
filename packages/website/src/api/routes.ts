@@ -7,6 +7,8 @@ import './polls/route';
 import './polls/[id]/route';
 import './polls/[id]/close/route';
 import './polls/[id]/table/route';
+import './guides/route';
+import './guides/[id]/route';
 import './schedule/route';
 import './signIn/route';
 import './signUp/route';

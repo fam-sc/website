@@ -6,6 +6,7 @@ import { EventCollection } from './collections/events';
 import { ForgotPasswordCollection } from './collections/forgotPasswords';
 import { GalleryImageCollection } from './collections/galleryImages';
 import { GroupCollection } from './collections/groups';
+import { GuideCollection } from './collections/guides';
 import { PendingUserCollection } from './collections/pendingUsers';
 import { PollRespondentCollection } from './collections/pollRespondents';
 import { PollCollection } from './collections/polls';
@@ -33,6 +34,7 @@ const collectionTypes = [
   PollRespondentCollection,
   ForgotPasswordCollection,
   AdminBotNewUserMessagesCollection,
+  GuideCollection,
 ];
 
 export type EntityRepositoryKey = {
@@ -82,6 +84,7 @@ export class Repository {
   polls = this.collection(PollCollection);
   forgotPasswordEntries = this.collection(ForgotPasswordCollection);
   adminBotNewUserMessages = this.collection(AdminBotNewUserMessagesCollection);
+  guides = this.collection(GuideCollection);
 
   static async init(database: D1Database) {
     const tables: [string, TableDescriptor<unknown>][] = [];

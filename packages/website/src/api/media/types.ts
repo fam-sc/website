@@ -4,12 +4,19 @@ type ImageWithSize = Concat<`${string}/${number}`, '.png'>;
 type MediaPathMap = {
   events: ImageWithSize;
   gallery: ImageWithSize;
+  guides: ImageWithSize;
   'rich-text-image': ImageWithSize;
   user: string;
   'bot-flow': ['node-positions.json', { 'tg-sticker': string }];
 };
 
 export type MediaSubPathWithImageSize = {
+  [K in keyof MediaPathMap]: MediaPathMap[K] extends ImageWithSize
+    ? `${K}/${string}`
+    : never;
+}[keyof MediaPathMap];
+
+export type MediaSubPathExceptImageSize = {
   [K in keyof MediaPathMap]: MediaPathMap[K] extends ImageWithSize
     ? `${K}/${string}`
     : never;

@@ -1,0 +1,77 @@
+@use '../../theme/breakpoints' as *;
+
+@mixin desktop-view() {
+  @include breakpoint-up('md') {
+    @content;
+  }
+}
+
+.root {
+  display: grid;
+  padding: 1em 0;
+
+  text-decoration: none;
+
+  grid-template-columns: 1fr;
+  grid-template-rows:
+    fit-content(2em) fit-content(250px) 1fr fit-content(1em)
+    fit-content(1em);
+
+  row-gap: 1em;
+
+  @include desktop-view {
+    grid-template-columns: 20% 1fr;
+    grid-template-rows: fit-content(2em) 1fr fit-content(1em) fit-content(1em);
+
+    column-gap: 1em;
+  }
+
+  * {
+    color: var(--color-text-on-background);
+  }
+
+  img {
+    grid-column: 1;
+
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+
+    max-height: 250px;
+
+    @include desktop-view {
+      grid-row: 1 / 6;
+    }
+  }
+}
+
+.title,
+.description,
+.date,
+.status {
+  grid-column: 1;
+  grid-row: var(--position);
+
+  @include desktop-view {
+    grid-row: calc(var(--position) - 1);
+    grid-column: 2;
+  }
+}
+
+.title {
+  grid-row: 1;
+}
+
+.description {
+  --position: 3;
+}
+
+.date {
+  --position: 4;
+}
+
+.status {
+  --position: 5;
+
+  width: fit-content;
+}

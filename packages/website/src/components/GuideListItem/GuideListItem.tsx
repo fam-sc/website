@@ -1,35 +1,33 @@
-import { EventStatus } from '@sc-fam/data';
+import { ImageSize } from '@sc-fam/shared/image';
 import { RichTextString } from '@sc-fam/shared/richText';
 import { Link } from 'react-router';
 
-import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { RichText } from '@/components/RichText';
 import { Typography } from '@/components/Typography';
 import { EventIcon } from '@/icons/EventIcon';
-import { ImageInfo } from '@/utils/image/types';
 
 import { Image } from '../Image';
-import styles from './EventListItem.module.scss';
+import styles from './GuideListItem.module.scss';
 
-export type EventListItemProps = {
+export type GuideListItemProps = {
   id: number;
-  status: EventStatus;
   title: string;
-  date: string;
+  createdAt: string;
   description: RichTextString;
-  images: ImageInfo[];
+  images: (ImageSize & {
+    src: string;
+  })[];
 };
 
-export function EventListItem({
+export function GuideListItem({
   id,
   images,
-  status,
   title,
-  date,
+  createdAt,
   description,
-}: EventListItemProps) {
+}: GuideListItemProps) {
   return (
-    <Link className={styles.root} to={`/events/${id}`}>
+    <Link className={styles.root} to={`/guides/${id}`}>
       <Image multiple={images} sizes={{ default: '20vw' }} />
 
       <Typography className={styles.title} variant="h5">
@@ -40,10 +38,8 @@ export function EventListItem({
 
       <Typography hasIcon className={styles.date}>
         <EventIcon aria-hidden />
-        {date}
+        {createdAt}
       </Typography>
-
-      <EventStatusMarker className={styles.status} status={status} />
     </Link>
   );
 }

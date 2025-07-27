@@ -1,0 +1,20 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 4em;
+  gap: 2em;
+}
+
+.image {
+  height: 300px;
+}
+
+.title {
+  width: 100%;
+}
+
+.save-edit-button {
+  align-self: center;
+
+  margin-bottom: 1em;
+}
