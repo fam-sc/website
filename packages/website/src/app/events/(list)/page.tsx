@@ -1,39 +1,29 @@
-import { Event, EventStatus, UserRole } from '@sc-fam/data';
+import { Event, UserRole } from '@sc-fam/data';
 import { coerce, parseInt } from '@sc-fam/shared';
 import { formatDateTime } from '@sc-fam/shared/chrono';
-import { ImageSize } from '@sc-fam/shared/image';
-import { RichTextString, shortenRichText } from '@sc-fam/shared/richText';
+import { shortenRichText } from '@sc-fam/shared/richText';
 import { redirect } from 'react-router';
 
-import { getMediaFileUrl } from '@/api/media';
 import { useAuthInfo } from '@/auth/context';
 import { EventListItem } from '@/components/EventListItem';
 import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { Pagination } from '@/components/Pagination';
 import { PlusIcon } from '@/icons/PlusIcon';
+import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
 import styles from './page.module.scss';
 
-type ClientEvent = {
-  id: number;
-  status: EventStatus;
-  title: string;
-  date: string;
-  description: RichTextString;
-  images: ImageSize[];
-};
-
 const ITEMS_PER_PAGE = 5;
 
-function toClientEvent(event: Event): ClientEvent {
+function toClientEvent(event: Event) {
   return {
     id: event.id,
     status: event.status,
     title: event.title,
-    date: formatDateTime(new Date(event.date)),
+    date: formatDateTime(event.date),
     description: shortenRichText(event.description, 200, 'ellipsis'),
     images: event.images,
   };
@@ -86,11 +76,7 @@ export default function Page({
             <EventListItem
               {...rest}
               id={id}
-              images={images.map(({ width, height }) => ({
-                src: getMediaFileUrl(`events/${id}/${width}`),
-                width,
-                height,
-              }))}
+              images={sizesToImages(`events/${id}`, images)}
             />
           </li>
         ))}

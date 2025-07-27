@@ -1,5 +1,6 @@
 export { CookieInfo, getCookieValue, setCookie } from './cookies.js';
 export { getDataUrlContent } from './dataUrl.js';
+export { createDebouncer } from './debouncer.js';
 export { getEnvChecked } from './env.js';
 export {
   checkedFetch,

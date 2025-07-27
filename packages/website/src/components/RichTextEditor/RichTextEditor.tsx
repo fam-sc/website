@@ -1,5 +1,5 @@
 import { EditorContext, useEditor } from '@tiptap/react';
-import { Ref, useEffect, useImperativeHandle, useMemo } from 'react';
+import { Ref, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 
 import { classNames } from '@/utils/classNames';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
@@ -8,9 +8,9 @@ import {
   tiptapTextToRichText,
 } from '@/utils/tiptap/serializer';
 
-import { EditorContent } from './EditorContent';
+import { EditorContent } from './components/EditorContent';
+import { Menu, useMenuOptions } from './components/Menu';
 import { extensions } from './extensions';
-import { Menu, useMenuOptions } from './Menu';
 import styles from './RichTextEditor.module.scss';
 
 export type RichTextEditorRef = {
@@ -50,6 +50,8 @@ export function RichTextEditor({
 
   const urlManager = useMemo(() => new ObjectUrlManager(), []);
 
+  const [zeroScroll, setZeroScroll] = useState(true);
+
   useImperativeHandle(
     ref,
     () => ({
@@ -78,9 +80,17 @@ export function RichTextEditor({
       aria-disabled={disabled}
     >
       <EditorContext.Provider value={{ editor }}>
-        <Menu urlManager={urlManager} options={menuOptions} />
+        <Menu
+          urlManager={urlManager}
+          options={menuOptions}
+          zeroScroll={zeroScroll}
+        />
 
-        <EditorContent urlManager={urlManager} editor={editor} />
+        <EditorContent
+          urlManager={urlManager}
+          editor={editor}
+          onScrollStatusChanged={setZeroScroll}
+        />
       </EditorContext.Provider>
     </div>
   );

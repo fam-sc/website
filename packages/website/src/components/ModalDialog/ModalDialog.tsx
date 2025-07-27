@@ -15,6 +15,7 @@ type ModalDialogProps = {
   contentClassName?: string;
   footer?: ReactElement;
   onClose?: () => void;
+  tightLayout?: boolean;
   children: ReactNode;
 };
 
@@ -23,6 +24,7 @@ export function ModalDialog({
   footer,
   children,
   contentClassName,
+  tightLayout,
   onClose,
 }: ModalDialogProps) {
   const titleId = useId();
@@ -31,7 +33,14 @@ export function ModalDialog({
 
   return createPortal(
     <ModalOverlay className={styles.overlay} effect="tint">
-      <div className={styles.dialog} role="dialog" aria-labelledby={titleId}>
+      <div
+        className={classNames(
+          styles.dialog,
+          tightLayout && styles['dialog-tight-layout']
+        )}
+        role="dialog"
+        aria-labelledby={titleId}
+      >
         <div className={styles.header}>
           {title === undefined ? undefined : (
             <Typography variant="h5" id={titleId}>

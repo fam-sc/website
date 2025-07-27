@@ -5,10 +5,10 @@ import { Link, useNavigate } from 'react-router';
 
 import { fetchGalleryPage } from '@/api/gallery/client';
 import { GalleryImageWithSizes } from '@/api/gallery/types';
-import { getMediaFileUrl } from '@/api/media';
 import { useAuthInfo } from '@/auth/context';
 import { LazyImageScroll } from '@/components/LazyImageScroll';
 import { UploadIcon } from '@/icons/UploadIcon';
+import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -44,11 +44,7 @@ export default function Page({
 
   const getImageInfo = useCallback(
     ({ id, sizes }: GalleryImageWithSizes) =>
-      sizes.map(({ width, height }) => ({
-        src: getMediaFileUrl(`gallery/${id}/${width}`),
-        width,
-        height,
-      })),
+      sizesToImages(`gallery/${id}`, sizes),
     []
   );
 

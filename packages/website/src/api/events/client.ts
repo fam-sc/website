@@ -1,12 +1,14 @@
-import { AddEventPayload, EditEventPayload } from '@/api/events/types';
+import { AddEventPayload, EditEventPayload, Event } from '@/api/events/types';
 
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 import { ShortEvent } from './types';
 
 export function fetchAllEventsShort(): Promise<ShortEvent[]> {
-  return apiFetchObject(`/events?type=short`, {
-    method: 'GET',
-  });
+  return apiFetchObject(`/events?type=short`);
+}
+
+export function getLatestEvents(): Promise<Event[]> {
+  return apiFetchObject('/events/latest');
 }
 
 function payloadToFormData({

@@ -12,6 +12,7 @@ type ImplicitConditions<T> = {
 type ExplicitConditions = [string, unknown[]];
 
 export type Conditions<T> = ImplicitConditions<T> | ExplicitConditions;
+export type RawConditions = Record<string, unknown> | ExplicitConditions;
 
 function maybeModifierToKeyValue(key: string, value: unknown): string {
   return isModifier(value) ? `"${key}"${value.expression}` : `"${key}"=?`;

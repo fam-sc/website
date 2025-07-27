@@ -5,7 +5,6 @@ import {
   GalleryImageWithEvent,
   GalleryImageWithSizes,
 } from '@/api/gallery/types';
-import { getMediaFileUrl } from '@/api/media';
 import { IconButton } from '@/components/IconButton';
 import { Image } from '@/components/Image';
 import { InlineQuestion } from '@/components/InlineQuestion';
@@ -16,6 +15,7 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EventIcon } from '@/icons/EventIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
+import { sizesToImages } from '@/utils/image/transform';
 
 import styles from './dialog.module.scss';
 
@@ -73,11 +73,7 @@ export function GalleryImageInfoDialog({
 
       <div className={styles.content}>
         <Image
-          multiple={info.sizes.map(({ width, height }) => ({
-            src: getMediaFileUrl(`gallery/${info.id}/${width}`),
-            width,
-            height,
-          }))}
+          multiple={sizesToImages(`gallery/${info.id}`, info.sizes)}
           sizes={{ 900: '100vw', default: '60vw' }}
         />
 

@@ -1,6 +1,10 @@
 import { D1Database, D1PreparedStatement } from '@sc-fam/shared/cloudflare';
 
-import { Conditions, getConditionsBinding } from '../sqlite/conditions';
+import {
+  Conditions,
+  getConditionsBinding,
+  RawConditions,
+} from '../sqlite/conditions';
 import { DataQuery, DataQueryContext, query } from '../sqlite/query';
 import {
   buildCountWhereQuery,
@@ -10,7 +14,9 @@ import {
   buildGeneralInsertQuery,
   buildGetPageQuery,
   buildUpdateWhereQuery,
+  Fields,
   InsertFlavor,
+  Ordering,
 } from '../sqlite/queryBuilder';
 import { TableDescriptor } from '../sqlite/types';
 import { batchWithResultsHelper } from '../utils/batch';
@@ -18,8 +24,6 @@ import { batchWithResultsHelper } from '../utils/batch';
 export type EntityCollectionClass<T = unknown> = new (client: D1Database) => T;
 
 export function EntityCollection<Raw extends object>(tableName: string) {
-  type Fields<S = Raw> = (keyof S & string)[] | '*';
-
   return class {
     client: D1Database;
     queryContext: DataQueryContext;
@@ -34,9 +38,13 @@ export function EntityCollection<Raw extends object>(tableName: string) {
     }
 
     async updateWhere(conditions: Conditions<Raw>, value: Partial<Raw>) {
+      const valueItems = Object.values(value).filter(
+        (item) => item !== undefined
+      );
+
       const { meta } = await this.client
         .prepare(buildUpdateWhereQuery(tableName, conditions, value))
-        .bind(...Object.values(value), ...getConditionsBinding(conditions))
+        .bind(...valueItems, ...getConditionsBinding(conditions))
         .run();
 
       return { changes: meta.changes };
@@ -214,9 +222,9 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.insertManyBaseAction('INSERT OR REPLACE', values, returning);
     }
 
-    prepareFindWhereStatement<R extends Raw>(
-      conditions: Conditions<R>,
-      fields?: Fields<Partial<Raw>>
+    prepareFindWhereStatement(
+      conditions: RawConditions,
+      fields?: Fields
     ): D1PreparedStatement {
       const bindings = getConditionsBinding(conditions);
 
@@ -227,7 +235,7 @@ export function EntityCollection<Raw extends object>(tableName: string) {
 
     findOneWhereAction<K extends keyof Raw & string = keyof Raw & string>(
       conditions: Conditions<Raw>,
-      fields?: K[] | '*'
+      fields?: (K & string)[] | '*'
     ): DataQuery<Pick<Raw, K> | null> {
       return query.first(this.prepareFindWhereStatement(conditions, fields));
     }
@@ -265,9 +273,33 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       fields?: K[] | '*'
     ): DataQuery<Pick<Raw, K>[]> {
       return this.selectAllAction(
-        buildGetPageQuery(tableName, offset, size, conditions, fields),
+        buildGetPageQuery({
+          tableName,
+          offset,
+          size,
+          conditions,
+          fields,
+        }),
         getConditionsBinding(conditions)
       );
+    }
+
+    async getPageWithTotalSize(
+      index: number,
+      size: number,
+      ordering?: Ordering<Raw>
+    ) {
+      const [count, guides] = await this.client.batch([
+        this.client.prepare(buildCountWhereQuery(tableName)),
+        this.client.prepare(
+          buildGetPageQuery({ tableName, offset: index * size, size, ordering })
+        ),
+      ]);
+
+      return {
+        total: (count.results[0] as { count: number }).count,
+        items: guides.results as Raw[],
+      };
     }
 
     deleteWhere(conditions: Conditions<Raw>) {

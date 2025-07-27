@@ -35,6 +35,9 @@ export const supportedRichTextTags = [
   'tbody',
   'thead',
   'table',
+  'aside',
+  'figure',
+  'figcaption',
 ] as const;
 
 export type RichTextNodeName = (typeof supportedRichTextTags)[number];
@@ -52,7 +55,7 @@ export interface RichTextPlaceholderImageNode {
   id: number;
 }
 
-export interface RicHTextUnsizedImageNode {
+export interface RichTextUnsizedImageNode {
   name: '#unsized-image';
   filePath: FilePath;
 }
@@ -67,7 +70,7 @@ export type RichTextAtomNode =
   | RichTextPlainNode
   | RichTextPlaceholderImageNode
   | RichTextImageNode
-  | RicHTextUnsizedImageNode
+  | RichTextUnsizedImageNode
   | RichTextElementNode;
 
 export type RichTextNode = RichTextAtomNode | RichTextAtomNode[];

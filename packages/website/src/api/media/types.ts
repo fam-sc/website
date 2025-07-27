@@ -4,6 +4,7 @@ type ImageWithSize = Concat<`${string}/${number}`, '.png'>;
 type MediaPathMap = {
   events: ImageWithSize;
   gallery: ImageWithSize;
+  guides: ImageWithSize;
   'rich-text-image': ImageWithSize;
   user: string;
   'bot-flow': ['node-positions.json', { 'tg-sticker': string }];

@@ -1,23 +1,21 @@
 import { UserRole } from '@sc-fam/data';
 import { notFound, parseInt } from '@sc-fam/shared';
 import { useCallback, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { deleteEvent } from '@/api/events/client';
-import { getMediaFileUrl } from '@/api/media';
 import { useAuthInfo } from '@/auth/context';
+import { Article } from '@/components/Article';
+import { ConfirmationDialog } from '@/components/ConfirmationDialog';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { Image } from '@/components/Image';
+import { ModifyHeader } from '@/components/ModifyHeader';
 import { useNotification } from '@/components/Notification';
 import { RichText } from '@/components/RichText';
-import { Typography } from '@/components/Typography';
-import { DeleteIcon } from '@/icons/DeleteIcon';
-import { EditIcon } from '@/icons/EditIcon';
-import { classNames } from '@/utils/classNames';
+import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
-import { DeleteEventDialog } from './DeleteEventDialog';
 import { EventMeta } from './meta';
 import styles from './page.module.scss';
 
@@ -45,6 +43,10 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   const { user } = useAuthInfo();
   const canEdit = user !== null && user.role >= UserRole.ADMIN;
 
+  const onShowDeleteDialog = useCallback(() => {
+    setDeleteDialogShown(true);
+  }, []);
+
   const onClose = useCallback(() => {
     setDeleteDialogShown(false);
   }, []);
@@ -53,7 +55,8 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
     deleteEvent(event.id)
       .then(() => {
         notification.show('Видалено', 'plain');
-        void navigate('/events');
+
+        return navigate('/events');
       })
       .catch((error: unknown) => {
         console.error(error);
@@ -62,54 +65,33 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
       });
   }, [event.id, navigate, notification]);
 
-  // Telegram IV requires this layout with <div class="article"> and <article class="article__content">
   return (
-    <div className="article">
-      <article className={classNames(styles.root, 'article__content')}>
-        <EventMeta event={event} />
+    <Article className={styles.root}>
+      <EventMeta event={event} />
 
-        <div className={styles.header}>
-          <Typography variant="h4">{event.title}</Typography>
+      <ModifyHeader
+        title={event.title}
+        canEdit={canEdit}
+        modifyHref={`/events/+?edit=${event.id}`}
+        onDelete={onShowDeleteDialog}
+      />
 
-          {canEdit && (
-            <div className={styles['modify-buttons']}>
-              <Link
-                to={`/events/+?edit=${event.id}`}
-                className={styles['modify-button']}
-              >
-                <EditIcon />
-              </Link>
+      <EventStatusMarker className={styles.status} status={event.status} />
 
-              <button
-                className={classNames(styles['modify-button'], styles.delete)}
-                onClick={() => {
-                  setDeleteDialogShown(true);
-                }}
-              >
-                <DeleteIcon />
-              </button>
-            </div>
-          )}
-        </div>
+      <Image
+        className={styles.image}
+        multiple={sizesToImages(`events/${event.id}`, event.images)}
+      />
 
-        <EventStatusMarker className={styles.status} status={event.status} />
+      <RichText text={event.description} />
 
-        <Image
-          className={styles.image}
-          multiple={event.images.map(({ width, height }) => ({
-            // Telegram IV needs the image to have an extension. It doesn't really matter what.
-            src: getMediaFileUrl(`events/${event.id}/${width}.png`),
-            width,
-            height,
-          }))}
+      {isDeleteDialogShown && (
+        <ConfirmationDialog
+          title="Ви справді хочете видалити подію?"
+          onClose={onClose}
+          onConfirm={onDeleteEvent}
         />
-
-        <RichText text={event.description} />
-
-        {isDeleteDialogShown && (
-          <DeleteEventDialog onClose={onClose} onDelete={onDeleteEvent} />
-        )}
-      </article>
-    </div>
+      )}
+    </Article>
   );
 }

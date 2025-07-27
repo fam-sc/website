@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { navigationMainRoutes } from '@/constants/navigation';
+import { navigigationSecondaryRoutes } from '@/constants/navigation';
 import { InstagramIcon } from '@/icons/InstagramIcon';
 import { MailIcon } from '@/icons/MailIcon';
 import { QuestionIcon } from '@/icons/QuestionIcon';
@@ -16,11 +16,6 @@ import styles from './Footer.module.scss';
 export interface FooterProps {
   className?: string;
 }
-
-const items: { title: string; href: string }[] = [
-  { title: 'Головна', href: '/home' },
-  ...navigationMainRoutes,
-];
 
 type LinkWithIconProps = {
   to: string;
@@ -56,7 +51,7 @@ export function Footer({ className }: FooterProps) {
       </Section>
 
       <Section>
-        {items.map((item) => (
+        {navigigationSecondaryRoutes.map((item) => (
           <Link key={item.href} to={item.href}>
             <Typography>{item.title}</Typography>
           </Link>

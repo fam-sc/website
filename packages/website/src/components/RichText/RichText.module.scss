@@ -1,13 +1,20 @@
 @use '../../theme/breakpoints' as *;
+@use '../../theme/typography' as *;
+@use 'sass:map';
 
 .root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  line-height: 1.58;
+
+  * {
+    white-space: pre-wrap;
+  }
+
   main {
     display: block;
   }
-
-  /**
-   * Remove the gray background on active links in IE 10.
-   */
 
   a {
     background: transparent;
@@ -16,11 +23,6 @@
     word-break: normal !important;
     color: unset;
   }
-
-  /**
-   * Correct the font size and margin on `h1` elements within `section` and
-   * `article` contexts in Chrome, Firefox, and Safari.
-   */
 
   h1 {
     font-size: 2em;
@@ -38,69 +40,35 @@
     }
   }
 
-  /* Grouping content
- ========================================================================== */
+  $header-levels: (1, 2, 3, 4, 5, 6);
 
-  /**
-   * 1. Add the correct box sizing in Firefox.
-   * 2. Show the overflow in Edge and IE.
-   */
+  @each $level in $header-levels {
+    $tag: h#{$level};
+
+    #{$tag} {
+      $options: map.get($variants, $tag);
+
+      @include variant-body($options);
+    }
+  }
 
   hr {
     box-sizing: content-box;
-    height: 0;
+    align-self: center;
     overflow: visible;
+
+    width: 50%;
+    height: 0;
+
+    margin: 0.5em 0;
+
+    opacity: 0.8;
   }
-
-  /**
-   * 1. Correct the inheritance and scaling of font size in all browsers.
-   * 2. Correct the odd `em` font sizing in all browsers.
-   */
-
-  pre {
-    font-family: monospace;
-    font-size: 1em;
-  }
-
-  /**
-   * 1. Remove the bottom border in Chrome 57-
-   * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
-   */
-
-  abbr[title] {
-    border-bottom: none;
-    text-decoration: underline;
-  }
-
-  /**
-   * Add the correct font weight in Chrome, Edge, and Safari.
-   */
 
   b,
   strong {
     font-weight: bolder;
   }
-
-  /**
-   * 1. Correct the inheritance and scaling of font size in all browsers.
-   * 2. Correct the odd `em` font sizing in all browsers.
-   */
-
-  code,
-  kbd,
-  samp {
-    font-family: monospace;
-    font-size: 1em;
-  }
-
-  small {
-    font-size: 80%;
-  }
-
-  /**
-   * Prevent `sub` and `sup` elements from affecting the line height in
-   * all browsers.
-   */
 
   sub,
   sup {
@@ -118,82 +86,27 @@
     top: -0.5em;
   }
 
-  /* Embedded content
- ========================================================================== */
-
-  /**
-   * Remove the border on images inside links in IE 10.
-   */
-
   img {
     border-style: none;
     max-width: 100%;
     height: auto;
-
     margin-top: 1em;
   }
 
-  /* Interactive
- ========================================================================== */
-
-  /*
-   * Add the correct display in Edge, IE 10+, and Firefox.
-   */
-
-  details {
-    display: block;
+  figure,
+  img {
+    align-self: center;
   }
-
-  /*
-   * Add the correct display in all browsers.
-   */
-
-  summary {
-    display: list-item;
-  }
-
-  /* Misc
- ========================================================================== */
-
-  /**
-   * Add the correct display in IE 10+.
-   */
-
-  template {
-    display: none;
-  }
-
-  /**
-   * Add the correct display in IE 10.
-   */
 
   [hidden] {
     display: none;
   }
 
-  & p {
-    &:first-of-type {
-      margin-top: 0;
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    margin: 1.5em 0;
-  }
-
-  ul,
-  li {
-    text-align: start;
-  }
-
   ul {
-    list-style-position: outside;
-
-    li {
-      margin-left: 4;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin: 0.5em 0 0.5em 1em;
   }
 
   table {
@@ -232,6 +145,13 @@
     border-left: 2px solid var(--color-text-on-background);
 
     padding-left: 1em;
+    margin: 1em 0;
     margin-left: 0;
+  }
+
+  figcaption {
+    text-align: center;
+    opacity: 0.8;
+    margin-top: 8px;
   }
 }

@@ -6,23 +6,26 @@ import { classNames } from '@/utils/classNames';
 import { imageFileGate, isAllFilesValid } from '@/utils/fileGate';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
 
-import { FileDrop } from '../FileDrop';
-import { useNotification } from '../Notification';
-import richTextStyles from '../RichText/RichText.module.scss';
-import { Typography } from '../Typography';
-import typographyStyles from '../Typography/Typography.module.scss';
+import { FileDrop } from '../../FileDrop';
+import { useNotification } from '../../Notification';
+import richTextStyles from '../../RichText/RichText.module.scss';
+import { ScrollDetect } from '../../ScrollDetect';
+import { Typography } from '../../Typography';
+import typographyStyles from '../../Typography/Typography.module.scss';
 import styles from './EditorContent.module.scss';
 
 export interface EditorContentProps {
   disabled?: boolean;
   urlManager: ObjectUrlManager;
   editor: Editor | null;
+  onScrollStatusChanged: (zeroScroll: boolean) => void;
 }
 
 export function EditorContent({
   disabled,
   urlManager,
   editor,
+  onScrollStatusChanged,
 }: EditorContentProps) {
   const notification = useNotification();
 
@@ -43,23 +46,34 @@ export function EditorContent({
     [editor, notification, urlManager]
   );
 
+  const onScrollEnd = useCallback(
+    (event: Event) => {
+      const scrollTop = (event.target as HTMLDivElement).scrollTop;
+
+      onScrollStatusChanged(scrollTop === 0);
+    },
+    [onScrollStatusChanged]
+  );
+
   return (
     <FileDrop disabled={disabled} onFiles={onFiles}>
-      <div className={styles.root}>
-        <TiptapEditorContent
-          draggable={false}
-          className={classNames(
-            typographyStyles.root,
-            typographyStyles['root-variant-body'],
-            richTextStyles.root
-          )}
-          editor={editor}
-        />
+      <ScrollDetect onScrollEnd={onScrollEnd}>
+        <div className={styles.root}>
+          <TiptapEditorContent
+            draggable={false}
+            className={classNames(
+              typographyStyles.root,
+              typographyStyles['root-variant-body'],
+              richTextStyles.root
+            )}
+            editor={editor}
+          />
 
-        <div className={styles['drop-overlay']} draggable={false}>
-          <Typography>Переність картинку</Typography>
+          <div className={styles['drop-overlay']} draggable={false}>
+            <Typography>Переність картинку</Typography>
+          </div>
         </div>
-      </div>
+      </ScrollDetect>
     </FileDrop>
   );
 }

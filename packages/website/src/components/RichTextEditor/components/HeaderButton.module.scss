@@ -1,0 +1,6 @@
+@use '../../../theme/typography' as *;
+
+.root {
+  font-family: $font;
+  font-weight: 700;
+}

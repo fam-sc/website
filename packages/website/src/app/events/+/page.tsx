@@ -5,7 +5,6 @@ import { useCallback, useRef, useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
 
 import { addEvent, editEvent } from '@/api/events/client';
-import { getMediaFileUrl } from '@/api/media';
 import { Button } from '@/components/Button';
 import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
@@ -16,7 +15,8 @@ import { OptionSwitch } from '@/components/OptionSwitch';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
-import { ImageInfo } from '@/utils/image/types';
+import { useSelectableImage } from '@/hooks/useSelectableImage';
+import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -62,12 +62,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   const errorAlert = useNotification();
 
-  const [image, setImage] = useState<ImageInfo[] | string | undefined>(() =>
-    event?.images.map(({ width, height }) => ({
-      src: getMediaFileUrl(`events/${event.id}/${width}`),
-      width,
-      height,
-    }))
+  const [image, setImage] = useSelectableImage(
+    () => event && sizesToImages(`events/${event.id}`, event.images)
   );
   const imageFileRef = useRef<File>(undefined);
 
@@ -107,13 +103,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
             (file) => {
               imageFileRef.current = file;
 
-              setImage((prev) => {
-                if (typeof prev === 'string') {
-                  URL.revokeObjectURL(prev);
-                }
-
-                return file && URL.createObjectURL(file);
-              });
+              setImage(file);
             },
             [setImage]
           )}

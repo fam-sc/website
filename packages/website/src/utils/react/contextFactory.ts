@@ -1,6 +1,9 @@
 import { Context, useContext } from 'react';
 
-export function contextUseFactory<T>(context: Context<T | null>, name: string) {
+export function contextUseFactory<T>(
+  context: Context<T | null>,
+  name: string
+): () => T {
   return () => {
     const value = useContext(context);
     if (value === null) {

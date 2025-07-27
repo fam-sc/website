@@ -1,5 +1,4 @@
 import { EventStatus } from '@sc-fam/data';
-import { ImageSize } from '@sc-fam/shared/image';
 import { RichTextString } from '@sc-fam/shared/richText';
 import { Link } from 'react-router';
 
@@ -7,6 +6,7 @@ import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { RichText } from '@/components/RichText';
 import { Typography } from '@/components/Typography';
 import { EventIcon } from '@/icons/EventIcon';
+import { ImageInfo } from '@/utils/image/types';
 
 import { Image } from '../Image';
 import styles from './EventListItem.module.scss';
@@ -17,9 +17,7 @@ export type EventListItemProps = {
   title: string;
   date: string;
   description: RichTextString;
-  images: (ImageSize & {
-    src: string;
-  })[];
+  images: ImageInfo[];
 };
 
 export function EventListItem({

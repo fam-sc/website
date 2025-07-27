@@ -3021,6 +3021,7 @@ __metadata:
   resolution: "@sc-fam/shared@workspace:packages/shared"
   dependencies:
     "@aws-sdk/client-s3": "npm:3.846.0"
+    parse5: "npm:8.0.0"
     sharp: "npm:0.34.3"
     telegram-standard-bot-api: "npm:1.0.7"
     typescript: "npm:5.8.3"
@@ -3047,10 +3048,12 @@ __metadata:
     "@tiptap/extension-blockquote": "npm:3.0.7"
     "@tiptap/extension-bold": "npm:3.0.7"
     "@tiptap/extension-document": "npm:3.0.7"
+    "@tiptap/extension-hard-break": "npm:3.0.7"
     "@tiptap/extension-heading": "npm:3.0.7"
     "@tiptap/extension-image": "npm:3.0.7"
     "@tiptap/extension-italic": "npm:3.0.7"
     "@tiptap/extension-link": "npm:3.0.7"
+    "@tiptap/extension-list": "npm:3.0.7"
     "@tiptap/extension-paragraph": "npm:3.0.7"
     "@tiptap/extension-strike": "npm:3.0.7"
     "@tiptap/extension-subscript": "npm:3.0.7"
@@ -3933,6 +3936,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-hard-break@npm:3.0.7":
+  version: 3.0.7
+  resolution: "@tiptap/extension-hard-break@npm:3.0.7"
+  peerDependencies:
+    "@tiptap/core": ^3.0.7
+  checksum: 10c0/7e47ca165dfc413f020377975f2b40af3b58f4c3cbc6d9df14dd6f7b1e969231c62d4d8f77c7562d16febfff6ea01c7c5313f090e89c2d1d74ec18d70371da79
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-heading@npm:3.0.7":
   version: 3.0.7
   resolution: "@tiptap/extension-heading@npm:3.0.7"
@@ -3969,6 +3981,16 @@ __metadata:
     "@tiptap/core": ^3.0.7
     "@tiptap/pm": ^3.0.7
   checksum: 10c0/d9403a6199c56645a532d1983644accb2e7e3e949ff011a07ebbd1877924f4835ec8bb79b80bc951c0aae5cfa01db2bf051d4558a1bcaeff34bf35e93e583a89
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-list@npm:3.0.7":
+  version: 3.0.7
+  resolution: "@tiptap/extension-list@npm:3.0.7"
+  peerDependencies:
+    "@tiptap/core": ^3.0.7
+    "@tiptap/pm": ^3.0.7
+  checksum: 10c0/f2b8a8366367dd1dc6927e5fbd3af9f6d3991c96e5597cc5ee68774bf366d40b21e100a445277a15178a26cf7aba7835c038df1f2c805a83375cfe9930cd2d26
   languageName: node
   linkType: hard
 

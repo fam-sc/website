@@ -1,5 +1,6 @@
 import './events/[id]/route';
 import './events/route';
+import './events/latest/route';
 import './gallery/route';
 import './gallery/[id]/route';
 import './groups/route';
@@ -7,6 +8,8 @@ import './polls/route';
 import './polls/[id]/route';
 import './polls/[id]/close/route';
 import './polls/[id]/table/route';
+import './guides/route';
+import './guides/[id]/route';
 import './schedule/route';
 import './signIn/route';
 import './signUp/route';
