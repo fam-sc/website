@@ -26,37 +26,3 @@
 
   object-fit: contain;
 }
-
-.status {
-  width: fit-content;
-}
-
-.header,
-.modify-buttons {
-  display: flex;
-  align-items: center;
-}
-
-.modify-buttons {
-  margin-left: auto;
-  gap: 0.5em;
-}
-
-.modify-button {
-  background: none;
-  outline: none;
-  border: none;
-
-  fill: var(--color-text-on-background);
-  cursor: pointer;
-
-  transition: fill 0.1s linear;
-
-  &:hover {
-    fill: var(--color-text-on-background-dark);
-  }
-
-  &.delete {
-    fill: var(--color-danger);
-  }
-}

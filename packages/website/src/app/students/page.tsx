@@ -1,41 +1,20 @@
-import { Event } from '@sc-fam/data';
-import { formatDateTime } from '@sc-fam/shared/chrono';
-import { shortenRichText } from '@sc-fam/shared/richText';
-
+import { getLatestEvents } from '@/api/events/client';
+import { DataLoadingContainer } from '@/components/DataLoadingContainer';
 import { EventListItem } from '@/components/EventListItem';
 import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 import { UsefulLinkList } from '@/components/UsefulLinkList';
+import { useDataLoader } from '@/hooks/useDataLoader';
 import { sizesToImages } from '@/utils/image/transform';
-import { repository } from '@/utils/repo';
 
-import { Route } from './+types/page';
 import styles from './page.module.scss';
 import { usefulLinks } from './usefulLinks';
 
-function toClientEvent(event: Event) {
-  return {
-    id: event.id,
-    status: event.status,
-    title: event.title,
-    date: formatDateTime(new Date(event.date)),
-    description: shortenRichText(event.description, 200, 'ellipsis'),
-    images: event.images,
-  };
-}
+export default function Page() {
+  const [latestEvents, retry] = useDataLoader(getLatestEvents, []);
 
-export async function loader({ context }: Route.LoaderArgs) {
-  const repo = repository(context);
-  const latestEvents = await repo.events().getLatestEvents(3);
-
-  return { latestEvents: latestEvents.map((value) => toClientEvent(value)) };
-}
-
-export default function Page({
-  loaderData: { latestEvents },
-}: Route.ComponentProps) {
   return (
     <>
       <Title>Студентство</Title>
@@ -49,17 +28,25 @@ export default function Page({
         Заходи
       </Typography>
 
-      <List className={styles.events}>
-        {latestEvents.map(({ id, images, ...rest }) => (
-          <li key={id}>
-            <EventListItem
-              {...rest}
-              id={id}
-              images={sizesToImages(`events/${id}`, images)}
-            />
-          </li>
-        ))}
-      </List>
+      <DataLoadingContainer
+        value={latestEvents}
+        onRetry={retry}
+        className={styles.events}
+      >
+        {(items) => (
+          <List>
+            {items.map(({ id, images, ...rest }) => (
+              <li key={id}>
+                <EventListItem
+                  {...rest}
+                  id={id}
+                  images={sizesToImages(`events/${id}`, images)}
+                />
+              </li>
+            ))}
+          </List>
+        )}
+      </DataLoadingContainer>
 
       <LinkButton
         to="/events"

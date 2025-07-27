@@ -47,17 +47,16 @@
 
     #{$tag} {
       $options: map.get($variants, $tag);
-      
+
       @include variant-body($options);
     }
   }
-  
 
   hr {
     box-sizing: content-box;
     align-self: center;
     overflow: visible;
-    
+
     width: 50%;
     height: 0;
 
@@ -94,7 +93,8 @@
     margin-top: 1em;
   }
 
-  figure, img {
+  figure,
+  img {
     align-self: center;
   }
 

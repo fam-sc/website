@@ -51,7 +51,10 @@
   --content-column: 1;
 }
 
-.title, .description, .date, .status {
+.title,
+.description,
+.date,
+.status {
   grid-column: 1;
   grid-row: var(--element-row);
 
@@ -72,4 +75,3 @@
 .date {
   --element-row: 4;
 }
-

@@ -1,19 +1,16 @@
 import { UserRole } from '@sc-fam/data';
 import { notFound, parseInt } from '@sc-fam/shared';
 import { useCallback, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { deleteGuide } from '@/api/guides/client';
 import { useAuthInfo } from '@/auth/context';
 import { Article } from '@/components/Article';
 import { ConfirmationDialog } from '@/components/ConfirmationDialog';
 import { Image } from '@/components/Image';
+import { ModifyHeader } from '@/components/ModifyHeader';
 import { useNotification } from '@/components/Notification';
 import { RichText } from '@/components/RichText';
-import { Typography } from '@/components/Typography';
-import { DeleteIcon } from '@/icons/DeleteIcon';
-import { EditIcon } from '@/icons/EditIcon';
-import { classNames } from '@/utils/classNames';
 import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
@@ -71,27 +68,12 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
     <Article className={styles.root}>
       <GuideMeta guide={guide} />
 
-      <div className={styles.header}>
-        <Typography variant="h4">{guide.title}</Typography>
-
-        {canEdit && (
-          <div className={styles['modify-buttons']}>
-            <Link
-              to={`/guides/+?edit=${guide.id}`}
-              className={styles['modify-button']}
-            >
-              <EditIcon />
-            </Link>
-
-            <button
-              className={classNames(styles['modify-button'], styles.delete)}
-              onClick={onShowDeleteDialog}
-            >
-              <DeleteIcon />
-            </button>
-          </div>
-        )}
-      </div>
+      <ModifyHeader
+        title={guide.title}
+        canEdit={canEdit}
+        modifyHref={`/guides/+?edit=${guide.id}`}
+        onDelete={onShowDeleteDialog}
+      />
 
       {guide.images && (
         <Image

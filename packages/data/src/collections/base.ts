@@ -38,9 +38,13 @@ export function EntityCollection<Raw extends object>(tableName: string) {
     }
 
     async updateWhere(conditions: Conditions<Raw>, value: Partial<Raw>) {
+      const valueItems = Object.values(value).filter(
+        (item) => item !== undefined
+      );
+
       const { meta } = await this.client
         .prepare(buildUpdateWhereQuery(tableName, conditions, value))
-        .bind(...Object.values(value), ...getConditionsBinding(conditions))
+        .bind(...valueItems, ...getConditionsBinding(conditions))
         .run();
 
       return { changes: meta.changes };

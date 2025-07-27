@@ -12,7 +12,7 @@ export type ShortEvent = {
 };
 
 export type Event = {
-  id: string;
+  id: number;
   title: string;
   status: EventStatus;
   date: string;

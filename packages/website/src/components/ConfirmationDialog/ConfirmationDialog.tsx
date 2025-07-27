@@ -4,6 +4,8 @@ import { Button } from '@/components/Button';
 import { ModalDialog } from '@/components/ModalDialog';
 import { Typography } from '@/components/Typography';
 
+import styles from './ConfirmationDialog.module.scss';
+
 export type ConfirmationDialogProps = {
   title: string;
   onClose: () => void;
@@ -29,6 +31,8 @@ export function ConfirmationDialog({
 
   return (
     <ModalDialog
+      tightLayout
+      contentClassName={styles.root}
       onClose={onClose}
       footer={
         <>

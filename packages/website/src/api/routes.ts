@@ -1,5 +1,6 @@
 import './events/[id]/route';
 import './events/route';
+import './events/latest/route';
 import './gallery/route';
 import './gallery/[id]/route';
 import './groups/route';

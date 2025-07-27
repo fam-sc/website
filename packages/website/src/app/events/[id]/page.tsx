@@ -1,7 +1,7 @@
 import { UserRole } from '@sc-fam/data';
 import { notFound, parseInt } from '@sc-fam/shared';
 import { useCallback, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { deleteEvent } from '@/api/events/client';
 import { useAuthInfo } from '@/auth/context';
@@ -9,12 +9,9 @@ import { Article } from '@/components/Article';
 import { ConfirmationDialog } from '@/components/ConfirmationDialog';
 import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { Image } from '@/components/Image';
+import { ModifyHeader } from '@/components/ModifyHeader';
 import { useNotification } from '@/components/Notification';
 import { RichText } from '@/components/RichText';
-import { Typography } from '@/components/Typography';
-import { DeleteIcon } from '@/icons/DeleteIcon';
-import { EditIcon } from '@/icons/EditIcon';
-import { classNames } from '@/utils/classNames';
 import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
@@ -72,27 +69,12 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
     <Article className={styles.root}>
       <EventMeta event={event} />
 
-      <div className={styles.header}>
-        <Typography variant="h4">{event.title}</Typography>
-
-        {canEdit && (
-          <div className={styles['modify-buttons']}>
-            <Link
-              to={`/events/+?edit=${event.id}`}
-              className={styles['modify-button']}
-            >
-              <EditIcon />
-            </Link>
-
-            <button
-              className={classNames(styles['modify-button'], styles.delete)}
-              onClick={onShowDeleteDialog}
-            >
-              <DeleteIcon />
-            </button>
-          </div>
-        )}
-      </div>
+      <ModifyHeader
+        title={event.title}
+        canEdit={canEdit}
+        modifyHref={`/events/+?edit=${event.id}`}
+        onDelete={onShowDeleteDialog}
+      />
 
       <EventStatusMarker className={styles.status} status={event.status} />
 

@@ -40,6 +40,10 @@
     height: auto;
 
     border-radius: 10px;
+
+    &-tight-layout {
+      min-height: auto;
+    }
   }
 }
 
