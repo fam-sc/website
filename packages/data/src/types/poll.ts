@@ -1,6 +1,7 @@
 export type RawPoll = {
   id: number;
   title: string;
+  slug: string;
   startDate: number;
   endDate: number | null;
   questions: string;

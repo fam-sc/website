@@ -26,7 +26,7 @@ app.post('/polls/:id', async (request, { params: { id } }) => {
 
   return authRoute(request, UserRole.STUDENT, async (repo, userId) => {
     const [poll, userResponded] = await repo.batch([
-      repo.polls().findEndDateAndQuestions(numberId),
+      repo.polls().findEndDateAndQuestionsById(numberId),
       repo.polls().hasUserResponded(numberId, userId),
     ]);
 

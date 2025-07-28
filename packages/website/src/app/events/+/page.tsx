@@ -13,6 +13,7 @@ import { Labeled } from '@/components/Labeled';
 import { useNotification } from '@/components/Notification';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
+import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
 import { useSelectableImage } from '@/hooks/useSelectableImage';
@@ -32,6 +33,7 @@ async function getClientEvent(repo: Repository, id: number) {
           title: editEvent.title,
           date: editEvent.date,
           images: editEvent.images,
+          slug: editEvent.slug,
           description: richTextToHtml(editEvent.description, {
             mediaUrl: import.meta.env.VITE_MEDIA_URL,
           }),
@@ -68,6 +70,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   const imageFileRef = useRef<File>(undefined);
 
   const [title, setTitle] = useState(event?.title ?? '');
+  const [slug, setSlug] = useState(event?.slug ?? '');
   const [date, setDate] = useState(event ? new Date(event.date) : new Date());
   const [status, setStatus] = useState(EventStatus.PENDING);
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(
@@ -87,12 +90,23 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
 
       <TextInput
         disabled={actionPending}
-        error={title.length === 0 ? 'Пустий заголовок' : undefined}
+        error={title.length === 0 && 'Пустий заголовок'}
         className={styles.title}
         placeholder="Заголовок"
         value={title}
         onTextChanged={setTitle}
       />
+
+      <Labeled title="Користуватський ID">
+        <SlugInput
+          disabled={actionPending}
+          error={slug.length === 0 && 'Пустий користуватський ID'}
+          slug={slug}
+          slugContent={title}
+          onSlugChanged={setSlug}
+          autoUpdateSlug={event === undefined}
+        />
+      </Labeled>
 
       <Labeled title="Картинка">
         <InlineImageDropArea
@@ -146,6 +160,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
         className={styles.errors}
         items={[
           title.length === 0 && 'Пустий заголовок',
+          slug.length === 0 && 'Пустий користуватський ID',
           isDescriptionEmpty && 'Пустий опис',
           image === undefined && 'Немає картинки',
         ]}
@@ -176,6 +191,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
             if (image !== undefined) {
               promise = addEvent({
                 title,
+                slug,
                 date,
                 image,
                 status,
@@ -186,6 +202,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
           } else {
             promise = editEvent(event.id, {
               title,
+              slug,
               date,
               image,
               status,
@@ -197,7 +214,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
           if (promise) {
             promise
               .then(() => {
-                void navigate('/events');
+                return navigate('/events');
               })
               .catch((error: unknown) => {
                 console.error(error);

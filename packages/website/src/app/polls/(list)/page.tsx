@@ -36,10 +36,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 
   return {
-    items: items.map(({ id, title }) => ({
-      id,
-      title,
-    })),
+    items,
     page,
     totalPages,
   };
@@ -66,10 +63,10 @@ export default function Page({
 
       <ShortPollInfoList
         className={styles.list}
-        items={items.map(({ id, title }) => ({
+        items={items.map(({ id, slug, title }) => ({
           id,
           title,
-          href: `/polls/${id}`,
+          href: `/polls/${slug}`,
         }))}
         canVisitPoll={canVisitPoll}
       />

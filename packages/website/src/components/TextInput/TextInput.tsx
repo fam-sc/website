@@ -8,11 +8,13 @@ import styles from './TextInput.module.scss';
 
 type InputProps = PropsMap['input'];
 
+export type TextInputVariant = 'bordered' | 'underline';
+
 export interface TextInputProps extends InputProps {
   error?: string | boolean;
   endContent?: ReactNode;
   type?: 'text' | 'password' | 'email' | 'tel';
-  variant?: 'bordered' | 'underline';
+  variant?: TextInputVariant;
   ref?: Ref<HTMLInputElement>;
 
   onTextChanged?: (text: string) => void;

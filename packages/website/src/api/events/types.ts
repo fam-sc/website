@@ -13,6 +13,7 @@ export type ShortEvent = {
 
 export type Event = {
   id: number;
+  slug: string;
   title: string;
   status: EventStatus;
   date: string;

@@ -10,12 +10,12 @@ export default [
   index('home/page.tsx'),
   ...prefix('events', [
     route('+', 'events/+/page.tsx'),
-    route(':id', 'events/[id]/page.tsx'),
+    route(':slug', 'events/[slug]/page.tsx'),
     index('events/(list)/page.tsx'),
   ]),
   ...prefix('guides', [
     route('+', 'guides/+/page.tsx'),
-    route(':id', 'guides/[id]/page.tsx'),
+    route(':slug', 'guides/[slug]/page.tsx'),
     index('guides/(list)/page.tsx'),
   ]),
   ...prefix('gallery', [
@@ -24,8 +24,8 @@ export default [
   ]),
   ...prefix('polls', [
     route('+', 'polls/+/page.tsx'),
-    route(':id/info', 'polls/[id]/info/page.tsx'),
-    route(':id', 'polls/[id]/(main)/page.tsx'),
+    route(':slug/info', 'polls/[slug]/info/page.tsx'),
+    route(':slug', 'polls/[slug]/(main)/page.tsx'),
     index('polls/(list)/page.tsx'),
   ]),
   ...prefix('u', [

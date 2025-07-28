@@ -14,6 +14,7 @@ export type RawEvent = {
   status: EventStatus;
   date: number;
   description: string;
+  slug: string;
   images: string;
 };
 

@@ -1,7 +1,7 @@
 import { Repository } from '@sc-fam/data';
 import { ok } from '@sc-fam/shared';
-import { formatDateTime } from '@sc-fam/shared/chrono/date.js';
-import { shortenRichText } from '@sc-fam/shared/richText/short.js';
+import { formatDateTime } from '@sc-fam/shared/chrono';
+import { shortenRichText } from '@sc-fam/shared/richText';
 
 import { app } from '@/api/app';
 

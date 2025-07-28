@@ -1,13 +1,12 @@
 import { UserRole } from '@sc-fam/data';
-import { notFound, parseInt } from '@sc-fam/shared';
+import { notFound } from '@sc-fam/shared';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { deleteEvent } from '@/api/events/client';
+import { deleteGuide } from '@/api/guides/client';
 import { useAuthInfo } from '@/auth/context';
 import { Article } from '@/components/Article';
 import { ConfirmationDialog } from '@/components/ConfirmationDialog';
-import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { Image } from '@/components/Image';
 import { ModifyHeader } from '@/components/ModifyHeader';
 import { useNotification } from '@/components/Notification';
@@ -16,26 +15,21 @@ import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
-import { EventMeta } from './meta';
+import { GuideMeta } from './meta';
 import styles from './page.module.scss';
 
-export async function loader({ params, context }: Route.LoaderArgs) {
-  const id = parseInt(params.id);
-  if (id === undefined) {
-    return notFound();
-  }
-
+export async function loader({ params: { slug }, context }: Route.LoaderArgs) {
   const repo = repository(context);
-  const event = await repo.events().findById(id);
+  const guide = await repo.guides().findBySlug(slug);
 
-  if (event === null) {
+  if (guide === null) {
     return notFound();
   }
 
-  return { event };
+  return { guide };
 }
 
-export default function Page({ loaderData: { event } }: Route.ComponentProps) {
+export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
   const [isDeleteDialogShown, setDeleteDialogShown] = useState(false);
   const navigate = useNavigate();
   const notification = useNotification();
@@ -51,45 +45,45 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
     setDeleteDialogShown(false);
   }, []);
 
-  const onDeleteEvent = useCallback(() => {
-    deleteEvent(event.id)
+  const onDeleteGuide = useCallback(() => {
+    deleteGuide(guide.id)
       .then(() => {
         notification.show('Видалено', 'plain');
 
-        return navigate('/events');
+        return navigate('/guides');
       })
       .catch((error: unknown) => {
         console.error(error);
 
         notification.show('Сталася помилка при видаленні', 'error');
       });
-  }, [event.id, navigate, notification]);
+  }, [guide.id, navigate, notification]);
 
   return (
     <Article className={styles.root}>
-      <EventMeta event={event} />
+      <GuideMeta guide={guide} />
 
       <ModifyHeader
-        title={event.title}
+        title={guide.title}
         canEdit={canEdit}
-        modifyHref={`/events/+?edit=${event.id}`}
+        modifyHref={`/guides/+?edit=${guide.id}`}
         onDelete={onShowDeleteDialog}
       />
 
-      <EventStatusMarker className={styles.status} status={event.status} />
+      {guide.images && (
+        <Image
+          className={styles.image}
+          multiple={sizesToImages(`guides/${guide.id}`, guide.images)}
+        />
+      )}
 
-      <Image
-        className={styles.image}
-        multiple={sizesToImages(`events/${event.id}`, event.images)}
-      />
-
-      <RichText text={event.description} />
+      <RichText text={guide.description} />
 
       {isDeleteDialogShown && (
         <ConfirmationDialog
-          title="Ви справді хочете видалити подію?"
+          title="Ви справді хочете видалити гайд?"
           onClose={onClose}
-          onConfirm={onDeleteEvent}
+          onConfirm={onDeleteGuide}
         />
       )}
     </Article>

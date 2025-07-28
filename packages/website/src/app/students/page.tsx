@@ -39,7 +39,6 @@ export default function Page() {
               <li key={id}>
                 <EventListItem
                   {...rest}
-                  id={id}
                   images={sizesToImages(`events/${id}`, images)}
                 />
               </li>

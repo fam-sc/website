@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { loadEnvFile } from 'node:process';
 
 import { Guide, Repository } from '@sc-fam/data';
-import { getEnvChecked } from '@sc-fam/shared';
+import { getEnvChecked, textToSlug } from '@sc-fam/shared';
 import { ApiD1Database, ApiR2Bucket } from '@sc-fam/shared/cloudflare';
 import {
   getAttributeValue,
@@ -296,8 +296,10 @@ async function migrateArticle(url: string) {
   status('Adding to DB');
 
   const now = Date.now();
+  const slug = textToSlug(guide.title);
   const guideId = await addToDb({
     title: guide.title,
+    slug,
     description: newDescription,
     createdAtDate: now,
     updatedAtDate: now,
@@ -309,7 +311,7 @@ async function migrateArticle(url: string) {
     await addMainImage(guideId, mainImage);
   }
 
-  status(`Added a guide with ID ${guideId}`);
+  status(`Added a guide with ID ${guideId} (${slug})`);
 }
 
 async function main() {

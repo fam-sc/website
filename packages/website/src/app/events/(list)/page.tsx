@@ -18,14 +18,11 @@ import styles from './page.module.scss';
 
 const ITEMS_PER_PAGE = 5;
 
-function toClientEvent(event: Event) {
+function toClientEvent({ date, description, ...rest }: Event) {
   return {
-    id: event.id,
-    status: event.status,
-    title: event.title,
-    date: formatDateTime(event.date),
-    description: shortenRichText(event.description, 200, 'ellipsis'),
-    images: event.images,
+    ...rest,
+    date: formatDateTime(date),
+    description: shortenRichText(description, 200, 'ellipsis'),
   };
 }
 
@@ -75,7 +72,6 @@ export default function Page({
           <li key={id}>
             <EventListItem
               {...rest}
-              id={id}
               images={sizesToImages(`events/${id}`, images)}
             />
           </li>

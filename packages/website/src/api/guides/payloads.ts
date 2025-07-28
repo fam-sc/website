@@ -1,11 +1,13 @@
 import { getAllFiles } from '@sc-fam/shared';
 import { richText } from '@sc-fam/shared/richText/zod.js';
-import { object, string } from 'zod/v4-mini';
+import { slug } from '@sc-fam/shared/slugSchema.js';
+import { minLength, object, string } from 'zod/v4-mini';
 
 import { AddGuidePayload, EditGuidePayload } from './types';
 
 export const payloadSchema = object({
-  title: string(),
+  title: string().check(minLength(1)),
+  slug,
   description: richText,
 });
 

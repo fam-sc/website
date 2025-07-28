@@ -12,7 +12,7 @@ import { Image } from '../Image';
 import styles from './EventListItem.module.scss';
 
 export type EventListItemProps = {
-  id: number;
+  slug: string;
   status: EventStatus;
   title: string;
   date: string;
@@ -21,7 +21,7 @@ export type EventListItemProps = {
 };
 
 export function EventListItem({
-  id,
+  slug,
   images,
   status,
   title,
@@ -29,7 +29,7 @@ export function EventListItem({
   description,
 }: EventListItemProps) {
   return (
-    <Link className={styles.root} to={`/events/${id}`}>
+    <Link className={styles.root} to={`/events/${slug}`}>
       <Image multiple={images} sizes={{ default: '20vw' }} />
 
       <Typography className={styles.title} variant="h5">

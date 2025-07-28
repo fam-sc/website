@@ -11,7 +11,7 @@ type Story = StoryObj<typeof EventListItem>;
 
 export const Primary: Story = {
   args: {
-    id: 1,
+    slug: '1',
     date: '11 травня',
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit praesentium, esse dolores officia qui quidem animi ea doloremque suscipit neque laboriosam natus perferendis consequuntur ad, cum id quae sint molestias.',

@@ -1,6 +1,7 @@
 import { ImageSize } from '@sc-fam/shared/image';
 import { RichTextString } from '@sc-fam/shared/richText';
 
+import { Conditions } from '../sqlite/conditions';
 import { TableDescriptor } from '../sqlite/types';
 import { Guide, RawGuide } from '../types';
 import { EntityCollection } from './base';
@@ -33,6 +34,7 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
       createdAtDate: 'INTEGER NOT NULL',
       updatedAtDate: 'INTEGER NOT NULL',
       images: 'TEXT',
+      slug: 'TEXT NOT NULL',
     };
   }
 
@@ -63,10 +65,18 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
     );
   }
 
-  async findById(id: number) {
-    const result = await this.findOneWhere({ id });
+  private async findBy(filter: Conditions<RawGuide>) {
+    const result = await this.findOneWhere(filter);
 
     return result ? mapRawGuide(result) : null;
+  }
+
+  findById(id: number) {
+    return this.findBy({ id });
+  }
+
+  findBySlug(slug: string) {
+    return this.findBy({ slug });
   }
 
   async getDescriptionById(id: number): Promise<RichTextString | null> {
