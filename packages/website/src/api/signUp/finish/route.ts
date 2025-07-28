@@ -49,19 +49,24 @@ app.post('/signUp/finish', async (request, { env }) => {
   await repo.pendingUsers().deleteWhere({ token }).get();
   await repo.sessions().insert({ sessionId, userId });
 
-  await onNewUserCreated(
-    {
-      id: userId,
-      firstName: pendingUser.firstName,
-      lastName: pendingUser.lastName,
-      parentName: pendingUser.parentName,
-      academicGroup: pendingUser.academicGroup,
-      email: pendingUser.email,
-      telnum: pendingUser.telnum,
-      registrationIp: getConnectingIp(request),
-    },
-    env
-  );
+  try {
+    await onNewUserCreated(
+      {
+        id: userId,
+        firstName: pendingUser.firstName,
+        lastName: pendingUser.lastName,
+        parentName: pendingUser.parentName,
+        academicGroup: pendingUser.academicGroup,
+        email: pendingUser.email,
+        telnum: pendingUser.telnum,
+        registrationIp: getConnectingIp(request),
+      },
+      env
+    );
+  } catch (error: unknown) {
+    // Don't let the error to stop user from registration.
+    console.error(error);
+  }
 
   const response = new Response();
   setSessionId(response, sessionId);

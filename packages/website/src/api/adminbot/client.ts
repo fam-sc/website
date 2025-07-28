@@ -27,12 +27,12 @@ export function notifyNewUserCreated(
   payload: NewUserEventPayload,
   accessKey: string
 ) {
-  return authRequest('/events/user', payload, accessKey);
+  return authRequest('/events/newUser', payload, accessKey);
 }
 
 export function notifyUserApprovedExternally(
   payload: NewUserApprovedExternallyEventPayload,
   accessKey: string
 ) {
-  return authRequest('/events/user/approvedExternally', payload, accessKey);
+  return authRequest('/events/newUser/approvedExternally', payload, accessKey);
 }
