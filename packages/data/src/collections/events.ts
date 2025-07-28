@@ -21,6 +21,7 @@ export class EventCollection extends EntityCollection<RawEvent>('events') {
       status: 'INTEGER NOT NULL',
       title: 'TEXT NOT NULL',
       images: 'TEXT NOT NULL',
+      slug: 'TEXT NOT NULL',
     };
   }
 
@@ -53,6 +54,12 @@ export class EventCollection extends EntityCollection<RawEvent>('events') {
 
   async findById(id: number) {
     const result = await this.findOneWhere({ id });
+
+    return result ? mapRawEvent(result) : null;
+  }
+
+  async findBySlug(slug: string) {
+    const result = await this.findOneWhere({ slug });
 
     return result ? mapRawEvent(result) : null;
   }

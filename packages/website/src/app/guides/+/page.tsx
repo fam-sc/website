@@ -5,12 +5,14 @@ import { useCallback, useRef, useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
 
 import { addGuide, editGuide } from '@/api/guides/client';
+import { AddGuidePayload } from '@/api/guides/types';
 import { Button } from '@/components/Button';
 import { ErrorBoard } from '@/components/ErrorBoard';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { Labeled } from '@/components/Labeled';
 import { useNotification } from '@/components/Notification';
 import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
+import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
 import { useSelectableImage } from '@/hooks/useSelectableImage';
@@ -27,6 +29,7 @@ async function getClientGuide(repo: Repository, id: number) {
     return editGuide
       ? {
           id,
+          slug: editGuide.slug,
           title: editGuide.title,
           images: editGuide.images,
           description: richTextToHtml(editGuide.description, {
@@ -67,6 +70,7 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
   const imageFileRef = useRef<File>(undefined);
 
   const [title, setTitle] = useState(guide?.title ?? '');
+  const [slug, setSlug] = useState(guide?.slug ?? '');
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(
     guide === undefined
   );
@@ -90,6 +94,17 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
         value={title}
         onTextChanged={setTitle}
       />
+
+      <Labeled title="Користуватський ID">
+        <SlugInput
+          disabled={actionPending}
+          error={slug.length === 0 && 'Пустий користуватський ID'}
+          slug={slug}
+          slugContent={title}
+          onSlugChanged={setSlug}
+          autoUpdateSlug={guide === undefined}
+        />
+      </Labeled>
 
       <Labeled title="Картинка">
         <InlineImageDropArea
@@ -139,20 +154,18 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
             throw new Error('Description is null');
           }
 
+          const payload: AddGuidePayload = {
+            title,
+            image,
+            slug,
+            description: description.value,
+            descriptionFiles: description.files,
+          };
+
           const promise =
             guide === undefined
-              ? addGuide({
-                  title,
-                  image,
-                  description: description.value,
-                  descriptionFiles: description.files,
-                })
-              : editGuide(guide.id, {
-                  title,
-                  image,
-                  description: description.value,
-                  descriptionFiles: description.files,
-                });
+              ? addGuide(payload)
+              : editGuide(guide.id, payload);
 
           promise
             .then(() => {

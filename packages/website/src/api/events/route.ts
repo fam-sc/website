@@ -26,7 +26,7 @@ app.get('/events', async (request) => {
 
 app.post('/events', async (request, { env }) => {
   const formData = await request.formData();
-  const { title, description, descriptionFiles, date, image, status } =
+  const { description, descriptionFiles, date, image, ...restPayload } =
     parseAddEventPayload(formData);
 
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
@@ -44,10 +44,9 @@ app.post('/events', async (request, { env }) => {
   return await authRoute(request, UserRole.ADMIN, async (repo) => {
     const id = await repo.events().insertEvent({
       date: date.getTime(),
-      status,
-      title,
       description: richTextDescription,
       images: sizes,
+      ...restPayload,
     });
 
     await putMultipleSizedImages(

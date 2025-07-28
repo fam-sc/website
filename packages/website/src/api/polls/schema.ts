@@ -1,3 +1,4 @@
+import { slug } from '@sc-fam/shared/slugSchema.js';
 import {
   array,
   boolean,
@@ -40,6 +41,7 @@ export const answer = object({
 
 export const poll = object({
   title: nonEmptyString,
+  slug,
   questions: array(question).check(minLength(1)),
 });
 

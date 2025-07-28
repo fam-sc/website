@@ -11,7 +11,7 @@ import { Image } from '../Image';
 import styles from './GuideListItem.module.scss';
 
 export type GuideListItemProps = {
-  id: number;
+  slug: string;
   title: string;
   createdAt: string;
   description: RichTextString;
@@ -19,7 +19,7 @@ export type GuideListItemProps = {
 };
 
 export function GuideListItem({
-  id,
+  slug,
   images,
   title,
   createdAt,
@@ -31,7 +31,7 @@ export function GuideListItem({
         styles.root,
         images === null && styles[`root-no-image`]
       )}
-      to={`/guides/${id}`}
+      to={`/guides/${slug}`}
     >
       {images && <Image multiple={images} sizes={{ default: '20vw' }} />}
 

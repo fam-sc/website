@@ -11,7 +11,7 @@ import { parseAddGuidePayload } from './payloads';
 
 app.post('/guides', async (request, { env }) => {
   const formData = await request.formData();
-  const { title, description, descriptionFiles, image } =
+  const { title, slug, description, descriptionFiles, image } =
     parseAddGuidePayload(formData);
 
   // Use media and repo transactions here to ensure consistency if an error happens somewhere.
@@ -32,6 +32,7 @@ app.post('/guides', async (request, { env }) => {
     const now = Date.now();
     const id = await repo.guides().insertGuide({
       title,
+      slug,
       description: richTextDescription,
       createdAtDate: now,
       updatedAtDate: now,

@@ -16,7 +16,7 @@ app.put('/events/:id', async (request, { env, params: { id } }) => {
   }
 
   const formData = await request.formData();
-  const { title, description, descriptionFiles, date, image, status } =
+  const { description, descriptionFiles, date, image, ...restPayload } =
     parseEditEventPayload(formData);
 
   const imageBuffer = await image?.bytes();
@@ -42,9 +42,8 @@ app.put('/events/:id', async (request, { env, params: { id } }) => {
 
     const newEvent: Partial<Event> = {
       date: date.getTime(),
-      title,
-      status,
       description: hydratedDescription,
+      ...restPayload,
     };
 
     if (sizes) {

@@ -7,6 +7,7 @@ export type RawGuide = {
   createdAtDate: number;
   updatedAtDate: number;
   description: string;
+  slug: string;
   images: string | null;
 };
 

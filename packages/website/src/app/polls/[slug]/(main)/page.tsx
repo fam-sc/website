@@ -1,5 +1,5 @@
 import { UserRole } from '@sc-fam/data';
-import { notFound, parseInt } from '@sc-fam/shared';
+import { notFound } from '@sc-fam/shared';
 import { PropsWithChildren } from 'react';
 import { redirect } from 'react-router';
 
@@ -22,7 +22,11 @@ function ErrorMessage({ children }: PropsWithChildren) {
   );
 }
 
-export async function loader({ request, params, context }: Route.LoaderArgs) {
+export async function loader({
+  request,
+  context,
+  params: { slug },
+}: Route.LoaderArgs) {
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/polls');
@@ -30,39 +34,36 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 
   const repo = repository(context);
   const userInfo = await repo.sessions().getUserWithRole(sessionId);
-  const numberId = parseInt(params.id);
 
-  if (
-    userInfo === null ||
-    numberId === undefined ||
-    userInfo.role < UserRole.STUDENT
-  ) {
+  if (userInfo === null || userInfo.role < UserRole.STUDENT) {
     return redirect('/polls');
   }
 
-  const [poll, userReposponded] = await repo.batch([
-    repo.polls().findEndDateAndQuestions(numberId),
-    repo.polls().hasUserResponded(numberId, userInfo.id),
-  ]);
+  const poll = await repo.polls().findEndDateAndQuestionsBySlug(slug).get();
 
   if (poll === null) {
     return notFound();
   }
 
-  const isPollEnded = poll.endDate !== null;
+  const userResponded = await repo
+    .polls()
+    .hasUserResponded(poll.id, userInfo.id)
+    .get();
+
   const canViewInfo = userInfo.role >= UserRole.ADMIN;
 
   return {
     poll,
     canViewInfo,
-    isPollEnded,
-    userReposponded,
+    userResponded,
   };
 }
 
 export default function Page({
-  loaderData: { poll, canViewInfo, isPollEnded, userReposponded },
+  loaderData: { poll, canViewInfo, userResponded },
 }: Route.ComponentProps) {
+  const isPollEnded = poll.endDate !== null;
+
   return (
     <div className={styles.content}>
       <Title>{poll.title}</Title>
@@ -74,7 +75,7 @@ export default function Page({
           <IconLinkButton
             className={styles.info}
             hover="fill"
-            to={`/polls/${poll.id}/info`}
+            to={`/polls/${poll.slug}/info`}
           >
             <InfoIcon />
           </IconLinkButton>
@@ -83,7 +84,7 @@ export default function Page({
 
       {isPollEnded ? (
         <ErrorMessage>Опитування закінчилося</ErrorMessage>
-      ) : userReposponded ? (
+      ) : userResponded ? (
         <ErrorMessage>Ви вже відповіли на це опитування</ErrorMessage>
       ) : (
         <PollWithSubmit id={poll.id} questions={poll.questions} />

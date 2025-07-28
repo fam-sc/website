@@ -1,3 +1,4 @@
+import { Conditions } from '../sqlite/conditions';
 import { isNull } from '../sqlite/modifier';
 import { query } from '../sqlite/query';
 import { TableDescriptor } from '../sqlite/types';
@@ -19,15 +20,18 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
       startDate: 'INTEGER NOT NULL',
       endDate: 'INTEGER',
       questions: 'TEXT NOT NULL',
+      slug: 'TEXT NOT NULL',
     };
   }
 
-  findShortPoll(id: number) {
-    return this.findOneWhere({ id }, ['id', 'title', 'startDate', 'endDate']);
+  findShortPollBySlug(slug: string) {
+    return this.findOneWhere({ slug }, ['id', 'title', 'startDate', 'endDate']);
   }
 
-  findEndDateAndQuestions(id: number) {
-    return this.findOneWhereAction({ id }, [
+  private findEndDateAndQuestionsBase(filter: Conditions<RawPoll>) {
+    return this.findOneWhereAction(filter, [
+      'id',
+      'slug',
       'endDate',
       'questions',
       'title',
@@ -36,13 +40,21 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
         return null;
       }
 
+      const { questions, ...rest } = result;
+
       return {
-        id,
-        title: result.title,
-        endDate: result.endDate,
-        questions: JSON.parse(result.questions) as PollQuestion[],
+        questions: JSON.parse(questions) as PollQuestion[],
+        ...rest,
       };
     });
+  }
+
+  findEndDateAndQuestionsBySlug(slug: string) {
+    return this.findEndDateAndQuestionsBase({ slug });
+  }
+
+  findEndDateAndQuestionsById(id: number) {
+    return this.findEndDateAndQuestionsBase({ id });
   }
 
   hasUserResponded(pollId: number, userId: number) {
@@ -54,7 +66,7 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
   insertPoll({
     questions,
     ...rest
-  }: Pick<Poll, 'title' | 'startDate' | 'endDate' | 'questions'>) {
+  }: Pick<Poll, 'title' | 'slug' | 'startDate' | 'endDate' | 'questions'>) {
     return this.insert({ questions: JSON.stringify(questions), ...rest });
   }
 
@@ -104,7 +116,7 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
       .merge(
         [
           this.count(),
-          this.getPageBase(index * size, size, {}, ['id', 'title']),
+          this.getPageBase(index * size, size, {}, ['id', 'title', 'slug']),
         ],
         this.queryContext
       )

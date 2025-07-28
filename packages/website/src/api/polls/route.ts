@@ -15,14 +15,13 @@ app.post('/polls', async (request) => {
     return badRequest();
   }
 
-  const { title, questions } = payloadResult.data;
+  const payload = payloadResult.data;
 
   return authRoute(request, UserRole.ADMIN, async (repo) => {
     await repo.polls().insertPoll({
       startDate: Date.now(),
       endDate: null,
-      title,
-      questions,
+      ...payload,
     });
 
     return new Response();

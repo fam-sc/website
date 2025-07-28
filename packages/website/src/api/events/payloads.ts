@@ -1,7 +1,16 @@
 import { EventStatus } from '@sc-fam/data';
 import { getAllFiles } from '@sc-fam/shared';
 import { richText } from '@sc-fam/shared/richText/zod.js';
-import { coerce, literal, object, pipe, string, union } from 'zod/v4-mini';
+import { slug } from '@sc-fam/shared/slugSchema.js';
+import {
+  coerce,
+  literal,
+  minLength,
+  object,
+  pipe,
+  string,
+  union,
+} from 'zod/v4-mini';
 
 import {
   AddEventPayload,
@@ -16,7 +25,8 @@ const status = union([
 
 export const payloadSchema = object({
   status,
-  title: string(),
+  title: string().check(minLength(1)),
+  slug: slug,
   date: pipe(string(), coerce.date()),
   description: richText,
 });

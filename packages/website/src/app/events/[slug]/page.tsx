@@ -1,12 +1,13 @@
 import { UserRole } from '@sc-fam/data';
-import { notFound, parseInt } from '@sc-fam/shared';
+import { notFound } from '@sc-fam/shared';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { deleteGuide } from '@/api/guides/client';
+import { deleteEvent } from '@/api/events/client';
 import { useAuthInfo } from '@/auth/context';
 import { Article } from '@/components/Article';
 import { ConfirmationDialog } from '@/components/ConfirmationDialog';
+import { EventStatusMarker } from '@/components/EventStatusMarker';
 import { Image } from '@/components/Image';
 import { ModifyHeader } from '@/components/ModifyHeader';
 import { useNotification } from '@/components/Notification';
@@ -15,26 +16,21 @@ import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
-import { GuideMeta } from './meta';
+import { EventMeta } from './meta';
 import styles from './page.module.scss';
 
 export async function loader({ params, context }: Route.LoaderArgs) {
-  const id = parseInt(params.id);
-  if (id === undefined) {
-    return notFound();
-  }
-
   const repo = repository(context);
-  const guide = await repo.guides().findById(id);
+  const event = await repo.events().findBySlug(params.slug);
 
-  if (guide === null) {
+  if (event === null) {
     return notFound();
   }
 
-  return { guide };
+  return { event };
 }
 
-export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
+export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   const [isDeleteDialogShown, setDeleteDialogShown] = useState(false);
   const navigate = useNavigate();
   const notification = useNotification();
@@ -50,45 +46,45 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
     setDeleteDialogShown(false);
   }, []);
 
-  const onDeleteGuide = useCallback(() => {
-    deleteGuide(guide.id)
+  const onDeleteEvent = useCallback(() => {
+    deleteEvent(event.id)
       .then(() => {
         notification.show('Видалено', 'plain');
 
-        return navigate('/guides');
+        return navigate('/events');
       })
       .catch((error: unknown) => {
         console.error(error);
 
         notification.show('Сталася помилка при видаленні', 'error');
       });
-  }, [guide.id, navigate, notification]);
+  }, [event.id, navigate, notification]);
 
   return (
     <Article className={styles.root}>
-      <GuideMeta guide={guide} />
+      <EventMeta event={event} />
 
       <ModifyHeader
-        title={guide.title}
+        title={event.title}
         canEdit={canEdit}
-        modifyHref={`/guides/+?edit=${guide.id}`}
+        modifyHref={`/events/+?edit=${event.id}`}
         onDelete={onShowDeleteDialog}
       />
 
-      {guide.images && (
-        <Image
-          className={styles.image}
-          multiple={sizesToImages(`guides/${guide.id}`, guide.images)}
-        />
-      )}
+      <EventStatusMarker className={styles.status} status={event.status} />
 
-      <RichText text={guide.description} />
+      <Image
+        className={styles.image}
+        multiple={sizesToImages(`events/${event.id}`, event.images)}
+      />
+
+      <RichText text={event.description} />
 
       {isDeleteDialogShown && (
         <ConfirmationDialog
-          title="Ви справді хочете видалити гайд?"
+          title="Ви справді хочете видалити подію?"
           onClose={onClose}
-          onConfirm={onDeleteGuide}
+          onConfirm={onDeleteEvent}
         />
       )}
     </Article>

@@ -17,7 +17,7 @@ app.put('/guides/:id', async (request, { env, params: { id } }) => {
   }
 
   const formData = await request.formData();
-  const { title, description, descriptionFiles, image } =
+  const { title, slug, description, descriptionFiles, image } =
     parseEditGuidePayload(formData);
 
   const imageBuffer = await image?.bytes();
@@ -43,6 +43,7 @@ app.put('/guides/:id', async (request, { env, params: { id } }) => {
 
     const newGuide: Partial<Guide> = {
       title,
+      slug,
       description: hydratedDescription,
       updatedAtDate: Date.now(),
     };

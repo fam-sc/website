@@ -17,5 +17,6 @@ export { parseInt } from './parseInt.js';
 export { formPersonName } from './person.js';
 export * from './responses.js';
 export { searchParamsToObject } from './searchParams.js';
+export { isValidSlug, textToSlug } from './slug.js';
 export { bufferToReadableStream } from './stream.js';
 export { isPromise } from './typecheck.js';

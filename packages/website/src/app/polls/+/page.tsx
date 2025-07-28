@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router';
 import { addPoll } from '@/api/polls/client';
 import type { AddPollPayload } from '@/api/polls/types';
 import { Button } from '@/components/Button';
+import { Labeled } from '@/components/Labeled';
 import { useNotification } from '@/components/Notification';
 import { PollBuilder } from '@/components/PollBuilder';
+import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
 import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
 
@@ -13,6 +15,7 @@ import styles from './page.module.scss';
 
 export default function Page() {
   const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
   const [items, setItems] = useState<QuestionBuildItem[]>([]);
   const [isActionPending, setIsActionPending] = useState(false);
 
@@ -30,28 +33,40 @@ export default function Page() {
       ...descriptor,
     })) as AddPollPayload['questions'];
 
-    addPoll({ title, questions })
+    addPoll({ title, slug, questions })
       .then(() => {
-        void navigate('/polls');
-
         notification.show('Опитування додано успішно', 'plain');
+
+        return navigate('/polls');
       })
       .catch(() => {
         setIsActionPending(false);
 
         notification.show('Сталася помилка', 'error');
       });
-  }, [items, navigate, notification, title]);
+  }, [items, slug, notification, title, navigate]);
 
   return (
     <div className={styles.content}>
-      <TextInput
-        disabled={isActionPending}
-        className={styles.title}
-        placeholder="Заголовок"
-        value={title}
-        onTextChanged={setTitle}
-      />
+      <Labeled title="Заголовок">
+        <TextInput
+          disabled={isActionPending}
+          className={styles.title}
+          placeholder="Заголовок"
+          value={title}
+          onTextChanged={setTitle}
+        />
+      </Labeled>
+
+      <Labeled title="Користуватський ID">
+        <SlugInput
+          disabled={isActionPending}
+          error={slug.length === 0 && 'Пустий користуватський ID'}
+          slug={slug}
+          slugContent={title}
+          onSlugChanged={setSlug}
+        />
+      </Labeled>
 
       <PollBuilder
         disabled={isActionPending}

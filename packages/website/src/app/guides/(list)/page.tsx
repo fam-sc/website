@@ -23,6 +23,7 @@ function toClientGuide(guide: Guide) {
   return {
     id: guide.id,
     title: guide.title,
+    slug: guide.slug,
     createdAt: formatDate(guide.createdAtDate),
     updatedAt: formatDate(guide.updatedAtDate),
     description: shortenRichText(guide.description, 200, 'ellipsis'),
@@ -76,7 +77,6 @@ export default function Page({
           <li key={id}>
             <GuideListItem
               {...rest}
-              id={id}
               images={images ? sizesToImages(`guides/${id}`, images) : null}
             />
           </li>

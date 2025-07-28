@@ -1,5 +1,5 @@
 import { UserRole } from '@sc-fam/data';
-import { notFound, parseInt } from '@sc-fam/shared';
+import { notFound } from '@sc-fam/shared';
 import { formatDateTime } from '@sc-fam/shared/chrono';
 import { useState } from 'react';
 import { redirect } from 'react-router';
@@ -19,7 +19,11 @@ import { Route } from './+types/page';
 import styles from './page.module.scss';
 import { ResultsTab } from './tabs/results';
 
-export async function loader({ request, params, context }: Route.LoaderArgs) {
+export async function loader({
+  request,
+  context,
+  params: { slug },
+}: Route.LoaderArgs) {
   const sessionId = getSessionId(request);
   if (sessionId === undefined) {
     return redirect('/polls');
@@ -27,17 +31,12 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 
   const repo = repository(context);
   const userInfo = await repo.sessions().getUserWithRole(sessionId);
-  const numberId = parseInt(params.id);
 
-  if (
-    userInfo === null ||
-    numberId === undefined ||
-    userInfo.role < UserRole.STUDENT
-  ) {
+  if (userInfo === null || userInfo.role < UserRole.ADMIN) {
     return redirect('/polls');
   }
 
-  const poll = await repo.polls().findShortPoll(numberId);
+  const poll = await repo.polls().findShortPollBySlug(slug);
 
   if (poll === null) {
     return notFound();
