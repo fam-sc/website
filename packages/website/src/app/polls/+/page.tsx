@@ -2,13 +2,18 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { addPoll } from '@/api/polls/client';
-import type { AddPollPayload } from '@/api/polls/types';
+import { AddPollPayload } from '@/api/polls/types';
 import { Button } from '@/components/Button';
 import { Labeled } from '@/components/Labeled';
 import { useNotification } from '@/components/Notification';
 import { PollBuilder } from '@/components/PollBuilder';
 import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
+import {
+  getValidationItem,
+  testValidationResult,
+  useValidation,
+} from '@/hooks/useValidation';
 import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
 
 import styles from './page.module.scss';
@@ -19,11 +24,14 @@ export default function Page() {
   const [items, setItems] = useState<QuestionBuildItem[]>([]);
   const [isActionPending, setIsActionPending] = useState(false);
 
+  const validation = useValidation({
+    title: [title.length > 0, 'Пустий заголовок'],
+    slug: [slug.length > 0, 'Пустий користуватський ID'],
+    poll: [items.length > 0 && items.every((item) => isValidItem(item)), ''],
+  });
+
   const notification = useNotification();
   const navigate = useNavigate();
-
-  const isPollValid =
-    items.length > 0 && items.every((item) => isValidItem(item));
 
   const submit = useCallback(() => {
     setIsActionPending(true);
@@ -51,6 +59,7 @@ export default function Page() {
       <Labeled title="Заголовок">
         <TextInput
           disabled={isActionPending}
+          error={getValidationItem(validation, 'title')}
           className={styles.title}
           placeholder="Заголовок"
           value={title}
@@ -61,7 +70,7 @@ export default function Page() {
       <Labeled title="Користуватський ID">
         <SlugInput
           disabled={isActionPending}
-          error={slug.length === 0 && 'Пустий користуватський ID'}
+          error={getValidationItem(validation, 'slug')}
           slug={slug}
           slugContent={title}
           onSlugChanged={setSlug}
@@ -78,7 +87,7 @@ export default function Page() {
       <Button
         buttonVariant="solid"
         className={styles.add}
-        disabled={!(isPollValid && title.length > 0) || isActionPending}
+        disabled={!testValidationResult(validation) || isActionPending}
         onClick={submit}
       >
         Додати

@@ -5,6 +5,7 @@ import { useCallback, useRef, useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
 
 import { addEvent, editEvent } from '@/api/events/client';
+import { AddEventPayload } from '@/api/events/types';
 import { Button } from '@/components/Button';
 import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
@@ -17,6 +18,11 @@ import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
 import { useSelectableImage } from '@/hooks/useSelectableImage';
+import {
+  getValidationItem,
+  testValidationResult,
+  useValidation,
+} from '@/hooks/useValidation';
 import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
@@ -78,6 +84,13 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   );
   const descriptionRef = useRef<RichTextEditorRef | null>(null);
 
+  const validation = useValidation({
+    title: [title.length > 0, 'Пустий заголовок'],
+    slug: [slug.length > 0, 'Пустий користуватський ID'],
+    description: [!isDescriptionEmpty, 'Пустий опис'],
+    image: [image !== undefined, 'Немає картинки'],
+  });
+
   const [actionPending, setActionPending] = useState(false);
 
   const navigate = useNavigate();
@@ -90,7 +103,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
 
       <TextInput
         disabled={actionPending}
-        error={title.length === 0 && 'Пустий заголовок'}
+        error={getValidationItem(validation, 'title')}
         className={styles.title}
         placeholder="Заголовок"
         value={title}
@@ -100,7 +113,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
       <Labeled title="Користуватський ID">
         <SlugInput
           disabled={actionPending}
-          error={slug.length === 0 && 'Пустий користуватський ID'}
+          error={getValidationItem(validation, 'slug')}
           slug={slug}
           slugContent={title}
           onSlugChanged={setSlug}
@@ -156,24 +169,11 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
         />
       </Labeled>
 
-      <ErrorBoard
-        className={styles.errors}
-        items={[
-          title.length === 0 && 'Пустий заголовок',
-          slug.length === 0 && 'Пустий користуватський ID',
-          isDescriptionEmpty && 'Пустий опис',
-          image === undefined && 'Немає картинки',
-        ]}
-      />
+      <ErrorBoard className={styles.errors} items={validation} />
 
       <Button
         className={styles['save-edit-button']}
-        disabled={
-          actionPending ||
-          title.length === 0 ||
-          isDescriptionEmpty ||
-          image === undefined
-        }
+        disabled={actionPending || testValidationResult(validation)}
         buttonVariant="solid"
         onClick={() => {
           const { current: image } = imageFileRef;
@@ -187,28 +187,22 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
             throw new Error('Description is null');
           }
 
+          const payload = {
+            title,
+            slug,
+            date,
+            image,
+            status,
+            description: description.value,
+            descriptionFiles: description.files,
+          };
+
           if (event === undefined) {
             if (image !== undefined) {
-              promise = addEvent({
-                title,
-                slug,
-                date,
-                image,
-                status,
-                description: description.value,
-                descriptionFiles: description.files,
-              });
+              promise = addEvent(payload as AddEventPayload);
             }
           } else {
-            promise = editEvent(event.id, {
-              title,
-              slug,
-              date,
-              image,
-              status,
-              description: description.value,
-              descriptionFiles: description.files,
-            });
+            promise = editEvent(event.id, payload);
           }
 
           if (promise) {

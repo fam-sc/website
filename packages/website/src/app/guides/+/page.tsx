@@ -16,6 +16,11 @@ import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
 import { useSelectableImage } from '@/hooks/useSelectableImage';
+import {
+  getValidationItem,
+  testValidationResult,
+  useValidation,
+} from '@/hooks/useValidation';
 import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
@@ -76,6 +81,12 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
   );
   const descriptionRef = useRef<RichTextEditorRef | null>(null);
 
+  const validation = useValidation({
+    title: [title.length > 0, 'Пустий заголовок'],
+    slug: [slug.length > 0, 'Пустий користуватський ID'],
+    description: [!isDescriptionEmpty, 'Пустий опис'],
+  });
+
   const [actionPending, setActionPending] = useState(false);
 
   const navigate = useNavigate();
@@ -88,7 +99,7 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
 
       <TextInput
         disabled={actionPending}
-        error={title.length === 0 ? 'Пустий заголовок' : undefined}
+        error={getValidationItem(validation, 'title')}
         className={styles.title}
         placeholder="Заголовок"
         value={title}
@@ -98,7 +109,7 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
       <Labeled title="Користуватський ID">
         <SlugInput
           disabled={actionPending}
-          error={slug.length === 0 && 'Пустий користуватський ID'}
+          error={getValidationItem(validation, 'slug')}
           slug={slug}
           slugContent={title}
           onSlugChanged={setSlug}
@@ -132,17 +143,11 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
         />
       </Labeled>
 
-      <ErrorBoard
-        className={styles.errors}
-        items={[
-          title.length === 0 && 'Пустий заголовок',
-          isDescriptionEmpty && 'Пустий опис',
-        ]}
-      />
+      <ErrorBoard className={styles.errors} items={validation} />
 
       <Button
         className={styles['save-edit-button']}
-        disabled={actionPending || title.length === 0 || isDescriptionEmpty}
+        disabled={actionPending || testValidationResult(validation)}
         buttonVariant="solid"
         onClick={() => {
           const { current: image } = imageFileRef;
