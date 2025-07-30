@@ -2,6 +2,10 @@
 
 .root {
   display: flex;
+
+  &-success > * {
+    flex-grow: 1;
+  }
 }
 
 .error,

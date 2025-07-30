@@ -1,4 +1,4 @@
-import { Node, NodeChange } from '@xyflow/react';
+import type { Node, NodeChange } from '@xyflow/react';
 
 export const enum ChangeType {
   NONE = 0b00,

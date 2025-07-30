@@ -11,9 +11,10 @@ import { DatePicker } from '@/components/DatePicker';
 import { ErrorBoard } from '@/components/ErrorBoard';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { Labeled } from '@/components/Labeled';
+import { LazyRichTextEditor } from '@/components/LazyRichTextEditor';
 import { useNotification } from '@/components/Notification';
 import { OptionSwitch } from '@/components/OptionSwitch';
-import { RichTextEditor, RichTextEditorRef } from '@/components/RichTextEditor';
+import type { RichTextEditorRef } from '@/components/RichTextEditor';
 import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
@@ -160,7 +161,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
       </Labeled>
 
       <Labeled title="Опис">
-        <RichTextEditor
+        <LazyRichTextEditor
           ref={descriptionRef}
           disabled={actionPending}
           className={styles.description}

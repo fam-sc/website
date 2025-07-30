@@ -44,7 +44,7 @@ export default function Page() {
     async (id: number, type: 'approve' | 'disapprove') => {
       await (type === 'approve' ? approveUser(id) : disapproveUser(id));
 
-      if (typeof users === 'object') {
+      if (users.type === 'success') {
         setUsers(users.value.filter((user) => user.id !== id));
       }
     },

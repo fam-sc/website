@@ -30,7 +30,7 @@ export function GroupSelect({
   const [itemsState] = useDataLoader(getGroups, []);
   const items = useMemo(
     () =>
-      typeof itemsState === 'object'
+      itemsState.type === 'success'
         ? itemsState.value.map((item) => ({
             key: item.campusId,
             title: item.name,
@@ -42,7 +42,7 @@ export function GroupSelect({
   const notification = useNotification();
 
   useEffect(() => {
-    if (itemsState === 'error') {
+    if (itemsState.type === 'error') {
       notification.show(
         'Сталася помилка при завантаженні списку груп',
         'error'
@@ -51,7 +51,7 @@ export function GroupSelect({
   }, [notification, itemsState, onGroupsLoaded]);
 
   useEffect(() => {
-    if (typeof itemsState === 'object') {
+    if (itemsState.type === 'success') {
       onGroupsLoaded?.(itemsState.value);
     }
   }, [itemsState, onGroupsLoaded]);

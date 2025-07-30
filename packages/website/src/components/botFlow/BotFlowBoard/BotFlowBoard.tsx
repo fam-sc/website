@@ -41,7 +41,9 @@ const selector = (state: FlowState) => ({
   addEmptyNode: state.addEmptyNode,
 });
 
-export function BotFlowBoard({ initialFlow, onSave }: FlowchartBoardProps) {
+export function BotFlowBoard(props: FlowchartBoardProps) {
+  console.log('props', props);
+  const { initialFlow, onSave } = props;
   const [initialNodes, initialEdges] = useMemo(
     () => [botFlowToNodes(initialFlow), botFlowToEdges(initialFlow)],
     // Only compute nodes and edges for initial value of initialFlow

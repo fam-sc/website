@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { DataState } from '@/hooks/useDataLoader';
+import { DataState, SuccessDataState } from '@/hooks/useDataLoader';
 import { classNames } from '@/utils/classNames';
 
 import { ErrorMessage } from '../ErrorMessage';
@@ -23,15 +23,21 @@ export function DataLoadingContainer<T>({
   children,
 }: DataLoadingContainerProps<T>) {
   return (
-    <div className={classNames(styles.root, className)}>
-      {value === 'pending' ? (
+    <div
+      className={classNames(
+        styles.root,
+        value.type === 'success' && styles['root-success'],
+        className
+      )}
+    >
+      {value.type === 'pending' ? (
         <IndeterminateCircularProgress className={styles.progress} />
-      ) : value === 'error' ? (
+      ) : value.type === 'error' ? (
         <ErrorMessage className={styles.error} onRetry={onRetry}>
           Сталася помилка при завантаженні даних
         </ErrorMessage>
       ) : (
-        children(value.value)
+        children((value as SuccessDataState<T>).value)
       )}
     </div>
   );

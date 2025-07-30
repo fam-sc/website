@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import {
   fetchBotFlow,
@@ -27,9 +28,9 @@ export function BotFlowBoardController() {
 
   useEffect(() => {
     const newState =
-      flowState === 'pending'
+      flowState.type === 'pending'
         ? 'pending'
-        : flowState === 'error'
+        : flowState.type === 'error'
           ? 'error-get'
           : 'success';
 
@@ -85,7 +86,7 @@ export function BotFlowBoardController() {
         </div>
       )}
 
-      {typeof flowState === 'object' && (
+      {flowState.type === 'success' && (
         <BotFlowBoard initialFlow={flowState.value} onSave={saveFlow} />
       )}
     </div>

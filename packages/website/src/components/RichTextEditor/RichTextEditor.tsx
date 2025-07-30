@@ -17,7 +17,7 @@ export type RichTextEditorRef = {
   getRichText(): SerializeResultWithFiles | null;
 };
 
-type RichTextEditorProps = {
+export type RichTextEditorProps = {
   /**
    * Rich text in HTML.
    */
