@@ -10,7 +10,6 @@ import Logo from '@/images/logo.png?w=100!';
 
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';
-import { LinkButton } from '../LinkButton';
 import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
 import styles from './Header.module.scss';
 
@@ -28,6 +27,7 @@ function Navigation() {
   );
 }
 
+/*
 function Buttons() {
   return (
     <div className={styles.buttons}>
@@ -41,6 +41,7 @@ function Buttons() {
     </div>
   );
 }
+*/
 
 type AvatarProps = {
   userId: number;
@@ -60,9 +61,9 @@ function Avatar({ userId, hasAvatar }: AvatarProps) {
 function AvatarOrButtons() {
   const { user } = useAuthInfo();
 
-  return user === null ? (
-    <Buttons />
-  ) : (
+  // TODO: Show the buttons when the website is ready
+  // <Buttons />
+  return user === null ? null : (
     <Avatar userId={user.id} hasAvatar={user.hasAvatar} />
   );
 }
