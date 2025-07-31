@@ -25,7 +25,7 @@ export function ReceptacleNode({ id, data }: NodeProps<ReceptacleNodeType>) {
         stickers={data.stickers}
         selectedStickerId={data.emojiId}
         onEmojiChanged={(emoji) => {
-          onEmojiChanged(id, emoji);
+          onEmojiChanged(id, emoji.id);
         }}
       />
 

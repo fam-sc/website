@@ -4,13 +4,7 @@
   gap: 0.25em;
 
   * {
-    transition: background-color 0.1s linear;
     padding: 0.25em;
     border-radius: 1em;
-
-    &:hover,
-    &.item-selected {
-      background-color: var(--color-background-dark);
-    }
   }
 }

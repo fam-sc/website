@@ -10,7 +10,7 @@ import { StickerSelectDialog } from '../StickerSelectDialog';
 export type StickerSelectProps = {
   stickers: Sticker[];
   selectedStickerId?: string;
-  onEmojiChanged?: (emoji: string) => void;
+  onEmojiChanged?: (emoji: Sticker) => void;
 };
 
 export function StickerSelect({
@@ -47,7 +47,7 @@ export function StickerSelect({
           onClose={onClose}
           stickers={stickers}
           onEmojiChanged={onEmojiChanged}
-          selectedStickerId={selectedStickerId}
+          selectedSticker={selectedSticker}
         />
       )}
     </>

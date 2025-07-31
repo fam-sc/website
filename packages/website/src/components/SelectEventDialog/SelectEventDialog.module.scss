@@ -17,19 +17,4 @@
   max-height: 70dvh;
 
   padding-right: 4px;
-
-  li {
-    padding: 0.75em 0.5em;
-
-    user-select: none;
-
-    border-radius: 0.5em;
-
-    transition: background-color 0.1s linear;
-
-    &:hover,
-    &[aria-selected='true'] {
-      background-color: var(--color-background-dark);
-    }
-  }
 }

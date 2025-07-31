@@ -1,9 +1,9 @@
-import { useId, useState } from 'react';
+import { useState } from 'react';
 
 import { Button } from '../Button';
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
-import { List } from '../List';
 import { ModalDialog } from '../ModalDialog';
+import { SelectableList } from '../SelectableList';
 import { Typography } from '../Typography';
 import styles from './SelectEventDialog.module.scss';
 
@@ -28,7 +28,6 @@ export function SelectEventDialog({
   onClose,
   onSelect,
 }: SelectEventDialogProps) {
-  const globalId = useId();
   const [selected, setSelected] = useState<EventWithId | undefined>(
     selectedEvent
   );
@@ -57,32 +56,14 @@ export function SelectEventDialog({
       {events === undefined ? (
         <IndeterminateCircularProgress />
       ) : (
-        <List
+        <SelectableList
+          items={events}
+          selectedItem={selected}
           className={styles.list}
-          role="listbox"
-          aria-label="Події"
-          aria-activedescendant={
-            selected ? `${globalId}-${selected.id}` : undefined
-          }
-          aria-multiselectable={false}
-          aria-required
+          onSelect={setSelected}
         >
-          {events.map((event) => (
-            <Typography
-              as="li"
-              id={`${globalId}-${event.id}`}
-              key={event.id}
-              role="option"
-              aria-selected={event === selected}
-              tabindex={0}
-              onClick={() => {
-                setSelected(event);
-              }}
-            >
-              {event.title}
-            </Typography>
-          ))}
-        </List>
+          {(event) => <Typography>{event.title}</Typography>}
+        </SelectableList>
       )}
     </ModalDialog>
   );

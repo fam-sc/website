@@ -1,28 +1,29 @@
-import { MouseEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Sticker } from '@/api/botFlow/types';
 import { Button } from '@/components/Button';
 import { ModalDialog } from '@/components/ModalDialog';
+import { SelectableList } from '@/components/SelectableList';
 
 import { StickerImage } from '../StickerImage';
 import styles from './StickerSelectDialog.module.scss';
 
 export interface StickerSelectDialogProps {
   stickers: Sticker[];
-  selectedStickerId?: string;
+  selectedSticker?: Sticker;
 
-  onEmojiChanged?: (id: string) => void;
+  onEmojiChanged?: (id: Sticker) => void;
   onClose: () => void;
 }
 
 export function StickerSelectDialog({
   onClose,
   onEmojiChanged,
-  selectedStickerId,
+  selectedSticker,
   stickers,
 }: StickerSelectDialogProps) {
   const [selectedListSticker, setSelectedListSticker] =
-    useState(selectedStickerId);
+    useState(selectedSticker);
 
   const onSelect = useCallback(() => {
     if (selectedListSticker !== undefined) {
@@ -31,13 +32,6 @@ export function StickerSelectDialog({
 
     onClose();
   }, [onClose, onEmojiChanged, selectedListSticker]);
-
-  const onItemSelected = useCallback((event: MouseEvent) => {
-    const { target } = event;
-    const { key } = (target as HTMLElement).dataset;
-
-    setSelectedListSticker(key);
-  }, []);
 
   return (
     <ModalDialog
@@ -54,21 +48,14 @@ export function StickerSelectDialog({
       }
       onClose={onClose}
     >
-      <div className={styles.grid}>
-        {stickers.map((sticker) => (
-          <StickerImage
-            className={
-              sticker.id === selectedListSticker
-                ? styles['item-selected']
-                : undefined
-            }
-            sticker={sticker}
-            key={sticker.id}
-            data-key={sticker.id}
-            onClickCapture={onItemSelected}
-          />
-        ))}
-      </div>
+      <SelectableList
+        className={styles.grid}
+        items={stickers}
+        selectedItem={selectedListSticker}
+        onSelect={setSelectedListSticker}
+      >
+        {(sticker) => <StickerImage key={sticker.id} sticker={sticker} />}
+      </SelectableList>
     </ModalDialog>
   );
 }
