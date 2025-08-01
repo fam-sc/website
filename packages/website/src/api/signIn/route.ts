@@ -43,7 +43,7 @@ app.post('/signIn', async (request, { env }) => {
     });
   }
 
-  const user = await repo.users().findUserByEmail(email);
+  const user = await repo.users().findUserWithPasswordByEmail(email);
   if (user === null) {
     console.error('User not found');
     return unauthorized();

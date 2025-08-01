@@ -1,4 +1,4 @@
-import { Repository, User } from '@sc-fam/data';
+import { Repository, ScheduleBotUser } from '@sc-fam/data';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
 import { CurrentTime, Time } from '@sc-fam/shared/api/campus/types.js';
 import { getTrueCurrentTime } from '@sc-fam/shared/api/time/index.js';
@@ -10,6 +10,7 @@ import {
 } from '@sc-fam/shared-schedule';
 
 import { handleTimeTrigger } from './controller';
+import { getDaySeconds } from './time';
 
 function getUniqueGroups(users: { academicGroup: string }[]): Set<string> {
   const result = new Set<string>();
@@ -47,15 +48,17 @@ export async function handleOnCronEvent() {
   );
 
   if (time !== undefined) {
-    await handleOnTime(time);
+    await handleOnTime(time, now);
   }
 }
 
-async function handleOnTime(timeBreakpoint: Time) {
+async function handleOnTime(timeBreakpoint: Time, now: Date) {
   const repo = Repository.openConnection();
 
   const currentTime = await getCurrentTime();
-  const users = await repo.users().findAllUsersWithLinkedScheduleBot();
+  const users = await repo
+    .scheduleBotUsers()
+    .findAllUsersToSendNotification(getDaySeconds(now));
 
   const schedules = await getScheduleMap(getUniqueGroups(users));
 
@@ -72,7 +75,7 @@ async function handleOnTime(timeBreakpoint: Time) {
 }
 
 async function handleUser(
-  { id, scheduleBotUserId }: Pick<User, 'id' | 'scheduleBotUserId'>,
+  { id, telegramId }: Pick<ScheduleBotUser, 'id' | 'telegramId'>,
   schedule: Schedule,
   { currentWeek, currentDay }: CurrentTime,
   now: Time
@@ -89,12 +92,12 @@ async function handleUser(
 
     const lessons = day.lessons.filter((lesson) => lesson.time === now);
 
-    if (scheduleBotUserId !== null && lessons.length > 0) {
-      await handleTimeTrigger(scheduleBotUserId, lessons);
+    if (lessons.length > 0) {
+      await handleTimeTrigger(telegramId, lessons);
     }
   } catch (error: unknown) {
     console.error(
-      `time = ${now}; userId = ${id}; tgUserId = ${scheduleBotUserId}`,
+      `time = ${now}; userId = ${id}; tgUserId = ${telegramId}`,
       error
     );
   }

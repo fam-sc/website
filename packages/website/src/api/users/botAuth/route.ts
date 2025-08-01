@@ -1,4 +1,4 @@
-import { EntityCollectionByKey, Repository, UserRole } from '@sc-fam/data';
+import { Repository, UserRole } from '@sc-fam/data';
 import { badRequest, unauthorized } from '@sc-fam/shared';
 import { telegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/schema.js';
 import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
@@ -13,7 +13,7 @@ import { BotType, isBotType } from './types';
 type BotInfo = {
   authorize: (payload: TelegramBotAuthPayload, env: Env) => Promise<Response>;
   updateUser: (
-    users: EntityCollectionByKey<'users'>,
+    users: Repository,
     id: number,
     telegramUserId: number
   ) => Promise<unknown>;
@@ -25,16 +25,16 @@ const bots: Record<BotType, BotInfo> = {
   admin: {
     authorize: (payload, env) =>
       authorizeAdminBot(payload, env.ADMIN_BOT_ACCESS_KEY),
-    updateUser: (users, id, telegramUserId) =>
-      users.updateAdminBotUserId(id, telegramUserId),
+    updateUser: (repo, id, telegramUserId) =>
+      repo.users().updateAdminBotUserId(id, telegramUserId),
 
     minRole: UserRole.GROUP_HEAD,
   },
   schedule: {
     authorize: (payload, env) =>
       authorizeScheduleBot(payload, env.SCHEDULE_BOT_ACCESS_KEY),
-    updateUser: (users, id, telegramUserId) =>
-      users.updateScheduleBotUserId(id, telegramUserId),
+    updateUser: (repo, id, telegramUserId) =>
+      repo.scheduleBotUsers().addUser(id, telegramUserId),
     minRole: UserRole.ADMIN,
   },
 };
@@ -76,7 +76,7 @@ app.post('/users/botAuth', async (request, { env }) => {
     return unauthorized();
   }
 
-  await updateUser(repo.users(), user.id, payload.id);
+  await updateUser(repo, user.id, payload.id);
 
   return new Response();
 });

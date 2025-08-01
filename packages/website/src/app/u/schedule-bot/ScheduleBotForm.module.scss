@@ -1,0 +1,13 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.time-selector {
+  margin-top: 10px;
+}
+
+.save {
+  align-self: start;
+}

@@ -22,11 +22,14 @@ async function handleMessage(message: Message) {
     }
 
     const repo = Repository.openConnection();
-    const user = await repo.users().findByScheduleBotUserId(fromId);
+    const userHasLinkedBot = await repo
+      .scheduleBotUsers()
+      .userHasLinkedBot(fromId);
 
-    const isGreeting = user === null;
-    const text = getMessage(isGreeting ? 'greeting' : 'already-linked-account');
-    const extra = isGreeting
+    const text = getMessage(
+      userHasLinkedBot ? 'already-linked-account' : 'greeting'
+    );
+    const extra = !userHasLinkedBot
       ? {
           reply_markup: {
             inline_keyboard: [

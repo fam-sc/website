@@ -18,3 +18,13 @@ export type ColumnDescriptor<T> = Concat<
 >;
 
 export type TableDescriptor<T> = { [K in keyof T]: ColumnDescriptor<T[K]> };
+
+type ConvertToRawType<T> = T extends boolean
+  ? number
+  : T extends object
+    ? string
+    : T;
+
+export type ToRawObject<T> = {
+  [K in keyof T]: ConvertToRawType<T[K]>;
+};

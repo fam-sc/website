@@ -32,6 +32,7 @@ export function getMaybeModifierValue(value: unknown): unknown {
 
 export const equals = modifier('=?');
 export const notEquals = modifier('!=?');
+export const lessThanOrEquals = modifier('<=?');
 export const greaterOrEquals = modifier('>=?');
 
 export function valueIn(array: unknown[]): Modifier {

@@ -1,13 +1,7 @@
 import { and, or } from '../sqlite/conditions';
 import { notNull } from '../sqlite/modifier';
 import { TableDescriptor } from '../sqlite/types';
-import {
-  RawUser,
-  ShortUser,
-  User,
-  UserPersonalInfo,
-  UserRole,
-} from '../types/user';
+import { RawUser, ShortUser, UserPersonalInfo, UserRole } from '../types/user';
 import { EntityCollection } from './base';
 
 export class UserCollection extends EntityCollection<RawUser>('users') {
@@ -28,10 +22,10 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
     };
   }
 
-  async findUserByEmail(email: string): Promise<User | null> {
-    const result = await this.findOneWhere({ email });
+  async findUserWithPasswordByEmail(email: string) {
+    const result = await this.findOneWhere({ email }, ['id', 'passwordHash']);
 
-    return result && { ...result, hasAvatar: result.hasAvatar === 1 };
+    return result;
   }
 
   updateScheduleBotUserId(id: number, telegramUserId: number) {
@@ -42,20 +36,8 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
     return this.updateWhere({ id }, { adminBotUserId: telegramUserId });
   }
 
-  findByScheduleBotUserId(id: number) {
-    return this.findOneWhere({ scheduleBotUserId: id });
-  }
-
   findByAdminBotUserId(id: number) {
     return this.findOneWhere({ adminBotUserId: id });
-  }
-
-  findAllUsersWithLinkedScheduleBot() {
-    return this.findManyWhere({ scheduleBotUserId: notNull() }, [
-      'id',
-      'academicGroup',
-      'scheduleBotUserId',
-    ]);
   }
 
   findAllUsersWithLinkedAdminBot(academicGroup: string) {

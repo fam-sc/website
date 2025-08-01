@@ -1,44 +1,22 @@
 import { useState } from 'react';
 
-import { authorizeTelegramBotToUser } from '@/api/users/client';
-import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
-import { useNotification } from '@/components/Notification';
-import { TelegramLoginWidget } from '@/components/TelegramLoginWidget';
+import { TelegramBotLinker } from '@/components/TelegramBotLinker';
 import { Typography } from '@/components/Typography';
 
 import styles from './page.module.scss';
 
-type State = 'widget' | 'pending' | 'success';
-
 export default function Page() {
-  const [state, setState] = useState<State>('widget');
-
-  const notification = useNotification();
+  const [isAuthorized, setAuthorized] = useState(false);
 
   return (
-    <div className={styles.root}>
-      {state === 'pending' ? (
-        <IndeterminateCircularProgress />
-      ) : state === 'success' ? (
+    <div className={styles.content}>
+      {isAuthorized ? (
         <Typography>Успішно! Ви можете повернутися до бота</Typography>
       ) : (
-        <TelegramLoginWidget
+        <TelegramBotLinker
           bot="scfamadmitbot"
-          onCallback={(payload) => {
-            setState('pending');
-
-            authorizeTelegramBotToUser('admin', payload)
-              .then(() => {
-                setState('success');
-              })
-              .catch((error: unknown) => {
-                console.error(error);
-
-                setState('widget');
-
-                notification.show('Сталася помилка при авторизації', 'error');
-              });
-          }}
+          botType="admin"
+          onAuthorized={() => setAuthorized(true)}
         />
       )}
     </div>

@@ -1,3 +1,5 @@
+import { ToRawObject } from '../sqlite/types';
+
 type Time = '8:30' | '10:25' | '12:20' | '14:15' | '16:10' | '18:30' | '20:20';
 
 export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -58,3 +60,18 @@ export type ScheduleTeacher = {
   name: string;
   link: string | null;
 };
+
+export type ScheduleBotUser = {
+  id: number;
+  telegramId: number;
+  notificationEnabled: boolean;
+  startTime: number | null;
+  endTime: number | null;
+};
+
+export type ScheduleBotOptions = Pick<
+  ScheduleBotUser,
+  'notificationEnabled' | 'startTime' | 'endTime'
+>;
+
+export type RawScheduleBotUser = ToRawObject<ScheduleBotUser>;
