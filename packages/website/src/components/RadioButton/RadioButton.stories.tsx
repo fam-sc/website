@@ -20,3 +20,11 @@ export const Disabled: Story = {
     children: 'Some text',
   },
 };
+
+export const DisabledChecked: Story = {
+  args: {
+    disabled: true,
+    checked: true,
+    children: 'Some text',
+  },
+};

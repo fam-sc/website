@@ -1,46 +1,43 @@
 import { useState } from 'react';
+import { redirect } from 'react-router';
 
-import { authorizeTelegramBotToUser } from '@/api/users/client';
-import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
-import { useNotification } from '@/components/Notification';
-import { TelegramLoginWidget } from '@/components/TelegramLoginWidget';
-import { Typography } from '@/components/Typography';
+import { getSessionId } from '@/api/auth';
+import { TelegramBotLinker } from '@/components/TelegramBotLinker';
+import { repository } from '@/utils/repo';
 
+import { Route } from './+types/page';
 import styles from './page.module.scss';
+import { ScheduleBotForm } from './ScheduleBotForm';
 
-type State = 'widget' | 'pending' | 'success';
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const sessionId = getSessionId(request);
+  if (sessionId === undefined) {
+    return redirect('/');
+  }
 
-export default function Page() {
-  const [state, setState] = useState<State>('widget');
+  const repo = repository(context);
+  const userId = await repo.sessions().getUserIdBySessionId(sessionId);
+  if (userId === null) {
+    return redirect('/');
+  }
 
-  const notification = useNotification();
+  const options = await repo.scheduleBotUsers().getUserOptions(userId);
+
+  return options;
+}
+
+export default function Page({ loaderData: options }: Route.ComponentProps) {
+  const [isAuthorized, setAuthorized] = useState(options !== null);
 
   return (
     <div className={styles.root}>
-      {state === 'pending' ? (
-        <IndeterminateCircularProgress />
-      ) : state === 'success' ? (
-        <Typography>
-          Успішно! Ви можете закрити цю сторінку та повернутися до бота
-        </Typography>
+      {isAuthorized ? (
+        <ScheduleBotForm initial={options} />
       ) : (
-        <TelegramLoginWidget
+        <TelegramBotLinker
           bot="famschedulebot"
-          onCallback={(payload) => {
-            setState('pending');
-
-            authorizeTelegramBotToUser('schedule', payload)
-              .then(() => {
-                setState('success');
-              })
-              .catch((error: unknown) => {
-                console.error(error);
-
-                setState('widget');
-
-                notification.show('Сталася помилка при авторизації', 'error');
-              });
-          }}
+          botType="schedule"
+          onAuthorized={() => setAuthorized(true)}
         />
       )}
     </div>

@@ -1,2 +1,2 @@
-export { EntityCollectionByKey, EntityRepositoryKey, Repository } from './repo';
+export { Repository } from './repo';
 export * from './types';

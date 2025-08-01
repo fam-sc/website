@@ -1,6 +1,8 @@
 @use '../../theme/utils' as *;
 
 .root {
+  --tick-color: var(--color-text-on-background);
+
   display: flex;
   flex-direction: row;
   align-content: center;
@@ -37,7 +39,7 @@
       @include size($input-size - 2 * $padding);
 
       content: '';
-      background-color: var(--color-text-on-background);
+      background-color: var(--tick-color);
 
       transform: scale(0);
       transition: 0.05s transform ease-in-out;
@@ -49,6 +51,7 @@
   }
 
   &[data-disabled='true'] {
+    --tick-color: var(--color-text-on-background-dark);
     color: var(--color-text-on-background-dark);
   }
 }

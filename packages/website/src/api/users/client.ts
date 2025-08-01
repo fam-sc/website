@@ -13,6 +13,7 @@ import { apiCheckedFetch, apiFetchObject } from '../fetch';
 import { BotType } from './botAuth/types';
 import { ForgotPasswordPayload } from './forgotPassword/types';
 import { ResetPasswordPayload } from './resetPassword/types';
+import { UpdateScheduleBotOptionsPayload } from './schedule/types';
 
 export function uploadUserAvatar(body: BodyInit) {
   return apiCheckedFetch(`/users/avatar`, {
@@ -111,6 +112,16 @@ export function forgotPassword(payload: ForgotPasswordPayload) {
 export function resetPassword(payload: ResetPasswordPayload) {
   return apiCheckedFetch('/users/resetPassword', {
     method: 'POST',
+    body: payload,
+    json: true,
+  });
+}
+
+export function updateScheduleBotOptions(
+  payload: UpdateScheduleBotOptionsPayload
+) {
+  return apiCheckedFetch('/users/schedule', {
+    method: 'PUT',
     body: payload,
     json: true,
   });

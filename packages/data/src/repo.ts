@@ -11,6 +11,7 @@ import { PendingUserCollection } from './collections/pendingUsers';
 import { PollRespondentCollection } from './collections/pollRespondents';
 import { PollCollection } from './collections/polls';
 import { ScheduleCollection } from './collections/schedule';
+import { ScheduleBotUserCollection } from './collections/scheduleBotUsers';
 import { ScheduleLessonCollection } from './collections/scheduleLessons';
 import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
@@ -35,15 +36,8 @@ const collectionTypes = [
   ForgotPasswordCollection,
   AdminBotNewUserMessagesCollection,
   GuideCollection,
+  ScheduleBotUserCollection,
 ];
-
-export type EntityRepositoryKey = {
-  [K in keyof Repository]: Repository[K] extends () => unknown ? K : never;
-}[keyof Repository];
-
-export type EntityCollectionByKey<K extends EntityRepositoryKey> = ReturnType<
-  Repository[K]
->;
 
 export class Repository {
   private client: D1Database;
@@ -85,6 +79,7 @@ export class Repository {
   forgotPasswordEntries = this.collection(ForgotPasswordCollection);
   adminBotNewUserMessages = this.collection(AdminBotNewUserMessagesCollection);
   guides = this.collection(GuideCollection);
+  scheduleBotUsers = this.collection(ScheduleBotUserCollection);
 
   static async init(database: D1Database) {
     const tables: [string, TableDescriptor<unknown>][] = [];
