@@ -35,7 +35,12 @@ jobs:
         run: yarn install --immutable
       - name: Prebuild
         run: yarn prebuild
+      - name: Build website
+        run: yarn build
       - name: Install Playwright
         run: yarn playwright install
       - name: Test
         run: yarn test
+        env:
+          TG_BOT_KEY: ${{secrets.TG_BOT_KEY}}
+          HELPDESK_API_KEY: ${{secrets.HELPDESK_API_KEY}}
