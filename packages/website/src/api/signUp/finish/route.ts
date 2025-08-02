@@ -32,7 +32,6 @@ app.post('/signUp/finish', async (request, { env }) => {
       telnum: pendingUser.telnum,
       passwordHash: pendingUser.passwordHash,
       role: UserRole.STUDENT_NON_APPROVED,
-      scheduleBotUserId: null,
       adminBotUserId: null,
       hasAvatar: 0,
     });

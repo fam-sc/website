@@ -20,7 +20,6 @@ export function setupDevRoute() {
       parentName: null,
       passwordHash: '',
       role: UserRole.ADMIN,
-      scheduleBotUserId: null,
       telnum: null,
     });
     await repo.users().insert({
@@ -33,7 +32,6 @@ export function setupDevRoute() {
       parentName: null,
       passwordHash: '',
       role: UserRole.STUDENT_NON_APPROVED,
-      scheduleBotUserId: null,
       telnum: null,
     });
 

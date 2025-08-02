@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { findNearestTimePoint, Time } from './time.js';
+import { findNearestTimePoint, getLocalDate, Time } from './time.js';
 
 const points: Time[] = [
   '8:30',
@@ -21,4 +21,12 @@ test.each<[Time, Time]>([
   const actual = findNearestTimePoint(points, target);
 
   expect(actual).toEqual(expected);
+});
+
+test('getLocalDate', () => {
+  const date = new Date(2025, 8, 2);
+
+  const actual = getLocalDate(date, 'Europe/Kiev');
+
+  expect(actual).toEqual(new Date(2025, 8, 2, 3));
 });

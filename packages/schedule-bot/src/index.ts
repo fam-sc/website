@@ -9,6 +9,7 @@ import { handleOnCronEvent } from './scheduleHandler';
 export default {
   fetch(request: Request, env: Env): Promise<Response> {
     Repository.setDefaultDatabase(env.DB);
+    bot.setApiKey(env.BOT_KEY);
 
     return app.handleRequest(request, env);
   },

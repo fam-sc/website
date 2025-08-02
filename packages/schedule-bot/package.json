@@ -4,10 +4,12 @@
   "type": "module",
   "scripts": {
     "build:no-emit": "tsc --noEmit",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --define \"DEV: false\"",
+    "dev": "wrangler dev --define \"DEV: true\"",
     "typegen": "wrangler types",
-    "webhook:set": "tsx ./src/setup/setWebhook.ts",
-    "webhook:delete": "tsx ./src/setup/deleteWebhook.ts"
+    "webhook:set": "tsx ./src/scripts/setWebhook.ts",
+    "webhook:delete": "tsx ./src/scripts/deleteWebhook.ts",
+    "set-commands": "tsx ./src/scripts/setCommands.ts"
   },
   "dependencies": {
     "@sc-fam/data": "workspace:*",

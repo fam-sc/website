@@ -27,10 +27,10 @@ export class ScheduleBotUserCollection extends EntityCollection<RawScheduleBotUs
       telegramId: number;
       academicGroup: string;
     }>(
-      `SELECT id, telegramId, users.academicGroup as academicGroup
+      `SELECT schedule_bot_users.id as id, telegramId, users.academicGroup as academicGroup
       FROM schedule_bot_users
       INNER JOIN users ON schedule_bot_users.id = users.id
-      WHERE notificationEnabled=1 AND startTime >= ? AND endTime <= ?`,
+      WHERE notificationEnabled=1 AND (startTime IS NULL OR startTime >= ?) AND (endTime IS NULL OR endTime <= ?)`,
       [currentTime, currentTime]
     );
   }
@@ -65,5 +65,29 @@ export class ScheduleBotUserCollection extends EntityCollection<RawScheduleBotUs
       { id },
       { notificationEnabled: notificationEnabled ? 1 : 0, startTime, endTime }
     );
+  }
+
+  async switchNotificationEnabled(telegramId: number) {
+    const result = await this.selectOne<{ notificationEnabled: number }>(
+      `UPDATE schedule_bot_users
+      SET notificationEnabled = 1 - notificationEnabled
+      WHERE telegramId=?
+      RETURNING notificationEnabled`,
+      [telegramId]
+    );
+
+    return result ? result.notificationEnabled === 1 : null;
+  }
+
+  async getUserAcademicGroup(telegramId: number) {
+    const result = await this.selectOne<{ academicGroup: string }>(
+      `SELECT academicGroup
+      FROM schedule_bot_users
+      INNER JOIN users ON users.id = schedule_bot_users.id
+      WHERE telegramId=?`,
+      [telegramId]
+    );
+
+    return result?.academicGroup ?? null;
   }
 }

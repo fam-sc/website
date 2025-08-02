@@ -17,7 +17,6 @@ export type RawUser = {
   role: UserRole;
   hasAvatar: number;
   passwordHash: string;
-  scheduleBotUserId: number | null;
   adminBotUserId: number | null;
 };
 

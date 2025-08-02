@@ -4,18 +4,23 @@ import { bot } from 'telegram-standard-bot-api';
 import { sendMessage } from 'telegram-standard-bot-api/methods';
 import { Message, Update } from 'telegram-standard-bot-api/types';
 
-import { getMessage } from './messages';
+import { formatLessonNotification, formatMyDayLessons } from './formatter';
+import { getMessage, MessageKey } from './messages';
+import { getCurrentDayLessons } from './scheduleHandler';
 
-export async function handleUpdate(update: Update) {
-  console.log(`Received update: ${JSON.stringify(update)}`);
-
-  if (update.message !== undefined) {
-    await handleMessage(update.message);
-  }
+function sendKeyedMessage(userId: number, key: MessageKey) {
+  return bot(
+    sendMessage({
+      chat_id: userId,
+      text: getMessage(key),
+      parse_mode: 'MarkdownV2',
+    })
+  );
 }
 
-async function handleMessage(message: Message) {
-  if (message.text !== undefined && message.text.startsWith('/start')) {
+type CommandMap = Record<string, (message: Message) => Promise<void>>;
+const commands: CommandMap = {
+  '/start': async (message) => {
     const fromId = message.from?.id;
     if (fromId === undefined) {
       return;
@@ -47,6 +52,74 @@ async function handleMessage(message: Message) {
       : undefined;
 
     await bot(sendMessage({ chat_id: fromId, text, ...extra }));
+  },
+  '/switch': async (message) => {
+    const fromId = message.from?.id;
+    if (fromId === undefined) {
+      return;
+    }
+
+    const repo = Repository.openConnection();
+    const newEnabled = await repo
+      .scheduleBotUsers()
+      .switchNotificationEnabled(fromId);
+
+    const messageKey: MessageKey =
+      newEnabled === null
+        ? 'auth-required'
+        : newEnabled
+          ? 'notification-enabled'
+          : 'notification-disabled';
+
+    await sendKeyedMessage(fromId, messageKey);
+  },
+  '/myday': async (message) => {
+    const fromId = message.from?.id;
+    if (fromId === undefined) {
+      return;
+    }
+
+    const repo = Repository.openConnection();
+    const group = await repo.scheduleBotUsers().getUserAcademicGroup(fromId);
+    if (group === null) {
+      await sendKeyedMessage(fromId, 'auth-required');
+      return;
+    }
+
+    const lessons = await getCurrentDayLessons(group);
+    if (lessons === null) {
+      await sendKeyedMessage(fromId, 'no-schedule');
+      return;
+    }
+
+    await bot(
+      sendMessage({
+        chat_id: fromId,
+        text: formatMyDayLessons(lessons),
+        parse_mode: 'MarkdownV2',
+      })
+    );
+  },
+};
+
+export async function handleUpdate(update: Update) {
+  console.log(`Received update: ${JSON.stringify(update)}`);
+
+  if (update.message !== undefined) {
+    await handleMessage(update.message);
+  }
+}
+
+async function handleMessage(message: Message) {
+  const { text } = message;
+  if (text !== undefined) {
+    for (const name in commands) {
+      if (text.startsWith(name)) {
+        await commands[name](message);
+
+        return;
+      }
+    }
   }
 }
 
@@ -56,16 +129,11 @@ export async function handleAuth(userId: number) {
   );
 }
 
-export async function handleTimeTrigger(userId: number, lessons: Lesson[]) {
-  let text = getMessage(
-    lessons.length === 1 ? 'lessons-started-singular' : 'lessons-started-plural'
-  );
-  text += ':\n\n';
-  text += lessons
-    .map((lesson) => {
-      return lesson.link ? lesson.name : `[${lesson.name}](${lesson.link})`;
-    })
-    .join('\n');
+export async function handleLessonNotification(
+  userId: number,
+  lessons: Lesson[]
+) {
+  const text = formatLessonNotification(lessons);
 
-  await bot(sendMessage({ chat_id: userId, text }));
+  await bot(sendMessage({ chat_id: userId, text, parse_mode: 'MarkdownV2' }));
 }

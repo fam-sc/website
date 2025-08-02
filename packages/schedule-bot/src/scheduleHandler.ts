@@ -1,15 +1,16 @@
-import { Repository, ScheduleBotUser } from '@sc-fam/data';
+import { Day, Repository, ScheduleBotUser } from '@sc-fam/data';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
 import { CurrentTime, Time } from '@sc-fam/shared/api/campus/types.js';
-import { getTrueCurrentTime } from '@sc-fam/shared/api/time/index.js';
 import { findNearestTimePoint } from '@sc-fam/shared/chrono';
+import { getLocalNow } from '@sc-fam/shared/chrono/time.js';
 import {
+  DaySchedule,
   getScheduleForGroup,
   Schedule,
   timeBreakpoints,
 } from '@sc-fam/shared-schedule';
 
-import { handleTimeTrigger } from './controller';
+import { handleLessonNotification } from './controller';
 import { getDaySeconds } from './time';
 
 function getUniqueGroups(users: { academicGroup: string }[]): Set<string> {
@@ -22,11 +23,50 @@ function getUniqueGroups(users: { academicGroup: string }[]): Set<string> {
   return result;
 }
 
+async function getSchedule(group: string): Promise<Schedule | null> {
+  if (DEV) {
+    const week = ([1, 2, 3, 4, 5, 6, 7] as Day[]).map(
+      (day): DaySchedule => ({
+        day,
+        lessons: [1, 2].map((index) => ({
+          name: `Lesson ${index}`,
+          place: `Place ${index}`,
+          teacher: { name: 'Teacher', link: 'https://google.com' },
+          time: '8:30',
+          type: 'lec',
+          link: 'https://google.com',
+        })),
+      })
+    );
+
+    return { groupCampusId: group, weeks: [week, week] };
+  }
+
+  return getScheduleForGroup(group);
+}
+
+export async function getCurrentDayLessons(group: string) {
+  const schedule = await getSchedule(group);
+  if (schedule === null) {
+    return null;
+  }
+
+  const { currentWeek, currentDay } = await getCurrentTime();
+  const day = schedule.weeks[currentWeek - 1][currentDay];
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (day == undefined) {
+    return null;
+  }
+
+  return day.lessons;
+}
+
 async function getScheduleMap(
   groups: Set<string>
 ): Promise<Record<string, Schedule>> {
   const schedules = await Promise.all(
-    [...groups].map((group) => getScheduleForGroup(group))
+    [...groups].map((group) => getSchedule(group))
   );
 
   const result: Record<string, Schedule> = {};
@@ -41,7 +81,8 @@ async function getScheduleMap(
 }
 
 export async function handleOnCronEvent() {
-  const now = await getTrueCurrentTime('Europe/Kyiv');
+  const now = getLocalNow('Europe/Kiev');
+
   const time = findNearestTimePoint(
     timeBreakpoints,
     `${now.getHours()}:${now.getMinutes()}`
@@ -93,7 +134,7 @@ async function handleUser(
     const lessons = day.lessons.filter((lesson) => lesson.time === now);
 
     if (lessons.length > 0) {
-      await handleTimeTrigger(telegramId, lessons);
+      await handleLessonNotification(telegramId, lessons);
     }
   } catch (error: unknown) {
     console.error(

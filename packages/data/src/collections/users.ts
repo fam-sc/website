@@ -15,7 +15,6 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
       parentName: 'TEXT',
       passwordHash: 'TEXT NOT NULL',
       role: 'INTEGER NOT NULL',
-      scheduleBotUserId: 'INTEGER',
       adminBotUserId: 'INTEGER',
       telnum: 'TEXT',
       hasAvatar: 'INTEGER NOT NULL',
@@ -30,10 +29,6 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
     const result = await this.findOneWhere({ email }, ['id', 'passwordHash']);
 
     return result;
-  }
-
-  updateScheduleBotUserId(id: number, telegramUserId: number) {
-    return this.updateWhere({ id }, { scheduleBotUserId: telegramUserId });
   }
 
   updateAdminBotUserId(id: number, telegramUserId: number) {

@@ -35,3 +35,25 @@ export function findNearestTimePoint<T extends Time>(
 
   return minTime;
 }
+
+export function getLocalDate(date: Date, timeZone: string): Date {
+  const longOffsetFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    timeZoneName: 'longOffset',
+  });
+
+  const longOffsetString = longOffsetFormatter.format(date);
+
+  const gmtIndex = longOffsetString.indexOf('GMT');
+
+  const colonIndex = longOffsetString.indexOf(':', gmtIndex);
+  const gmtOffset =
+    Number.parseInt(longOffsetString.slice(gmtIndex + 3, colonIndex)) * 3600 +
+    Number.parseInt(longOffsetString.slice(colonIndex + 1)) * 60;
+
+  return new Date(date.getTime() + gmtOffset * 1000);
+}
+
+export function getLocalNow(timeZone: string): Date {
+  return getLocalDate(new Date(), timeZone);
+}
