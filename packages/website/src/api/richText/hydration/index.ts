@@ -7,10 +7,9 @@ import {
   RichTextString,
 } from '@sc-fam/shared/richText';
 
-import { putMultipleSizedImages } from '@/api/media/multiple';
-import { MediaTransaction } from '@/api/media/transaction';
-import { MediaSubPathWithImageSize } from '@/api/media/types';
-
+import { MediaTransaction } from '../..//media/transaction';
+import { putMultipleSizedImages } from '../../media/multiple';
+import { MediaSubPathWithImageSize } from '../../media/types';
 import { getImageSizeMap, ImageSizeMap } from './analysis';
 
 export type HydrationContext = {
@@ -112,11 +111,7 @@ async function hydrateRichTextArray(
   imageSizeMap: ImageSizeMap,
   context: HydrationContext
 ): Promise<RichTextAtomNode[]> {
-  const result: RichTextAtomNode[] = [];
-
-  for (const node of nodes) {
-    result.push(await hydrateRichTextBase(node, imageSizeMap, context));
-  }
-
-  return result;
+  return Promise.all(
+    nodes.map((node) => hydrateRichTextBase(node, imageSizeMap, context))
+  );
 }

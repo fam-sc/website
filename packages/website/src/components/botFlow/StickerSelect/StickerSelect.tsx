@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 
-import { Sticker } from '@/api/botFlow/types';
 import { Typography } from '@/components/Typography';
 
 import { Button } from '../../Button';
@@ -8,9 +7,9 @@ import { StickerImage } from '../StickerImage';
 import { StickerSelectDialog } from '../StickerSelectDialog';
 
 export type StickerSelectProps = {
-  stickers: Sticker[];
+  stickers: string[];
   selectedStickerId?: string;
-  onEmojiChanged?: (emoji: Sticker) => void;
+  onEmojiChanged?: (emoji: string) => void;
 };
 
 export function StickerSelect({
@@ -19,7 +18,7 @@ export function StickerSelect({
   onEmojiChanged,
 }: StickerSelectProps) {
   const selectedSticker = stickers.find(
-    (sticker) => sticker.id === selectedStickerId
+    (sticker) => sticker === selectedStickerId
   );
 
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +35,7 @@ export function StickerSelect({
     <>
       <Button buttonVariant="flat-inverted" onClick={onShow}>
         {selectedSticker ? (
-          <StickerImage sticker={selectedSticker} />
+          <StickerImage stickerId={selectedSticker} />
         ) : (
           <Typography>?</Typography>
         )}

@@ -20,13 +20,8 @@ export type Position = zodInfer<typeof position>;
 export type PositionMap = zodInfer<typeof positionMap>;
 
 export type BotFlowOutMeta = {
-  icons: Sticker[];
+  icons: string[];
   positions: PositionMap | undefined;
-};
-
-export type Sticker = {
-  id: string;
-  mediaId: string;
 };
 
 export type Option = zodInfer<typeof option>;

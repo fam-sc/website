@@ -42,7 +42,6 @@ const selector = (state: FlowState) => ({
 });
 
 export function BotFlowBoard(props: FlowchartBoardProps) {
-  console.log('props', props);
   const { initialFlow, onSave } = props;
   const [initialNodes, initialEdges] = useMemo(
     () => [botFlowToNodes(initialFlow), botFlowToEdges(initialFlow)],
