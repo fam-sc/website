@@ -21,7 +21,7 @@ import { BotFlowConfig } from './internal/types';
 const NODE_POSITIONS_PATH: MediaFilePath = 'bot-flow/node-positions.json';
 
 function getStickerPath(value: Sticker): MediaFilePath {
-  return `bot-flow/tg-sticker/${value.file_unique_id}`;
+  return `bot-flow/tg-sticker/${value.custom_emoji_id}`;
 }
 
 async function listMediaStickers(bucket: R2Bucket): Promise<string[]> {
@@ -71,10 +71,7 @@ export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
     listMediaStickers(bucket),
   ]);
 
-  const icons = stickers.map((value) => ({
-    id: value.custom_emoji_id as string,
-    mediaId: value.file_unique_id,
-  }));
+  const icons = stickers.map((value) => value.custom_emoji_id as string);
 
   const [config, positions] = await Promise.all([
     getInternalBotFlowConfig(env.HELPDESK_API_KEY),

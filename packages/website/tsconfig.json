@@ -15,7 +15,7 @@
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "rootDirs": [".", "./.react-router/types"],
-    "types": ["vite/client", "./worker-configuration.d.ts"],
+    "types": ["vite/client", "./worker-configuration.d.ts", "@cloudflare/vitest-pool-workers"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

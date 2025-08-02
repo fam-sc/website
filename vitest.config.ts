@@ -1,5 +1,8 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
+import { defineWorkersProject } from "@cloudflare/vitest-pool-workers/config";
+
+import { multienvPlugin } from './packages/website/vite-plugins/multienv';
 
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { loadEnv } from 'vite';
@@ -16,6 +19,23 @@ export default defineConfig({
       exclude: ['**/storybook-static'],
     },
     projects: [
+      defineWorkersProject({
+        plugins: [multienvPlugin('mock')],
+        test: {
+          include: ['packages/website/**/*.cftest.ts'],
+          name: 'cloudflare',
+          env,
+          poolOptions: {
+            workers: {
+              wrangler: { configPath: './packages/website/build/server/wrangler.json' },
+              singleWorker: true,
+              miniflare: {
+                bindings: env,
+              }
+            },
+          }
+        },
+      }),
       {
         plugins,
         test: {
