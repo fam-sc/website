@@ -1,6 +1,7 @@
 import { Repository } from '@sc-fam/data';
-import { badRequest, unauthorized } from '@sc-fam/shared';
+import { unauthorized } from '@sc-fam/shared';
 import { randomBytes } from '@sc-fam/shared/crypto';
+import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
 import { sendMail } from '@/api/mail';
@@ -32,39 +33,40 @@ async function sendConfirmationMail(
   });
 }
 
-app.post('/users/forgotPassword', async (request, { env }) => {
-  const rawPayload = await request.json();
-  const payloadResult = forgotPasswordPayload.safeParse(rawPayload);
+app.post(
+  '/users/forgotPassword',
+  middlewareHandler(
+    zodSchema(forgotPasswordPayload),
+    async ({ request, env, data: [payload] }) => {
+      const { email, turnstileToken } = payload;
+      const tokenVerification = await verifyTurnstileTokenByHost(
+        env,
+        request,
+        turnstileToken
+      );
 
-  if (!payloadResult.success) {
-    return badRequest();
-  }
+      if (!tokenVerification.success) {
+        console.error(
+          `Token verification failed: ${tokenVerification.errorCodes}`
+        );
 
-  const { email, turnstileToken } = payloadResult.data;
-  const tokenVerification = await verifyTurnstileTokenByHost(
-    env,
-    request,
-    turnstileToken
-  );
+        return unauthorized();
+      }
 
-  if (!tokenVerification.success) {
-    console.error(`Token verification failed: ${tokenVerification.errorCodes}`);
+      const token = await newConfirmationToken();
+      const repo = Repository.openConnection();
 
-    return unauthorized();
-  }
+      if (await repo.users().userWithEmailExists(email)) {
+        await repo.forgotPasswordEntries().insert({
+          token,
+          email,
+          expirationDate: Date.now() + EXPIRATION_DURATION,
+        });
 
-  const token = await newConfirmationToken();
-  const repo = Repository.openConnection();
+        await sendConfirmationMail(env.RESEND_API_KEY, email, token);
+      }
 
-  if (await repo.users().userWithEmailExists(email)) {
-    await repo.forgotPasswordEntries().insert({
-      token,
-      email,
-      expirationDate: Date.now() + EXPIRATION_DURATION,
-    });
-
-    await sendConfirmationMail(env.RESEND_API_KEY, email, token);
-  }
-
-  return new Response();
-});
+      return new Response();
+    }
+  )
+);

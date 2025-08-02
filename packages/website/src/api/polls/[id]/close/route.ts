@@ -1,20 +1,20 @@
-import { UserRole } from '@sc-fam/data';
-import { notFound, parseInt } from '@sc-fam/shared';
+import { Repository, UserRole } from '@sc-fam/data';
+import { notFound } from '@sc-fam/shared';
+import { int, middlewareHandler, params } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { authRoute } from '@/api/authRoute';
+import { auth } from '@/api/authRoute';
 
-app.post('/polls/:id/close', async (request, { params }) => {
-  return authRoute(request, UserRole.ADMIN, async (repo) => {
-    const numberId = parseInt(params.id);
-    if (numberId !== undefined) {
-      const { changes } = await repo.polls().closePoll(numberId);
+app.post(
+  '/polls/:id/close',
+  middlewareHandler(
+    params({ id: int(notFound) }),
+    auth({ minRole: UserRole.ADMIN }),
+    async ({ data: [{ id }] }) => {
+      const repo = Repository.openConnection();
+      const { changes } = await repo.polls().closePoll(id);
 
-      if (changes !== 0) {
-        return new Response();
-      }
+      return changes > 0 ? new Response() : notFound();
     }
-
-    return notFound();
-  });
-});
+  )
+);

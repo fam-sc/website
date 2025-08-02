@@ -1,38 +1,47 @@
 import { Repository, UserRole } from '@sc-fam/data';
-import { formPersonName, ok, unauthorized } from '@sc-fam/shared';
+import { formPersonName, ok } from '@sc-fam/shared';
+import { middlewareHandler } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { getSessionId } from '@/api/auth';
+import { auth, userWithRoleGetter } from '@/api/authRoute';
 import { UserInfo } from '@/api/users/types';
 
-app.get('/users/approveList', async (request) => {
-  const sessionId = getSessionId(request);
-  if (sessionId === undefined) {
-    return unauthorized();
-  }
+app.get(
+  '/users/approveList',
+  middlewareHandler(
+    auth({
+      minRole: UserRole.GROUP_HEAD,
+      get: userWithRoleGetter,
+    }),
+    async ({ data: [user] }) => {
+      const { role, academicGroup } = user;
 
-  const repo = Repository.openConnection();
-  const userWithRole = await repo.sessions().getUserWithRoleAndGroup(sessionId);
+      const repo = Repository.openConnection();
+      const users = await repo
+        .users()
+        .findAllNonApprovedUsers(
+          role === UserRole.ADMIN ? undefined : academicGroup
+        );
 
-  if (userWithRole === null || userWithRole.role < UserRole.GROUP_HEAD) {
-    return unauthorized();
-  }
-
-  const { role, academicGroup } = userWithRole;
-
-  const users = await repo
-    .users()
-    .findAllNonApprovedUsers(
-      role === UserRole.ADMIN ? undefined : academicGroup
-    );
-
-  const result: UserInfo[] = users.map((item) => ({
-    id: item.id,
-    name: formPersonName(item.firstName, item.lastName, item.parentName),
-    email: item.email,
-    group: item.academicGroup,
-    hasAvatar: item.hasAvatar ?? false,
-  }));
-
-  return ok(result);
-});
+      return ok(
+        users.map(
+          ({
+            id,
+            firstName,
+            lastName,
+            parentName,
+            email,
+            academicGroup,
+            hasAvatar,
+          }): UserInfo => ({
+            id,
+            name: formPersonName(firstName, lastName, parentName),
+            email,
+            group: academicGroup,
+            hasAvatar: hasAvatar ?? false,
+          })
+        )
+      );
+    }
+  )
+);

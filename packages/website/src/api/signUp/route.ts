@@ -1,6 +1,7 @@
 import { Repository } from '@sc-fam/data';
 import { badRequest, conflict } from '@sc-fam/shared';
 import { randomBytes } from '@sc-fam/shared/crypto';
+import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
 import { hashPassword } from '@/api/auth/password';
@@ -30,63 +31,53 @@ async function sendConfirmationMail(
   });
 }
 
-app.post('/signUp', async (request, { env }) => {
-  const rawContent = await request.json();
-  const signUpResult = SignUpDataSchema.safeParse(rawContent);
-  if (signUpResult.error) {
-    console.error(signUpResult.error);
-    return badRequest({ message: 'Invalid payload' });
-  }
+app.post(
+  '/signUp',
+  middlewareHandler(
+    zodSchema(SignUpDataSchema),
+    async ({ request, env, data: [payload] }) => {
+      const { email, academicGroup, password, turnstileToken, ...rest } =
+        payload;
 
-  const {
-    email,
-    firstName,
-    lastName,
-    parentName,
-    academicGroup,
-    telnum,
-    password,
-    turnstileToken,
-  } = signUpResult.data;
+      const tokenVerification = await verifyTurnstileTokenByHost(
+        env,
+        request,
+        turnstileToken
+      );
 
-  const tokenVerification = await verifyTurnstileTokenByHost(
-    env,
-    request,
-    turnstileToken
-  );
+      if (!tokenVerification.success) {
+        console.error(
+          `Token verification failed: ${tokenVerification.errorCodes}`
+        );
+        return badRequest({ message: 'Invalid turnstile token' });
+      }
 
-  if (!tokenVerification.success) {
-    console.error(`Token verification failed: ${tokenVerification.errorCodes}`);
-    return badRequest({ message: 'Invalid turnstile token' });
-  }
+      const passwordHash = await hashPassword(password);
+      const pendingToken = await newPendingToken();
 
-  const passwordHash = await hashPassword(password);
-  const pendingToken = await newPendingToken();
+      const repo = Repository.openConnection();
 
-  const repo = Repository.openConnection();
+      const groupExists = await repo.groups().groupExists(academicGroup).get();
+      if (!groupExists) {
+        return badRequest({ message: 'Unknown academic group' });
+      }
 
-  const groupExists = await repo.groups().groupExists(academicGroup).get();
-  if (!groupExists) {
-    return badRequest({ message: 'Unknown academic group' });
-  }
+      try {
+        await repo.pendingUsers().add({
+          email,
+          academicGroup,
+          createdAt: Date.now(),
+          passwordHash,
+          token: pendingToken,
+          ...rest,
+        });
+      } catch {
+        return conflict({ message: 'Email exists' });
+      }
 
-  try {
-    await repo.pendingUsers().insert({
-      email,
-      firstName,
-      lastName,
-      parentName,
-      academicGroup,
-      telnum,
-      createdAt: Date.now(),
-      passwordHash,
-      token: pendingToken,
-    });
-  } catch {
-    return conflict({ message: 'Email exists' });
-  }
+      await sendConfirmationMail(env.RESEND_API_KEY, email, pendingToken);
 
-  await sendConfirmationMail(env.RESEND_API_KEY, email, pendingToken);
-
-  return new Response();
-});
+      return new Response();
+    }
+  )
+);

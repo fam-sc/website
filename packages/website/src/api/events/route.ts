@@ -1,64 +1,70 @@
 import { Repository, UserRole } from '@sc-fam/data';
-import { badRequest, ok } from '@sc-fam/shared';
+import { ok } from '@sc-fam/shared';
 import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
+import { enumValidator } from '@sc-fam/shared/minivalidate';
+import { middlewareHandler, searchParams } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { authRoute } from '@/api/authRoute';
 import { parseAddEventPayload } from '@/api/events/payloads';
 import { MediaTransaction } from '@/api/media/transaction';
 
+import { auth } from '../authRoute';
 import { putMultipleSizedImages } from '../media/multiple';
 import { hydrateRichText } from '../richText/hydration';
 
-app.get('/events', async (request) => {
-  const url = new URL(request.url);
-  const type = url.searchParams.get('type');
+app.get(
+  '/events',
+  middlewareHandler(
+    searchParams({ type: enumValidator(['short']) }),
+    async () => {
+      const repo = Repository.openConnection();
+      const result = await repo.events().getAllShortEvents();
 
-  if (type !== 'short') {
-    return badRequest({ message: 'Invalid type' });
-  }
+      return ok(result);
+    }
+  )
+);
 
-  const repo = Repository.openConnection();
-  const result = await repo.events().getAllShortEvents();
+app.post(
+  '/events',
+  middlewareHandler(
+    auth({ minRole: UserRole.ADMIN }),
+    async ({ request, env }) => {
+      const formData = await request.formData();
+      const { description, descriptionFiles, date, image, ...restPayload } =
+        parseAddEventPayload(formData);
 
-  return ok(result);
-});
+      // Use media and repo transactions here to ensure consistency if an error happens somewhere.
+      await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
-app.post('/events', async (request, { env }) => {
-  const formData = await request.formData();
-  const { description, descriptionFiles, date, image, ...restPayload } =
-    parseAddEventPayload(formData);
+      const richTextDescription = await hydrateRichText(description, {
+        env,
+        mediaTransaction,
+        files: descriptionFiles,
+      });
 
-  // Use media and repo transactions here to ensure consistency if an error happens somewhere.
-  await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
+      const imageBuffer = await image.bytes();
+      const sizes = resolveImageSizes(getImageSize(imageBuffer));
 
-  const richTextDescription = await hydrateRichText(description, {
-    env,
-    mediaTransaction,
-    files: descriptionFiles,
-  });
+      const repo = Repository.openConnection();
+      const id = await repo.events().insertEvent({
+        date: date.getTime(),
+        description: richTextDescription,
+        images: sizes,
+        ...restPayload,
+      });
 
-  const imageBuffer = await image.bytes();
-  const sizes = resolveImageSizes(getImageSize(imageBuffer));
+      await putMultipleSizedImages(
+        env,
+        `events/${id}`,
+        imageBuffer,
+        sizes,
+        mediaTransaction
+      );
 
-  return await authRoute(request, UserRole.ADMIN, async (repo) => {
-    const id = await repo.events().insertEvent({
-      date: date.getTime(),
-      description: richTextDescription,
-      images: sizes,
-      ...restPayload,
-    });
+      await mediaTransaction.commit();
 
-    await putMultipleSizedImages(
-      env,
-      `events/${id}`,
-      imageBuffer,
-      sizes,
-      mediaTransaction
-    );
-
-    await mediaTransaction.commit();
-
-    return new Response();
-  });
-});
+      return new Response();
+    }
+  )
+);

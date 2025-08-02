@@ -48,7 +48,7 @@
     "sass-loader": "16.0.5",
     "sharp": "0.34.3",
     "telegram-standard-bot-api": "1.0.8",
-    "zod": "4.0.5",
+    "zod": "4.0.14",
     "zustand": "5.0.6"
   },
   "devDependencies": {

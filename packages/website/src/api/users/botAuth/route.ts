@@ -1,7 +1,13 @@
 import { Repository, UserRole } from '@sc-fam/data';
-import { badRequest, unauthorized } from '@sc-fam/shared';
+import { unauthorized } from '@sc-fam/shared';
 import { telegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/schema.js';
 import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
+import { invalid } from '@sc-fam/shared/minivalidate';
+import {
+  middlewareHandler,
+  searchParams,
+  zodSchema,
+} from '@sc-fam/shared/router';
 
 import { authorizeAdminBot } from '@/api/adminbot/client';
 import { app } from '@/api/app';
@@ -39,44 +45,38 @@ const bots: Record<BotType, BotInfo> = {
   },
 };
 
-app.post('/users/botAuth', async (request, { env }) => {
-  const sessionId = getSessionId(request);
-  if (sessionId === undefined) {
-    return unauthorized();
-  }
+app.post(
+  '/users/botAuth',
+  middlewareHandler(
+    searchParams({
+      type: (input) => (isBotType(input) ? input : invalid()),
+    }),
+    zodSchema(telegramBotAuthPayload),
+    async ({ request, data: [{ type }, payload], env }) => {
+      const sessionId = getSessionId(request);
+      if (sessionId === undefined) {
+        return unauthorized();
+      }
 
-  const { searchParams } = new URL(request.url);
-  const type = searchParams.get('type');
-  if (!isBotType(type)) {
-    return badRequest();
-  }
+      const { authorize, updateUser, minRole } = bots[type];
 
-  const rawPayload = await request.json();
+      const repo = Repository.openConnection();
+      const user = await repo.sessions().getUserWithRole(sessionId);
+      if (user === null || user.role < minRole) {
+        return unauthorized();
+      }
 
-  const payloadResult = telegramBotAuthPayload.safeParse(rawPayload);
-  if (!payloadResult.success) {
-    return badRequest();
-  }
+      try {
+        await authorize(payload, env);
+      } catch (error: unknown) {
+        console.error(error);
 
-  const payload = payloadResult.data;
+        return unauthorized();
+      }
 
-  const { authorize, updateUser, minRole } = bots[type];
+      await updateUser(repo, user.id, payload.id);
 
-  const repo = Repository.openConnection();
-  const user = await repo.sessions().getUserWithRole(sessionId);
-  if (user === null || user.role < minRole) {
-    return unauthorized();
-  }
-
-  try {
-    await authorize(payload, env);
-  } catch (error: unknown) {
-    console.error(error);
-
-    return unauthorized();
-  }
-
-  await updateUser(repo, user.id, payload.id);
-
-  return new Response();
-});
+      return new Response();
+    }
+  )
+);

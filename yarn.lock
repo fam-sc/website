@@ -3025,6 +3025,7 @@ __metadata:
     sharp: "npm:0.34.3"
     telegram-standard-bot-api: "npm:1.0.7"
     typescript: "npm:5.8.3"
+    zod: "npm:4.0.14"
   languageName: unknown
   linkType: soft
 
@@ -3091,7 +3092,7 @@ __metadata:
     vite: "npm:7.0.4"
     vite-tsconfig-paths: "npm:5.1.4"
     wrangler: "npm:4.24.4"
-    zod: "npm:4.0.5"
+    zod: "npm:4.0.14"
     zustand: "npm:5.0.6"
   languageName: unknown
   linkType: soft
@@ -11888,10 +11889,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:4.0.5":
-  version: 4.0.5
-  resolution: "zod@npm:4.0.5"
-  checksum: 10c0/59449d731ca63849b6bcb14300aa6e2f042d440b3ed294b45c248519aec78780f85a5d1939a62c2ce82e9dc60afca77c8005e0a98d7517b0c2586d6c76940424
+"zod@npm:4.0.14":
+  version: 4.0.14
+  resolution: "zod@npm:4.0.14"
+  checksum: 10c0/ec8681050d393f3be1c2c8f30d7dd4f56bec3746855fb17288be856185a0fe65e68d1b24aec657bbf956f64c05e69332d3751eafd6c103d19385bcc46075612b
   languageName: node
   linkType: hard
 

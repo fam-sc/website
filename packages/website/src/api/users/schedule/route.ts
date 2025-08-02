@@ -1,27 +1,22 @@
-import { UserRole } from '@sc-fam/data';
-import { badRequest } from '@sc-fam/shared';
+import { Repository } from '@sc-fam/data';
+import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { authRoute } from '@/api/authRoute';
+import { auth } from '@/api/authRoute';
 
 import { updateScheduleBotOptionsPayload } from './schema';
 
-app.put('/users/schedule', async (request) => {
-  const rawPayload = await request.json();
-  const payloadResult = updateScheduleBotOptionsPayload.safeParse(rawPayload);
-  if (!payloadResult.success) {
-    return badRequest();
-  }
+app.put(
+  '/users/schedule',
+  middlewareHandler(
+    zodSchema(updateScheduleBotOptionsPayload),
+    auth(),
+    async ({ data: [payload, { id: userId }] }) => {
+      const repo = Repository.openConnection();
 
-  const payload = payloadResult.data;
-
-  return authRoute(
-    request,
-    UserRole.STUDENT_NON_APPROVED,
-    async (repo, userId) => {
       await repo.scheduleBotUsers().updateUserOptions(userId, payload);
 
       return new Response();
     }
-  );
-});
+  )
+);

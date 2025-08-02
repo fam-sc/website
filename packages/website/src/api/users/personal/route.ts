@@ -1,34 +1,21 @@
 import { Repository } from '@sc-fam/data';
-import { badRequest, unauthorized } from '@sc-fam/shared';
+import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { getSessionId } from '@/api/auth';
+import { auth } from '@/api/authRoute';
 import { userPersonalInfo } from '@/api/users/payloads';
 
-app.put('/users/personal', async (request) => {
-  const bodyObject = await request.json();
-  const piResult = userPersonalInfo.safeParse(bodyObject);
-  if (piResult.error) {
-    console.error(piResult.error);
+app.put(
+  '/users/personal',
+  middlewareHandler(
+    zodSchema(userPersonalInfo),
+    auth(),
+    async ({ data: [personalInfo, { id: userId }] }) => {
+      const repo = Repository.openConnection();
 
-    return badRequest();
-  }
+      await repo.users().updatePersonalInfo(userId, personalInfo);
 
-  const personalInfo = piResult.data;
-
-  const sessionId = getSessionId(request);
-  if (sessionId === undefined) {
-    return unauthorized();
-  }
-
-  const repo = Repository.openConnection();
-
-  const session = await repo.sessions().findBySessionId(sessionId);
-  if (session === null) {
-    return unauthorized();
-  }
-
-  await repo.users().updatePersonalInfo(session.userId, personalInfo);
-
-  return new Response();
-});
+      return new Response();
+    }
+  )
+);

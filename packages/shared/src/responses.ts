@@ -21,8 +21,9 @@ export const internalServerError = helper('Internal Server Error', 500);
 export const badRequest = helper('Bad Request', 400);
 export const conflict = helper('Conflict', 409);
 
-export function ok(value: object): Response {
-  return jsonResponse(value, 200);
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+export function ok<T extends object>(value?: T): Response {
+  return value === undefined ? new Response() : jsonResponse(value, 200);
 }
 
 export function methodNotAllowed(allowed?: string[]) {

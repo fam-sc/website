@@ -1,29 +1,25 @@
-import { UserRole } from '@sc-fam/data';
-import { badRequest } from '@sc-fam/shared';
+import { Repository, UserRole } from '@sc-fam/data';
+import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { authRoute } from '@/api/authRoute';
 
+import { auth } from '../authRoute';
 import { addPollPayload } from './schema';
 
-app.post('/polls', async (request) => {
-  const rawPayload = await request.json();
-  const payloadResult = addPollPayload.safeParse(rawPayload);
-  if (payloadResult.error) {
-    console.error(payloadResult.error);
+app.post(
+  '/polls',
+  middlewareHandler(
+    zodSchema(addPollPayload),
+    auth({ minRole: UserRole.ADMIN }),
+    async ({ data: [payload] }) => {
+      const repo = Repository.openConnection();
+      await repo.polls().insertPoll({
+        startDate: Date.now(),
+        endDate: null,
+        ...payload,
+      });
 
-    return badRequest();
-  }
-
-  const payload = payloadResult.data;
-
-  return authRoute(request, UserRole.ADMIN, async (repo) => {
-    await repo.polls().insertPoll({
-      startDate: Date.now(),
-      endDate: null,
-      ...payload,
-    });
-
-    return new Response();
-  });
-});
+      return new Response();
+    }
+  )
+);

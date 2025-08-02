@@ -1,24 +1,56 @@
-import { Repository, UserRole } from '@sc-fam/data';
+import { Repository, UserRole, UserWithRoleAndAvatar } from '@sc-fam/data';
 import { unauthorized } from '@sc-fam/shared';
+import { Middleware, RequestArgs } from '@sc-fam/shared/router';
 
 import { getSessionId } from '@/api/auth';
 
-export async function authRoute(
-  request: Request,
-  minRole: UserRole,
-  block: (repo: Repository, userId: number) => Promise<Response>
-): Promise<Response> {
-  const sessionId = getSessionId(request);
-  if (sessionId === undefined) {
-    return unauthorized();
-  }
+type Getter<T> = (repo: Repository, sessionId: string) => Promise<T | null>;
 
-  const repo = Repository.openConnection();
-  const userWithRole = await repo.sessions().getUserWithRole(sessionId);
+export function auth<Opts, T extends { id: number; role: UserRole }>(options?: {
+  minRole: UserRole;
+  get: Getter<T>;
+}): Middleware<T, Opts>;
 
-  if (userWithRole === null || userWithRole.role < minRole) {
-    return unauthorized();
-  }
+export function auth<Opts>(options?: {
+  minRole?: UserRole;
+}): Middleware<UserWithRoleAndAvatar, Opts>;
 
-  return await block(repo, userWithRole.id);
+export function auth<Opts, T>(options: { get: Getter<T> }): Middleware<T, Opts>;
+
+export function auth<
+  Args extends RequestArgs,
+  T extends { id?: number; role?: UserRole },
+>(options?: {
+  minRole?: UserRole;
+  get?: Getter<T>;
+}): Middleware<T | UserWithRoleAndAvatar, Args> {
+  const get = options?.get;
+  const minRole = options?.minRole;
+
+  return async ({ request }) => {
+    const sessionId = getSessionId(request);
+    if (sessionId === undefined) {
+      return unauthorized();
+    }
+
+    const repo = Repository.openConnection();
+    const userWithRole = await (get
+      ? get(repo, sessionId)
+      : repo.sessions().getUserWithRole(sessionId));
+
+    if (userWithRole === null) {
+      return unauthorized();
+    }
+
+    const userRole = userWithRole.role;
+    if (userRole !== undefined && minRole !== undefined && userRole < minRole) {
+      return unauthorized();
+    }
+
+    return userWithRole;
+  };
+}
+
+export function userWithRoleGetter(repo: Repository, sessionId: string) {
+  return repo.sessions().getUserWithRoleAndGroup(sessionId);
 }

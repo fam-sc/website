@@ -23,22 +23,19 @@ app.post('/signUp/finish', async (request, { env }) => {
   let userId: number;
 
   try {
-    userId = await repo.users().insert(
-      {
-        email: pendingUser.email,
-        firstName: pendingUser.firstName,
-        lastName: pendingUser.lastName,
-        parentName: pendingUser.parentName,
-        academicGroup: pendingUser.academicGroup,
-        telnum: pendingUser.telnum,
-        passwordHash: pendingUser.passwordHash,
-        role: UserRole.STUDENT_NON_APPROVED,
-        scheduleBotUserId: null,
-        adminBotUserId: null,
-        hasAvatar: 0,
-      },
-      'id'
-    );
+    userId = await repo.users().add({
+      email: pendingUser.email,
+      firstName: pendingUser.firstName,
+      lastName: pendingUser.lastName,
+      parentName: pendingUser.parentName,
+      academicGroup: pendingUser.academicGroup,
+      telnum: pendingUser.telnum,
+      passwordHash: pendingUser.passwordHash,
+      role: UserRole.STUDENT_NON_APPROVED,
+      scheduleBotUserId: null,
+      adminBotUserId: null,
+      hasAvatar: 0,
+    });
   } catch (error: unknown) {
     console.log(error);
     return conflict({ message: 'Email exists' });

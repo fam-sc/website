@@ -22,4 +22,8 @@ export class PendingUserCollection extends EntityCollection<PendingUser>(
   findByToken(token: string) {
     return this.findOneWhere({ token });
   }
+
+  add(value: PendingUser) {
+    return this.insert(value);
+  }
 }

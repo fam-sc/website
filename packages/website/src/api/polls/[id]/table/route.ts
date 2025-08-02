@@ -1,24 +1,26 @@
-import { UserRole } from '@sc-fam/data';
-import { notFound, ok, parseInt } from '@sc-fam/shared';
+import { Repository, UserRole } from '@sc-fam/data';
+import { notFound, ok } from '@sc-fam/shared';
+import { int, middlewareHandler, params } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { authRoute } from '@/api/authRoute';
+import { auth } from '@/api/authRoute';
 
 import { pollResultsToTable } from './transform';
 
-app.get('/polls/:id/table', async (request, { params }) => {
-  const id = parseInt(params.id);
-  if (id === undefined) {
-    return notFound();
-  }
+app.get(
+  '/polls/:id/table',
+  middlewareHandler(
+    params({ id: int(notFound) }),
+    auth({ minRole: UserRole.ADMIN }),
+    async ({ data: [{ id }] }) => {
+      const repo = Repository.openConnection();
+      const poll = await repo.polls().findPollWithQuestionsAndAnswers(id);
 
-  return authRoute(request, UserRole.ADMIN, async (repo) => {
-    const poll = await repo.polls().findPollWithQuestionsAndAnswers(id);
+      if (poll === null) {
+        return notFound();
+      }
 
-    if (poll === null) {
-      return notFound();
+      return ok(pollResultsToTable(poll.questions, poll.respondents));
     }
-
-    return ok(pollResultsToTable(poll.questions, poll.respondents));
-  });
-});
+  )
+);

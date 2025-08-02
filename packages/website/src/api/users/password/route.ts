@@ -1,51 +1,37 @@
 import { Repository } from '@sc-fam/data';
-import { badRequest, unauthorized } from '@sc-fam/shared';
+import { unauthorized } from '@sc-fam/shared';
+import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { getSessionId } from '@/api/auth';
 import { hashPassword, verifyPassword } from '@/api/auth/password';
+import { auth } from '@/api/authRoute';
 import { ApiErrorCode } from '@/api/errorCodes';
 import { changePasswordPayload } from '@/api/users/payloads';
 
-app.put('/users/password', async (request: Request) => {
-  const sessionId = getSessionId(request);
-  if (sessionId === undefined) {
-    return unauthorized();
-  }
+app.put(
+  '/users/password',
+  middlewareHandler(
+    zodSchema(changePasswordPayload),
+    auth({
+      get: (repo, sessionId) => repo.sessions().getUserWithPassword(sessionId),
+    }),
+    async ({ data: [payload, { id, passwordHash }] }) => {
+      const { oldPassword, newPassword } = payload;
+      const isValidOld = await verifyPassword(passwordHash, oldPassword);
 
-  const rawPayload = await request.json();
-  const payloadResult = changePasswordPayload.safeParse(rawPayload);
-  if (payloadResult.error) {
-    console.error(payloadResult.error);
+      if (!isValidOld) {
+        return unauthorized({
+          message: 'Old password is invalid',
+          code: ApiErrorCode.INVALID_OLD_PASSWORD,
+        });
+      }
 
-    return badRequest();
-  }
+      const newHash = await hashPassword(newPassword);
 
-  const { oldPassword, newPassword } = payloadResult.data;
+      const repo = Repository.openConnection();
+      await repo.users().updatePassword(id, newHash);
 
-  const repo = Repository.openConnection();
-
-  const userWithPassword = await repo.sessions().getUserWithPassword(sessionId);
-
-  if (userWithPassword === null) {
-    return unauthorized();
-  }
-
-  const isValidOld = await verifyPassword(
-    userWithPassword.passwordHash,
-    oldPassword
-  );
-
-  if (!isValidOld) {
-    return unauthorized({
-      message: 'Old password is invalid',
-      code: ApiErrorCode.INVALID_OLD_PASSWORD,
-    });
-  }
-
-  const newHash = await hashPassword(newPassword);
-
-  await repo.users().updatePassword(userWithPassword.id, newHash);
-
-  return new Response();
-});
+      return new Response();
+    }
+  )
+);

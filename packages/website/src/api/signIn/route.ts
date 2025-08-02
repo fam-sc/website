@@ -1,5 +1,6 @@
 import { Repository } from '@sc-fam/data';
 import { badRequest, unauthorized } from '@sc-fam/shared';
+import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
 import { getSessionId, newSessionId, setSessionId } from '@/api/auth';
@@ -8,59 +9,59 @@ import { SignInDataSchema } from '@/api/auth/schema';
 
 import { verifyTurnstileTokenByHost } from '../turnstile/verify';
 
-app.post('/signIn', async (request, { env }) => {
-  const rawContent = await request.json();
-  const signInResult = SignInDataSchema.safeParse(rawContent);
-  if (signInResult.error) {
-    console.error(signInResult.error);
+app.post(
+  '/signIn',
+  middlewareHandler(
+    zodSchema(SignInDataSchema),
+    async ({ request, env, data: [payload] }) => {
+      const { email, password, turnstileToken } = payload;
 
-    return badRequest({ message: 'Invalid payload' });
-  }
+      const tokenVerification = await verifyTurnstileTokenByHost(
+        env,
+        request,
+        turnstileToken
+      );
 
-  const { email, password, turnstileToken } = signInResult.data;
+      if (!tokenVerification.success) {
+        console.error(
+          `Token verification failed: ${tokenVerification.errorCodes}`
+        );
+        return badRequest({ message: 'Invalid turnstile token' });
+      }
 
-  const tokenVerification = await verifyTurnstileTokenByHost(
-    env,
-    request,
-    turnstileToken
-  );
+      const repo = Repository.openConnection();
 
-  if (!tokenVerification.success) {
-    console.error(`Token verification failed: ${tokenVerification.errorCodes}`);
-    return badRequest({ message: 'Invalid turnstile token' });
-  }
+      const currentSessionId = getSessionId(request);
+      const currentSessionValid =
+        currentSessionId !== undefined &&
+        (await repo.sessions().sessionExists(currentSessionId));
 
-  const repo = Repository.openConnection();
+      if (currentSessionValid) {
+        return badRequest({
+          message: 'Cannot create new session when you already have one',
+        });
+      }
 
-  const currentSessionId = getSessionId(request);
-  const currentSessionValid =
-    currentSessionId !== undefined &&
-    (await repo.sessions().sessionExists(currentSessionId));
+      const user = await repo.users().findUserWithPasswordByEmail(email);
+      if (user === null) {
+        console.error('User not found');
+        return unauthorized();
+      }
 
-  if (currentSessionValid) {
-    return badRequest({
-      message: 'Cannot create new session when you already have one',
-    });
-  }
+      const status = await verifyPassword(user.passwordHash, password);
+      if (!status) {
+        console.error('Mismatched password');
+        return unauthorized();
+      }
 
-  const user = await repo.users().findUserWithPasswordByEmail(email);
-  if (user === null) {
-    console.error('User not found');
-    return unauthorized();
-  }
+      const sessionId = await newSessionId();
 
-  const status = await verifyPassword(user.passwordHash, password);
-  if (!status) {
-    console.error('Mismatched password');
-    return unauthorized();
-  }
+      await repo.sessions().insert({ sessionId, userId: user.id });
 
-  const sessionId = await newSessionId();
+      const response = new Response();
+      setSessionId(response, sessionId);
 
-  await repo.sessions().insert({ sessionId, userId: user.id });
-
-  const response = new Response();
-  setSessionId(response, sessionId);
-
-  return response;
-});
+      return response;
+    }
+  )
+);

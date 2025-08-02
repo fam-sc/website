@@ -22,6 +22,10 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
     };
   }
 
+  add(value: Omit<RawUser, 'id'>) {
+    return this.insert(value, 'id');
+  }
+
   async findUserWithPasswordByEmail(email: string) {
     const result = await this.findOneWhere({ email }, ['id', 'passwordHash']);
 

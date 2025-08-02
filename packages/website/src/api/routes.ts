@@ -19,7 +19,6 @@ import './users/personal/route';
 import './users/password/route';
 import './users/logOut/route';
 import './users/avatar/route';
-import './users/me/route';
 import './users/forgotPassword/route';
 import './users/resetPassword/route';
 import './users/botAuth/route';
