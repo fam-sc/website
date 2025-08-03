@@ -1,8 +1,8 @@
-openapi: "3.0.3"
+openapi: '3.0.3'
 info:
   title: Website API
   description: REST API documentation for the client-server website, covering users, events, gallery, polls, and more.
-  version: "1.0"
+  version: '1.0'
 
 tags:
   - name: Authentication
@@ -20,144 +20,144 @@ tags:
 paths:
   # Authentication
 
-  "/signIn":
+  '/signIn':
     post:
       summary: Sign in for user
-      tags: ["Authentication"]
+      tags: ['Authentication']
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SignInData"
+              $ref: '#/components/schemas/SignInData'
       responses:
-        "200":
+        '200':
           description: User signed in successfully.
           headers:
             Set-Cookie:
               description: Session cookie set by server.
               schema:
                 type: string
-                example: "sessionId=12345; Path=/; HttpOnly"
-        "400":
+                example: 'sessionId=12345; Path=/; HttpOnly'
+        '400':
           description: Bad request ( missing fields).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
+                $ref: '#/components/schemas/Error'
+        '401':
           description: Unauthorized (invalid credentials).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
-  "/signUp":
+  '/signUp':
     post:
       summary: Sign up for user
       description: The user is not actually signed up after this.
         An mail will be sent to given e-mail with a link that user should click in order to confirm that the one owns the email.
         This link will activate the account.
-      tags: ["Authentication"]
+      tags: ['Authentication']
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SignUpData"
+              $ref: '#/components/schemas/SignUpData'
       responses:
-        "200":
+        '200':
           description: User signed up successfully.
           headers:
             Set-Cookie:
               description: Session cookie set by server.
               schema:
                 type: string
-        "400":
+        '400':
           description: Bad request (invalid body, passwords mismatch, etc.).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "409":
+                $ref: '#/components/schemas/Error'
+        '409':
           description: Conflict (User with this email already exists).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
-  "/signUp/finish":
+  '/signUp/finish':
     post:
       summary: Activates the account.
       description: /signUp call sents mail to the user with a token.
         This token must be passed to this method to authenticate the request.
-      tags: ["Authentication"]
+      tags: ['Authentication']
       responses:
-        "200":
+        '200':
           description: The account is activated
-        "400":
+        '400':
           description: Invalid request (e.g, invalid or no token)
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "409":
+                $ref: '#/components/schemas/Error'
+        '409':
           description: Conflict (User with this email already exists).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   # Events
 
-  "/events":
+  '/events':
     get:
       summary: Gets short information about all events
-      tags: ["Events"]
+      tags: ['Events']
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ShortEvent"
+                  $ref: '#/components/schemas/ShortEvent'
 
     post:
       summary: Adds new event
       description: The request must be authenticated.
-      tags: ["Events"]
+      tags: ['Events']
       security:
         - cookieAuth: []
       requestBody:
         required: true
         content:
-          "multipart/form-data":
+          'multipart/form-data':
             schema:
-              $ref: "#/components/schemas/AddEventPayload"
+              $ref: '#/components/schemas/AddEventPayload'
       responses:
-        "200":
+        '200':
           description: Event created.
 
-        "400":
+        '400':
           description: Bad Request (Invalid data).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
+                $ref: '#/components/schemas/Error'
+        '401':
           description: Unauthorized.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
-  "/events/{id}":
+  '/events/{id}':
     put:
       summary: Updates the event
       description: The request must be authorized.
-      tags: ["Events"]
+      tags: ['Events']
       security:
         - cookieAuth: []
       parameters:
@@ -170,35 +170,35 @@ paths:
       requestBody:
         required: true
         content:
-          "multipart/form-data":
+          'multipart/form-data':
             schema:
-              $ref: "#/components/schemas/EditEventPayload"
+              $ref: '#/components/schemas/EditEventPayload'
       responses:
-        "200":
+        '200':
           description: Event updated auccessfully.
-        "400":
+        '400':
           description: Bad Request.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
+                $ref: '#/components/schemas/Error'
+        '401':
           description: Unauthorized.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Event not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
     delete:
       summary: Deletes the event
       description: The request must be authorized.
-      tags: ["Events"]
+      tags: ['Events']
       security:
         - cookieAuth: []
       parameters:
@@ -209,24 +209,24 @@ paths:
           description: ID of the event to delete
           required: true
       responses:
-        "200":
+        '200':
           description: Event deleted successfully.
-        "401":
+        '401':
           description: Unauthorized.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Event Not Found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   # Gallery
 
-  "/gallery":
+  '/gallery':
     get:
       summary: Get a page of gallery images
       tags: [Gallery]
@@ -239,21 +239,21 @@ paths:
           schema:
             type: number
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GalleryPageItem"
+                  $ref: '#/components/schemas/GalleryPageItem'
     post:
       summary: Adds a new gallery images
       tags: [Gallery]
       requestBody:
         required: true
         content:
-          "multipart/form-data":
+          'multipart/form-data':
             schema:
               type: object
               properties:
@@ -270,16 +270,16 @@ paths:
                   format: binary
                   description: An array of images
       responses:
-        "200":
+        '200':
           description: Images added.
-        "400":
+        '400':
           description: Invalid payload.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
-  "/gallery/{id}":
+  '/gallery/{id}':
     get:
       summary: Get detailed information about a gallery photo
       tags: [Gallery]
@@ -291,24 +291,24 @@ paths:
           required: true
           description: ID of the photo to retrieve.
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GalleryImageWithEvent"
-        "404":
+                  $ref: '#/components/schemas/GalleryImageWithEvent'
+        '404':
           description: Given photo not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
     delete:
       summary: Deletes the image
       description: The request must be authorized.
-      tags: ["Gallery"]
+      tags: ['Gallery']
       security:
         - cookieAuth: []
       parameters:
@@ -319,20 +319,20 @@ paths:
           description: ID of the image to delete
           required: true
       responses:
-        "200":
+        '200':
           description: Image deleted successfully.
-        "401":
+        '401':
           description: Unauthorized.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Image not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   # Polls
 
@@ -340,35 +340,35 @@ paths:
     post:
       summary: Adds a new poll
       description: The request must be authorized.
-      tags: ["Polls"]
+      tags: ['Polls']
       security:
         - cookieAuth: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddPollPayload"
+              $ref: '#/components/schemas/AddPollPayload'
       responses:
-        "200":
+        '200':
           description: OK
-        "401":
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "400":
+                $ref: '#/components/schemas/Error'
+        '400':
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /polls/{id}:
     post:
       summary: Vote on a specific poll
       description: The request must be authorized.
-      tags: ["Polls"]
+      tags: ['Polls']
       security:
         - cookieAuth: []
       parameters:
@@ -383,28 +383,28 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SubmitPollPayload"
+              $ref: '#/components/schemas/SubmitPollPayload'
       responses:
-        "200":
+        '200':
           description: Vote recorded successfully.
-        "400":
+        '400':
           description: Bad request (e.g., poll closed).
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
+                $ref: '#/components/schemas/Error'
+        '401':
           description: Unauthorized.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Poll not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /polls/{id}/close:
     post:
@@ -421,14 +421,14 @@ paths:
           description: ID of the poll to close
           required: true
       responses:
-        "200":
+        '200':
           description: Poll closed.
-        "404":
+        '404':
           description: Poll not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /polls/{id}/table:
     get:
@@ -445,14 +445,14 @@ paths:
           description: ID of the poll to close
           required: true
       responses:
-        "200":
+        '200':
           description: Poll closed.
-        "404":
+        '404':
           description: Poll not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   # Schedule
 
@@ -460,7 +460,7 @@ paths:
     get:
       summary: Get the schedule for a specified group
       description: The data is retrieved from http://roz.kpi.ua/
-      tags: ["Schedule"]
+      tags: ['Schedule']
 
       parameters:
         - in: query
@@ -469,20 +469,20 @@ paths:
           schema:
             type: string
           description: A ID of the group to get schedule for.
-          example: "KM-23"
+          example: 'KM-23'
       responses:
-        "200":
+        '200':
           description: OK.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Schedule"
-        "404":
+                $ref: '#/components/schemas/Schedule'
+        '404':
           description: The specified group not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /schedule/groups:
     get:
@@ -490,16 +490,16 @@ paths:
       description:
         Gets a list of available faculty groups relevant to the timetable system.
         This information can be used, for example, to populate group selection drop-down lists when requesting specific academic timetables.
-      tags: ["Schedule"]
+      tags: ['Schedule']
       responses:
-        "200":
+        '200':
           description: Successful response with a list of groups.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ScheduleGroup"
+                  $ref: '#/components/schemas/ScheduleGroup'
 
   # Users
 
@@ -507,28 +507,28 @@ paths:
     get:
       summary: Get all users
       description: /users retrieves a paginated list of all registered users.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       parameters:
-        - $ref: "#/components/parameters/PageQuery"
+        - $ref: '#/components/parameters/PageQuery'
       responses:
-        "200":
+        '200':
           description: A list of users.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UserInfoWithRole"
-        "400":
+                  $ref: '#/components/schemas/UserInfoWithRole'
+        '400':
           description: Invalid page.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /users/personal:
     put:
@@ -536,7 +536,7 @@ paths:
       description:
         Allows an authenticated user to update their own personal information
         stored, such as first name, last name.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       requestBody:
@@ -544,15 +544,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserPersonalInfoInput"
+              $ref: '#/components/schemas/UserPersonalInfoInput'
 
       responses:
-        "200":
+        '200':
           description: OK
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /users/password:
     put:
@@ -561,7 +561,7 @@ paths:
         Allows an authenticated user to change the password of their account.
         The user must provide their current (old) password for verification along with the new desired password.
         Session authentication is required.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       requestBody:
@@ -569,33 +569,33 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ChangePasswordPayload"
+              $ref: '#/components/schemas/ChangePasswordPayload'
       responses:
-        "200":
+        '200':
           description: OK
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
           description: Authentication failed or old password invalid.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /users/logOut:
     post:
       summary: Log out the current user
       description: Terminates the current session of an authenticated user.
-      tags: ["Users"]
+      tags: ['Users']
       responses:
-        "200":
+        '200':
           description: Logout successful. The session cookie is cleared.
           headers:
             Set-Cookie:
               description: Clears the session cookie.
               schema:
                 type: string
-                example: "SESSION_ID_COOKIE=; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+                example: 'SESSION_ID_COOKIE=; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
 
   /users/avatar:
     post:
@@ -603,7 +603,7 @@ paths:
       description:
         Allows an authenticated user to upload a new avatar image or replace an existing one.
         Session authentication is required.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       requestBody:
@@ -616,96 +616,96 @@ paths:
               description: The image file to upload.
 
       responses:
-        "200":
+        '200':
           description: OK
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /users/approveList:
     get:
       summary: Get a list of users awaiting approval.
       description: Requires at least GROUP_HEAD role. Admins see all, Group Heads see their group.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       responses:
-        "200":
+        '200':
           description: A list of users needing approval.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UserInfo"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
+                  $ref: '#/components/schemas/UserInfo'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /users/{id}:
     summary: User operation
     description: Placeholder for standard GET, PUT, DELETE operations on a specific user by ID.
 
     parameters:
-      - $ref: "#/components/parameters/UserIdPath"
+      - $ref: '#/components/parameters/UserIdPath'
     get:
       summary: Get user details by ID
-      description: 
+      description:
         Retrieves detailed information about a specific user account, identified by its unique ID.
         Session authentication is required.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       responses:
-        "200":
+        '200':
           description: Detailed information about the user.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
     put:
       summary: Update user details by ID (Admin)
       description:
         Allows the administrator to update the details of any user account identified by a unique user ID.
         This is a privileged operation that requires administrative rights and session authentication.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
       responses:
-        "200":
+        '200':
           description: User updated successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
     delete:
       summary: Delete a user by ID (Admin)
       description:
         Allows an administrator to permanently delete a user account specified by a unique user ID.
         This is a destructive and privileged operation that requires administrative rights and session authentication.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       responses:
-        "200":
+        '200':
           description: OK
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /users/{id}/role:
     post:
@@ -713,21 +713,21 @@ paths:
       description:
         Changes the role of a specific user account identified by its ID.
         Session authentication required.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       parameters:
-        - $ref: "#/components/parameters/UserIdPath"
-        - $ref: "#/components/parameters/RoleValueQuery"
+        - $ref: '#/components/parameters/UserIdPath'
+        - $ref: '#/components/parameters/RoleValueQuery'
       responses:
-        "200":
+        '200':
           description: OK
-        "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
   /users/{id}/disapprove:
     post:
@@ -737,18 +737,18 @@ paths:
         to reject a user account that is in an unapproved state ("STUDENT_NON_APPROVED")
         on the client-server website. Session authentication is required, and the target user must be in
         a defined pre-authentication state.
-      tags: ["Users"]
+      tags: ['Users']
       security:
         - SessionCookieAuth: []
       parameters:
-        - $ref: "#/components/parameters/UserIdPath"
+        - $ref: '#/components/parameters/UserIdPath'
       responses:
-        "200":
+        '200':
           description: OK
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
 
 components:
   schemas:
@@ -810,7 +810,7 @@ components:
           format: date-time
         status:
           type: string
-          enum: ["pending", "ended"]
+          enum: ['pending', 'ended']
 
     AddEventPayload:
       type: object
@@ -827,9 +827,9 @@ components:
           description: Date of the event
         status:
           type: string
-          enum: ["pending", "ended"]
+          enum: ['pending', 'ended']
           description: Status of the event (defaults to 'pending' usually)
-          default: "pending"
+          default: 'pending'
         image:
           type: string
           format: binary
@@ -850,7 +850,7 @@ components:
           description: New date of the event
         status:
           type: string
-          enum: ["pending", "ended"]
+          enum: ['pending', 'ended']
           description: New status of the event
         image:
           type: string
@@ -971,21 +971,21 @@ components:
                   properties:
                     type:
                       type: string
-                      enum: ["lec", "lab", "prac"]
+                      enum: ['lec', 'lab', 'prac']
                       description: Type of the lesson
                     name:
                       type: string
                       description: Name of the lesson
-                      example: "Front-end розробка"
+                      example: 'Front-end розробка'
                     teacher:
                       type: object
                       description: The teacher who conducts the lesson
-                      required: ["name"]
+                      required: ['name']
                       properties:
                         name:
                           type: string
                           description: Name of the teacher
-                          example: "Тавров Данило Юрійович"
+                          example: 'Тавров Данило Юрійович'
                         link:
                           type: string
                           description: Link to the teacher's profile. It can be either pma.fpm.kpi.ua or intellect.kpi.ua
@@ -994,13 +994,13 @@ components:
                       description: When the lesson is conducted. Lessons are always conducted at specific points in time (breakpoints)
                       enum:
                         [
-                          "8:30",
-                          "10:25",
-                          "12:20",
-                          "14:15",
-                          "16:10",
-                          "18:30",
-                          "20:20",
+                          '8:30',
+                          '10:25',
+                          '12:20',
+                          '14:15',
+                          '16:10',
+                          '18:30',
+                          '20:20',
                         ]
                     place:
                       type: string
@@ -1014,10 +1014,10 @@ components:
       properties:
         campusId:
           type: string
-          example: "a1b2c3d4"
+          example: 'a1b2c3d4'
         name:
           type: string
-          example: "КМ-23"
+          example: 'КМ-23'
 
     # Users
 
@@ -1036,22 +1036,22 @@ components:
         id:
           type: string
           description: Unique identifier of the user.
-          example: "60d0fe4f5311236168a109ca"
+          example: '60d0fe4f5311236168a109ca'
         name:
           type: string
           description: Full name of the user.
-          example: "Іванов Іван Романович"
+          example: 'Іванов Іван Романович'
         email:
           type: string
           format: email
           description: Email address of the user.
-          example: "km23.pma@example.com"
+          example: 'km23.pma@example.com'
         group:
           type: string
           nullable: true
           description: ID of academic group of the user.
         role:
-          $ref: "#/components/schemas/UserRole"
+          $ref: '#/components/schemas/UserRole'
         hasAvatar:
           type: boolean
           description: Indicates if the user has an avatar.
@@ -1063,16 +1063,16 @@ components:
         id:
           type: string
           description: Unique identifier of the user.
-          example: "60d0fe4f5311236168a109cb"
+          example: '60d0fe4f5311236168a109cb'
         name:
           type: string
           description: Full name of the user.
-          example: "Петренко Роман Олегович"
+          example: 'Петренко Роман Олегович'
         email:
           type: string
           format: email
           description: Email address of the user.
-          example: "sc.fam@example.com"
+          example: 'sc.fam@example.com'
         group:
           type: string
           nullable: true
@@ -1088,14 +1088,14 @@ components:
       properties:
         firstName:
           type: string
-          example: "Валерія"
+          example: 'Валерія'
         lastName:
           type: string
-          example: "Баранівська"
+          example: 'Баранівська'
         parentName:
           type: string
           nullable: true
-          example: "Олександрівна"
+          example: 'Олександрівна'
       required:
         - firstName
         - lastName
@@ -1108,19 +1108,19 @@ components:
           type: string
           format: password
           description: The current password of the user.
-          example: "12345678"
+          example: '12345678'
         newPassword:
           type: string
           format: password
           description: The new desired password.
-          example: "12345678"
+          example: '12345678'
       required:
         - oldPassword
         - newPassword
 
     User:
       allOf:
-        - $ref: "#/components/schemas/UserInfoWithRole"
+        - $ref: '#/components/schemas/UserInfoWithRole'
         - type: object
           properties:
             dateOfBirth:
@@ -1138,10 +1138,10 @@ components:
         message:
           type: string
           description: A human-readable description of the error.
-          example: "Invalid old password"
+          example: 'Invalid old password'
         code:
           oneOf:
-            - $ref: "#/components/schemas/ApiErrorCode"
+            - $ref: '#/components/schemas/ApiErrorCode'
           description: A machine-readable error code, if applicable.
 
     ApiErrorCode:
@@ -1165,7 +1165,7 @@ components:
       description: Unique identifier of the user.
       schema:
         type: string
-        example: "60d0fe4f5311236168a109ca"
+        example: '60d0fe4f5311236168a109ca'
 
     PageQuery:
       name: page
@@ -1183,7 +1183,7 @@ components:
       required: true
       description: The new role to assign to the user.
       schema:
-        $ref: "#/components/schemas/UserRole"
+        $ref: '#/components/schemas/UserRole'
 
   responses:
     UnauthorizedError:
@@ -1191,22 +1191,22 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'
 
     BadRequestError:
       description: The request was malformed or contained invalid data.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'
           example:
-            message: "Invalid page parameter"
+            message: 'Invalid page parameter'
 
     NotFoundError:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'
           example:
-            message: "Resource not found."
+            message: 'Resource not found.'

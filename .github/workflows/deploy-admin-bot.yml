@@ -1,13 +1,16 @@
-name: Deploy media worker
+name: Deploy admin bot
 on:
   push:
     branches:
       - main
     paths:
-      - 'packages/media-worker/*'
+      - 'packages/admin-bot/*'
+      # admin-bot dependencies
+      - 'packages/shared/*'
+      - 'packages/data/*'
 
 jobs:
-  deploy-media-worker:
+  deploy-admin-bot:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,4 +28,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: ./packages/media-worker
+          command: "deploy --define \"DEV: false\""
+          workingDirectory: ./packages/admin-bot

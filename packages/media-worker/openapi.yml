@@ -10,7 +10,7 @@ paths:
   /{filePath}:
     get:
       summary: Returns content of the given file
-      description: "Contains custom header `X-Updated-On`: date when the file was last updated in ISO 8601 format"
+      description: 'Contains custom header `X-Updated-On`: date when the file was last updated in ISO 8601 format'
       parameters:
         - in: path
           name: filePath
@@ -26,7 +26,7 @@ paths:
           description: File not found
     put:
       summary: Updates content of given file.
-      description: "The client must be authorized: the request should have `X-Auth-Key` header"
+      description: 'The client must be authorized: the request should have `X-Auth-Key` header'
       parameters:
         - in: path
           name: filePath
@@ -42,7 +42,7 @@ paths:
           description: Not authorized
     delete:
       summary: Deletes the file
-      description: "The client must be authorized: the request should have `X-Auth-Key` header"
+      description: 'The client must be authorized: the request should have `X-Auth-Key` header'
       parameters:
         - in: path
           name: filePath

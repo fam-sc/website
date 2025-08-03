@@ -9,7 +9,7 @@ on:
       - 'packages/shared/*'
       - 'packages/data/*'
       - 'packages/shared-schedule/*'
-  
+
 jobs:
   deploy-schedule-bot:
     runs-on: ubuntu-latest
@@ -27,6 +27,7 @@ jobs:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
-            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-            workingDirectory: ./packages/schedule-bot
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: "deploy --define \"DEV: false\""
+          workingDirectory: ./packages/schedule-bot

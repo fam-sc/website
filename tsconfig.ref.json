@@ -1,0 +1,13 @@
+{
+  "references": [
+    { "path": "./packages/admin-bot" },
+    { "path": "./packages/data" },
+    { "path": "./packages/data-sync" },
+    { "path": "./packages/media-worker" },
+    { "path": "./packages/schedule-bot" },
+    { "path": "./packages/shared" },
+    { "path": "./packages/shared-schedule" },
+    { "path": "./packages/website" }
+  ],
+  "include": []
+}

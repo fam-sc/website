@@ -1,7 +1,6 @@
 name: Code quality
 
-on:
-  push
+on: push
 
 jobs:
   lint:

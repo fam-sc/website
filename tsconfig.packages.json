@@ -1,5 +1,6 @@
 {
   "references": [
+    // Only packages that have a distribution
     { "path": "./packages/shared" },
     { "path": "./packages/data" },
     { "path": "./packages/shared-schedule" }

@@ -7,7 +7,7 @@ on:
       - 'packages/data-sync/*'
       # data-sync dependencies
       - 'packages/shared/*'
-  
+
 jobs:
   deploy-data-sync:
     runs-on: ubuntu-latest
@@ -25,6 +25,6 @@ jobs:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
-            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-            workingDirectory: ./packages/data-sync
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ./packages/data-sync

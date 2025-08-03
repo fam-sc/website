@@ -10,12 +10,12 @@ components:
   schemas:
     WeekDay:
       type: string
-      enum: ["Пн", "Вв", "Ср", "Чт", "Пт", "Сб"]
+      enum: ['Пн', 'Вв', 'Ср', 'Чт', 'Пт', 'Сб']
 
     Time:
       type: string
-      format: "HH:mm"
-      example: "12:20"
+      format: 'HH:mm'
+      example: '12:20'
 
     Group:
       type: object
@@ -23,7 +23,7 @@ components:
         id:
           type: string
           description: Internal ID of the group
-          
+
         name:
           type: string
           description: Code of the group
@@ -42,12 +42,12 @@ components:
               description: Full name of the cathedra
 
       example:
-        id: "00000b59-0000-0000-0000-000000000000"
-        name: "КМ-23"
-        faculty: "ФПМ"
+        id: '00000b59-0000-0000-0000-000000000000'
+        name: 'КМ-23'
+        faculty: 'ФПМ'
         cathedra:
           id: 10169
-          name: "Кафедра прикладної математики ФПМ" 
+          name: 'Кафедра прикладної математики ФПМ'
 
     TeacherPair:
       type: object
@@ -58,54 +58,54 @@ components:
 
         type:
           type: string
-          enum: 
-            - "Прак on-line" 
-            - "Лаб on-line"
-            - "Лек on-line"
-            - "Прак"
-            - "Лаб"
-            - "Лек"
+          enum:
+            - 'Прак on-line'
+            - 'Лаб on-line'
+            - 'Лек on-line'
+            - 'Прак'
+            - 'Лаб'
+            - 'Лек'
 
         lecturerId:
           type: string
           description: ID of the teacher
 
         time:
-          allOf: 
-            - $ref: "#/components/schemas/Time"
+          allOf:
+            - $ref: '#/components/schemas/Time'
             - description: When the lesson is conducted
-        
+
         place:
           type: string
-          description: > 
+          description: >
             Where the lesson is conducted. Empty string if it's online
 
         tag:
           type: string
           enum:
-            - "lec"
-            - "prac"
-            - "lab"
+            - 'lec'
+            - 'prac'
+            - 'lab'
 
       example:
-        teacherName: "Чертов Олег Романович"
-        lecturerId: "e1ac166c-be0d-4a58-8af5-6f1f97d23e48"
-        type: "Лек on-line"
-        time: "12:20"
-        name: "Основи машинного навчання"
-        place: ""
-        tag: "lec"
+        teacherName: 'Чертов Олег Романович'
+        lecturerId: 'e1ac166c-be0d-4a58-8af5-6f1f97d23e48'
+        type: 'Лек on-line'
+        time: '12:20'
+        name: 'Основи машинного навчання'
+        place: ''
+        tag: 'lec'
 
     DaySchedule:
       type: object
       properties:
         day:
-           $ref: "#/components/schemas/WeekDay"
+          $ref: '#/components/schemas/WeekDay'
         pairs:
           type: array
           items:
             allOf:
-             - $ref: "#/components/schemas/TeacherPair"
+              - $ref: '#/components/schemas/TeacherPair'
 
     LessonSchedule:
       type: object
@@ -117,55 +117,55 @@ components:
           type: array
           description: Schedule in the first week cycle.
           items:
-            allOf: 
-              - $ref: "#/components/schemas/DaySchedule"
+            allOf:
+              - $ref: '#/components/schemas/DaySchedule'
         scheduleSecondWeek:
           type: array
           description: Schedule in the second week cycle.
           items:
-            allOf: 
-              - $ref: "#/components/schemas/DaySchedule"
+            allOf:
+              - $ref: '#/components/schemas/DaySchedule'
 
 paths:
-  "/schedule/groups":
+  '/schedule/groups':
     get:
       summary: Gets information about all the groups in the university
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Group"
+                  $ref: '#/components/schemas/Group'
 
-  "/schedule/lessons?groupId={groupId}":
+  '/schedule/lessons?groupId={groupId}':
     get:
       summary: >
         Gets information about lesson schedule of the specified academic group.
       parameters:
-        - name: "groupId"
+        - name: 'groupId'
           in: query
-          schema: 
+          schema:
             type: number
           description: Internal ID of the group to get lesson schedule of.
           required: true
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LessonSchedule"
+                $ref: '#/components/schemas/LessonSchedule'
 
-  "/time/current":
+  '/time/current':
     get:
       summary: Gets information about current week cycle, day and lesson
       responses:
-        "200":
+        '200':
           description: OK
-          content: 
+          content:
             application/json:
               schema:
                 type: object
