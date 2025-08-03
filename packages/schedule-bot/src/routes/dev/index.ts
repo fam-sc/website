@@ -28,7 +28,6 @@ if (DEV) {
       hasAvatar: 1,
       passwordHash: '',
       role: UserRole.ADMIN,
-      telnum: null,
     });
 
     await repo.scheduleBotUsers().addUser(userId, tgId);

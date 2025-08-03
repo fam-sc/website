@@ -29,7 +29,6 @@ app.post('/signUp/finish', async (request, { env }) => {
       lastName: pendingUser.lastName,
       parentName: pendingUser.parentName,
       academicGroup: pendingUser.academicGroup,
-      telnum: pendingUser.telnum,
       passwordHash: pendingUser.passwordHash,
       role: UserRole.STUDENT_NON_APPROVED,
       adminBotUserId: null,
@@ -54,7 +53,6 @@ app.post('/signUp/finish', async (request, { env }) => {
         parentName: pendingUser.parentName,
         academicGroup: pendingUser.academicGroup,
         email: pendingUser.email,
-        telnum: pendingUser.telnum,
         registrationIp: getConnectingIp(request),
       },
       env

@@ -13,7 +13,6 @@ export type RawUser = {
   parentName: string | null;
   academicGroup: string;
   email: string;
-  telnum: string | null;
   role: UserRole;
   hasAvatar: number;
   passwordHash: string;
@@ -31,7 +30,6 @@ export type PendingUser = {
   parentName: string | null;
   academicGroup: string;
   email: string;
-  telnum: string | null;
   passwordHash: string;
 
   createdAt: number;

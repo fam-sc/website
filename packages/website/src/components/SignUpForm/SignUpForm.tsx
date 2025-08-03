@@ -1,5 +1,5 @@
 import { normalizeGuid } from '@sc-fam/shared';
-import { emailRegex, telnumRegex } from '@sc-fam/shared/string';
+import { emailRegex } from '@sc-fam/shared/string';
 import { ReactNode, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -45,7 +45,6 @@ export function SignUpForm() {
     lastName: '',
     parentName: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
   });
@@ -60,11 +59,9 @@ export function SignUpForm() {
   const notification = useNotification();
 
   const isValidEmail = useTestRegex(formData.email, emailRegex);
-  const isValidPhone = useTestRegex(formData.phone, telnumRegex);
 
   const canSubmit =
     isValidEmail &&
-    isValidPhone &&
     group !== undefined &&
     formData.password.length >= 8 &&
     formData.password === formData.confirmPassword &&
@@ -87,7 +84,6 @@ export function SignUpForm() {
         'email',
         'password',
       ]),
-      telnum: formData.phone,
       academicGroup: normalizeGuid(group as string),
       turnstileToken,
     };
@@ -154,16 +150,6 @@ export function SignUpForm() {
         />
       </FieldBlock>
 
-      <FieldBlock title="Номер телефону">
-        <TextInput
-          name="phone"
-          type="tel"
-          error={!isValidPhone}
-          value={formData.phone}
-          onChange={handleChange}
-        />
-      </FieldBlock>
-
       <FieldBlock title="Пароль">
         <PasswordInput
           name="password"
@@ -196,7 +182,6 @@ export function SignUpForm() {
       <ErrorBoard
         items={[
           !isValidEmail && 'Неправильний email',
-          !isValidPhone && 'Неправильний телефон',
           group === undefined && 'Виберіть групу',
           formData.password.length < 8 &&
             'Пароль має бути як мінімум 8 символів',

@@ -1,4 +1,4 @@
-import { emailRegex, telnumRegex } from '@sc-fam/shared/string';
+import { emailRegex } from '@sc-fam/shared/string';
 import { nullable, object, regex, string } from 'zod/v4-mini';
 
 const turnstileToken =
@@ -18,7 +18,6 @@ export const SignUpDataSchema = object({
   parentName: nullable(string()),
   academicGroup: string(),
   email: string().check(regex(emailRegex)),
-  telnum: nullable(string().check(regex(telnumRegex))),
 
   // Open text password
   password: string(),

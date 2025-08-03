@@ -77,7 +77,6 @@ export async function handleNewUserEvent(user: NewUserInfo) {
       ['По-батькові', user.firstName],
       ['Електронна пошта', user.firstName],
       ['Група', user.academicGroup],
-      ['Телефон', user.telnum],
       ['IP', user.location],
     ];
 

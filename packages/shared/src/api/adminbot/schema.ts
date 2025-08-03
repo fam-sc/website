@@ -8,7 +8,6 @@ export const newUserEventPayload = object({
     parentName: nullable(string()),
     academicGroup: string(),
     email: string(),
-    telnum: nullable(string()),
     registrationIp: nullable(string()),
   }),
 });

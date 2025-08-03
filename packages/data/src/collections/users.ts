@@ -16,7 +16,6 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
       passwordHash: 'TEXT NOT NULL',
       role: 'INTEGER NOT NULL',
       adminBotUserId: 'INTEGER',
-      telnum: 'TEXT',
       hasAvatar: 'INTEGER NOT NULL',
     };
   }

@@ -15,7 +15,6 @@ export class PendingUserCollection extends EntityCollection<PendingUser>(
       lastName: 'TEXT NOT NULL',
       parentName: 'TEXT',
       passwordHash: 'TEXT NOT NULL',
-      telnum: 'TEXT',
     };
   }
 

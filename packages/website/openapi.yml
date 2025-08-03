@@ -788,11 +788,6 @@ components:
           format: email
           example: user@example.com
 
-        telnum:
-          type: string
-          example: +380671234567
-          pattern: '^\\+?[1-9]\\d{1,14}$'
-
         password:
           type: string
           format: password

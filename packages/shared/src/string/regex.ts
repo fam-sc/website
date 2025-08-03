@@ -13,5 +13,3 @@ export const urlRegex =
 // - - (hyphen)
 export const emailRegex =
   /^(?:[a-z\d!#$%&'*+\-/=?^_`{|}~]|(\.(?!\.))){1,64}@[a-z\d][a-z\d.-]+[a-z\d]$/i;
-
-export const telnumRegex = /^\+\d{12}$/;
