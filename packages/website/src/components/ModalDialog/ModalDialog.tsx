@@ -6,7 +6,7 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { classNames } from '@/utils/classNames';
 
 import { IconButton } from '../IconButton';
-import { ModalOverlay } from '../ModalOverlay';
+import { ModalOverlay, ModalOverlayEffect } from '../ModalOverlay';
 import { Typography } from '../Typography';
 import styles from './ModalDialog.module.scss';
 
@@ -16,6 +16,7 @@ type ModalDialogProps = {
   footer?: ReactElement;
   onClose?: () => void;
   tightLayout?: boolean;
+  effect?: ModalOverlayEffect;
   children: ReactNode;
 };
 
@@ -25,6 +26,7 @@ export function ModalDialog({
   children,
   contentClassName,
   tightLayout,
+  effect = 'tint',
   onClose,
 }: ModalDialogProps) {
   const titleId = useId();
@@ -32,7 +34,7 @@ export function ModalDialog({
   useScrollbar(false);
 
   return createPortal(
-    <ModalOverlay className={styles.overlay} effect="tint">
+    <ModalOverlay className={styles.overlay} effect={effect}>
       <div
         className={classNames(
           styles.dialog,

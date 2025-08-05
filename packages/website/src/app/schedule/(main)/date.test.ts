@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { CurrentLesson } from '@/components/ScheduleGrid';
+import { CurrentLesson } from '@/components/schedule/ScheduleGrid';
 
 import { calculateCurrentLesson } from './date';
 

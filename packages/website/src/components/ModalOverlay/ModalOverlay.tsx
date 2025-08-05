@@ -5,9 +5,11 @@ import { classNames } from '@/utils/classNames';
 
 import styles from './ModalOverlay.module.scss';
 
+export type ModalOverlayEffect = 'tint' | 'blur';
+
 export interface ModalOverlayProps {
   className?: string;
-  effect?: 'tint' | 'blur';
+  effect?: ModalOverlayEffect;
   children?: ReactNode;
 }
 

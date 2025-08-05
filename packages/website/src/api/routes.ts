@@ -11,6 +11,7 @@ import './polls/[id]/table/route';
 import './guides/route';
 import './guides/[id]/route';
 import './schedule/route';
+import './schedule/export/route';
 import './signIn/route';
 import './signUp/route';
 import './signUp/finish/route';

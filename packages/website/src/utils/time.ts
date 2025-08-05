@@ -1,3 +1,5 @@
+import { parseTime } from '@sc-fam/shared/chrono';
+
 type Component = `${number}`;
 
 export type Time = `${Component}:${Component}`;
@@ -16,10 +18,7 @@ export function secondsToTime(value: number): Time {
 }
 
 export function parseTimeString(time: Time): number {
-  const colonIndex = time.indexOf(':');
-
-  const hour = Number.parseInt(time.slice(0, colonIndex));
-  const minute = Number.parseInt(time.slice(colonIndex + 1));
+  const { hour, minute } = parseTime(time);
 
   return hour * 3600 + minute * 60;
 }

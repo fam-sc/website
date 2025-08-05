@@ -61,6 +61,7 @@
     "@storybook/react": "9.0.17",
     "@storybook/react-vite": "9.0.17",
     "@types/express": "5.0.3",
+    "@types/gsi": "0.0.5",
     "@types/morgan": "1.9.10",
     "@types/node": "24.0.14",
     "@types/punycode": "^2",

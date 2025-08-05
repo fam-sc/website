@@ -1,0 +1,16 @@
+{
+  "name": "google-auth-test",
+  "packageManager": "yarn@4.9.2",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "deploy": "wrangler pages deploy --project-name=sc-fam-google-test dist"
+  },
+  "devDependencies": {
+    "@types/node": "24.1.0",
+    "@vitejs/plugin-react": "4.7.0",
+    "typescript": "5.9.2",
+    "vite": "7.0.6",
+    "wrangler": "4.27.0"
+  }
+}
