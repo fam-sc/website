@@ -11,6 +11,6 @@
     "@vitejs/plugin-react": "4.7.0",
     "typescript": "5.8.3",
     "vite": "7.0.6",
-    "wrangler": "4.24.4"
+    "wrangler": "4.28.0"
   }
 }
