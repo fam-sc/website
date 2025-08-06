@@ -1,4 +1,5 @@
 function App() {
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const onClick = () => {
     const client = window.google.accounts.oauth2.initTokenClient({
       client_id:

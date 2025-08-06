@@ -106,7 +106,6 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
               }))
             )
           )
-          // eslint-disable-next-line unicorn/no-magic-array-flat-depth
           .flat(2)
       ),
     ];

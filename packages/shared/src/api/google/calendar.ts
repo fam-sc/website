@@ -121,6 +121,10 @@ export function addEvent(access: string, args: AddEventArgs, body: Event) {
   return fetchGoogleApiObject<Event>('POST', url, access, body);
 }
 
-export function getColors() {
-  return fetchGoogleApiObject<ColorsResponse>('GET', '/calendar/v3/colors');
+export function getColors(access: string) {
+  return fetchGoogleApiObject<ColorsResponse>(
+    'GET',
+    '/calendar/v3/colors',
+    access
+  );
 }

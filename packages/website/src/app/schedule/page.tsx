@@ -2,7 +2,7 @@ import { UserRole } from '@sc-fam/data';
 import { shortenGuid } from '@sc-fam/shared';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
 import { getTrueCurrentTime } from '@sc-fam/shared/api/time/index.js';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { Group } from '@/api/groups/types';
@@ -17,12 +17,13 @@ import { CurrentLesson } from '@/components/schedule/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/schedule/ScheduleGridLoader';
 import { Title } from '@/components/Title';
 import { useInterval } from '@/hooks/useInterval';
+import { CalendarIcon } from '@/icons/CalendarIcon';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { EditIcon } from '@/icons/EditIcon';
 import { scheduleToUpdateLinksPayload } from '@/services/schedule/links';
 import { repository } from '@/utils/repo';
 
-import { Route } from '../+types/page';
+import { Route } from './+types/page';
 import { calculateCurrentLesson } from './date';
 import styles from './page.module.scss';
 import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
@@ -36,6 +37,14 @@ const weekTextMap: Record<Week, string> = {
   [1]: 'Перший тиждень',
   [2]: 'Другий тиждень',
 };
+
+const ExportScheduleDialog = React.lazy(async () => {
+  const { ExportScheduleDialog } = await import(
+    '@/components/schedule/ExportScheduleDialog'
+  );
+
+  return { default: ExportScheduleDialog };
+});
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { currentWeek } = await getCurrentTime();
@@ -66,8 +75,8 @@ export default function Page({
     name?: string;
   } | null>(initialGroup);
   const [isScheduleEditable, setScheduleEditable] = useState(false);
-
   const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
+  const [exportDialogShown, setExportDialogShown] = useState(false);
 
   const editedScheduleRef = useRef<Schedule | undefined>(undefined);
 
@@ -187,6 +196,27 @@ export default function Page({
           editedScheduleRef.current = newSchedule;
         }, [])}
       />
+
+      {selectedGroup && (
+        <Button
+          hasIcon
+          className={styles.export}
+          buttonVariant="solid"
+          onClick={() => {
+            setExportDialogShown(true);
+          }}
+        >
+          <CalendarIcon />
+          Експортувати
+        </Button>
+      )}
+
+      {exportDialogShown && selectedGroup && (
+        <ExportScheduleDialog
+          groupId={selectedGroup.campusId}
+          onClose={() => setExportDialogShown(false)}
+        />
+      )}
     </>
   );
 }

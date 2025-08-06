@@ -2,18 +2,16 @@ import { checkedFetch, ExtendedRequestInit, fetchObject } from '../../fetch';
 
 function requestBody(
   method: string,
-  access: string | undefined,
+  access: string,
   body: object | undefined
 ): ExtendedRequestInit {
   const options: ExtendedRequestInit = body ? { body, json: true } : {};
 
   return {
     method,
-    headers: access
-      ? {
-          Authorization: access,
-        }
-      : undefined,
+    headers: {
+      Authorization: access,
+    },
     ...options,
   };
 }
@@ -25,7 +23,7 @@ function url(path: string): string {
 export function fetchGoogleApiObject<T>(
   method: string,
   path: string,
-  access?: string,
+  access: string,
   body?: object
 ): Promise<T> {
   return fetchObject(url(path), requestBody(method, access, body));
@@ -34,7 +32,7 @@ export function fetchGoogleApiObject<T>(
 export function fetchGoogleApi(
   method: string,
   path: string,
-  access?: string,
+  access: string,
   body?: object
 ) {
   return checkedFetch(url(path), requestBody(method, access, body));

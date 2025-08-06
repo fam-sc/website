@@ -31,7 +31,7 @@
     "**/.client/**/*",
     "./.storybook/**/*",
     ".react-router/types/**/*",
-    "../shared/src/api/google/gsi.d.ts",
+    "../shared/src/api/google/gsi.d.ts"
   ],
   "exclude": ["storybook-static", "build"],
   "references": [

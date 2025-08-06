@@ -1,5 +1,5 @@
-@use '../../../theme/utils' as *;
-@use '../../../theme/breakpoints' as *;
+@use '../../theme/utils' as *;
+@use '../../theme/breakpoints' as *;
 
 @mixin tablet-view() {
   @include breakpoint-up('md') {
@@ -46,4 +46,10 @@
   align-self: end;
 
   margin-right: 2em;
+}
+
+.export {
+  align-self: center;
+
+  margin-bottom: 1em;
 }

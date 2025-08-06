@@ -21,17 +21,26 @@ export async function updateScheduleLinks(
 }
 
 export function getExportScheduleOptions(
-  groupId: string
+  groupId: string,
+  access: string
 ): Promise<ExportScheduleOptions> {
-  return apiFetchObject(`/schedule/export/options?groupId=${groupId}`);
+  return apiFetchObject(`/schedule/export/options?groupId=${groupId}`, {
+    headers: {
+      'X-Access-Token': access,
+    },
+  });
 }
 
 export function exportSchedule(
   groupId: string,
-  payload: ExportSchedulePayload
+  payload: ExportSchedulePayload,
+  access: string
 ) {
   return apiCheckedFetch(`/schedule/export?groupId=${groupId}`, {
     method: 'POST',
+    headers: {
+      'X-Access-Token': access,
+    },
     body: payload,
     json: true,
   });

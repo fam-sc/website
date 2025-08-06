@@ -1,5 +1,5 @@
 import { Repository } from '@sc-fam/data';
-import { normalizeGuid, notFound, ok } from '@sc-fam/shared';
+import { badRequest, normalizeGuid, notFound, ok } from '@sc-fam/shared';
 import { getColors } from '@sc-fam/shared/api/google';
 import { string } from '@sc-fam/shared/minivalidate';
 import { middlewareHandler, searchParams } from '@sc-fam/shared/router';
@@ -12,10 +12,16 @@ app.get(
   '/schedule/export/options',
   middlewareHandler(
     searchParams({ groupId: string() }),
-    async ({ data: [{ groupId }] }) => {
+    async ({ request, data: [{ groupId }] }) => {
+      const accessToken = request.headers.get('X-Access-Token');
+      if (accessToken === null) {
+        return badRequest({ message: 'No access token' });
+      }
+
       const repo = Repository.openConnection();
 
-      const { calendar: colors } = await getColors();
+      const { calendar: colors } = await getColors(accessToken);
+
       const [group, { semesterStart, semesterEnd }] = await repo.batch([
         repo.groups().findByCampusId(normalizeGuid(groupId)),
         repo.globalOptions().getEntries(['semesterStart', 'semesterEnd']),

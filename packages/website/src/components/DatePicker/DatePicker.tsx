@@ -9,14 +9,21 @@ type InputProps = PropsMap['input'];
 
 export interface DatePickerProps
   extends Omit<InputProps, 'value' | 'min' | 'max'> {
-  value?: Date;
-  min?: Date;
-  max?: Date;
+  type?: 'date' | 'datetime-local';
+  value?: string | Date;
+  min?: string | Date;
+  max?: string | Date;
   onValueChanged?: (value: Date) => void;
 }
 
-function dateToString(value: Date | undefined) {
-  return value ? toLocalISOString(value).slice(0, -8) : undefined;
+function dateToString(value: Date | string | undefined, isDate: boolean) {
+  if (value === undefined || typeof value === 'string') {
+    return value;
+  }
+
+  const offset = isDate ? -14 : -8;
+
+  return toLocalISOString(value).slice(0, offset);
 }
 
 export function DatePicker({
@@ -25,15 +32,18 @@ export function DatePicker({
   min,
   max,
   onValueChanged,
+  type = 'datetime-local',
   ...rest
 }: DatePickerProps) {
+  const isDate = type === 'date';
+
   return (
     <input
       className={classNames(styles.root, className)}
-      type="datetime-local"
-      value={dateToString(value)}
-      min={dateToString(min)}
-      max={dateToString(max)}
+      type={type}
+      value={dateToString(value, isDate)}
+      min={dateToString(min, isDate)}
+      max={dateToString(max, isDate)}
       onChange={(event) => {
         const { value } = event.target;
 

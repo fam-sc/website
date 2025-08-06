@@ -108,12 +108,13 @@ export async function exportScheduleToGoogleCalendar(
       notificationSettings: {},
     });
 
-    const reccurenceRule = `RRULE:FREQ=WEEKLY;INTERVAL=2;UNTIL=${formatDateToReccurenceRuleDate(payload.endDate)}`;
+    const until = formatDateToReccurenceRuleDate(new Date(payload.endDate));
+    const reccurenceRule = `RRULE:FREQ=WEEKLY;INTERVAL=2;UNTIL=${until}`;
 
     const options: ExportLessonOptions = {
       access,
       calendarId: calendar.id,
-      startDate: payload.startDate,
+      startDate: new Date(payload.startDate),
       reccurence: [reccurenceRule],
     };
 

@@ -26,6 +26,14 @@ export function toLocalISOString(date: Date): string {
   ).toISOString();
 }
 
+function formatTwoDigit(value: number) {
+  return value.toString().padStart(2, '0');
+}
+
+export function formatDateOnly(date: Date): string {
+  return `${date.getUTCFullYear()}-${formatTwoDigit(date.getUTCMonth() + 1)}-${formatTwoDigit(date.getUTCDate())}`;
+}
+
 // Gets normal people's week day. 1 - Monday, 7 - Sunday
 export function getWeekday(date: Date): number {
   const value = date.getDay();
