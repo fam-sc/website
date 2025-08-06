@@ -42,7 +42,14 @@ export function ScheduleTile({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className={classNames(styles.root, className)} {...rest}>
+    <div
+      className={classNames(
+        styles.root,
+        isNow && styles['root-now'],
+        className
+      )}
+      {...rest}
+    >
       <div className={styles.header}>
         <Typography
           className={classNames(styles.type, styles[`type-${lesson.type}`])}

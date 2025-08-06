@@ -4,7 +4,6 @@ import { StorybookConfig } from 'storybook/internal/types';
 
 // Storybook cannot find a module without this helper.
 function getAbsolutePath(packageName: string) {
-  // eslint-disable-next-line unicorn/prefer-module
   return path.dirname(require.resolve(path.join(packageName, 'package.json')));
 }
 

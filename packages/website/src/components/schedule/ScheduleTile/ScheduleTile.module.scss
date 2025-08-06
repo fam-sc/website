@@ -19,7 +19,9 @@ $type-gradient-map: (
 );
 
 .root {
-  background-color: var(--color-background-dark);
+  $background: var(--color-background-dark);
+
+  background-color: $background;
   border-radius: 0.75em;
 
   padding: 1em;
@@ -29,6 +31,22 @@ $type-gradient-map: (
   gap: 8px;
 
   box-shadow: 0 0 3px #000;
+
+  &-now {
+    border: 2px solid transparent;
+    background-image:
+      linear-gradient($background, $background),
+      linear-gradient(
+        to bottom right,
+        #b827fc 0%,
+        #2c90fc 25%,
+        #b8fd33 50%,
+        #fec837 75%,
+        #fd1892 100%
+      );
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
 }
 
 .header {
@@ -55,32 +73,6 @@ $type-gradient-map: (
 
 .now-indicator {
   margin-left: auto;
-
-  &::before {
-    $color: #f00;
-
-    content: ' ';
-    display: inline-block;
-
-    @include size(0.75em);
-
-    margin-right: 4px;
-
-    background-color: $color;
-    animation: glowing 1s linear 0s infinite alternate;
-
-    border-radius: 1em;
-
-    @keyframes glowing {
-      from {
-        box-shadow: 0 0 0 $color;
-      }
-
-      to {
-        box-shadow: 0 0 10px $color;
-      }
-    }
-  }
 }
 
 .name {
