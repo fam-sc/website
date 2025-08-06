@@ -1,26 +1,23 @@
 import { Repository } from '@sc-fam/data';
-import { badRequest, normalizeGuid, notFound, ok } from '@sc-fam/shared';
+import { normalizeGuid, notFound, ok } from '@sc-fam/shared';
 import { getColors } from '@sc-fam/shared/api/google';
 import { string } from '@sc-fam/shared/minivalidate';
 import { middlewareHandler, searchParams } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
 
+import { accessToken } from '../accessToken';
 import { ExportScheduleOptions } from './types';
 
 app.get(
   '/schedule/export/options',
   middlewareHandler(
+    accessToken(),
     searchParams({ groupId: string() }),
-    async ({ request, data: [{ groupId }] }) => {
-      const accessToken = request.headers.get('X-Access-Token');
-      if (accessToken === null) {
-        return badRequest({ message: 'No access token' });
-      }
-
+    async ({ data: [access, { groupId }] }) => {
       const repo = Repository.openConnection();
 
-      const { calendar: colors } = await getColors(accessToken);
+      const { calendar: colors } = await getColors(access);
 
       const [group, { semesterStart, semesterEnd }] = await repo.batch([
         repo.groups().findByCampusId(normalizeGuid(groupId)),

@@ -8,7 +8,7 @@ import { CurrentLesson } from '@/components/schedule/ScheduleGrid';
 const LESSON_MINUTES = 90;
 
 function getDayMinutes(date: Date): number {
-  return date.getHours() * 60 + date.getMinutes();
+  return date.getUTCHours() * 60 + date.getUTCMinutes();
 }
 
 function getBreakpointDayMinutes(time: Time): number {

@@ -1,4 +1,4 @@
-import { badRequest, normalizeGuid } from '@sc-fam/shared';
+import { normalizeGuid } from '@sc-fam/shared';
 import { string } from '@sc-fam/shared/minivalidate';
 import {
   middlewareHandler,
@@ -8,24 +8,21 @@ import {
 
 import { app } from '@/api/app';
 
+import { accessToken } from './accessToken';
 import { exportScheduleToGoogleCalendar } from './handler';
 import { exportSchedulePayload } from './payloads';
 
 app.post(
   '/schedule/export',
   middlewareHandler(
+    accessToken(),
     searchParams({
       groupId: string(),
     }),
     zodSchema(exportSchedulePayload),
-    async ({ request, data: [{ groupId }, payload] }) => {
-      const accessToken = request.headers.get('X-Access-Token');
-      if (accessToken === null) {
-        return badRequest({ message: 'No access token' });
-      }
-
+    async ({ data: [access, { groupId }, payload] }) => {
       await exportScheduleToGoogleCalendar(
-        accessToken,
+        access,
         normalizeGuid(groupId),
         payload
       );
