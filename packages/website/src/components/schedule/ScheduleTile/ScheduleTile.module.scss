@@ -1,7 +1,7 @@
 @use 'sass:list';
-@use '../../theme/utils' as *;
-@use '../../theme/breakpoints' as *;
-@use '../../theme/typography' as *;
+@use '../../../theme/utils' as *;
+@use '../../../theme/breakpoints' as *;
+@use '../../../theme/typography' as *;
 
 $type-gradient-map: (
   lec: (

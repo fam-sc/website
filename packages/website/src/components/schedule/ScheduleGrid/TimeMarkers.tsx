@@ -1,7 +1,7 @@
 import { timeBreakpoints } from '@sc-fam/shared-schedule';
 import { ReactNode } from 'react';
 
-import { Typography } from '../Typography';
+import { Typography } from '../../Typography';
 import styles from './TimeMarkers.module.scss';
 
 function TimeMarker({ index }: { index: number }) {

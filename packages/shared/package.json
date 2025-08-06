@@ -69,6 +69,10 @@
     "./minivalidate": {
       "import": "./dist/minivalidate/index.js",
       "types": "./dist/minivalidate/index.d.ts"
+    },
+    "./api/google": {
+      "import": "./dist/api/google/index.js",
+      "types": "./dist/api/google/index.d.ts"
     }
   }
 }

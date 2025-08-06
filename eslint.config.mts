@@ -65,6 +65,7 @@ export default tseslint.config(
       'unicorn/prefer-top-level-await': 'off',
       'unicorn/no-negated-condition': 'off',
       'unicorn/prefer-global-this': 'off',
+      'unicorn/no-magic-array-flat-depth': 'off',
       'import/no-anonymous-default-export': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',

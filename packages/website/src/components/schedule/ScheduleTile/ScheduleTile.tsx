@@ -8,10 +8,10 @@ import { UpDownIcon } from '@/icons/UpDownIcon';
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 
-import { IconButton } from '../IconButton';
-import { Link } from '../Link';
-import { OptionalLink } from '../OptionalLink';
-import { Typography } from '../Typography';
+import { IconButton } from '../../IconButton';
+import { Link } from '../../Link';
+import { OptionalLink } from '../../OptionalLink';
+import { Typography } from '../../Typography';
 import styles from './ScheduleTile.module.scss';
 
 export type DivProps = PropsMap['div'];

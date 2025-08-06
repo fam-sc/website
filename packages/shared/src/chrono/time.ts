@@ -57,3 +57,12 @@ export function getLocalDate(date: Date, timeZone: string): Date {
 export function getLocalNow(timeZone: string): Date {
   return getLocalDate(new Date(), timeZone);
 }
+
+export function parseTime(time: Time): { hour: number; minute: number } {
+  const colonIndex = time.indexOf(':');
+
+  return {
+    hour: Number.parseInt(time.slice(0, colonIndex)),
+    minute: Number.parseInt(time.slice(colonIndex + 1)),
+  };
+}
