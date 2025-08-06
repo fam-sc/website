@@ -1,7 +1,7 @@
 import { UserRole } from '@sc-fam/data';
 import { shortenGuid } from '@sc-fam/shared';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
-import { getTrueCurrentTime } from '@sc-fam/shared/api/time/index.js';
+import { MINUTE_MS } from '@sc-fam/shared/chrono';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -16,7 +16,7 @@ import { OptionSwitch } from '@/components/OptionSwitch';
 import { CurrentLesson } from '@/components/schedule/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/schedule/ScheduleGridLoader';
 import { Title } from '@/components/Title';
-import { useInterval } from '@/hooks/useInterval';
+import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { CalendarIcon } from '@/icons/CalendarIcon';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { EditIcon } from '@/icons/EditIcon';
@@ -30,8 +30,7 @@ import { retrieveSavedSelectedGroup, saveSelectedGroup } from './storage';
 
 type Week = 1 | 2;
 
-// 5 minutes
-const TIME_UPDATE_INTERVAL = 5 * 60 * 1000;
+const TIME_UPDATE_INTERVAL = MINUTE_MS;
 
 const weekTextMap: Record<Week, string> = {
   [1]: 'Перший тиждень',
@@ -109,14 +108,8 @@ export default function Page({
     }
   }, [selectedGroup]);
 
-  useInterval(TIME_UPDATE_INTERVAL, () => {
-    getTrueCurrentTime('Europe/Kyiv')
-      .then((date) => {
-        setCurrentLesson(calculateCurrentLesson(date));
-      })
-      .catch((error: unknown) => {
-        console.error(error);
-      });
+  useCurrentTime(TIME_UPDATE_INTERVAL, 'Europe/Kiev', (now) => {
+    setCurrentLesson(calculateCurrentLesson(now));
   });
 
   return (
