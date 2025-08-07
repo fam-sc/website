@@ -33,6 +33,7 @@ export function DeleteButtonWrapper({
       <IconButton
         disabled={disabled}
         hover="fill"
+        title="Видалити"
         className={styles['delete-image']}
         onClick={onDelete}
       >

@@ -1,3 +1,4 @@
+import { TitleRequiredProps } from '@/types/react';
 import { ImpersonatedProps } from '@/utils/impersonation';
 
 import {
@@ -5,10 +6,12 @@ import {
   IconComponentBaseProps,
 } from '../IconComponentBase';
 
-type IconButtonProps = Omit<
+export type BaseIconButtonProps = Omit<
   ImpersonatedProps<IconComponentBaseProps, 'button'>,
-  'as'
+  'as' | 'title' | 'aria-hidden'
 >;
+
+export type IconButtonProps = BaseIconButtonProps & TitleRequiredProps;
 
 export function IconButton(props: IconButtonProps) {
   return <IconComponentBase as="button" {...props} />;

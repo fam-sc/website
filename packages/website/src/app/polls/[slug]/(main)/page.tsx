@@ -76,6 +76,7 @@ export default function Page({
             className={styles.info}
             hover="fill"
             to={`/polls/${poll.slug}/info`}
+            title="Результати"
           >
             <InfoIcon />
           </IconLinkButton>

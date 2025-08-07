@@ -104,6 +104,7 @@ export function Header() {
 
         <IconButton
           className={styles['menu-button']}
+          title="Відкрити меню"
           onClick={() => {
             setMobileMenuOpen((state) => !state);
           }}

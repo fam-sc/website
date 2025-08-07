@@ -1,15 +1,12 @@
 import { DragHandleIcon } from '@/icons/DragHandleIcon';
-import { PropsMap } from '@/types/react';
 
-import { IconButton } from '../IconButton';
+import { BaseIconButtonProps, IconButton } from '../IconButton';
 
-type ButtonProps = PropsMap['button'];
-
-export type DragHandleProps = ButtonProps;
+export type DragHandleProps = Omit<BaseIconButtonProps, 'title' | 'children'>;
 
 export function DragHandle(props: DragHandleProps) {
   return (
-    <IconButton {...props}>
+    <IconButton aria-hidden {...props}>
       <DragHandleIcon />
     </IconButton>
   );

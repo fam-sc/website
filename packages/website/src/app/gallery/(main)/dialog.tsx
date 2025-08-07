@@ -67,7 +67,12 @@ export function GalleryImageInfoDialog({
 
   return (
     <ModalOverlay effect="blur" className={styles['modal-overlay']}>
-      <IconButton className={styles.close} hover="fill" onClick={onClose}>
+      <IconButton
+        className={styles.close}
+        hover="fill"
+        title="Закрити"
+        onClick={onClose}
+      >
         <CloseIcon />
       </IconButton>
 
@@ -85,7 +90,7 @@ export function GalleryImageInfoDialog({
               questionText="Ви справді хочете видалити фото?"
               onAction={onAction}
             >
-              <IconButton hover="fill">
+              <IconButton hover="fill" title="Видалити фото">
                 <DeleteIcon />
               </IconButton>
             </InlineQuestion>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 
+import { TitleRequiredProps } from '@/types/react';
 import { ImpersonatedProps } from '@/utils/impersonation';
 
 import {
@@ -9,8 +10,9 @@ import {
 
 type IconLinkButtonProps = Omit<
   ImpersonatedProps<IconComponentBaseProps, typeof Link>,
-  'as'
->;
+  'as' | 'title' | 'aria-hidden'
+> &
+  TitleRequiredProps;
 
 export function IconLinkButton({ to, ...rest }: IconLinkButtonProps) {
   return <IconComponentBase<typeof Link> as={Link} to={to} {...rest} />;
