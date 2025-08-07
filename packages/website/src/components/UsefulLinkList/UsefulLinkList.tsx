@@ -1,5 +1,7 @@
 import { classNames } from '@/utils/classNames';
+import { ImageInfo } from '@/utils/image/types';
 
+import { Image } from '../Image';
 import { Link } from '../Link';
 import { Typography } from '../Typography';
 import styles from './UsefulLinkList.module.scss';
@@ -8,7 +10,7 @@ export type UsefulLinkListItem = {
   id: string;
   title: string;
   href: string;
-  imageSrc: string;
+  images: ImageInfo[];
 };
 
 export type UsefulLinkListProps = {
@@ -21,9 +23,13 @@ export function UsefulLinkList({ items, className }: UsefulLinkListProps) {
     <div className={classNames(styles.root, className)}>
       {items.map((item) => (
         <Link key={item.id} to={item.href} linkVariant="clean">
-          <Typography>{item.title}</Typography>
+          <figure>
+            <Typography as="figcaption" className={styles['item-title']}>
+              {item.title}
+            </Typography>
 
-          <img src={item.imageSrc} alt="" width={0} height={0} />
+            <Image multiple={item.images} sizes={{ default: '30vw' }} />
+          </figure>
         </Link>
       ))}
     </div>
