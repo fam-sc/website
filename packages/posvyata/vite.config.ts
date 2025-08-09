@@ -2,12 +2,7 @@ import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { cloudflare } from '@cloudflare/vite-plugin';
-import { manifestPlugin } from './vite-plugins/manifest';
-import { imagePlugin } from '@sc-fam/shared-vite-plugins/image';
-import { multienvPlugin } from './vite-plugins/multienv';
-import { templatePlugin } from '@sc-fam/shared-vite-plugins/template';
 import { cssNameGenerator } from '@sc-fam/shared-vite-plugins/css';
-import { markdownPlugin } from '@sc-fam/shared-vite-plugins/markdown';
 
 const isLocal = process.env.LOCAL === '1';
 
@@ -28,19 +23,11 @@ export default defineConfig((env) => ({
           external: ['sharp'],
         }
       : undefined,
-  esbuild: {
-    target: 'es2022',
-  },
   plugins: [
     ...(env.command === 'build' && !isLocal
       ? [cloudflare({ viteEnvironment: { name: 'ssr' } })]
       : []),
-    markdownPlugin('./src/markdown/config.tsx'),
     reactRouter(),
-    manifestPlugin(),
-    imagePlugin(),
-    multienvPlugin(),
-    templatePlugin(),
     tsconfigPaths(),
   ],
 }));

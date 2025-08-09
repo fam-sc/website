@@ -13,7 +13,7 @@ export const Primary: Story = {
     items: [1, 2, 3, 4, 5, 6, 8].map((index) => ({
       id: index.toString(),
       href: '/',
-      imageSrc: 'https://i.imgur.com/gbt7JG7.jpg',
+      images: [{ src: 'https://i.imgur.com/gbt7JG7.jpg', width: 0, height: 0 }],
       title: `Item ${index}`,
     })),
   },

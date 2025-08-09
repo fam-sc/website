@@ -1,7 +1,7 @@
 import { Token } from 'marked';
 import { JSX } from 'react';
 
-import { MarkdownConfig } from '../../src/types/markdown/config';
+import { MarkdownConfig } from './config';
 
 type TagType = keyof JSX.IntrinsicElements;
 type ConfigType = keyof MarkdownConfig;

@@ -1,0 +1,30 @@
+{
+  "name": "posvyata",
+  "packageManager": "yarn@4.9.2",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "typegen": "react-router typegen && wrangler types"
+  },
+  "dependencies": {
+    "@react-router/node": "7.7.1",
+    "isbot": "^5",
+    "parse5": "8.0.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-router": "7.7.1"
+  },
+  "devDependencies": {
+    "@react-router/dev": "7.7.1",
+    "@react-router/express": "7.7.1",
+    "@sc-fam/shared-vite-plugins": "workspace:*",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.1",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vite": "7.0.6",
+    "vite-tsconfig-paths": "5.1.4",
+    "wrangler": "4.28.0"
+  }
+}

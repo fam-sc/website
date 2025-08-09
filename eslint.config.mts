@@ -13,6 +13,8 @@ export default tseslint.config(
       'packages/website/storybook-static',
       'packages/website/build',
       'packages/website/.react-router',
+      'packages/posvyata/build',
+      'packages/posvyata/.react-router',
       '**/*/worker-configuration.d.ts',
       '*/**/dist/',
       '*/**/vite.config.ts',

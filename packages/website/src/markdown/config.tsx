@@ -1,6 +1,7 @@
+import { MarkdownConfig } from '@sc-fam/shared-vite-plugins/markdown';
+
 import { Link } from '@/components/Link';
 import { Typography } from '@/components/Typography';
-import { MarkdownConfig } from '@/types/markdown/config';
 
 export const paragraph: MarkdownConfig['paragraph'] = Typography;
 

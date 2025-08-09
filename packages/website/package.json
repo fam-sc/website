@@ -57,6 +57,7 @@
     "@node-rs/xxhash": "1.7.6",
     "@react-router/dev": "7.7.1",
     "@react-router/express": "7.7.1",
+    "@sc-fam/shared-vite-plugins": "workspace:*",
     "@storybook/addon-a11y": "9.1.1",
     "@storybook/addon-links": "9.1.1",
     "@storybook/react": "9.1.1",

@@ -3024,6 +3024,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sc-fam/shared-vite-plugins@workspace:*, @sc-fam/shared-vite-plugins@workspace:packages/shared-vite-plugins":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/shared-vite-plugins@workspace:packages/shared-vite-plugins"
+  dependencies:
+    "@sc-fam/shared": "workspace:*"
+    "@types/node": "npm:24.2.1"
+    "@types/react": "npm:19.1.1"
+    marked: "npm:16.1.2"
+    react: "npm:19.1.1"
+    sharp: "npm:0.34.3"
+    typescript: "npm:5.9.2"
+  languageName: unknown
+  linkType: soft
+
 "@sc-fam/shared@workspace:*, @sc-fam/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@sc-fam/shared@workspace:packages/shared"
@@ -3049,6 +3063,7 @@ __metadata:
     "@react-router/dev": "npm:7.7.1"
     "@react-router/express": "npm:7.7.1"
     "@react-router/node": "npm:7.7.1"
+    "@sc-fam/shared-vite-plugins": "workspace:*"
     "@storybook/addon-a11y": "npm:9.1.1"
     "@storybook/addon-links": "npm:9.1.1"
     "@storybook/react": "npm:9.1.1"
@@ -4397,6 +4412,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:24.2.1":
+  version: 24.2.1
+  resolution: "@types/node@npm:24.2.1"
+  dependencies:
+    undici-types: "npm:~7.10.0"
+  checksum: 10c0/439a3c7edf88a298e0c92e46f670234070b892589c3b06e82cc86c47a7e1cf220f4a4b4736ec6ac7e4b9e1c40d7b6d443a1e22f99dd17f13f9dd15de3b32011b
+  languageName: node
+  linkType: hard
+
 "@types/punycode@npm:^2":
   version: 2.1.4
   resolution: "@types/punycode@npm:2.1.4"
@@ -4442,6 +4466,15 @@ __metadata:
   dependencies:
     csstype: "npm:^3.0.2"
   checksum: 10c0/632fd20ee176e55801a61c5f854141b043571a3e363ef106b047b766a813a12735cbb37abb3d61d126346979f530f2ed269a60c8ef3cdee54e5e9fe4174e5dad
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:19.1.1":
+  version: 19.1.1
+  resolution: "@types/react@npm:19.1.1"
+  dependencies:
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/d22417857460ade4250806135a3d1e2558737a7ae76f120f88afbc6419ab04312977a5208a70d4f85059b9493c0f1f16c9ba1483aa8ea1dad581da666c95773e
   languageName: node
   linkType: hard
 
@@ -7843,7 +7876,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isbot@npm:5.1.29":
+"isbot@npm:5.1.29, isbot@npm:^5":
   version: 5.1.29
   resolution: "isbot@npm:5.1.29"
   checksum: 10c0/a230429cf6de4b551c129aee8a52b65a6f298a440301537072ddfe94e1eeb481d55bbab1a743084d079c23c71e72ebd89a421d6f7e897f9807493a2f4900319d
@@ -9193,6 +9226,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"posvyata@workspace:packages/posvyata":
+  version: 0.0.0-use.local
+  resolution: "posvyata@workspace:packages/posvyata"
+  dependencies:
+    "@react-router/dev": "npm:7.7.1"
+    "@react-router/express": "npm:7.7.1"
+    "@react-router/node": "npm:7.7.1"
+    "@sc-fam/shared-vite-plugins": "workspace:*"
+    "@types/react": "npm:19.1.0"
+    "@types/react-dom": "npm:19.1.1"
+    isbot: "npm:^5"
+    parse5: "npm:8.0.0"
+    react: "npm:19.1.0"
+    react-dom: "npm:19.1.0"
+    react-router: "npm:7.7.1"
+    tsx: "npm:4.20.3"
+    typescript: "npm:5.8.3"
+    vite: "npm:7.0.6"
+    vite-tsconfig-paths: "npm:5.1.4"
+    wrangler: "npm:4.28.0"
+  languageName: unknown
+  linkType: soft
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -9617,6 +9673,13 @@ __metadata:
   version: 19.1.0
   resolution: "react@npm:19.1.0"
   checksum: 10c0/530fb9a62237d54137a13d2cfb67a7db6a2156faed43eecc423f4713d9b20c6f2728b026b45e28fcd72e8eadb9e9ed4b089e99f5e295d2f0ad3134251bdd3698
+  languageName: node
+  linkType: hard
+
+"react@npm:19.1.1":
+  version: 19.1.1
+  resolution: "react@npm:19.1.1"
+  checksum: 10c0/8c9769a2dfd02e603af6445058325e6c8a24b47b185d0e461f66a6454765ddcaecb3f0a90184836c68bb509f3c38248359edbc42f0d07c23eb500a5c30c87b4e
   languageName: node
   linkType: hard
 
@@ -11213,6 +11276,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:5.9.2":
+  version: 5.9.2
+  resolution: "typescript@npm:5.9.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/cd635d50f02d6cf98ed42de2f76289701c1ec587a363369255f01ed15aaf22be0813226bff3c53e99d971f9b540e0b3cc7583dbe05faded49b1b0bed2f638a18
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
@@ -11220,6 +11293,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/39117e346ff8ebd87ae1510b3a77d5d92dae5a89bde588c747d25da5c146603a99c8ee588c7ef80faaf123d89ed46f6dbd918d534d641083177d5fac38b8a1cb
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>":
+  version: 5.9.2
+  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/34d2a8e23eb8e0d1875072064d5e1d9c102e0bdce56a10a25c0b917b8aa9001a9cf5c225df12497e99da107dc379360bc138163c66b55b95f5b105b50578067e
   languageName: node
   linkType: hard
 

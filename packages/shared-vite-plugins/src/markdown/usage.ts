@@ -1,6 +1,6 @@
 import { Token, TokensList } from 'marked';
 
-import { MarkdownConfig } from '@/types/markdown/config';
+import { MarkdownConfig } from './config';
 
 type KeySet = Set<keyof MarkdownConfig>;
 

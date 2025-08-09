@@ -5,6 +5,8 @@ import { renderTokenArray } from './renderer';
 import { getTokenArrayConfigUsage } from './usage';
 import { getExports, resolveMaybeTsx } from './utils';
 
+export type { MarkdownConfig } from './config';
+
 const SUFFIX = '?react';
 
 type SubConfigInfo = {
