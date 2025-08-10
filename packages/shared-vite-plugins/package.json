@@ -37,6 +37,10 @@
     "./generatedAsset": {
       "import": "./dist/generatedAsset.js",
       "types": "./dist/generatedAsset.d.ts"
+    },
+    "./multienv": {
+      "import": "./dist/multienv.js",
+      "types": "./dist/multienv.d.ts"
     }
   }
 }

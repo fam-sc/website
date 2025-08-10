@@ -1,15 +1,9 @@
 import path from 'node:path';
 
-import { Plugin } from 'vite';
+import { Plugin, ResolvedConfig } from 'vite';
 
-type Host = 'cf' | 'node' | 'mock';
-type VirtualModule = { name: string; type: 'ts' | 'tsx' };
-
-const virtualModules: VirtualModule[] = [
-  { name: 'utils/reactDomEnv', type: 'tsx' },
-  { name: 'utils/apiEnv', type: 'ts' },
-  { name: 'api/media/resize', type: 'ts' },
-];
+export type Host = 'cf' | 'node' | 'mock';
+export type VirtualModule = { name: string; type: 'ts' | 'tsx' };
 
 function resolveHost(hostOverride: Host | undefined, mode: string): Host {
   if (hostOverride !== undefined) {
@@ -23,14 +17,19 @@ function resolveHost(hostOverride: Host | undefined, mode: string): Host {
     : 'node';
 }
 
-export function multienvPlugin(hostOverride?: Host): Plugin {
+export function multienvPlugin(
+  virtualModules: VirtualModule[],
+  hostOverride?: Host
+): Plugin {
   let host: Host | undefined;
+  let config: ResolvedConfig;
 
   return {
     name: 'multienv-plugin',
     enforce: 'pre',
-    configResolved(config) {
-      host = resolveHost(hostOverride, config.mode);
+    configResolved(_config) {
+      config = _config;
+      host = resolveHost(hostOverride, _config.mode);
     },
     resolveId(id) {
       const module = virtualModules.find(
@@ -39,9 +38,8 @@ export function multienvPlugin(hostOverride?: Host): Plugin {
 
       if (module !== undefined) {
         return path.join(
-          import.meta.dirname,
-          '../src',
-          `${module.name}.${host}.${module.type}`
+          config.root,
+          `./src/${module.name}.${host}.${module.type}`
         );
       }
     },

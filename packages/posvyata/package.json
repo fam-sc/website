@@ -6,6 +6,7 @@
     "dev": "react-router dev",
     "build": "vite build",
     "typegen": "react-router typegen && wrangler types",
+    "deploy": "wrangler deploy",
     "storybook:start": "storybook dev -p 6006",
     "storybook:build": "storybook build"
   },

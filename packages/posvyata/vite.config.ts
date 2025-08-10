@@ -4,6 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { cloudflare } from '@cloudflare/vite-plugin';
 import { cssNameGenerator } from '@sc-fam/shared-vite-plugins/css';
 import { imagePlugin } from '@sc-fam/shared-vite-plugins/image';
+import { multienvPlugin } from '@sc-fam/shared-vite-plugins/multienv';
 
 const isLocal = process.env.LOCAL === '1';
 
@@ -31,5 +32,8 @@ export default defineConfig((env) => ({
     reactRouter(),
     imagePlugin(),
     tsconfigPaths(),
+    multienvPlugin([
+      { name: 'utils/reactDomEnv', type: 'tsx' },
+    ]),
   ],
 }));
