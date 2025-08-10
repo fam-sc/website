@@ -13,7 +13,7 @@ export interface LineNumbersProps {
 export function LineNumbers({ className, count }: LineNumbersProps) {
   return (
     <div className={classNames(styles.root, className)}>
-      {range(1, count + 1).map((number) => (
+      {range(1, count).map((number) => (
         <Typography key={number}>{number}</Typography>
       ))}
     </div>

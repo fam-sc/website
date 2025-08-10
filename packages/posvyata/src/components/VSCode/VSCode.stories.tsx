@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import Image1 from '@/images/code/1.jpg';
-import { RawMarkdownNodeType } from '@/utils/markdown/types';
+import file1 from '@/text/vscode1.md?raw';
 
 import { VSCode } from '.';
 
@@ -20,7 +20,7 @@ export const Primary: Story = {
       {
         path: 'folder/file1.md',
         type: 'markdown',
-        content: ['123', { type: RawMarkdownNodeType.BREAK_LINE }, '456'],
+        content: file1,
       },
       {
         path: 'folder/file2.md',

@@ -1,4 +1,7 @@
+import { useMemo } from 'react';
+
 import { classNames } from '@/utils/classNames';
+import { countLines } from '@/utils/markdown/countLines';
 import { RawMarkdownString } from '@/utils/markdown/types';
 
 import { LineNumbers } from '../LineNumbers';
@@ -11,9 +14,12 @@ export interface TextEditorProps {
 }
 
 export function TextEditor({ className, content }: TextEditorProps) {
+  const lineCount = useMemo(() => countLines(content), [content]);
+  console.log(lineCount);
+
   return (
     <div className={classNames(styles.root, className)}>
-      <LineNumbers count={2} />
+      <LineNumbers count={lineCount} />
       <MarkdownContent text={content} className={styles.content} />
     </div>
   );

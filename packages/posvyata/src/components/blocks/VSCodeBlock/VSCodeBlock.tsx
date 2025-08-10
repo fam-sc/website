@@ -1,6 +1,7 @@
 import { VSCode } from '@/components/VSCode';
 import { VSCodeFile } from '@/components/VSCode/types';
 import Image1 from '@/images/code/1.jpg';
+import file1 from '@/text/vscode1.md?raw';
 
 import { BlockContainer } from '../BlockContainer';
 import styles from './VSCodeBlock.module.scss';
@@ -14,7 +15,7 @@ const files: VSCodeFile[] = [
   {
     type: 'markdown',
     path: 'content.md',
-    content: '123',
+    content: file1,
   },
 ];
 

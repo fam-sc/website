@@ -7,3 +7,12 @@
     outline: none;
   }
 }
+
+.node-header, .node-bold {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.node-italic {
+  font-style: italic;
+}

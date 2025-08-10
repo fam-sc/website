@@ -27,3 +27,17 @@ $mursGothicStyles: (
   font-weight: 400;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'Consolas';
+  src: url('/fonts/Consolas-Bold.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Consolas';
+  src: url('/fonts/Consolas-Italic.ttf');
+  font-weight: 400;
+  font-style: italic;
+}

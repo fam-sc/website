@@ -16,6 +16,20 @@ interface NodeProps {
   value: RawMarkdownNode;
 }
 
+function getNodeClassName(type: RawMarkdownNodeType): string | undefined {
+  switch (type) {
+    case RawMarkdownNodeType.BOLD: {
+      return 'node-bold';
+    }
+    case RawMarkdownNodeType.ITALIC: {
+      return 'node-italic';
+    }
+    case RawMarkdownNodeType.HEADER: {
+      return 'node-header';
+    }
+  }
+}
+
 function Node({ value }: NodeProps) {
   if (typeof value === 'string') {
     return value;
@@ -25,8 +39,10 @@ function Node({ value }: NodeProps) {
     return <br />;
   }
 
+  const className = getNodeClassName(value.type);
+
   return (
-    <span className={styles[`node-${value.type}`]}>
+    <span className={className && styles[className]}>
       <NodeFragment values={value.children} />
     </span>
   );
@@ -45,6 +61,7 @@ export function MarkdownContent({ className, text }: MarkdownContentProps) {
     <div
       className={classNames(styles.root, className)}
       contentEditable
+      spellCheck={false}
       onBeforeInput={(event) => {
         event.preventDefault();
 
