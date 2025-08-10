@@ -1,10 +1,9 @@
 import { Size } from '@/hooks/useSize';
-import { differentIndices } from '@/utils/string';
 
 import { RenderState, renderText } from './renderer';
 import { createSymbol } from './symbol';
 
-const ANIMATION_DURATION = 2000;
+// const ANIMATION_DURATION = 2000;
 
 export type AnimatedTextManager = ReturnType<typeof createManager>;
 
@@ -23,6 +22,7 @@ export function createManager() {
     }
   }
 
+  /*
   function startAnimation() {
     let animationStartTime: number | undefined;
 
@@ -44,6 +44,7 @@ export function createManager() {
 
     requestAnimationFrame(tick);
   }
+  */
 
   return {
     setContext: (value: CanvasRenderingContext2D) => {
@@ -59,9 +60,12 @@ export function createManager() {
 
           symbols.push(symbol);
         }
+      }
 
-        render();
-      } else if (text !== value) {
+      render();
+
+      /*
+      else if (text !== value) {
         renderState.animation = {
           oldText: text,
           indices: differentIndices(text, value),
@@ -69,6 +73,7 @@ export function createManager() {
 
         startAnimation();
       }
+      */
 
       text = value;
     },
