@@ -1,6 +1,12 @@
 import '@/theme/global.scss';
 
-import { isRouteErrorResponse, Links, Meta, Outlet } from 'react-router';
+import {
+  isRouteErrorResponse,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+} from 'react-router';
 
 import type { Route } from './+types/root';
 
@@ -32,7 +38,10 @@ export function Layout({
         <Meta />
         <Links />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Scripts />
+      </body>
     </html>
   );
 }

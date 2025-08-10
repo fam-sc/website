@@ -3,7 +3,7 @@
   "packageManager": "yarn@4.9.2",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "react-router dev",
     "build": "vite build",
     "typegen": "react-router typegen && wrangler types"
   },
@@ -16,6 +16,7 @@
     "react-router": "7.7.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "1.11.1",
     "@react-router/dev": "7.7.1",
     "@react-router/express": "7.7.1",
     "@sc-fam/shared-vite-plugins": "workspace:*",
@@ -23,7 +24,7 @@
     "@types/react-dom": "19.1.1",
     "tsx": "4.20.3",
     "typescript": "5.8.3",
-    "vite": "7.0.6",
+    "vite": "7.1.1",
     "vite-tsconfig-paths": "5.1.4",
     "wrangler": "4.28.0"
   }

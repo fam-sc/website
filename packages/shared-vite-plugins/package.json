@@ -14,7 +14,8 @@
     "@sc-fam/shared": "workspace:*",
     "marked": "16.1.2",
     "react": "19.1.1",
-    "sharp": "0.34.3"
+    "sharp": "0.34.3",
+    "vite": "7.1.1"
   },
   "exports": {
     "./css": {
@@ -32,6 +33,10 @@
     "./markdown": {
       "import": "./dist/markdown/index.js",
       "types": "./dist/markdown/index.d.ts"
+    },
+    "./generatedAsset": {
+      "import": "./dist/generatedAsset.js",
+      "types": "./dist/generatedAsset.d.ts"
     }
   }
 }
