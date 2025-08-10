@@ -1,0 +1,9 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background-dark);
+}
+
+.code {
+  flex-grow: 1;
+}

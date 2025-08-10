@@ -1,6 +1,6 @@
 import { DefaultTreeAdapterTypes } from 'parse5';
 
-import { getAttributeValue } from './attrs';
+import { getAttributeValue } from './attrs.js';
 
 type Node = DefaultTreeAdapterTypes.Node;
 type Element = DefaultTreeAdapterTypes.Element;

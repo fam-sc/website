@@ -7,7 +7,8 @@
     { "path": "./packages/schedule-bot" },
     { "path": "./packages/shared" },
     { "path": "./packages/shared-schedule" },
-    { "path": "./packages/website" }
+    { "path": "./packages/website" },
+    { "path": "./packages/shared-vite-plugins" }
   ],
   "include": []
 }

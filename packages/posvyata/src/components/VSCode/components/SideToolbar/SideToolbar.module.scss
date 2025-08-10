@@ -1,0 +1,35 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  background: var(--color-background-dark);
+  width: fit-content;
+
+  border-right: 1px solid #aaa;
+}
+
+.item {
+  background: none;
+  border: none;
+  outline: none;
+
+  fill: #bbb;
+  box-sizing: content-box;
+
+  border-left: 2px solid transparent;
+
+  padding: 8px;
+
+  &-selected {
+    border-left-color: #31318d;
+  }
+
+  &-selected, &:hover {
+    fill: #fff;
+  } 
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}

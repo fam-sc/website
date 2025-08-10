@@ -1,3 +1,3 @@
-export { getAttributeValue } from './attrs';
-export { selectFirstNode } from './select';
-export { getChildText } from './text';
+export { getAttributeValue } from './attrs.js';
+export { selectFirstNode } from './select.js';
+export { getChildText } from './text.js';

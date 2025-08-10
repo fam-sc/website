@@ -1,0 +1,33 @@
+.root {
+
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--color-background-light);
+  border-radius: 6px;
+  padding: 3px;
+  border: 1px solid #fff;
+
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-background-light-variant);
+  }
+
+  svg {
+    fill: var(--color-text-on-background);
+    width: 16px;
+    height: 16px;
+
+    margin-right: 4px;
+  }
+
+  p {
+    user-select: none;
+  }
+}

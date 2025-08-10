@@ -1,0 +1,35 @@
+.root {
+  align-self: stretch;
+  text-transform: uppercase;
+  font-size: min(3.75em, 8vw);
+
+  &-animation {
+    animation:
+      0.5s anim linear,
+      0.5s glow linear 0.25s;
+  }
+}
+
+@keyframes anim {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 0 #fff;
+  }
+
+  40% {
+    text-shadow: 0 0 10px #fff;
+  }
+
+  100% {
+    text-shadow: 0 0 0 #fff;
+  }
+}

@@ -1,0 +1,9 @@
+.root {
+  font-family: Consolas;
+  padding: 4px;
+
+  &:focus {
+    border: none;
+    outline: none;
+  }
+}

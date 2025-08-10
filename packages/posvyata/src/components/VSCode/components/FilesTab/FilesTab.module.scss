@@ -1,0 +1,51 @@
+.root {
+  background: var(--color-background-dark);
+}
+
+.folder {
+  &-header {
+    user-select: none;
+    cursor: pointer;
+    padding: 2px 8px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+
+    > svg {
+      width: 16px;
+      height: 14px;
+
+      fill: var(--color-text-on-background);
+    }
+
+    &:hover {
+      background: var(--color-background-dark-variant);
+    }
+  }
+
+  &-content {
+    margin-left: 24px;
+  }
+}
+
+.file {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+
+  user-select: none;
+  cursor: pointer;
+  padding: 2px 8px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: var(--color-background-dark-variant);
+  }
+}
