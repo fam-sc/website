@@ -1,0 +1,66 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  background: var(--color-background-dark);
+
+  border-bottom: 1px solid #aaa;
+}
+
+.item {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+
+  padding: 4px 8px;
+
+  cursor: pointer;
+  user-select: none;
+
+  border: 1px solid #aaa;
+  border-bottom: none;
+
+  &:first-child {
+    border-left: none;
+  }
+
+  &-active {
+    background-color: var(--color-background);
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      left: 0;
+      bottom: -2px;
+      background: var(--color-background);
+    }
+  }
+
+
+  &-type {
+    width: 24px;
+    height: 24px;
+  }
+
+  &-close {
+    background: none;
+    border: none;
+    outline: none;
+
+    visibility: hidden;
+
+    svg {
+      fill: var(--color-text-on-background-dark);
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &:hover .item-close {
+    visibility: visible;
+  }
+}
