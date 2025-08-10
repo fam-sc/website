@@ -8,8 +8,8 @@ import {
 import sharp, { FormatEnum } from 'sharp';
 import { Plugin, ResolvedConfig } from 'vite';
 
-import { CachedResizer } from './cache';
-import { MetaEntry, withWidth } from './utils';
+import { CachedResizer } from './cache.js';
+import { MetaEntry, withWidth } from './utils.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 type PluginContext = ThisParameterType<Extract<Plugin['resolveId'], Function>>;

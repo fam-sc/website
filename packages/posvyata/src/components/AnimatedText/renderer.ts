@@ -88,8 +88,6 @@ export function renderText(
   const scale =
     maxExpectedGroupWidth === 0 ? 1 : maxExpectedGroupWidth / maxGroupWidth;
 
-  console.log(scale);
-
   const scaledWidth = size.width / scale;
 
   const midGroupX = (scaledWidth - midGroupWidth) * 0.5;

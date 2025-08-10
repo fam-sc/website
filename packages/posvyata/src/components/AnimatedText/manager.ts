@@ -60,6 +60,10 @@ export function createManager() {
 
           symbols.push(symbol);
         }
+      } else {
+        for (const [i, symbol] of renderState.symbols.entries()) {
+          symbol.setValue(value[i]);
+        }
       }
 
       render();

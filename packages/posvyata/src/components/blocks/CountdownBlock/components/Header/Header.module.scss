@@ -4,7 +4,9 @@
   font-size: min(3.75em, 8vw);
 
   &-animation {
-    animation: .5s anim linear, .5s glow linear .25s;
+    animation:
+      0.5s anim linear,
+      0.5s glow linear 0.25s;
   }
 }
 
@@ -19,7 +21,7 @@
 }
 
 @keyframes glow {
-  from {
+  0% {
     text-shadow: 0 0 0 #fff;
   }
 
@@ -27,7 +29,7 @@
     text-shadow: 0 0 10px #fff;
   }
 
-  to {
+  100% {
     text-shadow: 0 0 0 #fff;
   }
 }

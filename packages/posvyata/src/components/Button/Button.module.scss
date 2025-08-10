@@ -1,7 +1,8 @@
 @use 'sass:math';
 
-@function repeat($character, $n){
-  $c:"";
+@function repeat($character, $n) {
+  $c: '';
+
   @for $i from 1 through $n {
     $c: $c + $character;
   }
@@ -22,20 +23,20 @@
 
       position: relative;
 
-      &:before {
+      &::before {
         position: absolute;
         bottom: -20px;
       }
 
-      &:hover:before {
+      &:hover::before {
         content: repeat('_', $length);
-        animation: anim .5s linear;
+        animation: anim 0.4s ease-in;
       }
 
       @keyframes anim {
         @for $i from 0 to $length + 1 {
           $percent: ($i * math.div(1, $length)) * 100;
-          
+
           #{'#{$percent}%'} {
             content: repeat('_', $i);
           }

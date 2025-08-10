@@ -1,5 +1,5 @@
+import { Button } from '../../Button/Button';
 import { BlockContainer } from '../BlockContainer';
-import { Button } from '../Button/Button';
 import { Countdown } from './components/Countdown';
 import { Header } from './components/Header';
 import styles from './CountdownBlock.module.scss';
