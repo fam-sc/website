@@ -48,8 +48,6 @@ function TimePart({ countdown, type }: TimePartProps) {
 export function Countdown({ className }: CountdownProps) {
   const countdown = useCountdown(TARGET_DATE);
 
-  console.log(countdown);
-
   return (
     <div className={classNames(styles.root, className)}>
       <AnimatedText className={styles.text} text={formatCountdown(countdown)} />

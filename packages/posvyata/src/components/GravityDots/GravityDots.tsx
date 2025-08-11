@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
+import { addNativeEventListener } from '@/hooks/nativeEventListener';
 import { useSize } from '@/hooks/useSize';
 import { Point } from '@/utils/math';
 
@@ -12,14 +13,14 @@ export interface GravityDotsProps {
 export function GravityDots({ className }: GravityDotsProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
-  const pointerRef = useRef<Point>(null);
+  const pointerRef = useRef<Point>({ x: 0, y: 0 });
   const size = useSize(ref);
 
   const render = useCallback(() => {
     const context = contextRef.current;
 
     if (context) {
-      renderDots(context, size, pointerRef.current ?? { x: 0, y: 0 });
+      renderDots(context, size, pointerRef.current);
     }
   }, [size]);
 
@@ -41,23 +42,23 @@ export function GravityDots({ className }: GravityDotsProps) {
     const canvas = ref.current;
 
     if (canvas) {
-      const listener = (event: PointerEvent) => {
-        pointerRef.current = { x: event.clientX, y: event.clientY };
+      return addNativeEventListener(
+        canvas,
+        'pointermove',
+        (event) => {
+          const pointer = pointerRef.current;
 
-        render();
-      };
+          pointer.x = event.offsetX;
+          pointer.y = event.offsetY;
 
-      canvas.addEventListener('pointermove', listener, { passive: true });
-
-      return () => {
-        canvas.removeEventListener('pointermove', listener);
-      };
+          render();
+        },
+        { passive: true }
+      );
     }
   }, [render]);
 
-  useEffect(() => {
-    render();
-  }, [render]);
+  useEffect(render, [render]);
 
   return <canvas ref={ref} className={className} {...size} />;
 }

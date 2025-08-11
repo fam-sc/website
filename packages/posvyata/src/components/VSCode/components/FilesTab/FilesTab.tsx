@@ -21,13 +21,18 @@ export interface FilesTabProps {
 
 interface FileProps {
   item: SimpleFileItem;
+  depth: number;
 }
 
-function File({ item }: FileProps) {
+function File({ item, depth }: FileProps) {
   const { openFile } = useVSCode();
 
   return (
-    <div className={styles.file} onDoubleClick={() => openFile(item.fullPath)}>
+    <div
+      className={styles.file}
+      style={{ ['--depth']: depth }}
+      onDoubleClick={() => openFile(item.fullPath)}
+    >
       <FileTypeIcon type={item.type} />
       <Typography>{item.name}</Typography>
     </div>
@@ -36,9 +41,10 @@ function File({ item }: FileProps) {
 
 interface FolderProps {
   item: FolderItem;
+  depth: number;
 }
 
-function Folder({ item }: FolderProps) {
+function Folder({ item, depth }: FolderProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -51,27 +57,24 @@ function Folder({ item }: FolderProps) {
         <Typography>{item.name}</Typography>
       </div>
 
-      {expanded && (
-        <div className={styles['folder-content']}>
-          <FolderContent content={item.children} />
-        </div>
-      )}
+      {expanded && <FolderContent content={item.children} depth={depth + 1} />}
     </div>
   );
 }
 
 interface FolderContentProps {
   content: FileItem[];
+  depth: number;
 }
 
-function FolderContent({ content }: FolderContentProps) {
+function FolderContent({ content, depth }: FolderContentProps) {
   return (
     <>
       {content.map((item) =>
         item.type === 'folder' ? (
-          <Folder key={item.name} item={item} />
+          <Folder key={item.name} item={item} depth={depth} />
         ) : (
-          <File key={item.name} item={item} />
+          <File key={item.name} item={item} depth={depth} />
         )
       )}
     </>
@@ -84,7 +87,7 @@ export function FilesTab({ className }: FilesTabProps) {
 
   return (
     <div className={classNames(styles.root, className)}>
-      <FolderContent content={tree} />
+      <FolderContent content={tree} depth={0} />
     </div>
   );
 }

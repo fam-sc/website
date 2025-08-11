@@ -6,6 +6,10 @@
     border: none;
     outline: none;
   }
+
+  &::selection {
+    background: #dadada43;
+  }
 }
 
 .node-header, .node-bold {

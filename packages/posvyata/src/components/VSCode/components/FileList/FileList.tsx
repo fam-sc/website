@@ -30,7 +30,11 @@ function Item({ isActive, item }: ItemProps) {
 
       <button
         className={styles['item-close']}
-        onClick={() => closeFile(item.path)}
+        onClick={(event) => {
+          event.stopPropagation();
+
+          closeFile(item.path);
+        }}
       >
         <CloseIcon />
       </button>

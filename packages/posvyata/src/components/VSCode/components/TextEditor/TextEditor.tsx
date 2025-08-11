@@ -15,7 +15,6 @@ export interface TextEditorProps {
 
 export function TextEditor({ className, content }: TextEditorProps) {
   const lineCount = useMemo(() => countLines(content), [content]);
-  console.log(lineCount);
 
   return (
     <div className={classNames(styles.root, className)}>

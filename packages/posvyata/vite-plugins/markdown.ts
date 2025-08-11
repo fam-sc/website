@@ -94,8 +94,6 @@ function transformMarkdownToModule(content: string): string {
 
   const nodes = tokenArrayToNodes(nodeList);
 
-  console.log(JSON.stringify(nodes, undefined, 2));
-
   return `const _default = ${JSON.stringify(nodes)}; export default _default;`;
 }
 
@@ -105,7 +103,6 @@ export function rawMarkdownPlugin(): Plugin {
     enforce: 'pre',
     async transform(source, id) {
       if (id.endsWith(EXTENSION)) {
-        console.log(id);
         const content = await fsp.readFile(id.slice(0, -4), 'utf8');
 
         return transformMarkdownToModule(content);

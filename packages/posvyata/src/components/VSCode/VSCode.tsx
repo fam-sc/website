@@ -35,7 +35,9 @@ export function VSCode({
       if (file) {
         setCurrentFile(file);
         setRecentlyOpened((rest) => [...rest, file]);
-        setOpenedFiles((rest) => [...new Set([...rest, file])]);
+        setOpenedFiles((rest) =>
+          rest.includes(file) ? rest : [...rest, file]
+        );
       }
     },
     [files]
@@ -43,17 +45,16 @@ export function VSCode({
 
   const closeFile = useCallback(
     (path: string) => {
-      const index = files.findIndex((file) => file.path === path);
+      const index = openedFiles.findIndex((file) => file.path === path);
 
       if (index !== -1) {
         const newIndex = index > 0 ? index - 1 : index + 1;
 
-        setCurrentFile(files[newIndex]);
-
+        setCurrentFile(openedFiles[newIndex] ?? null);
         setOpenedFiles((files) => files.filter((file) => file.path !== path));
       }
     },
-    [files]
+    [openedFiles]
   );
 
   const context = useMemo(
@@ -82,7 +83,7 @@ export function VSCode({
       openFile(initialOpenedFile);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openFile]);
+  }, []);
 
   return (
     <VSCodeContext.Provider value={context}>

@@ -8,8 +8,6 @@ type Element = DefaultTreeAdapterTypes.Element;
 function matchClass(value: string, part: string): boolean {
   const parts = value.split(' ');
 
-  console.log(parts);
-
   return parts.includes(part);
 }
 

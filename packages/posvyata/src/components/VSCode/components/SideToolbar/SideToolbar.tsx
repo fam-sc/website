@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import { FilesIcon } from '@/icons/FilesIcon';
-import { SearchIcon } from '@/icons/SearchIcon';
 import { SvgProps } from '@/icons/types';
 import { classNames } from '@/utils/classNames';
 
@@ -17,9 +16,6 @@ type TabMap = Record<
 const tabs = {
   files: {
     icon: FilesIcon,
-  },
-  search: {
-    icon: SearchIcon,
   },
 } satisfies TabMap;
 
