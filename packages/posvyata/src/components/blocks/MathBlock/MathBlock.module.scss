@@ -16,22 +16,28 @@ $dot-y: 20;
   height: 100%;
 }
 
-.image {
+.image-container {
   position: absolute;
-  object-fit: contain;
-
+  
   top: 50%;
   left: 5%;
   width: 30%;
-  height: auto;
+  height: fit-content;
   transform: translate(0, -50%) rotate(-2deg);
-
-  box-shadow: 0 0 5px #0000007b;
 
   z-index: 1;
 
   @include breakpoint-down('md') {
     display: none;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    touch-action: none;
+
+    box-shadow: 0 0 5px #0000007b;
   }
 }
 
@@ -43,7 +49,10 @@ $dot-y: 20;
   height: 60%;
   transform: translate(0, -50%);
 
-  padding: 1em;
+  > * {
+    padding: 1em;
+    height: 100%;
+  }
 
   @include breakpoint-down('md') {
     width: 80%;

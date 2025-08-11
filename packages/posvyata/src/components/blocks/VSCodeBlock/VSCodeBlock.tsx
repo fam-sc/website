@@ -1,3 +1,5 @@
+import { motion } from 'motion/react';
+
 import { VSCode } from '@/components/VSCode';
 import { VSCodeFile } from '@/components/VSCode/types';
 import Image1 from '@/images/code/1.jpg';
@@ -22,12 +24,21 @@ const files: VSCodeFile[] = [
 export function VSCodeBlock() {
   return (
     <BlockContainer className={styles.root}>
-      <VSCode
-        className={styles.code}
-        projectName="POSVYATA"
-        files={files}
-        initialOpenedFile="content.md"
-      />
+      <motion.div
+        initial={{ scale: 0, translateX: '-50%' }}
+        whileInView={{
+          scale: 1,
+          left: '50%',
+          translateX: '-50%',
+        }}
+      >
+        <VSCode
+          className={styles.code}
+          projectName="POSVYATA"
+          files={files}
+          initialOpenedFile="content.md"
+        />
+      </motion.div>
     </BlockContainer>
   );
 }
