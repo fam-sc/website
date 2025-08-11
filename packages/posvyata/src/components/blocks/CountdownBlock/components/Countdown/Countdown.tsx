@@ -1,8 +1,8 @@
-import { AnimatedText } from '@/components/AnimatedText';
+import { formatTwoDigit } from '@sc-fam/shared/string/formatter.js';
+
 import { Typography } from '@/components/Typography';
 import { DateInterval, useCountdown } from '@/hooks/useCountdown';
 import { classNames } from '@/utils/classNames';
-import { formatCountdown } from '@/utils/formatter';
 import { getNumberVariant, NumberVariant } from '@/utils/numberVariants';
 
 import styles from './Countdown.module.scss';
@@ -42,7 +42,17 @@ function TimePart({ countdown, type }: TimePartProps) {
   const variants = variantMap[type];
   const variant = getNumberVariant(countdown[type]);
 
-  return <Typography font="press-start">{variants[variant]}</Typography>;
+  return (
+    <div className={styles.part}>
+      <Typography font="press-start" className={styles.main}>
+        {formatTwoDigit(countdown.days)}
+      </Typography>
+
+      <Typography font="press-start" className={styles.measure}>
+        {variants[variant]}
+      </Typography>
+    </div>
+  );
 }
 
 export function Countdown({ className }: CountdownProps) {
@@ -50,13 +60,11 @@ export function Countdown({ className }: CountdownProps) {
 
   return (
     <div className={classNames(styles.root, className)}>
-      <AnimatedText className={styles.text} text={formatCountdown(countdown)} />
-
-      <div className={styles.timing}>
-        <TimePart countdown={countdown} type="days" />
-        <TimePart countdown={countdown} type="hours" />
-        <TimePart countdown={countdown} type="minutes" />
-      </div>
+      <TimePart countdown={countdown} type="days" />
+      <span className={styles.main}>:</span>
+      <TimePart countdown={countdown} type="hours" />
+      <span className={styles.main}>:</span>
+      <TimePart countdown={countdown} type="minutes" />
     </div>
   );
 }

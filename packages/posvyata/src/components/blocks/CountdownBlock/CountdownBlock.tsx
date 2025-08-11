@@ -1,4 +1,4 @@
-import { Button } from '../../Button/Button';
+import { PixelUnderlineButton } from '../../PixelUnderlineButton';
 import { BlockContainer } from '../BlockContainer';
 import { Countdown } from './components/Countdown';
 import { Header } from './components/Header';
@@ -10,13 +10,9 @@ export function CountdownBlock() {
       <div className={styles.content}>
         <Header className={styles.header} />
         <Countdown className={styles.countdown} />
-        <Button
-          className={styles['form-button']}
-          font="press-start"
-          hoverEffect="pixel-underline"
-        >
+        <PixelUnderlineButton className={styles['form-button']}>
           Заповнити форму
-        </Button>
+        </PixelUnderlineButton>
       </div>
     </BlockContainer>
   );
