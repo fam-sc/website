@@ -15,7 +15,7 @@ export function HoloText({ className, text }: HoloTextProps) {
       {[...text].map((value, i) => (
         <motion.span
           key={i}
-          initial={{ scale: 0, translateY: 10 * i }}
+          initial={{ scale: 0, translateY: 5 * i }}
           whileInView={{ scale: 1, translateY: 0 }}
           transition={{ delay: i * 0.025, ease: 'circOut' }}
         >

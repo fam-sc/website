@@ -76,7 +76,7 @@ export function PixelUnderlineButton({
     >
       {children}
 
-      <p className={styles.underline} ref={underlineRef} />
+      {/* <p className={styles.underline} ref={underlineRef} /> */}
     </Typography>
   );
 }

@@ -1,3 +1,5 @@
+@use '../../../theme/breakpoints' as *;
+
 .root {
   margin-top: 2em;
 
@@ -8,4 +10,8 @@
 
 .grid {
   margin: 1em 0.5em;
+
+  @include breakpoint-up('md') {
+    margin: 1em 4em;
+  }
 }

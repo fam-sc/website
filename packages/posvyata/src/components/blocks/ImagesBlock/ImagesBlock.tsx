@@ -12,7 +12,7 @@ export function ImagesBlock() {
     <BlockContainer className={styles.root}>
       <HoloText text="HELL  YEAH" />
 
-      <ImageGrid className={styles.grid} images={range(10).map(() => Image1)} />
+      <ImageGrid className={styles.grid} images={range(9).map(() => Image1)} />
     </BlockContainer>
   );
 }
