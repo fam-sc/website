@@ -27,8 +27,8 @@ export default defineConfig((env) => ({
         }
       : undefined,
   plugins: [
-    ...(env.command === 'build' && !isLocal
-      ? [cloudflare({ viteEnvironment: { name: 'ssr' } })]
+    ...(!isLocal
+      ? [cloudflare({ viteEnvironment: { name: 'ssr' }, persistState: true, experimental: { remoteBindings: true } })]
       : []),
     reactRouter(),
     imagePlugin(),
@@ -36,6 +36,6 @@ export default defineConfig((env) => ({
     rawMarkdownPlugin(),
     multienvPlugin([
       { name: 'utils/reactDomEnv', type: 'tsx' },
-    ]),
+    ], 'cf'),
   ],
 }));
