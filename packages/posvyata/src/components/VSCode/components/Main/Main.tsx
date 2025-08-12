@@ -5,7 +5,6 @@ import { classNames } from '@/utils/classNames';
 import { EditorWrapper } from '../EditorWrapper';
 import { FilesTab } from '../FilesTab';
 import { SideToolbar, ToolbarTabType } from '../SideToolbar';
-import { TabWrapper } from '../TabWrapper';
 import styles from './Main.module.scss';
 
 export interface MainProps {
@@ -29,9 +28,9 @@ export function Main({ className }: MainProps) {
       />
 
       {Tab && (
-        <TabWrapper>
+        <div className={styles['tab-wrapper']}>
           <Tab />
-        </TabWrapper>
+        </div>
       )}
 
       <EditorWrapper className={styles.editor} />
