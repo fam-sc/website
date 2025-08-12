@@ -1,0 +1,9 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+
+  font-size: min(5em, 11vw);
+  font-family: 'Rubik Glitch';
+  text-shadow: 0 0 7px #fff;
+}

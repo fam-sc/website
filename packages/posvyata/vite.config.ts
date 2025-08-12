@@ -27,9 +27,6 @@ export default defineConfig((env) => ({
         }
       : undefined,
   plugins: [
-    ...(!isLocal
-      ? [cloudflare({ viteEnvironment: { name: 'ssr' }, persistState: true, experimental: { remoteBindings: true } })]
-      : []),
     reactRouter(),
     imagePlugin(),
     tsconfigPaths(),

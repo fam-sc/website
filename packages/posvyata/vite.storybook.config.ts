@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
-import { rawMarkdownPlugin } from 'vite-plugins/markdown';
 import tsconfigPaths from 'vite-tsconfig-paths';
+
+import { rawMarkdownPlugin } from './vite-plugins/markdown';
 
 export default defineConfig({
   mode: 'storybook',

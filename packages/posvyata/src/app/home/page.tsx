@@ -4,6 +4,7 @@ import { validateCampaignRequest } from '@/api/client';
 import { registerCampaignRequest } from '@/campaign/handler';
 import { isValidCampaignReferrer } from '@/campaign/types';
 import { CountdownBlock } from '@/components/blocks/CountdownBlock';
+import { ImagesBlock } from '@/components/blocks/ImagesBlock';
 import { MathBlock } from '@/components/blocks/MathBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
 
@@ -48,6 +49,7 @@ export default function Page({
       <CountdownBlock />
       <MathBlock />
       <VSCodeBlock />
+      <ImagesBlock />
     </div>
   );
 }
