@@ -56,22 +56,21 @@ function NodeFragment({ values }: NodeFragmentProps) {
   return values.map((item, i) => <Node key={i} value={item} />);
 }
 
+function preventListener(event: { preventDefault: () => void }) {
+  event.preventDefault();
+
+  return false;
+}
+
 export function MarkdownContent({ className, text }: MarkdownContentProps) {
   return (
     <div
       className={classNames(styles.root, className)}
       contentEditable
+      suppressContentEditableWarning
       spellCheck={false}
-      onBeforeInput={(event) => {
-        event.preventDefault();
-
-        return false;
-      }}
-      onKeyDown={(event) => {
-        event.preventDefault();
-
-        return false;
-      }}
+      onBeforeInput={preventListener}
+      onKeyDown={preventListener}
     >
       <Node value={text} />
     </div>

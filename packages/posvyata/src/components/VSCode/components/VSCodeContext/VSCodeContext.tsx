@@ -5,7 +5,6 @@ import { VSCodeFile } from '../../types';
 export type VSCodeContextType = {
   projectName: string;
   files: VSCodeFile[];
-  recentlyOpened: VSCodeFile[];
   openedFiles: VSCodeFile[];
   currentFile: VSCodeFile | null;
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
@@ -24,9 +24,15 @@ export function VSCode({
   initialOpenedFile,
   ...rest
 }: VSCodeProps) {
-  const [recentlyOpened, setRecentlyOpened] = useState<VSCodeFile[]>([]);
-  const [openedFiles, setOpenedFiles] = useState<VSCodeFile[]>([]);
-  const [currentFile, setCurrentFile] = useState<VSCodeFile | null>(null);
+  const initialFile = files.find(({ path }) => path === initialOpenedFile);
+
+  const [openedFiles, setOpenedFiles] = useState<VSCodeFile[]>(() =>
+    initialFile ? [initialFile] : []
+  );
+
+  const [currentFile, setCurrentFile] = useState<VSCodeFile | null>(
+    initialFile ?? null
+  );
 
   const openFile = useCallback(
     (path: string) => {
@@ -34,7 +40,6 @@ export function VSCode({
 
       if (file) {
         setCurrentFile(file);
-        setRecentlyOpened((rest) => [...rest, file]);
         setOpenedFiles((rest) =>
           rest.includes(file) ? rest : [...rest, file]
         );
@@ -59,7 +64,6 @@ export function VSCode({
 
   const context = useMemo(
     (): VSCodeContextType => ({
-      recentlyOpened,
       currentFile,
       projectName,
       files,
@@ -67,23 +71,8 @@ export function VSCode({
       openFile,
       closeFile,
     }),
-    [
-      recentlyOpened,
-      currentFile,
-      projectName,
-      files,
-      openedFiles,
-      openFile,
-      closeFile,
-    ]
+    [currentFile, projectName, files, openedFiles, openFile, closeFile]
   );
-
-  useEffect(() => {
-    if (initialOpenedFile !== undefined) {
-      openFile(initialOpenedFile);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <VSCodeContext.Provider value={context}>
