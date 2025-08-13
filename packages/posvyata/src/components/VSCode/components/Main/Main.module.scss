@@ -30,11 +30,13 @@
   }
 
   @include breakpoint-down('md') {
+    $offset: 38px;
+
     position: absolute;
 
-    width: calc(100% - 46px);
+    width: calc(100% - $offset);
     height: 100%;
 
-    margin-left: 46px;
+    margin-left: $offset;
   }
 }

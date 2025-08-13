@@ -14,3 +14,14 @@ export function defaultIcon(pathData: string, size: number = 24): FC<SvgProps> {
     );
   };
 }
+
+export function googleIcon(pathData: string): FC<SvgProps> {
+  // eslint-disable-next-line react/display-name
+  return (rest) => {
+    return (
+      <svg viewBox="0 -960 960 960" fill="#fff" {...rest}>
+        <path d={pathData} />
+      </svg>
+    );
+  };
+}

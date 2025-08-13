@@ -1,3 +1,5 @@
+@use '../../../theme/breakpoints' as *;
+
 .root {
   display: flex;
   flex-direction: column;
@@ -27,13 +29,18 @@
 }
 
 .countdown {
-  width: 70%;
+  width: 90%;
   height: 100px;
 
   margin-top: auto;
   margin-bottom: auto;
+
+  @include breakpoint-up('md') {
+    width: 70%;
+  }
 }
 
 .form-button {
-  margin-bottom: 5em;
+  margin: 0 1em;
+  margin-bottom: 3em;
 }

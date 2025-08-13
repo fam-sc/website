@@ -6,6 +6,7 @@ import { isValidCampaignReferrer } from '@/campaign/types';
 import { CountdownBlock } from '@/components/blocks/CountdownBlock';
 import { ImagesBlock } from '@/components/blocks/ImagesBlock';
 import { MathBlock } from '@/components/blocks/MathBlock';
+import { PlotBlock } from '@/components/blocks/PlotBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
 
 import { Route } from './+types/page';
@@ -50,6 +51,7 @@ export default function Page({
       <MathBlock />
       <VSCodeBlock />
       <ImagesBlock />
+      <PlotBlock />
     </div>
   );
 }

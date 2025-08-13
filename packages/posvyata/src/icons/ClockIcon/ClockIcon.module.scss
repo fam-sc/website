@@ -1,0 +1,37 @@
+.primary-line, .secondary-line {
+  transform-origin: 50% 50%;
+}
+
+.primary-line-anim {
+  animation: primary-anim 1s ease-out;
+  
+  @keyframes primary-anim {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.secondary-line {
+  $rotation: 500deg;
+
+  transform: rotate($rotation);
+
+  &-anim {
+    animation: secondary-anim 1.1s ease-out;
+    
+    @keyframes secondary-anim {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate($rotation);
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ export interface GravityDotsProps {
 export function GravityDots({ className }: GravityDotsProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
-  const pointerRef = useRef<Point>({ x: 0, y: 0 });
+  const pointerRef = useRef<Point | null>(null);
   const size = useSize(ref);
 
   const render = useCallback(() => {
@@ -46,7 +46,11 @@ export function GravityDots({ className }: GravityDotsProps) {
         canvas,
         'pointermove',
         (event) => {
-          const pointer = pointerRef.current;
+          let pointer = pointerRef.current;
+          if (pointer == null) {
+            pointer = { x: 0, y: 0 };
+            pointerRef.current = pointer;
+          }
 
           pointer.x = event.offsetX;
           pointer.y = event.offsetY;

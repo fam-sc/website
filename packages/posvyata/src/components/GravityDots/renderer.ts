@@ -8,7 +8,7 @@ const Y_DOTS = 20;
 export function renderDots(
   context: CanvasRenderingContext2D,
   size: Size,
-  pointer: Point
+  pointer: Point | null
 ) {
   const xStep = size.width / X_DOTS;
   const yStep = size.height / Y_DOTS;
@@ -22,14 +22,19 @@ export function renderDots(
     for (let j = 1; j < Y_DOTS; j += 1) {
       const y = j * yStep;
 
-      const dx = x - pointer.x;
-      const dy = y - pointer.y;
-      const distance = Math.hypot(dx, dy);
+      let dotX = x;
+      let dotY = y;
 
-      const pull = Math.min(20, 600 / distance);
+      if (pointer !== null) {
+        const dx = x - pointer.x;
+        const dy = y - pointer.y;
+        const distance = Math.hypot(dx, dy);
 
-      const dotX = x + pull * (dx / distance);
-      const dotY = y + pull * (dy / distance);
+        const pull = Math.min(20, 600 / distance);
+
+        dotX = x + pull * (dx / distance);
+        dotY = y + pull * (dy / distance);
+      }
 
       context.fillRect(dotX, dotY, DOT_RADIUS, DOT_RADIUS);
     }

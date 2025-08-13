@@ -1,3 +1,5 @@
+@use '../../../../theme/breakpoints' as *;
+
 .root {
   display: flex;
   flex-direction: column;
@@ -9,6 +11,8 @@
 }
 
 .item {
+  --size: 20px;
+
   background: none;
   border: none;
   outline: none;
@@ -29,7 +33,11 @@
   } 
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: var(--size);
+    height: var(--size);
+  }
+
+  @include breakpoint-up('md') {
+    --size: 28px;
   }
 }
