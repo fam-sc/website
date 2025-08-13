@@ -1,4 +1,5 @@
-import { motion } from 'motion/react';
+import { motion, useInView } from 'motion/react';
+import { useRef } from 'react';
 
 import { BlockContainer } from '@/components/blocks/BlockContainer';
 import { GlassView } from '@/components/GlassView';
@@ -10,23 +11,33 @@ import mathImage from '@/images/math_image.jpg?multiple';
 import styles from './MathBlock.module.scss';
 
 export function MathBlock() {
+  const imageRef = useRef<HTMLDivElement | null>(null);
+  const glassRef = useRef<HTMLDivElement | null>(null);
+
+  const imageInView = useInView(imageRef, { once: true });
+  const glassInView = useInView(glassRef, { once: true });
+
   return (
     <BlockContainer className={styles.root}>
       <GravityDots className={styles.dots} />
 
       <motion.div
+        ref={imageRef}
         className={styles['image-container']}
         initial={{ scale: 0, translateY: '-50%' }}
-        whileInView={{ scale: 1, translateY: '-50%', rotate: '-2deg' }}
+        animate={
+          imageInView && { scale: 1, translateY: '-50%', rotate: '-2deg' }
+        }
         whileHover={{ scale: 1.1 }}
       >
         <Image multiple={mathImage} />
       </motion.div>
 
       <motion.div
+        ref={glassRef}
         className={styles.glass}
         initial={{ scale: 0, translateY: '-50%' }}
-        whileInView={{ scale: 1, translateY: '-50%' }}
+        animate={glassInView && { scale: 1, translateY: '-50%' }}
       >
         <GlassView>
           <Typography font="murs-gothic" variant="h3">
