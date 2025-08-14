@@ -1,4 +1,4 @@
-import { CampaignReferrer } from './types';
+import { CampaignReferrer, RegistrationClickPlace } from './types';
 
 export async function registerCampaignRequest(
   env: Env,
@@ -24,5 +24,17 @@ export async function validateCampaignRequest(env: Env, requestId: string) {
     `UPDATE campaign SET validation_time=? WHERE request_id=? AND validation_time IS NULL`
   )
     .bind(now, requestId)
+    .run();
+}
+
+export async function updateCampaignRegistrationClickPlace(
+  env: Env,
+  requestId: string,
+  place: RegistrationClickPlace
+) {
+  await env.DB.prepare(
+    `UPDATE campaign SET registration_place=? WHERE request_id=? AND registration_place IS NULL`
+  )
+    .bind(place, requestId)
     .run();
 }

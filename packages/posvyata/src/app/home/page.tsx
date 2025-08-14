@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 
 import { validateCampaignRequest } from '@/api/client';
 import { registerCampaignRequest } from '@/campaign/handler';
-import { isValidCampaignReferrer } from '@/campaign/types';
+import { CampaignReferrer, isValidCampaignReferrer } from '@/campaign/types';
 import { CountdownBlock } from '@/components/blocks/CountdownBlock';
+import { FooterBlock } from '@/components/blocks/FooterBlock';
 import { ImagesBlock } from '@/components/blocks/ImagesBlock';
 import { MathBlock } from '@/components/blocks/MathBlock';
 import { PlotBlock } from '@/components/blocks/PlotBlock';
@@ -15,35 +16,41 @@ import styles from './page.module.scss';
 export async function loader({ request, context }: Route.LoaderArgs) {
   const { searchParams } = new URL(request.url);
   const rawReferrer = searchParams.get('ref');
-  let requestId: string | undefined;
+  let referrer = CampaignReferrer.NONE;
 
   if (rawReferrer !== null) {
-    const referrer = Number.parseInt(rawReferrer);
+    const rawRef = Number.parseInt(rawReferrer);
 
-    if (isValidCampaignReferrer(referrer)) {
-      const userAgent = request.headers.get('User-Agent');
-
-      requestId = await registerCampaignRequest(
-        context.cloudflare.env,
-        referrer,
-        userAgent
-      );
+    if (isValidCampaignReferrer(rawRef)) {
+      referrer = rawRef;
     }
   }
 
-  return { requestId };
+  const userAgent = request.headers.get('User-Agent');
+
+  const requestId = await registerCampaignRequest(
+    context.cloudflare.env,
+    referrer,
+    userAgent
+  );
+
+  return new Response(null, {
+    headers: {
+      'Set-Cookie': `rid=${requestId}`,
+    },
+  });
 }
 
-export default function Page({
-  loaderData: { requestId },
-}: Route.ComponentProps) {
+export default function Page() {
   useEffect(() => {
-    if (requestId !== undefined) {
-      void validateCampaignRequest(requestId);
+    const { search } = window.location;
 
+    void validateCampaignRequest();
+
+    if (search.length > 0) {
       window.history.replaceState(null, '', '/');
     }
-  }, [requestId]);
+  }, []);
 
   return (
     <div className={styles.content}>
@@ -52,6 +59,7 @@ export default function Page({
       <VSCodeBlock />
       <ImagesBlock />
       <PlotBlock />
+      <FooterBlock />
     </div>
   );
 }

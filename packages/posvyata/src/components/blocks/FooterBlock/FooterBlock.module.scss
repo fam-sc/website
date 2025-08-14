@@ -1,0 +1,17 @@
+@use '../../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 2em;
+}
+
+.registration {
+  width: 95%;
+  height: 100%;
+
+  @include breakpoint-up('md') {
+    width: 50%;
+  }
+}

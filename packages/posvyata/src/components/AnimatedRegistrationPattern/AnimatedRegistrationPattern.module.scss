@@ -1,0 +1,31 @@
+.circle {
+  cx: 200;
+  cy: 200;
+  fill: none;
+  stroke: #fff;
+  stroke: 0.5;
+  opacity: 0.3;
+}
+
+.hex {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  opacity: 0.6;
+}
+
+.hex-group {
+  animation: hex-anim linear infinite;
+  transform-origin: 50% 50%;
+  animation-duration: calc(9s + var(--i) * 0.2s);
+
+  @keyframes hex-anim {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
