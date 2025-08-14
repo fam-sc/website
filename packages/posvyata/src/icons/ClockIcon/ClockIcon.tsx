@@ -11,16 +11,8 @@ export function ClockIcon(rest: SvgProps) {
   const inView = useInView(ref, { once: true });
 
   return (
-    <svg
-      ref={ref}
-      viewBox="0 0 24 24"
-      width="24px"
-      height="24px"
-      stroke="#fff"
-      fill="transparent"
-      {...rest}
-    >
-      <circle cx={12} cy={12} r={10} strokeWidth={2} />
+    <svg ref={ref} viewBox="0 0 24 24" width="24px" height="24px" {...rest}>
+      <circle cx={12} cy={12} r={10} strokeWidth={2} fill="transparent" />
 
       <path
         d="M12 12 L12 6Z"

@@ -21,4 +21,12 @@
 
 .code {
   flex-grow: 1;
+
+  @include breakpoint-up('md') {
+    width: 90%;
+
+    border: 2px solid #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 4px #bbbbbb;
+  }
 }

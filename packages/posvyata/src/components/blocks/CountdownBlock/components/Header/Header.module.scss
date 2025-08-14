@@ -1,12 +1,18 @@
 .root {
-  align-self: stretch;
+  $letter-spacing: 0.4em;
+
+  text-align: center;
   text-transform: uppercase;
-  font-size: min(3.75em, 8vw);
+  font-size: min(5em, 8vw);
+  font-family: 'Press Start';
+  letter-spacing: $letter-spacing;
+  margin-right: -$letter-spacing;
+
+  text-shadow: 2px 2px 0 #d7d7d7;
+  -webkit-text-stroke: 1px #000;
 
   &-animation {
-    animation:
-      0.5s anim linear,
-      0.5s glow linear 0.25s;
+    animation: 0.5s anim linear;
   }
 }
 
@@ -17,19 +23,5 @@
 
   to {
     transform: rotateX(360deg);
-  }
-}
-
-@keyframes glow {
-  0% {
-    text-shadow: 0 0 0 #fff;
-  }
-
-  40% {
-    text-shadow: 0 0 10px #fff;
-  }
-
-  100% {
-    text-shadow: 0 0 0 #fff;
   }
 }

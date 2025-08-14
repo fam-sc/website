@@ -5,15 +5,13 @@
   background: var(--color-background);
 }
 
-$dot-x: 20;
-$dot-y: 20;
-
 .dots {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
+  left: 50%;
+  top: 50%;
+  width: 80%;
   height: 100%;
+  transform: translate(-50%, -50%);
 }
 
 .image-container {

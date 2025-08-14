@@ -1,8 +1,10 @@
 .root {
   display: flex;
   flex-direction: row;
+  border-bottom-right-radius: inherit;
 }
 
 .content {
   flex-grow: 1;
+  border-bottom-right-radius: inherit;
 }

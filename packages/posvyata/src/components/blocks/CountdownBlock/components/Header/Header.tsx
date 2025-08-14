@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { EvenSpacedText } from '@/components/EvenSpacedText';
 import { classNames } from '@/utils/classNames';
 
 import styles from './Header.module.scss';
@@ -41,12 +40,8 @@ export function Header({ className }: HeaderProps) {
   });
 
   return (
-    <EvenSpacedText
-      font="press-start"
-      className={classNames(styles.root, styles[`root-${state}`], className)}
-      variant="h2"
-    >
+    <p className={classNames(styles.root, styles[`root-${state}`], className)}>
       {text}
-    </EvenSpacedText>
+    </p>
   );
 }
