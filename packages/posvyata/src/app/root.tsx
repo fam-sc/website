@@ -26,14 +26,17 @@ export function Layout({
   children,
 }: Route.ComponentProps & { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="uk">
       <head>
+        <title>ПОСВЯТА 2025</title>
+        <meta name="description" content="ПОСВЯТА 2025" />
+
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="apple-mobile-web-app-title" content="СР ФПМ" />
         <meta name="color-scheme" content="dark" />
         <meta property="og:locale" content="uk_UA" />
-        <meta property="og:site_name" content="Посвята | Студрада ФПМ" />
+        <meta property="og:site_name" content="Студрада ФПМ" />
+        <meta property="og:image" content="/logo.png" />
 
         <Meta />
         <Links />
