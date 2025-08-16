@@ -45,7 +45,7 @@ function TimePart({ countdown, type }: TimePartProps) {
   return (
     <div className={styles.part}>
       <Typography font="press-start" className={styles.main}>
-        {formatTwoDigit(countdown.days)}
+        {formatTwoDigit(countdown[type])}
       </Typography>
 
       <Typography font="press-start" className={styles.measure}>

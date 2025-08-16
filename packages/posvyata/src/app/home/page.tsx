@@ -10,6 +10,7 @@ import { MathBlock } from '@/components/blocks/MathBlock';
 import { PlotBlock } from '@/components/blocks/PlotBlock';
 import { QuestionBlock } from '@/components/blocks/QuestionBlock';
 import { RegistrationBlock } from '@/components/blocks/RegistrationBlock';
+import { ScheduleBlock } from '@/components/blocks/ScheduleBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
 import { Footer } from '@/components/Footer';
 
@@ -66,8 +67,9 @@ export default function Page() {
       <MathBlock />
       <VSCodeBlock />
       <ImagesBlock />
-      <PlotBlock />
       <MapBlock />
+      <ScheduleBlock />
+      <PlotBlock />
       <RegistrationBlock />
       <QuestionBlock />
       <Footer />
