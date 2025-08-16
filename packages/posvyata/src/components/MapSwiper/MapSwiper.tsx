@@ -47,6 +47,7 @@ export function MapSwiper({
       onSwiper={setSwiper}
       controller={{ control: swiper }}
       slidesPerView={1}
+      autoHeight={false}
       className={classNames(styles.root, className)}
       onSlideChange={(swiper) => {
         const type: MapType = swiper.activeIndex === 0 ? 'main' : 'bbq';

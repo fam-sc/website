@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 
 import { classNames } from '@/utils/classNames';
 
-import { MapSwiper, MapType } from '../MapSwiper';
+import { LoadingIndicatorWrapper } from '../LoadingIndicatorWrapper';
+import type { MapType } from '../MapSwiper';
 import { OptionSwitch } from '../OptionSwitch';
 import styles from './MapSelector.module.scss';
 
@@ -11,6 +12,12 @@ export interface MapSelectorProps {
 }
 
 const options = ['main', 'bbq'] as const;
+
+const MapSwiper = React.lazy(async () => {
+  const { MapSwiper } = await import('../MapSwiper');
+
+  return { default: MapSwiper };
+});
 
 export function MapSelector({ className }: MapSelectorProps) {
   const [selectedType, setSelectedType] = useState<MapType>('main');
@@ -25,7 +32,13 @@ export function MapSelector({ className }: MapSelectorProps) {
         onOptionSelected={setSelectedType}
       />
 
-      <MapSwiper selectedType={selectedType} onSelectedType={setSelectedType} />
+      <Suspense fallback={<LoadingIndicatorWrapper />}>
+        <MapSwiper
+          className={styles.map}
+          selectedType={selectedType}
+          onSelectedType={setSelectedType}
+        />
+      </Suspense>
     </div>
   );
 }
