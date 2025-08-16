@@ -1,9 +1,9 @@
 import { AnimatedRegistration } from '@/components/AnimatedRegistration';
 
 import { BlockContainer } from '../BlockContainer';
-import styles from './FooterBlock.module.scss';
+import styles from './RegistrationBlock.module.scss';
 
-export function FooterBlock() {
+export function RegistrationBlock() {
   return (
     <BlockContainer className={styles.root}>
       <AnimatedRegistration className={styles.registration} />

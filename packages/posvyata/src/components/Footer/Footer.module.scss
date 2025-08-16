@@ -1,0 +1,19 @@
+.root {
+  padding: 2em 0.5em 0.5em 0.5em;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+
+  flex-direction: row;
+  font-size: min(1em, 3vw);
+
+  font-family: 'Press Start';
+
+  svg {
+    width: 1.75em;
+    height: 1.75em;
+  }
+}

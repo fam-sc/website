@@ -64,5 +64,16 @@ export function GravityDots({ className }: GravityDotsProps) {
 
   useEffect(render, [render]);
 
-  return <canvas ref={ref} className={className} {...size} />;
+  return (
+    <canvas
+      ref={ref}
+      className={className}
+      onMouseOut={() => {
+        pointerRef.current = null;
+
+        render();
+      }}
+      {...size}
+    />
+  );
 }

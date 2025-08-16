@@ -32,7 +32,10 @@ export function Layout({
         <meta name="description" content="ПОСВЯТА 2025" />
 
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=yes"
+        />
         <meta name="color-scheme" content="dark" />
         <meta property="og:locale" content="uk_UA" />
         <meta property="og:site_name" content="Студрада ФПМ" />

@@ -4,12 +4,14 @@ import { validateCampaignRequest } from '@/api/client';
 import { registerCampaignRequest } from '@/campaign/handler';
 import { CampaignReferrer, isValidCampaignReferrer } from '@/campaign/types';
 import { CountdownBlock } from '@/components/blocks/CountdownBlock';
-import { FooterBlock } from '@/components/blocks/FooterBlock';
 import { ImagesBlock } from '@/components/blocks/ImagesBlock';
 import { MapBlock } from '@/components/blocks/MapBlock';
 import { MathBlock } from '@/components/blocks/MathBlock';
 import { PlotBlock } from '@/components/blocks/PlotBlock';
+import { QuestionBlock } from '@/components/blocks/QuestionBlock';
+import { RegistrationBlock } from '@/components/blocks/RegistrationBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
+import { Footer } from '@/components/Footer';
 
 import { Route } from './+types/page';
 import styles from './page.module.scss';
@@ -66,7 +68,9 @@ export default function Page() {
       <ImagesBlock />
       <PlotBlock />
       <MapBlock />
-      <FooterBlock />
+      <RegistrationBlock />
+      <QuestionBlock />
+      <Footer />
     </div>
   );
 }
