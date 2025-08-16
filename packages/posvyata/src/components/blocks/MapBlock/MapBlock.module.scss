@@ -1,0 +1,21 @@
+@use '../../../theme/breakpoints' as *;
+
+.root {
+  min-height: auto;
+}
+
+.header {
+  font-family: 'Murs Gothic';
+  font-size: min(4em, 10vw);
+  text-align: center;
+
+  margin-bottom: 0.5em;
+}
+
+.map {
+  margin: 0 1em;
+
+  @include breakpoint-up('md') {
+    margin: 0 5em;
+  }
+}

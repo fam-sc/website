@@ -35,7 +35,13 @@ export function AnimatedRegistrationPattern({ className, ...rest }: SvgProps) {
       ))}
 
       {Array.from({ length: 8 }, (_, i) => (
-        <circle key={i} className={styles.circle} r={50 + i * 20} />
+        <circle
+          key={i}
+          className={styles.circle}
+          cx={200}
+          cy={200}
+          r={50 + i * 20}
+        />
       ))}
     </svg>
   );

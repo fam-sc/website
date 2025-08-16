@@ -6,6 +6,7 @@ import { CampaignReferrer, isValidCampaignReferrer } from '@/campaign/types';
 import { CountdownBlock } from '@/components/blocks/CountdownBlock';
 import { FooterBlock } from '@/components/blocks/FooterBlock';
 import { ImagesBlock } from '@/components/blocks/ImagesBlock';
+import { MapBlock } from '@/components/blocks/MapBlock';
 import { MathBlock } from '@/components/blocks/MathBlock';
 import { PlotBlock } from '@/components/blocks/PlotBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
@@ -27,12 +28,17 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 
   const userAgent = request.headers.get('User-Agent');
+  let requestId: string | undefined;
 
-  const requestId = await registerCampaignRequest(
-    context.cloudflare.env,
-    referrer,
-    userAgent
-  );
+  try {
+    requestId = await registerCampaignRequest(
+      context.cloudflare.env,
+      referrer,
+      userAgent
+    );
+  } catch (error) {
+    console.error(error);
+  }
 
   return new Response(null, {
     headers: {
@@ -59,6 +65,7 @@ export default function Page() {
       <VSCodeBlock />
       <ImagesBlock />
       <PlotBlock />
+      <MapBlock />
       <FooterBlock />
     </div>
   );

@@ -1,0 +1,14 @@
+.main {
+  stroke-dasharray: 3.5, 1;
+  animation: 2s anim ease-in-out infinite;
+
+  @keyframes anim {
+    from {
+      stroke-dashoffset: 0;
+    }
+
+    to {
+      stroke-dashoffset: 4.5;
+    }
+  }
+}
