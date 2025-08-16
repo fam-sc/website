@@ -1,4 +1,3 @@
-import { motion } from 'motion/react';
 import { useState } from 'react';
 
 import { useScrollbar } from '@/hooks/useScrollbar';
@@ -21,14 +20,9 @@ interface ImageItemProps {
 
 function ImageItem({ image, setSelected }: ImageItemProps) {
   return (
-    <motion.div
-      className={styles.item}
-      whileTap={{ scale: 0.9 }}
-      initial={{ background: '#00000000' }}
-      onTap={setSelected}
-    >
+    <div className={styles.item} onClick={setSelected}>
       <Image multiple={image} />
-    </motion.div>
+    </div>
   );
 }
 
@@ -48,13 +42,13 @@ export function ImageGrid({ className, images }: ImageGridProps) {
       ))}
 
       {selectedIndex >= 0 && (
-        <motion.div
-          animate={{ background: '#00000080' }}
-          className={styles.dialog}
-          onTap={() => setSelectedIndex(-1)}
+        <div
+          onClick={() => {
+            setSelectedIndex(-1);
+          }}
         >
           <Image multiple={images[selectedIndex]} />
-        </motion.div>
+        </div>
       )}
     </div>
   );

@@ -22,6 +22,10 @@
 
   border-radius: 1em;
 
+  &:active {
+    transform: scale(0.9);
+  }
+
   img {
     width: 100%;
     height: 100%;

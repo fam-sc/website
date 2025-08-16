@@ -2,14 +2,14 @@ $gap: 4px;
 $block-size: 32px;
 
 .root {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $gap;
+  position: relative;
 
   width: $block-size * 2 + $gap;
 }
 
 .block {
+  position: absolute;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,11 +21,15 @@ $block-size: 32px;
   background: #fff;
   box-shadow: 0 0 2px #fff;
 
+  transition: transform .2s linear;
+  transform: translate(
+    calc(var(--x) * ($block-size + $gap)),
+    calc(var(--y) * ($block-size + $gap))
+  );
+
   color: var(--color-background);
 
-  span {
-    font-size: 13px;
-    font-family: 'Murs Gothic';
-    font-weight: 700;
-  }
+  font-size: 13px;
+  font-family: 'Murs Gothic';
+  font-weight: 700;
 }
