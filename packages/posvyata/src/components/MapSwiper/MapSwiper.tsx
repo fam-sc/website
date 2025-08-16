@@ -1,6 +1,6 @@
 import 'swiper/css';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BaseSwiper from 'swiper';
 import { Controller } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -18,14 +18,6 @@ export interface MapSwiperProps {
   onSelectedType: (value: MapType) => void;
 
   className?: string;
-}
-
-interface MapContainerProps {
-  children: ReactNode;
-}
-
-function MapContainer({ children }: MapContainerProps) {
-  return <div className={styles['map-container']}>{children}</div>;
 }
 
 export function MapSwiper({
@@ -55,16 +47,12 @@ export function MapSwiper({
         onSelectedType(type);
       }}
     >
-      <SwiperSlide>
-        <MapContainer>
-          <InteractiveMainMap />
-        </MapContainer>
+      <SwiperSlide className={styles.slide}>
+        <InteractiveMainMap />
       </SwiperSlide>
 
-      <SwiperSlide>
-        <MapContainer>
-          <InteractiveBbqMap />
-        </MapContainer>
+      <SwiperSlide className={styles.slide}>
+        <InteractiveBbqMap />
       </SwiperSlide>
     </Swiper>
   );

@@ -2,9 +2,12 @@ $gap: 4px;
 $block-size: 32px;
 
 .root {
+  $size: $block-size * 2 + $gap;;
+
   position: relative;
 
-  width: $block-size * 2 + $gap;
+  width: $size;
+  height: $size;
 }
 
 .block {

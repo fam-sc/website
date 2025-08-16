@@ -1,15 +1,16 @@
 @use '../../../theme/breakpoints' as *;
 
 .root {
+  min-height: auto;
   margin-top: 2em;
+}
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.title {
+  text-align: center;
 }
 
 .grid {
-  margin: 1em 0.5em;
+  margin: 1em 0;
 
   @include breakpoint-up('md') {
     margin: 1em 4em;

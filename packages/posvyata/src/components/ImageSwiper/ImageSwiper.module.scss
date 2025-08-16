@@ -1,0 +1,33 @@
+@use '../../theme/breakpoints' as *;
+
+.item {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+
+  border-radius: 1em;
+  padding: 0 1em;
+
+  img {
+    width: 100%;
+    height: auto;
+    
+    border-radius: 1em;
+  }
+}
+
+.dialog {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: #00000096;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}

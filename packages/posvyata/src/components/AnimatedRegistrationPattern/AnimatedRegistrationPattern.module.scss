@@ -1,21 +1,27 @@
-.circle {
-  fill: none;
-  stroke: #fff;
-  stroke: 0.5;
-  opacity: 0.3;
+.root {
+  circle {
+    fill: none;
+    stroke: #fff;
+    stroke: 0.5;
+    opacity: 0.3;
+  }
 }
 
 .hex {
   fill: none;
-  stroke: #fff;
+  stroke: #e7e7e7;
   stroke-width: 2;
-  opacity: 0.6;
 }
 
 .hex-group {
-  animation: hex-anim linear infinite;
+  // animation: hex-anim linear infinite;
   transform-origin: 50% 50%;
-  animation-duration: calc(9s + var(--i) * 0.2s);
+  animation-duration: 9s;
+
+  > g {
+    transform: scale(calc(1 + var(--i) * 0.025));
+    transform-origin: 50% 50%;
+  }
 
   @keyframes hex-anim {
     from {

@@ -1,6 +1,4 @@
-import { AnimatedLinePlot } from '@/components/AnimatedLinePlot';
 import { classNames } from '@/utils/classNames';
-import { buildSvgPlot } from '@/utils/svg';
 
 import styles from './Header.module.scss';
 

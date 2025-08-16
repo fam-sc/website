@@ -1,3 +1,5 @@
+@use '../../../../../theme/breakpoints' as *;
+
 .root {
   display: flex;
   align-items: start;
@@ -15,12 +17,19 @@
 
 .main {
   font-size: max(2em, 4vw);
-  text-shadow: 3px 3px 0 #000;
+  text-shadow: 2px 2px 0 #aaa;
+  
+  -webkit-text-stroke: 1px #000;
 }
 
 .measure {
   font-size: min(1em, 3vw);
-  text-shadow: 2px 2px 0 #000;
+
+  text-shadow: 1px 1px 0 #000;
+
+  @include breakpoint-up('md') {
+    text-shadow: 2px 2px 0 #000;
+  }
 }
 
 .timing {

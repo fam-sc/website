@@ -13,8 +13,6 @@
 }
 
 .map {
-  margin: 0 1em;
-
   @include breakpoint-up('md') {
     margin: 0 5em;
   }
