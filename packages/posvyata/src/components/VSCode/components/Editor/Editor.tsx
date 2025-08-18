@@ -20,8 +20,6 @@ const ImageEditor = React.lazy(async () => {
 export function Editor({ className }: EditorProps) {
   const { currentFile } = useVSCode();
 
-  console.log(currentFile);
-
   return (
     currentFile && (
       <div className={classNames(styles.root, className)}>

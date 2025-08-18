@@ -29,8 +29,6 @@ function File({ item, depth }: FileProps) {
   const { openFile, setSidebarType } = useVSCode();
   const isMobile = useMediaQuery('(max-width: 600px)');
 
-  console.log(isMobile);
-
   return (
     <div
       className={styles.file}
