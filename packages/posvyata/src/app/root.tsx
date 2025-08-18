@@ -17,7 +17,6 @@ export const links: Route.LinksFunction = () => [
     href: '/favicon-96x96.png',
     sizes: '96x96',
   },
-  { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
   { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '16x16' },
   { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
 ];
@@ -28,7 +27,7 @@ export function Layout({
   return (
     <html lang="uk">
       <head>
-        <title>ПОСВЯТА 2025</title>
+        <title>ПОСВЯТА 2025 | CР ФПМ</title>
         <meta name="description" content="ПОСВЯТА 2025" />
 
         <meta charSet="utf-8" />

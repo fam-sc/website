@@ -13,6 +13,7 @@ import { RegistrationBlock } from '@/components/blocks/RegistrationBlock';
 import { ScheduleBlock } from '@/components/blocks/ScheduleBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
 import { Footer } from '@/components/Footer';
+import { SchemaScript } from '@/components/SchemaScript';
 
 import { Route } from './+types/page';
 import styles from './page.module.scss';
@@ -66,6 +67,16 @@ export default function Page() {
 
   return (
     <div className={styles.content}>
+      <SchemaScript
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Студрада ФПМ',
+          url: 'https://posvyata.sc-fam.org/',
+          alternateNames: ['СР ФПМ', 'Студентська рада ФПМ', 'sc-fam.org'],
+        }}
+      />
+
       <CountdownBlock />
       <MathBlock />
       <VSCodeBlock />
