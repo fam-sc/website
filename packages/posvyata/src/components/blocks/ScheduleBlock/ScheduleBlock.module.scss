@@ -13,7 +13,7 @@ $border: 2px solid $border-color;
 }
 
 .header {
-  font-family: 'Murs Gothic';
+  font-family: 'Murs Gothic', sans-serif;
   font-size: min(3.5em, 12vw);
   text-align: center;
 
@@ -24,7 +24,7 @@ $border: 2px solid $border-color;
   display: grid;
   grid-template-columns: 5em 1fr;
 
-  font-family: 'Murs Gothic';
+  font-family: 'Murs Gothic', sans-serif;
   font-size: 1.25em;
   font-weight: 700;
 
@@ -53,7 +53,8 @@ $border: 2px solid $border-color;
   }
 }
 
-.name, .time {
+.name,
+.time {
   padding: 0.25em 0;
 }
 

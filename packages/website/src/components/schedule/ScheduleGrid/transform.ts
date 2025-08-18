@@ -19,7 +19,6 @@ type GroupedWeek = GroupedDay[];
 function groupLessonsByTime(lessons: Lesson[]): LessonGroup[] {
   const groupMap = new Map<Time, LessonGroup>();
 
-  // eslint-disable-next-line unicorn/no-for-loop
   for (let i = 0; i < lessons.length; i++) {
     const lesson = lessons[i];
 

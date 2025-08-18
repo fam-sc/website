@@ -30,17 +30,17 @@ $description-transform: translate(calc(-50% + $icon-size * 0.5), 0);
   height: $icon-size;
 
   transform: scale(0);
-  transition: transform .2s ease-in;
+  transition: transform 0.2s ease-in;
 }
 
 .description {
   position: absolute;
   user-select: none;
   white-space: nowrap;
-  
-  padding: 4px 6px 0 6px;
 
-  font-family: 'Murs Gothic';
+  padding: 4px 6px 0;
+
+  font-family: 'Murs Gothic', sans-serif;
   font-weight: 700;
   font-size: min(1em, 2vw);
 
@@ -52,7 +52,7 @@ $description-transform: translate(calc(-50% + $icon-size * 0.5), 0);
   width: fit-content;
 
   transform: scale(0) $description-transform;
-  transition: transform .2s ease-in;
+  transition: transform 0.2s ease-in;
 
   &-top {
     $offset: 50%;

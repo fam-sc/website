@@ -1,7 +1,4 @@
 import { classNames } from '@/utils/classNames';
-import { Point } from '@/utils/svg';
-
-import styles from './AnimatedLinePlot.module.scss';
 
 export interface AnimatedLinePlotProps {
   className?: string;

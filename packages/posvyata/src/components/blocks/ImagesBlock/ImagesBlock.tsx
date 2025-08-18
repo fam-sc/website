@@ -1,6 +1,7 @@
 import range from 'lodash/range';
 import React, { Suspense } from 'react';
 
+import { BlockHeader } from '@/components/BlockHeader';
 import { LoadingIndicatorWrapper } from '@/components/LoadingIndicatorWrapper';
 import Image1 from '@/images/imageBlock/1.jpg?multiple';
 
@@ -16,7 +17,7 @@ const ImageSwiper = React.lazy(async () => {
 export function ImagesBlock() {
   return (
     <BlockContainer className={styles.root}>
-      <h2 className={styles.title}>HELL YEAH</h2>
+      <BlockHeader className={styles.title}>HELL YEAH</BlockHeader>
 
       <Suspense fallback={<LoadingIndicatorWrapper />}>
         <ImageSwiper

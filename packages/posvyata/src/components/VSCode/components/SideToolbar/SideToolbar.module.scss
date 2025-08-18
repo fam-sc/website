@@ -30,9 +30,10 @@
     border-left-color: #31318d;
   }
 
-  &-selected, &:hover {
+  &-selected,
+  &:hover {
     fill: #fff;
-  } 
+  }
 
   svg {
     width: var(--size);
