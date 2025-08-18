@@ -1,5 +1,3 @@
-import range from 'lodash/range';
-
 import { Typography } from '@/components/Typography';
 import { classNames } from '@/utils/classNames';
 
@@ -13,8 +11,8 @@ export interface LineNumbersProps {
 export function LineNumbers({ className, count }: LineNumbersProps) {
   return (
     <div className={classNames(styles.root, className)}>
-      {range(1, count).map((number) => (
-        <Typography key={number}>{number}</Typography>
+      {Array.from({ length: count }).map((_, number) => (
+        <Typography key={number}>{number + 1}</Typography>
       ))}
     </div>
   );

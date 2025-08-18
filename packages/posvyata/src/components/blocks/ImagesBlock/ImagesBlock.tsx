@@ -1,4 +1,3 @@
-import range from 'lodash/range';
 import React, { Suspense } from 'react';
 
 import { BlockHeader } from '@/components/BlockHeader';
@@ -22,7 +21,7 @@ export function ImagesBlock() {
       <Suspense fallback={<LoadingIndicatorWrapper />}>
         <ImageSwiper
           className={styles.grid}
-          images={range(9).map(() => Image1)}
+          images={Array.from({ length: 9 }).map(() => Image1)}
         />
       </Suspense>
     </BlockContainer>

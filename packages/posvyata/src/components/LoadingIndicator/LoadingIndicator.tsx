@@ -1,8 +1,8 @@
-import shuffle from 'lodash/shuffle';
 import { useRef } from 'react';
 
 import { useInterval } from '@/hooks/useInterval';
 import { classNames } from '@/utils/classNames';
+import { shuffle } from '@/utils/shuffle';
 
 import styles from './LoadingIndicator.module.scss';
 
