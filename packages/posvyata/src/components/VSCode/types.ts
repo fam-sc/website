@@ -1,5 +1,7 @@
 import { RawMarkdownString } from '@/utils/markdown/types';
 
+export type SidebarTab = 'files';
+
 export type VSCodeFile =
   | {
       type: 'markdown';

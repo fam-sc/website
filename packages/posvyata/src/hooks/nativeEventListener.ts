@@ -23,10 +23,17 @@ export function addNativeEventListener<K extends keyof WindowEventMap>(
   options?: AddEventListenerOptions
 ): Destructor;
 
+export function addNativeEventListener<K extends keyof MediaQueryListEventMap>(
+  target: MediaQueryList,
+  key: K,
+  listener: Listener<MediaQueryList, MediaQueryListEventMap[K]>,
+  options?: AddEventListenerOptions
+): Destructor;
+
 export function addNativeEventListener(
-  target: HTMLElement | Window,
-  key: keyof HTMLElementEventMap | keyof WindowEventMap,
-  listener: (this: HTMLElement | Window, ev: Event) => void,
+  target: EventTarget,
+  key: string,
+  listener: (this: unknown, ev: Event) => void,
   options?: AddEventListenerOptions
 ): () => void {
   target.addEventListener(key, listener, options);

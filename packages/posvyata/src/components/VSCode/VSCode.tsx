@@ -1,15 +1,14 @@
-import { useCallback, useMemo, useState } from 'react';
+import { ComponentProps, useCallback, useMemo, useState } from 'react';
 
-import { PropsMap } from '@/types/react';
 import { classNames } from '@/utils/classNames';
 
 import { Header } from './components/Header';
 import { Main } from './components/Main';
 import { VSCodeContext, VSCodeContextType } from './components/VSCodeContext';
-import { VSCodeFile } from './types';
+import { SidebarTab, VSCodeFile } from './types';
 import styles from './VSCode.module.scss';
 
-type DivProps = PropsMap['div'];
+type DivProps = ComponentProps<'div'>;
 
 export interface VSCodeProps extends DivProps {
   projectName: string;
@@ -25,6 +24,7 @@ export function VSCode({
   ...rest
 }: VSCodeProps) {
   const initialFile = files.find(({ path }) => path === initialOpenedFile);
+  const [sidebarTab, setSidebarType] = useState<SidebarTab | null>('files');
 
   const [openedFiles, setOpenedFiles] = useState<VSCodeFile[]>(() =>
     initialFile ? [initialFile] : []
@@ -68,10 +68,20 @@ export function VSCode({
       projectName,
       files,
       openedFiles,
+      sidebarTab,
+      setSidebarType,
       openFile,
       closeFile,
     }),
-    [currentFile, projectName, files, openedFiles, openFile, closeFile]
+    [
+      currentFile,
+      projectName,
+      files,
+      openedFiles,
+      sidebarTab,
+      openFile,
+      closeFile,
+    ]
   );
 
   return (

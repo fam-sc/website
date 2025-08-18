@@ -28,9 +28,7 @@ export function MapSwiper({
   const [swiper, setSwiper] = useState<BaseSwiper | null>(null);
 
   useEffect(() => {
-    if (swiper) {
-      swiper.slideTo(selectedType == 'main' ? 0 : 1);
-    }
+    swiper?.slideTo(selectedType == 'main' ? 0 : 1);
   }, [swiper, selectedType]);
 
   return (
@@ -40,6 +38,7 @@ export function MapSwiper({
       controller={{ control: swiper }}
       slidesPerView={1}
       autoHeight={false}
+      allowTouchMove={false}
       className={classNames(styles.root, className)}
       onSlideChange={(swiper) => {
         const type: MapType = swiper.activeIndex === 0 ? 'main' : 'bbq';

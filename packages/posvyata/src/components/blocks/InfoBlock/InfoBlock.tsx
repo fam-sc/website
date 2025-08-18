@@ -1,9 +1,9 @@
 import { BlockContainer } from '../BlockContainer';
 import { Header } from './components/Header';
 import { Info } from './components/Info';
-import styles from './PlotBlock.module.scss';
+import styles from './InfoBlock.module.scss';
 
-export function PlotBlock() {
+export function InfoBlock() {
   return (
     <BlockContainer className={styles.root}>
       <Header />

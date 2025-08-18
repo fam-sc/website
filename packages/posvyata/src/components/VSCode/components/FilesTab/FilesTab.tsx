@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { Typography } from '@/components/Typography';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { ChevronDown } from '@/icons/ChevronDown';
 import { ChevronUp } from '@/icons/ChevronUp';
 import { classNames } from '@/utils/classNames';
@@ -25,13 +26,24 @@ interface FileProps {
 }
 
 function File({ item, depth }: FileProps) {
-  const { openFile } = useVSCode();
+  const { openFile, setSidebarType } = useVSCode();
+  const isMobile = useMediaQuery('(max-width: 600px)');
+
+  console.log(isMobile);
 
   return (
     <div
       className={styles.file}
       style={{ ['--depth']: depth }}
-      onDoubleClick={() => openFile(item.fullPath)}
+      onClick={() => {
+        if (isMobile) {
+          openFile(item.fullPath);
+          setSidebarType(null);
+        }
+      }}
+      onDoubleClick={() => {
+        openFile(item.fullPath);
+      }}
     >
       <FileTypeIcon type={item.type} />
       <Typography>{item.name}</Typography>

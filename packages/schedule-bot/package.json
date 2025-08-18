@@ -16,7 +16,7 @@
     "@sc-fam/shared": "workspace:*",
     "@sc-fam/shared-schedule": "workspace:*",
     "telegram-standard-bot-api": "1.0.8",
-    "wrangler": "4.28.0"
+    "wrangler": "4.30.0"
   },
   "devDependencies": {
     "@types/node": "24.2.0",

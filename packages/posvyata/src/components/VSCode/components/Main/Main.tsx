@@ -1,10 +1,11 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { classNames } from '@/utils/classNames';
 
 import { EditorWrapper } from '../EditorWrapper';
 import { FilesTab } from '../FilesTab';
 import { SideToolbar, ToolbarTabType } from '../SideToolbar';
+import { useVSCode } from '../VSCodeContext';
 import styles from './Main.module.scss';
 
 export interface MainProps {
@@ -16,15 +17,14 @@ const tabs: Record<ToolbarTabType, FC> = {
 };
 
 export function Main({ className }: MainProps) {
-  const [selectedTab, setSelectedTab] = useState<ToolbarTabType>();
-
-  const Tab = selectedTab ? tabs[selectedTab] : null;
+  const { sidebarTab, setSidebarType } = useVSCode();
+  const Tab = sidebarTab ? tabs[sidebarTab] : null;
 
   return (
     <div className={classNames(styles.root, className)}>
       <SideToolbar
-        selectedTab={selectedTab}
-        onSelectedTabChanged={setSelectedTab}
+        selectedTab={sidebarTab}
+        onSelectedTabChanged={setSidebarType}
       />
 
       {Tab && (

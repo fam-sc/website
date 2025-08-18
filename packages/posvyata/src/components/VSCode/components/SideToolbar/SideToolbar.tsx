@@ -4,27 +4,28 @@ import { FilesIcon } from '@/icons/FilesIcon';
 import { SvgProps } from '@/icons/types';
 import { classNames } from '@/utils/classNames';
 
+import { SidebarTab } from '../../types';
 import styles from './SideToolbar.module.scss';
 
 type TabMap = Record<
-  string,
+  SidebarTab,
   {
     icon: FC<SvgProps>;
   }
 >;
 
-const tabs = {
+const tabs: TabMap = {
   files: {
     icon: FilesIcon,
   },
-} satisfies TabMap;
+};
 
 export type ToolbarTabType = keyof typeof tabs;
 
 export interface SideToolbarProps {
   className?: string;
-  selectedTab?: ToolbarTabType;
-  onSelectedTabChanged: (type: ToolbarTabType | undefined) => void;
+  selectedTab: ToolbarTabType | null;
+  onSelectedTabChanged: (type: ToolbarTabType | null) => void;
 }
 
 export function SideToolbar({
@@ -42,11 +43,10 @@ export function SideToolbar({
             selectedTab === name && styles['item-selected']
           )}
           onClick={() => {
-            if (name === selectedTab) {
-              onSelectedTabChanged(undefined);
-            } else {
-              onSelectedTabChanged(name as ToolbarTabType);
-            }
+            const newTab =
+              name === selectedTab ? null : (name as ToolbarTabType);
+
+            onSelectedTabChanged(newTab);
           }}
         >
           <Icon />

@@ -1,6 +1,7 @@
 @use '../../../theme/breakpoints' as *;
 
-$border: 2px solid #fff;
+$border-color: #fff;
+$border: 2px solid $border-color;
 
 .root {
   display: flex;
@@ -21,9 +22,10 @@ $border: 2px solid #fff;
 
 .table {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 5em 1fr;
 
   font-family: 'Murs Gothic';
+  font-size: 1.25em;
   font-weight: 700;
 
   width: 90%;
@@ -33,7 +35,7 @@ $border: 2px solid #fff;
   outline: none;
 
   border: $border;
-  box-shadow: 0 0 2px #fff;
+  box-shadow: 0 0 2px $border-color;
   border-radius: 8px;
 
   @include breakpoint-up('md') {

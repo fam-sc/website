@@ -1,13 +1,15 @@
 import { createContext, useContext } from 'react';
 
-import { VSCodeFile } from '../../types';
+import { SidebarTab, VSCodeFile } from '../../types';
 
 export type VSCodeContextType = {
   projectName: string;
   files: VSCodeFile[];
   openedFiles: VSCodeFile[];
   currentFile: VSCodeFile | null;
+  sidebarTab: SidebarTab | null;
 
+  setSidebarType: (type: SidebarTab | null) => void;
   openFile: (path: string) => void;
   closeFile: (path: string) => void;
 };

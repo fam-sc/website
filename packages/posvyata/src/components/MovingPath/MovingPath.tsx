@@ -3,13 +3,25 @@ import { classNames } from '@/utils/classNames';
 
 import styles from './MovingPath.module.scss';
 
-export interface MovingPathProps extends SvgProps {
-  data: string;
+export interface MovingPathProps extends Omit<SvgProps, 'fill'> {
+  d: string;
+  fill: number;
+  gap: number;
 }
 
-export function MovingPath({ className, data, ...rest }: MovingPathProps) {
+export function MovingPath({
+  className,
+  d,
+  fill,
+  gap,
+  ...rest
+}: MovingPathProps) {
   return (
-    <svg className={classNames(styles.root, className)} {...rest}>
+    <svg
+      className={classNames(styles.root, className)}
+      style={{ ['--fill']: fill, ['--gap']: gap }}
+      {...rest}
+    >
       <defs>
         <filter id="glow">
           <feGaussianBlur stdDeviation="1" result="coloredBlur" />
@@ -20,7 +32,7 @@ export function MovingPath({ className, data, ...rest }: MovingPathProps) {
         </filter>
       </defs>
 
-      <path className={styles.main} d={data} filter="url(#glow)" />
+      <path className={styles.main} d={d} filter="url(#glow)" />
     </svg>
   );
 }
