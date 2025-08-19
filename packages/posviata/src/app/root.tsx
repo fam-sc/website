@@ -8,6 +8,8 @@ import {
   Scripts,
 } from 'react-router';
 
+import { SchemaScript } from '@/components/SchemaScript';
+
 import type { Route } from './+types/root';
 
 export const links: Route.LinksFunction = () => [
@@ -42,6 +44,16 @@ export function Layout({
 
         <Meta />
         <Links />
+
+        <SchemaScript
+          data={{
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Студрада ФПМ',
+            url: 'https://posviata.sc-fam.org/',
+            alternateNames: ['СР ФПМ', 'Студентська рада ФПМ', 'sc-fam.org'],
+          }}
+        />
       </head>
       <body>
         {children}
