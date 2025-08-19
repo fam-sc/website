@@ -1,5 +1,5 @@
 {
-  "name": "posvyata",
+  "name": "@sc-fam/posviata",
   "packageManager": "yarn@4.9.2",
   "type": "module",
   "scripts": {

@@ -72,7 +72,7 @@ export default function Page() {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: 'Студрада ФПМ',
-          url: 'https://posvyata.sc-fam.org/',
+          url: 'https://posviata.sc-fam.org/',
           alternateNames: ['СР ФПМ', 'Студентська рада ФПМ', 'sc-fam.org'],
         }}
       />

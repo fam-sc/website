@@ -24,7 +24,7 @@ export function VSCodeBlock() {
     <BlockContainer className={styles.root}>
       <VSCode
         className={styles.code}
-        projectName="POSVYATA"
+        projectName="POSVIATA"
         files={files}
         initialOpenedFile="content.md"
       />

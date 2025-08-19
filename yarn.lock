@@ -3045,6 +3045,44 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@sc-fam/posviata@workspace:packages/posviata":
+  version: 0.0.0-use.local
+  resolution: "@sc-fam/posviata@workspace:packages/posviata"
+  dependencies:
+    "@cloudflare/vite-plugin": "npm:1.11.5"
+    "@react-router/dev": "npm:7.8.1"
+    "@react-router/express": "npm:7.8.1"
+    "@react-router/node": "npm:7.8.1"
+    "@sc-fam/shared-vite-plugins": "workspace:*"
+    "@storybook/addon-a11y": "npm:9.1.1"
+    "@storybook/addon-links": "npm:9.1.1"
+    "@storybook/react": "npm:9.1.1"
+    "@storybook/react-vite": "npm:9.1.1"
+    "@types/lodash": "npm:^4"
+    "@types/react": "npm:19.1.10"
+    "@types/react-dom": "npm:19.1.7"
+    autoprefixer: "npm:10.4.21"
+    isbot: "npm:^5"
+    lodash: "npm:4.17.21"
+    marked: "npm:16.1.2"
+    motion: "npm:12.23.12"
+    parse5: "npm:8.0.0"
+    postcss: "npm:8.5.6"
+    react: "npm:19.1.0"
+    react-dom: "npm:19.1.0"
+    react-router: "npm:7.8.1"
+    react-zoom-pan-pinch: "npm:3.7.0"
+    schema-dts: "npm:1.1.5"
+    storybook: "npm:9.1.1"
+    swiper: "npm:11.2.10"
+    tsx: "npm:4.20.3"
+    typescript: "npm:5.8.3"
+    vite: "npm:7.1.2"
+    vite-tsconfig-paths: "npm:5.1.4"
+    wrangler: "npm:4.30.0"
+  languageName: unknown
+  linkType: soft
+
 "@sc-fam/schedule-bot@workspace:packages/schedule-bot":
   version: 0.0.0-use.local
   resolution: "@sc-fam/schedule-bot@workspace:packages/schedule-bot"
@@ -9385,44 +9423,6 @@ __metadata:
   checksum: 10c0/5127cc7c91ed7a133a1b7318012d8bfa112da9ef092dddf369ae699a1f10ebbd89b1b9f25f3228795b84585c72aabd5ced5fc11f2ba467eedf7b081a66fad024
   languageName: node
   linkType: hard
-
-"posvyata@workspace:packages/posvyata":
-  version: 0.0.0-use.local
-  resolution: "posvyata@workspace:packages/posvyata"
-  dependencies:
-    "@cloudflare/vite-plugin": "npm:1.11.5"
-    "@react-router/dev": "npm:7.8.1"
-    "@react-router/express": "npm:7.8.1"
-    "@react-router/node": "npm:7.8.1"
-    "@sc-fam/shared-vite-plugins": "workspace:*"
-    "@storybook/addon-a11y": "npm:9.1.1"
-    "@storybook/addon-links": "npm:9.1.1"
-    "@storybook/react": "npm:9.1.1"
-    "@storybook/react-vite": "npm:9.1.1"
-    "@types/lodash": "npm:^4"
-    "@types/react": "npm:19.1.10"
-    "@types/react-dom": "npm:19.1.7"
-    autoprefixer: "npm:10.4.21"
-    isbot: "npm:^5"
-    lodash: "npm:4.17.21"
-    marked: "npm:16.1.2"
-    motion: "npm:12.23.12"
-    parse5: "npm:8.0.0"
-    postcss: "npm:8.5.6"
-    react: "npm:19.1.0"
-    react-dom: "npm:19.1.0"
-    react-router: "npm:7.8.1"
-    react-zoom-pan-pinch: "npm:3.7.0"
-    schema-dts: "npm:1.1.5"
-    storybook: "npm:9.1.1"
-    swiper: "npm:11.2.10"
-    tsx: "npm:4.20.3"
-    typescript: "npm:5.8.3"
-    vite: "npm:7.1.2"
-    vite-tsconfig-paths: "npm:5.1.4"
-    wrangler: "npm:4.30.0"
-  languageName: unknown
-  linkType: soft
 
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1

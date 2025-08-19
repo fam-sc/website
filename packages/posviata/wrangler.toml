@@ -3,6 +3,10 @@ main = "src/worker.ts"
 compatibility_date = "2025-02-14"
 compatibility_flags = ["nodejs_compat"]
 
+routes = [
+  { pattern = "posviata.sc-fam.org", custom_domain = true }
+]
+
 d1_databases = [
   { binding = 'DB', database_name = "website-posyvata", database_id = "80c723b8-5cc6-4ea2-92bf-e406b22b1905", experimental_remote = true }
 ]

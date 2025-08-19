@@ -6,7 +6,7 @@ import { classNames } from '@/utils/classNames';
 import { SvgProps } from '../types';
 import styles from './CalendarIcon.module.scss';
 
-const DOTS = [0, 1, 2, 3, 4, 5, 6];
+const DOTS = [0, 1, 2, 3, 4, 5];
 
 export function CalendarIcon(rest: SvgProps) {
   const ref = useRef<SVGSVGElement | null>(null);

@@ -5,7 +5,7 @@ import { classNames } from '@/utils/classNames';
 import styles from './Header.module.scss';
 
 const TEXT_1 = 'Посвята';
-const TEXT_2 = 'POSVYATA';
+const TEXT_2 = 'POSVIATA';
 
 const INTERVAL = 3000;
 const TEXT_SWITCH_DELAY = 125;

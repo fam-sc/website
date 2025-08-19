@@ -13,7 +13,7 @@ type Story = StoryObj<typeof VSCode>;
 
 export const Primary: Story = {
   args: {
-    projectName: 'posvyata',
+    projectName: 'posviata',
     style: { height: '100dvh' },
     initialOpenedFile: 'folder/file1.md',
     files: [

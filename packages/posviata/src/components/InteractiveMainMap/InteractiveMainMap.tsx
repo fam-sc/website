@@ -6,12 +6,11 @@ import { classNames } from '@/utils/classNames';
 
 import { Image } from '../Image';
 import { MapContext } from '../MapContext';
-import { MapMarker } from '../MapMarker';
 import styles from './InteractiveMainMap.module.scss';
 
 export type InteractiveMainMapProps = ComponentProps<'div'>;
 
-const SHELTER_NAME = 'Укриття';
+// const SHELTER_NAME = 'Укриття';
 
 export function InteractiveMainMap({
   className,
@@ -30,7 +29,7 @@ export function InteractiveMainMap({
             draggable={false}
           />
 
-          <MapMarker
+          {/* <MapMarker
             x={0.7}
             y={0.34}
             type="target"
@@ -57,7 +56,7 @@ export function InteractiveMainMap({
             type="shelter"
             description={SHELTER_NAME}
             descriptionPosition="left"
-          />
+          /> */}
         </div>
       </MapContext.Provider>
     </div>
