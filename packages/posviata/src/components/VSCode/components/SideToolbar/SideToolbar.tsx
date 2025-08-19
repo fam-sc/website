@@ -11,12 +11,14 @@ type TabMap = Record<
   SidebarTab,
   {
     icon: FC<SvgProps>;
+    title: string;
   }
 >;
 
 const tabs: TabMap = {
   files: {
     icon: FilesIcon,
+    title: 'Файли',
   },
 };
 
@@ -35,9 +37,10 @@ export function SideToolbar({
 }: SideToolbarProps) {
   return (
     <div className={classNames(styles.root, className)}>
-      {Object.entries(tabs).map(([name, { icon: Icon }]) => (
+      {Object.entries(tabs).map(([name, { icon: Icon, title }]) => (
         <button
           key={name}
+          title={title}
           className={classNames(
             styles.item,
             selectedTab === name && styles['item-selected']

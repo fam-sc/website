@@ -30,6 +30,7 @@ function Item({ isActive, item }: ItemProps) {
 
       <button
         className={styles['item-close']}
+        title="Закрити вкладку"
         onClick={(event) => {
           event.stopPropagation();
 
