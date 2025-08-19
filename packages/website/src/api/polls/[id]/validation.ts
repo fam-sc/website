@@ -41,7 +41,6 @@ export function isValidAnswers(
     return false;
   }
 
-  // eslint-disable-next-line unicorn/no-for-loop
   for (let i = 0; i < questions.length; i++) {
     const question = questions[i];
     const answer = answers[i];

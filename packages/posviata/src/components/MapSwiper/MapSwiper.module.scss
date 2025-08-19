@@ -1,0 +1,17 @@
+.root {
+  :global(.swiper-slide) {
+    height: 100vh;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  > * {
+    margin: 0 1em;
+  }
+}

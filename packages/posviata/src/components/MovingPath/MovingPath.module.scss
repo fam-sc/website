@@ -1,0 +1,14 @@
+.main {
+  stroke-dasharray: calc(var(--fill) - var(--gap)), var(--gap);
+  animation: 2s anim ease-in-out infinite;
+
+  @keyframes anim {
+    from {
+      stroke-dashoffset: 0;
+    }
+
+    to {
+      stroke-dashoffset: var(--fill);
+    }
+  }
+}

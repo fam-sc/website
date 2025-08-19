@@ -1,0 +1,17 @@
+.circle {
+  r: 40;
+
+  &-anim {
+    animation: 0.5s anim ease-in var(--delay);
+  }
+}
+
+@keyframes anim {
+  from {
+    r: 0;
+  }
+
+  to {
+    r: 40;
+  }
+}

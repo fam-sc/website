@@ -1,0 +1,38 @@
+$gap: 4px;
+$block-size: 32px;
+
+.root {
+  $size: $block-size * 2 + $gap;
+
+  position: relative;
+
+  width: $size;
+  height: $size;
+}
+
+.block {
+  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: $block-size;
+  height: $block-size;
+  border-radius: 4px;
+
+  background: #fff;
+  box-shadow: 0 0 2px #fff;
+
+  transition: transform 0.2s linear;
+  transform: translate(
+    calc(var(--x) * ($block-size + $gap)),
+    calc(var(--y) * ($block-size + $gap))
+  );
+
+  color: var(--color-background);
+
+  font-size: 13px;
+  font-family: 'Murs Gothic', sans-serif;
+  font-weight: 700;
+}

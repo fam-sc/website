@@ -1,0 +1,16 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2em 12px;
+
+  min-height: auto;
+}
+
+.header {
+  font-size: 3em;
+}
+
+.info {
+  width: 80%;
+}

@@ -5,6 +5,7 @@ export default {
     '**/node_modules',
     'packages/website/build/**',
     'packages/website/storybook-static/**',
+    'packages/posvyata/build/**',
     'coverage/**',
   ],
   rules: {

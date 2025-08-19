@@ -1,0 +1,18 @@
+@use '../../../../theme/breakpoints' as *;
+
+.root {
+  width: 30px;
+  padding-top: 4px;
+  color: #aaa;
+  user-select: none;
+  display: none;
+
+  p {
+    font-family: Consolas, sans-serif;
+    text-align: center;
+  }
+
+  @include breakpoint-up('md') {
+    display: block;
+  }
+}

@@ -1,0 +1,42 @@
+$mursGothicStyles: (
+  400: 'KeyRegular.otf',
+  500: 'WideMedium.otf',
+  600: 'WideDark.ttf',
+);
+
+@each $weight, $name in $mursGothicStyles {
+  @font-face {
+    font-family: 'Murs Gothic';
+    src: url('/fonts/MursGothic-#{$name}');
+    font-weight: $weight;
+    font-style: normal;
+  }
+}
+
+@font-face {
+  font-family: 'Press Start';
+  src: url('/fonts/PressStart2P-Regular.woff2') format(woff2);
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Consolas;
+  src: url('/fonts/Consolas-Regular.woff2') format(woff2);
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Consolas;
+  src: url('/fonts/Consolas-Bold.woff2') format(woff2);
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Consolas;
+  src: url('/fonts/Consolas-Italic.woff2') format(woff2);
+  font-weight: 400;
+  font-style: italic;
+}
