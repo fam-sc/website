@@ -15,28 +15,28 @@ $mursGothicStyles: (
 
 @font-face {
   font-family: 'Press Start';
-  src: url('/fonts/PressStart2P-Regular.ttf');
+  src: url('/fonts/PressStart2P-Regular.woff2') format(woff2);
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: Consolas;
-  src: url('/fonts/Consolas-Regular.ttf');
+  src: url('/fonts/Consolas-Regular.woff2') format(woff2);
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: Consolas;
-  src: url('/fonts/Consolas-Bold.ttf');
+  src: url('/fonts/Consolas-Bold.woff2') format(woff2);
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: Consolas;
-  src: url('/fonts/Consolas-Italic.ttf');
+  src: url('/fonts/Consolas-Italic.woff2') format(woff2);
   font-weight: 400;
   font-style: italic;
 }

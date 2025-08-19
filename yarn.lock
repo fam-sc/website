@@ -3062,6 +3062,7 @@ __metadata:
     "@types/react": "npm:19.1.10"
     "@types/react-dom": "npm:19.1.7"
     autoprefixer: "npm:10.4.21"
+    fonteditor-core: "npm:2.6.2"
     isbot: "npm:^5"
     lodash: "npm:4.17.21"
     marked: "npm:16.1.2"
@@ -4898,6 +4899,13 @@ __metadata:
     loupe: "npm:^3.1.4"
     tinyrainbow: "npm:^2.0.0"
   checksum: 10c0/024a9b8c8bcc12cf40183c246c244b52ecff861c6deb3477cbf487ac8781ad44c68a9c5fd69f8c1361878e55b97c10d99d511f2597f1f7244b5e5101d028ba64
+  languageName: node
+  linkType: hard
+
+"@xmldom/xmldom@npm:^0.8.3":
+  version: 0.8.11
+  resolution: "@xmldom/xmldom@npm:0.8.11"
+  checksum: 10c0/e768623de72c95d3dae6b5da8e33dda0d81665047811b5498d23a328d45b13feb5536fe921d0308b96a4a8dd8addf80b1f6ef466508051c0b581e63e0dc74ed5
   languageName: node
   linkType: hard
 
@@ -7123,6 +7131,15 @@ __metadata:
   version: 3.3.3
   resolution: "flatted@npm:3.3.3"
   checksum: 10c0/e957a1c6b0254aa15b8cce8533e24165abd98fadc98575db082b786b5da1b7d72062b81bfdcd1da2f4d46b6ed93bec2434e62333e9b4261d79ef2e75a10dd538
+  languageName: node
+  linkType: hard
+
+"fonteditor-core@npm:2.6.2":
+  version: 2.6.2
+  resolution: "fonteditor-core@npm:2.6.2"
+  dependencies:
+    "@xmldom/xmldom": "npm:^0.8.3"
+  checksum: 10c0/2254fc37ad5c0d865396d281a58a92ff196de2a1fa34fe546e882b4096b731b0c3cb54b64c87c76e4f36fa4e9f5b0b8a8f0c420e30ccee8918e3f150e050a6ee
   languageName: node
   linkType: hard
 
