@@ -14,8 +14,11 @@
 }
 
 .hex-group {
-  animation: 9s hex-anim linear infinite;
   transform-origin: 50% 50%;
+
+  &-spin {
+    animation: 9s hex-anim linear infinite;
+  }
 
   > g {
     transform: scale(calc(1 + var(--i) * 0.025));

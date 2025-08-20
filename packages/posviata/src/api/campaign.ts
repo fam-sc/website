@@ -10,7 +10,11 @@ export async function handleCampaignRequest(request: Request, env: Env) {
   const requestId = getCookieValue(request, 'rid');
 
   if (requestId !== undefined) {
-    await validateCampaignRequest(env, requestId);
+    try {
+      await validateCampaignRequest(env, requestId);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return new Response();

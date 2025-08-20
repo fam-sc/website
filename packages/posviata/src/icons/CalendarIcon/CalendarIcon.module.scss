@@ -1,8 +1,9 @@
 .circle {
-  r: 40;
+  r: 0;
 
   &-anim {
-    animation: 0.5s anim ease-in var(--delay);
+    r: 40;
+    animation: 0.5s anim linear;
   }
 }
 

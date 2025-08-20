@@ -1,7 +1,11 @@
+@use '../../../../../theme/breakpoints' as *;
+
 .info {
   display: flex;
   flex-direction: column;
   gap: 0.75em;
+
+  background: var(--color-background-dark);
 
   margin-top: 1.5em;
 
@@ -9,31 +13,46 @@
   border-radius: 12px;
   box-shadow: 0 0 4px #b9c508;
 
-  padding: 2em;
+  padding: 1.25em 1em;
+
+  @include breakpoint-up('md') {
+    min-height: 300px;
+  }
 }
 
 .item {
+  $start-color: #1cc5d1;
+
   display: flex;
-  gap: 16px;
   align-items: center;
 
   font-size: 1.5em;
-  font-family: 'Murs Gothic', sans-serif;
+  font-family: 'Consolas', sans-serif;
   font-weight: 700;
 
   text-shadow: 1px 1px 1px #000;
 
+  &-start, &-title, &-text {
+    display: inline-block;
+  }
+
+  &-start {
+    color: #b5b5b5;
+    margin-right: 0.5em;
+  }
+
   &-title {
     color: var(--color-primary);
+    margin-right: 0.25em;
   }
 
   svg {
-    $color: #1cc5d1;
-
     width: 24px;
     height: 24px;
 
-    fill: $color;
-    stroke: $color;
+    fill: $start-color;
+    stroke: $start-color;
+
+    margin-right: 0.3em;
   }
 }

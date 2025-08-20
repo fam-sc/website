@@ -31,7 +31,6 @@ export function CalendarIcon(rest: SvgProps) {
             key={i}
             cx={290 + x * 180}
             cy={-450 + y * 200}
-            style={{ [`--delay`]: `${(i * 0.05).toFixed(2)}s` }}
             className={classNames(
               styles.circle,
               inView && styles[`circle-anim`]

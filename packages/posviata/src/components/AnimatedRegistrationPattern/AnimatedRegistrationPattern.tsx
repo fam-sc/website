@@ -1,3 +1,6 @@
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import { SvgProps } from '@/icons/types';
 import { classNames } from '@/utils/classNames';
 
@@ -6,10 +9,14 @@ import styles from './AnimatedRegistrationPattern.module.scss';
 const HEX_COUNT = 8;
 
 export function AnimatedRegistrationPattern({ className, ...rest }: SvgProps) {
+  const ref = useRef<SVGSVGElement>(null);
+  const inView = useInView(ref);
+
   return (
     <svg
       className={classNames(styles.root, className)}
       viewBox="0 0 400 400"
+      ref={ref}
       {...rest}
     >
       <defs>
@@ -22,7 +29,12 @@ export function AnimatedRegistrationPattern({ className, ...rest }: SvgProps) {
         </filter>
       </defs>
 
-      <g className={styles['hex-group']}>
+      <g
+        className={classNames(
+          styles['hex-group'],
+          inView && styles['hex-group-spin']
+        )}
+      >
         {Array.from({ length: HEX_COUNT }, (_, i) => (
           <g key={i} style={{ [`--i`]: i }}>
             <path

@@ -1,0 +1,14 @@
+.root-anim {
+  animation: .5s anim linear;
+  transform-origin: 50% 50%;
+}
+
+@keyframes anim {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}

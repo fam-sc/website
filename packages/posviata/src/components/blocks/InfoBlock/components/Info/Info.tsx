@@ -3,27 +3,25 @@ import { ReactNode } from 'react';
 import { CalendarIcon } from '@/icons/CalendarIcon';
 import { ClockIcon } from '@/icons/ClockIcon';
 import { LocationIcon } from '@/icons/LocationIcon';
-import { PriceIcon } from '@/icons/PriceIcon';
+import { PriceIcon } from '@/icons/PriceIcon/PriceIcon';
 import { classNames } from '@/utils/classNames';
 
 import styles from './Info.module.scss';
 
-interface IconTextProps {
+interface ItemProps {
   icon: ReactNode;
   title: string;
   text: string;
 }
 
-function IconText({ title, icon, text }: IconTextProps) {
+function Item({ title, icon, text }: ItemProps) {
   return (
-    <div className={styles.item}>
+    <p className={styles.item}>
+      <span className={styles['item-start']}>{'>'}</span>
       {icon}
-
-      <div className={styles['item-content']}>
-        <p className={styles['item-title']}>{title}</p>
-        <p className={styles['icon-text']}>{text}</p>
-      </div>
-    </div>
+      <span className={styles['item-title']}>{`${title}:`}</span>
+      <span className={styles['icon-text']}>{text}</span>
+    </p>
   );
 }
 
@@ -34,10 +32,10 @@ interface InfoProps {
 export function Info({ className }: InfoProps) {
   return (
     <div className={classNames(styles.info, className)}>
-      <IconText icon={<CalendarIcon />} title="Дата" text="20 вересня" />
-      <IconText icon={<ClockIcon />} title="Час" text="12:00" />
-      <IconText icon={<LocationIcon />} title="Де" text="Location" />
-      <IconText icon={<PriceIcon />} title="Ціна" text="300" />
+      <Item icon={<CalendarIcon />} title="Дата" text="20 вересня" />
+      <Item icon={<ClockIcon />} title="Час" text="12:00" />
+      <Item icon={<LocationIcon />} title="Де" text="Location" />
+      <Item icon={<PriceIcon />} title="Ціна" text="300" />
     </div>
   );
 }

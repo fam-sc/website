@@ -1,8 +1,6 @@
 .root {
-  :global(.swiper-slide) {
-    height: 100vh;
-    margin-top: auto;
-    margin-bottom: auto;
+  :global(.swiper-wrapper) {
+    justify-content: stretch;
   }
 }
 
@@ -10,6 +8,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  max-height: 100vh;
+  margin-top: auto;
+  margin-bottom: auto;
 
   > * {
     margin: 0 1em;

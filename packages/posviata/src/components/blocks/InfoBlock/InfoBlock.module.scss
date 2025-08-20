@@ -1,10 +1,17 @@
+@use '../../../theme/breakpoints' as *;
+
 .root {
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   margin: 2em 12px;
 
   min-height: auto;
+  align-items: stretch;
+
+  @include breakpoint-up('md') {
+    align-items: center;
+  }
 }
 
 .header {
@@ -12,5 +19,7 @@
 }
 
 .info {
-  width: 80%;
+  @include breakpoint-up('md') {
+    width: 80%;
+  }
 }

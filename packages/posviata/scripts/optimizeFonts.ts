@@ -4,7 +4,7 @@ import path from 'node:path';
 import { createFont, woff2 } from 'fonteditor-core';
 
 const PRESS_START_USAGE =
-  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZАаБбВвГгҐґДдЕеЄєЖжЗзИиІіЇїЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЮюЯя: ';
+  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZАаБбВвГгҐґДдЕеЄєЖжЗзИиІіЇїЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЮюЯя: >_.,#*';
 
 function withExtension(path: string, ext: string) {
   const dotIndex = path.lastIndexOf('.');
@@ -27,21 +27,6 @@ function stringToCodePoints(text: string): Set<number> {
   }
 
   return result;
-}
-
-async function getConsolasUsage(): Promise<number[]> {
-  const files = [path.join(import.meta.dirname, '../src/text/vscode1.md')];
-  const result = new Set<number>();
-
-  for (const filePath of files) {
-    const content = await fsp.readFile(filePath, 'utf8');
-
-    for (const point of stringToCodePoints(content)) {
-      result.add(point);
-    }
-  }
-
-  return [...result];
 }
 
 async function optimizeFont(filePath: string, usage: number[]) {
@@ -76,16 +61,15 @@ async function main() {
   await woff2.init();
   await fsp.mkdir(outDir, { recursive: true });
 
-  const consolasUsage = await getConsolasUsage();
-  const pressStartUsage = [...stringToCodePoints(PRESS_START_USAGE)];
+  const pressStartAndConsolasUsage = [...stringToCodePoints(PRESS_START_USAGE)];
 
   for (const entry of await fsp.readdir(fontDirectory)) {
     const filePath = path.join(fontDirectory, entry);
 
     if (entry.startsWith('Consolas')) {
-      await optimizeFontToFile(filePath, outDir, consolasUsage);
+      await optimizeFontToFile(filePath, outDir, pressStartAndConsolasUsage);
     } else if (entry.startsWith('PressStart2P')) {
-      await optimizeFontToFile(filePath, outDir, pressStartUsage);
+      await optimizeFontToFile(filePath, outDir, pressStartAndConsolasUsage);
     }
   }
 }

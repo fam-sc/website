@@ -30,7 +30,7 @@ export function renderDots(
         const dy = y - pointer.y;
         const distance = Math.hypot(dx, dy);
 
-        const pull = Math.min(20, 600 / distance);
+        const pull = Math.min(20, 60_000 / (distance * distance));
 
         dotX = x + pull * (dx / distance);
         dotY = y + pull * (dy / distance);
