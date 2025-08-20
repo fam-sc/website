@@ -2,14 +2,17 @@ import { BlockContainer } from '@/components/blocks/BlockContainer';
 import { GravityDots } from '@/components/GravityDots';
 import { Image } from '@/components/Image';
 import { Typography } from '@/components/Typography';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import mathImage from '@/images/math_image.jpg?multiple';
 
 import styles from './MathBlock.module.scss';
 
 export function MathBlock() {
+  const minimal = useMediaQuery('(max-width: 900px)');
+
   return (
     <BlockContainer className={styles.root}>
-      <GravityDots className={styles.dots} />
+      <GravityDots className={styles.dots} minimal={minimal} />
 
       <div className={styles['image-container']}>
         <Image multiple={mathImage} />

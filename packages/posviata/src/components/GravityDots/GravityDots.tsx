@@ -1,28 +1,47 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
 import { useSize } from '@/hooks/useSize';
 import { Point } from '@/utils/math';
 
-import { renderDots } from './renderer';
+import { renderDots, renderDotsOnBorder } from './renderer';
 
 export interface GravityDotsProps {
   className?: string;
+  minimal?: boolean;
 }
 
-export function GravityDots({ className }: GravityDotsProps) {
+export function GravityDots({ className, minimal = false }: GravityDotsProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
   const pointerRef = useRef<Point | null>(null);
-  const size = useSize(ref);
+  const initialSize = useSize(ref);
+
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    setScale(window.devicePixelRatio);
+  }, []);
+
+  const size = useMemo(
+    () => ({
+      width: initialSize.width * scale,
+      height: initialSize.height * scale,
+    }),
+    [initialSize, scale]
+  );
 
   const render = useCallback(() => {
     const context = contextRef.current;
 
     if (context) {
-      renderDots(context, size, pointerRef.current);
+      if (minimal) {
+        renderDotsOnBorder(context, size);
+      } else {
+        renderDots(context, size, pointerRef.current);
+      }
     }
-  }, [size]);
+  }, [size, minimal]);
 
   useEffect(() => {
     const canvas = ref.current;
@@ -41,7 +60,7 @@ export function GravityDots({ className }: GravityDotsProps) {
   useEffect(() => {
     const canvas = ref.current;
 
-    if (canvas) {
+    if (canvas && !minimal) {
       return addNativeEventListener(
         canvas,
         'pointermove',
@@ -52,15 +71,15 @@ export function GravityDots({ className }: GravityDotsProps) {
             pointerRef.current = pointer;
           }
 
-          pointer.x = event.offsetX;
-          pointer.y = event.offsetY;
+          pointer.x = event.offsetX * scale;
+          pointer.y = event.offsetY * scale;
 
           render();
         },
         { passive: true }
       );
     }
-  }, [render]);
+  }, [render, scale, minimal]);
 
   useEffect(render, [render]);
 

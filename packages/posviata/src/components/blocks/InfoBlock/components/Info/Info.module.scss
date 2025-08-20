@@ -25,7 +25,7 @@
 }
 
 .exec {
-  display: flex;
+  display: none;
   align-items: center;
 
   white-space: collapse;
@@ -33,6 +33,10 @@
 
   &-start {
     margin-right: 0.5em;
+  }
+
+  @include breakpoint-up('md') {
+    display: flex;
   }
 }
 

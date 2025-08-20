@@ -24,7 +24,7 @@ export function VSCode({
   ...rest
 }: VSCodeProps) {
   const initialFile = files.find(({ path }) => path === initialOpenedFile);
-  const [sidebarTab, setSidebarType] = useState<SidebarTab | null>('files');
+  const [sidebarTab, setSidebarType] = useState<SidebarTab | null>(null);
 
   const [openedFiles, setOpenedFiles] = useState<VSCodeFile[]>(() =>
     initialFile ? [initialFile] : []
