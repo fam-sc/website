@@ -15,8 +15,24 @@
 
   padding: 1.25em 1em;
 
+  font-size: 1.5em;
+  font-family: 'Consolas', sans-serif;
+  font-weight: 700;
+
   @include breakpoint-up('md') {
     min-height: 300px;
+  }
+}
+
+.exec {
+  display: flex;
+  align-items: center;
+
+  white-space: collapse;
+  font-size: 0.75em;
+
+  &-start {
+    margin-right: 0.5em;
   }
 }
 
@@ -25,10 +41,6 @@
 
   display: flex;
   align-items: center;
-
-  font-size: 1.5em;
-  font-family: 'Consolas', sans-serif;
-  font-weight: 700;
 
   text-shadow: 1px 1px 1px #000;
 

@@ -25,6 +25,19 @@ function Item({ title, icon, text }: ItemProps) {
   );
 }
 
+interface ExecuteProps {
+  command: string;
+}
+
+function Execute({ command }: ExecuteProps) {
+  return (
+    <p className={styles.exec}>
+      <span className={styles['exec-start']}>{'>'}</span>
+      {command}
+    </p>
+  );
+}
+
 interface InfoProps {
   className?: string;
 }
@@ -32,6 +45,7 @@ interface InfoProps {
 export function Info({ className }: InfoProps) {
   return (
     <div className={classNames(styles.info, className)}>
+      <Execute command="curl -s https://posviata.sc-fam.org/info.py | python -" />
       <Item icon={<CalendarIcon />} title="Дата" text="20 вересня" />
       <Item icon={<ClockIcon />} title="Час" text="12:00" />
       <Item icon={<LocationIcon />} title="Де" text="Location" />
