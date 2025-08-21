@@ -1,10 +1,5 @@
-import { AppLoadContext, EntryContext } from 'react-router';
+import { EntryContext } from 'react-router';
 import { renderResponse } from 'virtual:utils/reactDomEnv';
-
-import {
-  handleCampaignRequest,
-  handleRegistrationClickRequest,
-} from '@/api/campaign';
 
 export default async function handleRequest(
   request: Request,

@@ -10,10 +10,8 @@ export function ImageEditor({ url }: ImageEditorProps) {
   return (
     <div className={styles.root}>
       <TransformWrapper>
-        <TransformComponent>
-          <div className={styles.wrapper}>
-            <img src={url} loading="lazy" />
-          </div>
+        <TransformComponent wrapperClass={styles.wrapper}>
+          <img src={url} loading="lazy" />
         </TransformComponent>
       </TransformWrapper>
     </div>

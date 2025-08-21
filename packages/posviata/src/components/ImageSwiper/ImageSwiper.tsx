@@ -1,11 +1,14 @@
 import 'swiper/css';
 import 'swiper/scss/free-mode';
+import 'swiper/scss/navigation';
 
-import { useState } from 'react';
-import { FreeMode } from 'swiper/modules';
+import { ReactNode, useState } from 'react';
+import { Swiper as BaseSwiper } from 'swiper';
+import { FreeMode, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { useScrollbar } from '@/hooks/useScrollbar';
+import { ArrowLeftIcon } from '@/icons/ArrowLeftIcon';
+import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
 import { classNames } from '@/utils/classNames';
 import { ImageInfo } from '@/utils/image/types';
 
@@ -17,42 +20,58 @@ export interface ImageSwiperProps {
   images: ImageInfo[][];
 }
 
-export function ImageSwiper({ className, images }: ImageSwiperProps) {
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+interface NavButtonProps {
+  disabled: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}
 
-  useScrollbar(selectedIndex < 0);
+function NavButton(props: NavButtonProps) {
+  return <button className={styles['nav-button']} {...props} />;
+}
+
+export function ImageSwiper({ className, images }: ImageSwiperProps) {
+  const [swiper, setSwiper] = useState<BaseSwiper | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   return (
     <div className={classNames(styles.root, className)}>
+      <NavButton
+        disabled={selectedIndex === 0}
+        onClick={() => {
+          swiper?.slidePrev();
+        }}
+      >
+        <ArrowLeftIcon />
+      </NavButton>
+
       <Swiper
-        modules={[FreeMode]}
+        className={styles.swiper}
+        modules={[Navigation, FreeMode]}
         slidesPerView={1}
+        onSwiper={setSwiper}
+        onSlideChange={(swiper) => {
+          setSelectedIndex(swiper.realIndex);
+        }}
         freeMode={{
           sticky: false,
         }}
-        breakpoints={{ 600: { slidesPerView: 3 } }}
       >
         {images.map((image, i) => (
-          <SwiperSlide
-            key={i}
-            className={styles.item}
-            onClick={() => setSelectedIndex(i)}
-          >
+          <SwiperSlide key={i} className={styles.item}>
             <Image multiple={image} />
           </SwiperSlide>
         ))}
       </Swiper>
 
-      {selectedIndex >= 0 && (
-        <div
-          className={styles.dialog}
-          onClick={() => {
-            setSelectedIndex(-1);
-          }}
-        >
-          <Image multiple={images[selectedIndex]} />
-        </div>
-      )}
+      <NavButton
+        disabled={selectedIndex === images.length - 1}
+        onClick={() => {
+          swiper?.slideNext();
+        }}
+      >
+        <ArrowRightIcon />
+      </NavButton>
     </div>
   );
 }

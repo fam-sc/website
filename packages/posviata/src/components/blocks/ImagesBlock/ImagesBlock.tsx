@@ -2,9 +2,9 @@ import React, { Suspense } from 'react';
 
 import { BlockHeader } from '@/components/BlockHeader';
 import { LoadingIndicatorWrapper } from '@/components/LoadingIndicatorWrapper';
-import Image1 from '@/images/imageBlock/1.jpg?multiple';
 
 import { BlockContainer } from '../BlockContainer';
+import { images } from './images';
 import styles from './ImagesBlock.module.scss';
 
 const ImageSwiper = React.lazy(async () => {
@@ -19,10 +19,7 @@ export function ImagesBlock() {
       <BlockHeader className={styles.title}>HELL YEAH</BlockHeader>
 
       <Suspense fallback={<LoadingIndicatorWrapper />}>
-        <ImageSwiper
-          className={styles.grid}
-          images={Array.from({ length: 9 }).map(() => Image1)}
-        />
+        <ImageSwiper className={styles.swiper} images={images} />
       </Suspense>
     </BlockContainer>
   );

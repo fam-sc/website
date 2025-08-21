@@ -1,33 +1,78 @@
 @use '../../theme/breakpoints' as *;
 
+.root {
+  display: flex;
+  gap: 0.5em;
+}
+
+.swiper {
+  flex-grow: 1;
+}
+
 .item {
   display: flex;
   justify-content: center;
   box-sizing: border-box;
 
   border-radius: 1em;
-  padding: 0 1em;
+  padding: 0 0.5em;
 
   img {
     width: 100%;
     height: auto;
 
     border-radius: 1em;
+    user-select: none;
+
+    box-shadow: 0px 0px 2px #000;
   }
 }
 
-.dialog {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-  background: #00000096;
+.nav-button {
+  --color: #fff;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  display: none;
+  background: none;
+  appearance: none;
+  outline: none;
+  border: none;
+
+  font-family: 'Murs Gothic', sans-serif;
+  font-weight: 700;
+
+  border-radius: 100%;
+  transform-origin: 50% 50%;
+
+  align-self: center;
+
+  transition: transform .2s ease, box-shadow .2s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.8);
+  }
+
+  &:hover:not(:disabled) {
+    --color: #dbdbdb;
+  }
+
+  &:disabled {
+    transform: scale(0);
+  }
+
+  @include breakpoint-up('md') {
+    display: flex;
+  }
+
+  svg {
+    min-width: 2em;
+    min-height: 2em;
+
+    fill: var(--color);
   }
 }
