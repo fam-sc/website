@@ -11,6 +11,7 @@ import { markdownPlugin } from '@sc-fam/shared-vite-plugins/markdown';
 
 const isLocal = process.env.LOCAL === '1';
 
+// @ts-ignore
 export default defineConfig((env) => ({
   build: {
     outDir: 'build',
