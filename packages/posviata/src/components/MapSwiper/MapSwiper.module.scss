@@ -1,17 +1,22 @@
 .root {
-  :global(.swiper-wrapper) {
-    justify-content: stretch;
-  }
+  overflow: hidden;
+}
+
+.strip {
+  will-change: transform;
+
+  display: flex;
+  align-items: stretch;
+  width: auto;
+
+  transform: translate3d(calc(var(--slide) * (-100vw)), 0, 0);
+  transition: transform .25s ease-in;
 }
 
 .slide {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
+  width: 100vw;
+  min-width: 100vw;
   max-height: 100vh;
-  margin-top: auto;
-  margin-bottom: auto;
 
   > * {
     margin: 0 1em;

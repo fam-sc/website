@@ -22,14 +22,9 @@ export function InteractiveMainMap({
   return (
     <div ref={ref} className={classNames(styles.root, className)} {...rest}>
       <MapContext.Provider value={{ inView }}>
-        <div className={styles.content}>
-          <Image
-            className={styles.image}
-            multiple={mainImage}
-            draggable={false}
-          />
+        <Image className={styles.image} multiple={mainImage} />
 
-          {/* <MapMarker
+        {/* <MapMarker
             x={0.7}
             y={0.34}
             type="target"
@@ -57,7 +52,6 @@ export function InteractiveMainMap({
             description={SHELTER_NAME}
             descriptionPosition="left"
           /> */}
-        </div>
       </MapContext.Provider>
     </div>
   );
