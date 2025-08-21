@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
+import { useDevicePixelRatio } from '@/hooks/useDevicePixelRatio';
 import { useSize } from '@/hooks/useSize';
 import { Point } from '@/utils/math';
 
@@ -17,11 +18,7 @@ export function GravityDots({ className, minimal = false }: GravityDotsProps) {
   const pointerRef = useRef<Point | null>(null);
   const initialSize = useSize(ref);
 
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    setScale(window.devicePixelRatio);
-  }, []);
+  const scale = useDevicePixelRatio();
 
   const size = useMemo(
     () => ({
