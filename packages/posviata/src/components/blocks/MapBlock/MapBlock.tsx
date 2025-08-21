@@ -6,7 +6,7 @@ import styles from './MapBlock.module.scss';
 
 export function MapBlock() {
   return (
-    <BlockContainer className={styles.root}>
+    <BlockContainer id="Карта" className={styles.root}>
       <BlockHeader className={styles.header}>Карта</BlockHeader>
 
       <MapSelector className={styles.map} />

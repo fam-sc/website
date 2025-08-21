@@ -6,7 +6,7 @@ import styles from './InfoBlock.module.scss';
 
 export function InfoBlock() {
   return (
-    <BlockContainer className={styles.root}>
+    <BlockContainer id="Інфо" className={styles.root}>
       <BlockHeader className={styles.header}>ІНФО</BlockHeader>
       <Info className={styles.info} />
     </BlockContainer>

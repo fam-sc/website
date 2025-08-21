@@ -15,7 +15,7 @@ const events = {
 
 export function ScheduleBlock() {
   return (
-    <BlockContainer className={styles.root}>
+    <BlockContainer id="Події" className={styles.root}>
       <h2 className={styles.header}>Події</h2>
 
       <div className={styles.table}>

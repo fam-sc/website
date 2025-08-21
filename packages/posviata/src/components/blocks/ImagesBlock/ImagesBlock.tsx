@@ -15,7 +15,7 @@ const ImageSwiper = React.lazy(async () => {
 
 export function ImagesBlock() {
   return (
-    <BlockContainer className={styles.root}>
+    <BlockContainer id="Фото" className={styles.root}>
       <BlockHeader className={styles.title}>HELL YEAH</BlockHeader>
 
       <Suspense fallback={<LoadingIndicatorWrapper />}>
