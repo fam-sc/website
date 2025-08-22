@@ -5,24 +5,6 @@ $description-transform: translate(calc(-50% + $icon-size * 0.5), 0);
   position: absolute;
   width: fit-content;
   transform: translate(-50%, 0);
-
-  &-type-target .icon {
-    fill: var(--color-primary);
-  }
-
-  &-type-shelter .icon {
-    fill: #4c4c4c;
-  }
-
-  &-in-view {
-    .icon {
-      transform: scale(1);
-    }
-
-    .description {
-      transform: scale(1) $description-transform;
-    }
-  }
 }
 
 .icon {
@@ -63,5 +45,26 @@ $description-transform: translate(calc(-50% + $icon-size * 0.5), 0);
   &-left {
     top: 0;
     right: 0;
+  }
+}
+
+/* stylelint-disable no-duplicate-selectors */
+.root {
+  &-type-target .icon {
+    fill: var(--color-primary);
+  }
+
+  &-type-shelter .icon {
+    fill: #4c4c4c;
+  }
+
+  &-in-view {
+    .icon {
+      transform: scale(1);
+    }
+
+    .description {
+      transform: scale(1) $description-transform;
+    }
   }
 }

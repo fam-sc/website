@@ -21,7 +21,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*", ".react-router/types/**/*"],
+  "include": ["**/*", ".react-router/types/**/*", "./.storybook/*"],
   "exclude": ["build"],
   "references": [{ "path": "../shared" }, { "path": "../shared-vite-plugins" }]
 }

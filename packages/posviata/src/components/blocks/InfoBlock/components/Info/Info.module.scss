@@ -16,7 +16,7 @@
   padding: 1.25em 1em;
 
   font-size: 1.5em;
-  font-family: 'Consolas', sans-serif;
+  font-family: Consolas, sans-serif;
   font-weight: 700;
 
   @include breakpoint-up('md') {
@@ -48,7 +48,9 @@
 
   text-shadow: 1px 1px 1px #000;
 
-  &-start, &-title, &-text {
+  &-start,
+  &-title,
+  &-text {
     display: inline-block;
   }
 

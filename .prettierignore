@@ -1,7 +1,9 @@
-packages/workers/worker-configuration.d.ts
 packages/schedule-bot/worker-configuration.d.ts
 packages/telegram-auth-test/worker-configuration.d.ts
 packages/website/worker-configuration.d.ts
+packages/posviata/worker-configuration.d.ts
 packages/website/storybook-static
 packages/website/build
 packages/website/.react-router
+packages/posviata/build
+packages/posviata/.react-router
