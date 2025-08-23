@@ -1,11 +1,14 @@
+import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 
-import styles from './not-found.module.scss';
+import styles from './page.module.scss';
 
 export default function NotFoundPage() {
   return (
     <div className={styles.content}>
-      <Typography variant="h3">Нема</Typography>
+      <Title>Cторінку не знайдено</Title>
+
+      <Typography variant="h2">Нема</Typography>
       <Typography variant="bodyLarge">Схоже такої сторінки немає...</Typography>
     </div>
   );

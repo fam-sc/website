@@ -1,4 +1,4 @@
-import { PixelUnderlineButton } from '../../PixelUnderlineButton';
+import { PixelRegistrationButton } from '../../PixelRegistrationButton';
 import { BlockContainer } from '../BlockContainer';
 import { Countdown } from './components/Countdown';
 import { Header } from './components/Header';
@@ -11,9 +11,9 @@ export function CountdownBlock() {
         <Header className={styles.header} />
         <p className={styles.year}>2025</p>
         <Countdown className={styles.countdown} />
-        <PixelUnderlineButton className={styles['form-button']}>
+        <PixelRegistrationButton className={styles['form-button']}>
           Заповнити форму
-        </PixelUnderlineButton>
+        </PixelRegistrationButton>
       </div>
     </BlockContainer>
   );

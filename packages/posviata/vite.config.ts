@@ -8,9 +8,7 @@ import { multienvPlugin } from '@sc-fam/shared-vite-plugins/multienv';
 import { rawMarkdownPlugin } from './vite-plugins/markdown';
 import autoprefixer from 'autoprefixer';
 
-const isLocal = process.env.LOCAL === '1';
-
-export default defineConfig((env) => ({
+export default defineConfig({
   build: {
     outDir: 'build',
     minify: 'esbuild',
@@ -25,17 +23,8 @@ export default defineConfig((env) => ({
       ],
     }
   },
-  ssr:
-    env.command === 'build' && isLocal
-      ? {
-          noExternal: true,
-          external: ['sharp'],
-        }
-      : undefined,
   plugins: [
-    ...(!isLocal
-      ? [cloudflare({ viteEnvironment: { name: 'ssr' }, persistState: true, experimental: { remoteBindings: true } })]
-      : []),
+    cloudflare({ viteEnvironment: { name: 'ssr' }, persistState: true, experimental: { remoteBindings: true } }),
     reactRouter(),
     imagePlugin(),
     tsconfigPaths(),
@@ -44,4 +33,4 @@ export default defineConfig((env) => ({
       { name: 'utils/reactDomEnv', type: 'tsx' },
     ], 'cf'),
   ],
-}));
+});

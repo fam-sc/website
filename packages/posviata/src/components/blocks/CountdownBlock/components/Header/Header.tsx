@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useInView } from 'motion/react';
+import { useRef, useState } from 'react';
 
+import { useInterval } from '@/hooks/useInterval';
 import { classNames } from '@/utils/classNames';
 
 import styles from './Header.module.scss';
@@ -18,11 +20,14 @@ export interface HeaderProps {
 }
 
 export function Header({ className }: HeaderProps) {
+  const ref = useRef<HTMLParagraphElement>(null);
   const [text, setText] = useState(TEXT_1);
   const [state, setState] = useState<State>('idle');
+  const inView = useInView(ref, { initial: true });
 
-  useEffect(() => {
-    const id = setInterval(() => {
+  useInterval(
+    INTERVAL,
+    () => {
       setTimeout(() => {
         setText((prev) => (prev === TEXT_1 ? TEXT_2 : TEXT_1));
       }, TEXT_SWITCH_DELAY);
@@ -32,15 +37,15 @@ export function Header({ className }: HeaderProps) {
       }, ANIMATION_DURATION);
 
       setState('animation');
-    }, INTERVAL);
-
-    return () => {
-      clearInterval(id);
-    };
-  });
+    },
+    inView
+  );
 
   return (
-    <p className={classNames(styles.root, styles[`root-${state}`], className)}>
+    <p
+      ref={ref}
+      className={classNames(styles.root, styles[`root-${state}`], className)}
+    >
       {text}
     </p>
   );

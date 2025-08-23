@@ -1,0 +1,14 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+
+  font-size: 1.25em;
+
+  svg {
+    $size: 1.25em;
+
+    width: $size;
+    height: $size;
+  }
+}

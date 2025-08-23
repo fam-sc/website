@@ -29,9 +29,6 @@ export function Layout({
   return (
     <html lang="uk">
       <head>
-        <title>ПОСВЯТА 2025 | CР ФПМ</title>
-        <meta name="description" content="ПОСВЯТА 2025" />
-
         <meta charSet="utf-8" />
         <meta
           name="viewport"

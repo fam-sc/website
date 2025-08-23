@@ -8,11 +8,13 @@ import { ImagesBlock } from '@/components/blocks/ImagesBlock';
 import { InfoBlock } from '@/components/blocks/InfoBlock';
 import { MapBlock } from '@/components/blocks/MapBlock';
 import { MathBlock } from '@/components/blocks/MathBlock';
+import { MerchBlock } from '@/components/blocks/MerchBlock';
 import { QuestionBlock } from '@/components/blocks/QuestionBlock';
 import { RegistrationBlock } from '@/components/blocks/RegistrationBlock';
 import { ScheduleBlock } from '@/components/blocks/ScheduleBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
 import { Footer } from '@/components/Footer';
+import { Title } from '@/components/Title';
 
 import { Route } from './+types/page';
 import styles from './page.module.scss';
@@ -66,10 +68,14 @@ export default function Page() {
 
   return (
     <div className={styles.content}>
+      <Title>ПОСВЯТА 2025</Title>
+      <meta name="description" content="ПОСВЯТА 2025" />
+
       <CountdownBlock />
       <MathBlock />
-      <VSCodeBlock />
       <ImagesBlock />
+      <VSCodeBlock />
+      <MerchBlock />
       <InfoBlock />
       <MapBlock />
       <ScheduleBlock />
