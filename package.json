@@ -9,7 +9,7 @@
     "lint": "tsx ./scripts/lint.ts",
     "lint:fix": "yarn lint --fix",
     "typegen": "yarn workspaces foreach --all -p run typegen",
-    "prebuild": "yarn tsc --build tsconfig.packages.json --declaration",
+    "prebuild": "yarn tsc --build tsconfig.packages.json --declaration && yarn workspace @sc-fam/shared-ui postbuild",
     "prebuild:watch": "yarn prebuild --watch",
     "test": "vitest --run"
   },
