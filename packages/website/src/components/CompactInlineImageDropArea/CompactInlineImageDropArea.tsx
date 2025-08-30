@@ -1,5 +1,5 @@
 import { classNames } from '@sc-fam/shared';
-import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { useNotification } from '@sc-fam/shared-ui';
 import { ComponentProps, useCallback } from 'react';
 
 import { useCacheInvalidate } from '@/hooks/useCacheInvalidate';

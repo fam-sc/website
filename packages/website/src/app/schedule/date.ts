@@ -1,6 +1,5 @@
-import { Time } from '@sc-fam/shared/api/campus/types.js';
 import { getWeekday, parseTime } from '@sc-fam/shared/chrono';
-import { timeBreakpoints } from '@sc-fam/shared-schedule';
+import { Time, timeBreakpoints } from '@sc-fam/shared-schedule';
 
 import { Day } from '@/api/schedule/types';
 import { CurrentLesson } from '@/components/schedule/ScheduleGrid';

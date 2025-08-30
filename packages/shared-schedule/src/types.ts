@@ -1,11 +1,10 @@
-import type { Time } from '@sc-fam/shared/api/campus/types.js';
 import { infer as zodInfer } from 'zod/v4-mini';
 
+import { days, timeBreakpoints } from './constants';
 import type { lessonType } from './schema';
 
-export type { Time } from '@sc-fam/shared/api/campus/types.js';
-
-export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type Time = (typeof timeBreakpoints)[number];
+export type Day = (typeof days)[number];
 
 export type LessonType = zodInfer<typeof lessonType>;
 

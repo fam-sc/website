@@ -1,5 +1,5 @@
 import { InfiniteScroll } from '@sc-fam/shared-ui';
-import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback } from 'react';
 
 import { usePageFetcher } from '@/hooks/usePageFetcher';

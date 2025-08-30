@@ -1,4 +1,4 @@
-import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 
 import { BotType } from '@/api/users/botAuth/types';

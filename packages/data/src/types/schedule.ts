@@ -1,6 +1,6 @@
 import { ToRawObject } from '@sc-fam/shared-sql/builder';
 
-type Time = '8:30' | '10:25' | '12:20' | '14:15' | '16:10' | '18:30' | '20:20';
+type Time = '08:30' | '10:25' | '12:20' | '14:15' | '16:10' | '18:30' | '20:20';
 
 export type Day = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 

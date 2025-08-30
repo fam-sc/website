@@ -1,5 +1,5 @@
 import { classNames } from '@sc-fam/shared';
-import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { useNotification } from '@sc-fam/shared-ui';
 import { Editor } from '@tiptap/core';
 import { EditorContent as TiptapEditorContent } from '@tiptap/react';
 import { useCallback } from 'react';

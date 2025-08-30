@@ -1,5 +1,5 @@
 import { shortenGuid } from '@sc-fam/shared';
-import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { getGroups } from '@/api/groups/client';

@@ -20,7 +20,6 @@ export function PastEntryScroller({ year }: PastEntryScrollerProps) {
   const [hasMoreElements, setHasMoreElements] = useState(true);
 
   const requestPage = useCallback(() => {
-    console.log('here');
     const lastId = items.at(-1)?.id;
 
     getPastMediaEntryPage(year, lastId)

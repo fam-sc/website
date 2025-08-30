@@ -41,8 +41,16 @@ function groupLessonsByTime(lessons: Lesson[]): LessonGroup[] {
 }
 
 export function groupSchedule(schedule: DaySchedule[]): GroupedWeek {
-  return schedule.map(({ day, lessons }) => ({
+  const result = schedule.map(({ day, lessons }) => ({
     day,
     lessons: groupLessonsByTime(lessons),
   }));
+
+  for (let day = 1; day <= 7; day += 1) {
+    if (!result.some((value) => value.day === day)) {
+      result.splice(day - 1, 0, { day: day as Day, lessons: [] });
+    }
+  }
+
+  return result;
 }

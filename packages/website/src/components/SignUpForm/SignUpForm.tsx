@@ -1,6 +1,6 @@
 import { normalizeGuid } from '@sc-fam/shared';
 import { emailRegex } from '@sc-fam/shared/string';
-import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { useNotification } from '@sc-fam/shared-ui';
 import { ReactNode, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 

@@ -10,6 +10,7 @@ import {
   DaySchedule as CampusDaySchedule,
   LessonSchedule,
   TeacherPairTag,
+  Time as CampusTime,
   Weekday,
 } from '@sc-fam/shared/api/campus/types.js';
 import { Teacher } from '@sc-fam/shared/api/pma/types.js';
@@ -19,6 +20,7 @@ import {
   DaySchedule as ApiDaySchedule,
   LessonType as ApiLessonType,
   Schedule as ApiSchedule,
+  Time,
 } from './types';
 
 const campusDayMap: Record<Weekday, Day> = {
@@ -55,6 +57,12 @@ function dataLessonTypeToApi(type: LessonType): ApiLessonType {
   return dataLessonTypeToApiMap[type];
 }
 
+function campusTimeToApiTime(time: CampusTime): Time {
+  const lastColon = time.lastIndexOf(':');
+
+  return time.slice(0, lastColon) as Time;
+}
+
 export function campusDayScheduleToDaySchedule(
   schedule: CampusDaySchedule,
   teachers: Teacher[]
@@ -64,7 +72,7 @@ export function campusDayScheduleToDaySchedule(
     lessons: schedule.pairs.map(({ name, place, time, tag, teacherName }) => ({
       name,
       place,
-      time,
+      time: campusTimeToApiTime(time),
       type: campusLessonTypeToDataLessonType(tag),
       teacher: teachers.find(({ name }) => name === teacherName) ?? {
         name: teacherName,

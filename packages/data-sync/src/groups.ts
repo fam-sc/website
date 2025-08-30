@@ -15,5 +15,8 @@ export async function syncGroups() {
   const repo = Repository.openConnection();
   const groups = await getApiFacultyGroups();
 
-  await repo.batch(repo.groups().insertOrUpdateAll(groups));
+  await repo.batch([
+    repo.groups().deleteWhere({}),
+    ...repo.groups().insertOrUpdateAll(groups),
+  ]);
 }

@@ -1,12 +1,13 @@
 import { Day, Repository, ScheduleBotUser } from '@sc-fam/data';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
-import { CurrentTime, Time } from '@sc-fam/shared/api/campus/types.js';
+import { CurrentTime } from '@sc-fam/shared/api/campus/types.js';
 import { findNearestTimePoint } from '@sc-fam/shared/chrono';
 import { getLocalNow } from '@sc-fam/shared/chrono/time.js';
 import {
   DaySchedule,
   getScheduleForGroup,
   Schedule,
+  Time,
   timeBreakpoints,
 } from '@sc-fam/shared-schedule';
 
@@ -32,7 +33,7 @@ async function getSchedule(group: string): Promise<Schedule | null> {
           name: `Lesson ${index}`,
           place: `Place ${index}`,
           teacher: { name: 'Teacher', link: 'https://google.com' },
-          time: '8:30',
+          time: '08:30',
           type: 'lec',
           link: 'https://google.com',
         })),

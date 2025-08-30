@@ -10,7 +10,7 @@ function lesson(teacher: string): TeacherPair {
     place: '',
     tag: 'lab',
     teacherName: teacher,
-    time: '10:25',
+    time: '10:25:00',
     type: 'Лаб',
   };
 }

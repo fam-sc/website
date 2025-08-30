@@ -1,5 +1,5 @@
 import { emailRegex } from '@sc-fam/shared/string';
-import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { useNotification } from '@sc-fam/shared-ui';
 import { ReactNode, useState } from 'react';
 
 import { signIn } from '@/api/users/client';
