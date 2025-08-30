@@ -1,3 +1,4 @@
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -7,7 +8,6 @@ import { uploadGalleryImages } from '@/api/gallery/client';
 import { Button } from '@/components/Button';
 import { DatePicker } from '@/components/DatePicker';
 import { MultipleInlineImageDropArea } from '@/components/MultipleInlineImageDropArea';
-import { useNotification } from '@/components/Notification';
 import { SelectEventDialog } from '@/components/SelectEventDialog';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';

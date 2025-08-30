@@ -1,9 +1,9 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactNode } from 'react';
 import { Link } from 'react-router';
 
 import { ArrowLeftIcon } from '@/icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
-import { classNames } from '@/utils/classNames';
 
 import { Typography } from '../Typography';
 import { getViewPages } from './pages';

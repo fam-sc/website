@@ -1,8 +1,11 @@
-import { valueIn } from '../sqlite/modifier';
-import { DataQuery } from '../sqlite/query';
-import { TableDescriptor } from '../sqlite/types';
+import {
+  DataQuery,
+  TableDescriptor,
+  valueIn,
+} from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { GlobalOptionEntry, GlobalOptionName } from '../types/globalOptions';
-import { EntityCollection } from './base';
 
 type EntryMap<K extends string> = Partial<Record<K, string>>;
 

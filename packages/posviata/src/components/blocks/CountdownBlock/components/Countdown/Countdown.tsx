@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { formatTwoDigit } from '@sc-fam/shared/string/formatter.js';
 
 import { Typography } from '@/components/Typography';
 import { DateInterval, useCountdown } from '@/hooks/useCountdown';
-import { classNames } from '@/utils/classNames';
 import { getNumberVariant, NumberVariant } from '@/utils/numberVariants';
 
 import styles from './Countdown.module.scss';

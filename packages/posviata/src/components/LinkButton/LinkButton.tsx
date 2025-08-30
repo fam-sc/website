@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { ComponentProps } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { Typography } from '../Typography';
 import styles from './LinkButton.module.scss';

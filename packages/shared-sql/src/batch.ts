@@ -1,6 +1,6 @@
 import { D1Database, D1Result } from '@sc-fam/shared/cloudflare';
 
-import { DataQueryArray } from '../sqlite/query';
+import { DataQueryArray } from './builder/query';
 
 export async function batchHelper<T extends unknown[]>(
   client: D1Database,

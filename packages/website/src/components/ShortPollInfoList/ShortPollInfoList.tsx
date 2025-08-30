@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { Key } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { List } from '../List';
 import { ShortPollInfo } from '../ShortPollInfo';

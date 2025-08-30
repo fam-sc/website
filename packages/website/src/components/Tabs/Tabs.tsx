@@ -1,7 +1,6 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactElement, useId, useState } from 'react';
 import React from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { Button } from '../Button';
 import { List } from '../List';

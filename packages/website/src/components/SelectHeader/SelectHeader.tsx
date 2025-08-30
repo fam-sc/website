@@ -1,10 +1,11 @@
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
+
 import { ArrowDownIcon } from '@/icons/ArrowDownIcon';
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 
 import styles from './SelectHeader.module.scss';
 
-export type SelectHeaderProps = PropsMap['button'];
+export type SelectHeaderProps = ComponentProps<'button'>;
 
 export function SelectHeader({
   className,

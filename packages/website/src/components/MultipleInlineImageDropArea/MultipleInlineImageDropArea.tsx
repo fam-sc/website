@@ -1,6 +1,6 @@
+import { classNames } from '@sc-fam/shared';
 import { useCallback, useEffect, useState } from 'react';
 
-import { classNames } from '@/utils/classNames';
 import { imageFileGate } from '@/utils/fileGate';
 
 import { BaseFileDropArea } from '../BaseFileDropArea';

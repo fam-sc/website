@@ -1,3 +1,4 @@
+import { classNames } from '@sc-fam/shared';
 import React, { ReactNode } from 'react';
 
 import { navigigationSecondaryRoutes } from '@/constants/navigation';
@@ -7,7 +8,6 @@ import { QuestionIcon } from '@/icons/QuestionIcon';
 import { TelegramIcon } from '@/icons/TelegramIcon';
 import { TikTokIcon } from '@/icons/TikTokIcon';
 import logo from '@/images/logo.png?w=20!';
-import { classNames } from '@/utils/classNames';
 
 import { Link } from '../Link';
 import { Typography } from '../Typography';

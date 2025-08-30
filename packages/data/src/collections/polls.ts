@@ -1,7 +1,11 @@
-import { Conditions } from '../sqlite/conditions';
-import { isNull } from '../sqlite/modifier';
-import { query } from '../sqlite/query';
-import { TableDescriptor } from '../sqlite/types';
+import {
+  Conditions,
+  isNull,
+  query,
+  TableDescriptor,
+} from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import {
   Poll,
   PollQuestion,
@@ -9,7 +13,6 @@ import {
   PollRespondentAnswer,
   RawPoll,
 } from '../types/poll';
-import { EntityCollection } from './base';
 import { PollRespondentCollection } from './pollRespondents';
 
 export class PollCollection extends EntityCollection<RawPoll>('polls') {

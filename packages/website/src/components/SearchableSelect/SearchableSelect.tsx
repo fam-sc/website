@@ -1,3 +1,4 @@
+import { classNames } from '@sc-fam/shared';
 import {
   ChangeEvent,
   MouseEvent,
@@ -6,8 +7,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { SelectProps } from '../Select';
 import { SelectBase } from '../SelectBase';

@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { useState } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { MapSwiper, type MapType } from '../MapSwiper';
 import { OptionSwitch } from '../OptionSwitch';

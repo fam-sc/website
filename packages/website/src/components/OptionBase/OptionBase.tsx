@@ -1,14 +1,11 @@
-import { useId } from 'react';
-
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps, useId } from 'react';
 
 import { Typography, TypographyVariant } from '../Typography';
 import styles from './OptionBase.module.scss';
 
-type InputProps = PropsMap['input'];
-
-export interface OptionBaseProps extends Omit<InputProps, 'value'> {
+export interface OptionBaseProps
+  extends Omit<ComponentProps<'input'>, 'value'> {
   type: 'radio' | 'checkbox';
   variant?: TypographyVariant;
   onCheckedChanged?: (state: boolean) => void;

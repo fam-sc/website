@@ -1,12 +1,10 @@
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
 
 import { UnknownUserAvatar } from '../UnknownUserAvatar';
 import styles from './UserAvatarOrPlaceholder.module.scss';
 
-type DivProps = PropsMap['div'];
-
-export interface UserAvatarOrPlaceholderProps extends DivProps {
+export interface UserAvatarOrPlaceholderProps extends ComponentProps<'div'> {
   src?: string;
 }
 

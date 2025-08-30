@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { useInView } from 'motion/react';
 import { useRef, useState } from 'react';
 
 import { useInterval } from '@/hooks/useInterval';
-import { classNames } from '@/utils/classNames';
 
 import styles from './Header.module.scss';
 

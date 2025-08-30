@@ -1,15 +1,12 @@
-import { MouseEvent, useCallback, useState } from 'react';
-
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps, MouseEvent, useCallback, useState } from 'react';
 
 import { SelectHeader } from '../SelectHeader';
 import { SelectItems } from '../SelectItems';
 import styles from './SelectBase.module.scss';
 
-type DivProps = PropsMap['div'];
-
-export interface SelectBaseProps<T extends string = string> extends DivProps {
+export interface SelectBaseProps<T extends string = string>
+  extends ComponentProps<'div'> {
   items: { key: T; title: string }[];
   selectedItem?: T;
 

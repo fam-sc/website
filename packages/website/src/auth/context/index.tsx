@@ -1,7 +1,7 @@
+import { contextUseFactory } from '@sc-fam/shared-ui';
 import { createContext, ReactNode } from 'react';
 
 import { UserWithRoleAndAvatar } from '@/api/users/types';
-import { contextUseFactory } from '@/utils/react/contextFactory';
 
 export type AuthContextInfo = {
   user: UserWithRoleAndAvatar | null;

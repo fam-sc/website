@@ -1,10 +1,10 @@
+import { classNames } from '@sc-fam/shared';
 import { useMemo, useState } from 'react';
 
 import { Typography } from '@/components/Typography';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { ChevronDown } from '@/icons/ChevronDown';
 import { ChevronUp } from '@/icons/ChevronUp';
-import { classNames } from '@/utils/classNames';
 
 import {
   FileItem,

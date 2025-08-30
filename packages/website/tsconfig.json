@@ -37,6 +37,7 @@
   "references": [
     { "path": "../shared" },
     { "path": "../data" },
-    { "path": "../shared-schedule" }
+    { "path": "../shared-schedule" },
+    { "path": "../shared-ui" }
   ]
 }

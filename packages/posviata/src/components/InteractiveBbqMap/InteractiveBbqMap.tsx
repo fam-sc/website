@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { ComponentProps } from 'react';
 
 import mapImage from '@/images/maps/bbq.png?multiple';
-import { classNames } from '@/utils/classNames';
 
 import { Image } from '../Image';
 import { MovingPath } from '../MovingPath';

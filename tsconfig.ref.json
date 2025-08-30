@@ -7,8 +7,10 @@
     { "path": "./packages/schedule-bot" },
     { "path": "./packages/shared" },
     { "path": "./packages/shared-schedule" },
-    { "path": "./packages/website" },
+    { "path": "./packages/shared-sql" },
+    { "path": "./packages/shared-ui" },
     { "path": "./packages/shared-vite-plugins" },
+    { "path": "./packages/website" },
     { "path": "./packages/posviata" }
   ],
   "include": []

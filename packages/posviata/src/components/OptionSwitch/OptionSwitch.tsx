@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { ComponentProps, ReactNode, useId } from 'react';
 
 import { WithDataSpace } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 
 import { Typography } from '../Typography';
 import styles from './OptionSwitch.module.scss';

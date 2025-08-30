@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
+import { IndeterminateCircularProgress } from '../../../../shared-ui/src/components/IndeterminateCircularProgress';
 import { Button } from '../Button';
-import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import { ModalDialog } from '../ModalDialog';
 import { SelectableList } from '../SelectableList';
 import { Typography } from '../Typography';

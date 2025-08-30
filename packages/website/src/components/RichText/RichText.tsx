@@ -1,3 +1,4 @@
+import { classNames } from '@sc-fam/shared';
 import {
   RichTextElementNode,
   RichTextNode,
@@ -6,7 +7,6 @@ import {
 import React, { Key, ReactNode } from 'react';
 import { Link } from 'react-router';
 
-import { classNames } from '@/utils/classNames';
 import { sizesToImages } from '@/utils/image/transform';
 
 import { Image } from '../Image';

@@ -8,10 +8,14 @@
     "typegen": "react-router typegen && wrangler types",
     "deploy": "wrangler deploy",
     "storybook:start": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "db:init": "tsx ./scripts/initDatabase.ts"
   },
   "dependencies": {
     "@react-router/node": "7.8.1",
+    "@sc-fam/shared": "workspace:*",
+    "@sc-fam/shared-sql": "workspace:*",
+    "@sc-fam/shared-ui": "workspace:*",
     "isbot": "^5",
     "lodash": "4.17.21",
     "marked": "16.1.2",
@@ -25,7 +29,7 @@
     "swiper": "11.2.10"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.11.5",
+    "@cloudflare/vite-plugin": "1.12.1",
     "@react-router/dev": "7.8.1",
     "@react-router/express": "7.8.1",
     "@sc-fam/shared-vite-plugins": "workspace:*",
@@ -37,8 +41,10 @@
     "@types/react": "19.1.10",
     "@types/react-dom": "19.1.7",
     "autoprefixer": "10.4.21",
+    "dotenv": "17.2.1",
     "fonteditor-core": "2.6.2",
     "postcss": "8.5.6",
+    "sharp": "0.34.3",
     "storybook": "9.1.1",
     "tsx": "4.20.3",
     "typescript": "5.8.3",

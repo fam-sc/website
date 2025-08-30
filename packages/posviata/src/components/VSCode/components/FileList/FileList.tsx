@@ -1,6 +1,7 @@
+import { classNames } from '@sc-fam/shared';
+
 import { Typography } from '@/components/Typography';
 import { CloseIcon } from '@/icons/CloseIcon';
-import { classNames } from '@/utils/classNames';
 import { getFileName } from '@/utils/file';
 
 import { VSCodeFile } from '../../types';

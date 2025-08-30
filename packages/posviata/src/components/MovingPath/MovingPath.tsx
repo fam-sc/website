@@ -1,5 +1,6 @@
+import { classNames } from '@sc-fam/shared';
+
 import { SvgProps } from '@/icons/types';
-import { classNames } from '@/utils/classNames';
 
 import styles from './MovingPath.module.scss';
 

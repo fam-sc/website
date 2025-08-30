@@ -1,4 +1,4 @@
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
 
 import { LoadingIndicator } from '../LoadingIndicator/LoadingIndicator';
 import styles from './LoadingIndicatorWrapper.module.scss';

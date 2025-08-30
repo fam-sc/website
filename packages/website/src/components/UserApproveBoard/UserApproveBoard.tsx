@@ -1,4 +1,4 @@
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
 
 import { List } from '../List';
 import { UserApproveItem } from '../UserApproveItem';

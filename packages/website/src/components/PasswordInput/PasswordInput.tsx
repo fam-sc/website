@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { useState } from 'react';
 
 import { SeePasswordIcon } from '@/icons/SeePasswordIcon';
-import { classNames } from '@/utils/classNames';
 
 import { IconButton } from '../IconButton';
 import { TextInput, TextInputProps } from '../TextInput';

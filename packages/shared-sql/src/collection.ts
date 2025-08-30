@@ -1,11 +1,6 @@
 import { D1Database, D1PreparedStatement } from '@sc-fam/shared/cloudflare';
 
-import {
-  Conditions,
-  getConditionsBinding,
-  RawConditions,
-} from '../sqlite/conditions';
-import { DataQuery, DataQueryContext, query } from '../sqlite/query';
+import { batchWithResultsHelper } from './batch';
 import {
   buildCountWhereQuery,
   buildCreateTableQuery,
@@ -14,12 +9,17 @@ import {
   buildGeneralInsertQuery,
   buildGetPageQuery,
   buildUpdateWhereQuery,
+  Conditions,
+  DataQuery,
+  DataQueryContext,
   Fields,
+  getConditionsBinding,
   InsertFlavor,
   Ordering,
-} from '../sqlite/queryBuilder';
-import { TableDescriptor } from '../sqlite/types';
-import { batchWithResultsHelper } from '../utils/batch';
+  query,
+  RawConditions,
+  TableDescriptor,
+} from './builder';
 
 export type EntityCollectionClass<T = unknown> = new (client: D1Database) => T;
 

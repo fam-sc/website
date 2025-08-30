@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { ChangeEvent, Key, ReactNode, useCallback, useId } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import styles from './SelectableList.module.scss';
 

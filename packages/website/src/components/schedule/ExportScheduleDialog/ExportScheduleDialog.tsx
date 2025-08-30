@@ -1,3 +1,5 @@
+import { IndeterminateCircularProgress } from '@sc-fam/shared-ui';
+import { useNotification } from '@sc-fam/shared-ui';
 import { FC, useCallback, useRef, useState } from 'react';
 
 import {
@@ -8,9 +10,7 @@ import { ExportScheduleOptions } from '@/api/schedule/export/options/types';
 import { ExportSchedulePayload } from '@/api/schedule/export/types';
 import { Button } from '@/components/Button';
 import { GsiScript } from '@/components/GsiScript';
-import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { ModalDialog } from '@/components/ModalDialog';
-import { useNotification } from '@/components/Notification';
 import { Typography } from '@/components/Typography';
 
 import { ExportScheduleForm } from '../ExportScheduleForm';

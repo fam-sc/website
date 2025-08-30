@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { Dispatch, SetStateAction, useCallback, useRef } from 'react';
 
 import { PlusIcon } from '@/icons/PlusIcon';
 import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
-import { classNames } from '@/utils/classNames';
 
 import { DraggableList } from '../DraggableList';
 import { IconButton } from '../IconButton';

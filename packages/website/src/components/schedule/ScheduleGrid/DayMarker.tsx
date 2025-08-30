@@ -1,5 +1,6 @@
+import { classNames } from '@sc-fam/shared';
+
 import { Day } from '@/api/schedule/types';
-import { classNames } from '@/utils/classNames';
 
 import { Typography } from '../../Typography';
 import styles from './DayMarker.module.scss';

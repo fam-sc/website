@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { FC } from 'react';
 
 import { FilesIcon } from '@/icons/FilesIcon';
 import { SvgProps } from '@/icons/types';
-import { classNames } from '@/utils/classNames';
 
 import { SidebarTab } from '../../types';
 import styles from './SideToolbar.module.scss';

@@ -1,10 +1,9 @@
 import { ImageSize } from '@sc-fam/shared/image';
 import { RichTextString } from '@sc-fam/shared/richText';
+import { Conditions, TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
 
-import { Conditions } from '../sqlite/conditions';
-import { TableDescriptor } from '../sqlite/types';
 import { Guide, RawGuide } from '../types';
-import { EntityCollection } from './base';
 
 function mapImages<E extends null | undefined>(
   images: ImageSize[] | E

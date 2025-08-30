@@ -1,6 +1,7 @@
+import { classNames } from '@sc-fam/shared';
+
 import { Typography } from '@/components/Typography';
 import { InfoIcon } from '@/icons/InfoIcon';
-import { classNames } from '@/utils/classNames';
 
 import styles from './Info.module.scss';
 

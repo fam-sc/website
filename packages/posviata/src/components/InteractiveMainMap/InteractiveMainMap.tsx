@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { useInView } from 'motion/react';
 import { ComponentProps, useRef } from 'react';
 
 import mainImage from '@/images/maps/main.png?multiple';
-import { classNames } from '@/utils/classNames';
 
 import { Image } from '../Image';
 import { MapContext } from '../MapContext';

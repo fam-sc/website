@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { ComponentProps, useCallback, useMemo, useState } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { Header } from './components/Header';
 import { Main } from './components/Main';

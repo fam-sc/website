@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  list-style: none;
+  align-self: stretch;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5em;
+  margin: 0 1em;
+
+  > * {
+    height: 30vh;
+  }
+}

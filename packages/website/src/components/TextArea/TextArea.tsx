@@ -1,14 +1,10 @@
-import { ChangeEvent, useMemo } from 'react';
-
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ChangeEvent, ComponentProps, useMemo } from 'react';
 
 import { Typography } from '../Typography';
 import styles from './TextArea.module.scss';
 
-type HTMLTextAreaProps = PropsMap['textarea'];
-
-export interface TextAreaProps extends HTMLTextAreaProps {
+export interface TextAreaProps extends ComponentProps<'textarea'> {
   variant?: 'primary' | 'inverted-primary';
   autoSize?: boolean;
   onTextChanged?: (value: string) => void;

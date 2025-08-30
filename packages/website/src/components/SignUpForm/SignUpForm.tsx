@@ -1,5 +1,6 @@
 import { normalizeGuid } from '@sc-fam/shared';
 import { emailRegex } from '@sc-fam/shared/string';
+import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
 import { ReactNode, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -17,7 +18,6 @@ import { pick } from '@/utils/object/pick';
 import { ErrorBoard } from '../ErrorBoard';
 import { GroupSelect } from '../GroupSelect';
 import { Labeled } from '../Labeled';
-import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
 import styles from './SignUpForm.module.scss';
 

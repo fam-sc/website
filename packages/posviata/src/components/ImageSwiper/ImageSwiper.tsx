@@ -2,6 +2,7 @@ import 'swiper/css';
 import 'swiper/scss/free-mode';
 import 'swiper/scss/navigation';
 
+import { classNames } from '@sc-fam/shared';
 import { ReactNode, useState } from 'react';
 import { Swiper as BaseSwiper } from 'swiper';
 import { FreeMode, Navigation } from 'swiper/modules';
@@ -10,7 +11,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { ArrowLeftIcon } from '@/icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
-import { classNames } from '@/utils/classNames';
 import { ImageInfo, ImageSizes } from '@/utils/image/types';
 
 import { Image } from '../Image';

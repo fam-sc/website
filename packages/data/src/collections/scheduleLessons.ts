@@ -1,6 +1,7 @@
-import { TableDescriptor } from '../sqlite/types';
+import { TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { RawLesson } from '../types/schedule';
-import { EntityCollection } from './base';
 
 export class ScheduleLessonCollection extends EntityCollection<RawLesson>(
   'schedule_lessons'

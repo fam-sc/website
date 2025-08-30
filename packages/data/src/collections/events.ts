@@ -1,8 +1,8 @@
 import { RichTextString } from '@sc-fam/shared/richText';
+import { TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
 
-import { TableDescriptor } from '../sqlite/types';
 import { Event, RawEvent } from '../types/common';
-import { EntityCollection } from './base';
 
 function mapRawEvent(event: RawEvent): Event {
   return {

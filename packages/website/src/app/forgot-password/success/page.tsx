@@ -1,3 +1,4 @@
+import { useNotification } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
 
@@ -7,7 +8,6 @@ import { resetPassword } from '@/api/users/client';
 import { Button } from '@/components/Button';
 import { ErrorBoard } from '@/components/ErrorBoard';
 import { Labeled } from '@/components/Labeled';
-import { useNotification } from '@/components/Notification';
 import { PasswordInput } from '@/components/PasswordInput';
 import { repository } from '@/utils/repo';
 

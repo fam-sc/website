@@ -1,10 +1,10 @@
 import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
+import { IndeterminateCircularProgress } from '@sc-fam/shared-ui';
 import { useCallback, useEffect, useState } from 'react';
 
 import { BotType } from '@/api/users/botAuth/types';
 import { authorizeTelegramBotToUser } from '@/api/users/client';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { Typography } from '@/components/Typography';
 
 import styles from './index.module.scss';

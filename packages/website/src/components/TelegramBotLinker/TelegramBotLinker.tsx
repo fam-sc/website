@@ -1,10 +1,10 @@
+import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
 import { useState } from 'react';
 
 import { BotType } from '@/api/users/botAuth/types';
 import { authorizeTelegramBotToUser } from '@/api/users/client';
 
-import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
-import { useNotification } from '../Notification';
+import { IndeterminateCircularProgress } from '../../../../shared-ui/src/components/IndeterminateCircularProgress';
 import { TelegramLoginWidget } from '../TelegramLoginWidget';
 
 type State = 'widget' | 'pending';

@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { Time, timeBreakpoints } from '@sc-fam/shared-schedule';
 
 import { Day } from '@/api/schedule/types';
-import { classNames } from '@/utils/classNames';
 
 import { ScheduleTile } from '../ScheduleTile';
 import styles from './TileGroup.module.scss';

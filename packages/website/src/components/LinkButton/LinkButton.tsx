@@ -1,18 +1,14 @@
-import { PropsWithChildren } from 'react';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps, PropsWithChildren } from 'react';
 import { Link, LinkProps } from 'react-router';
-
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 
 import { Button, ButtonProps } from '../Button';
 import styles from './LinkButton.module.scss';
 
-type AnchorProps = PropsMap['a'];
-
 export type LinkButtonProps = PropsWithChildren<
   (
     | (LinkProps & { realNavigation?: false })
-    | (AnchorProps & { realNavigation: true })
+    | (ComponentProps<'a'> & { realNavigation: true })
   ) &
     ButtonProps
 >;

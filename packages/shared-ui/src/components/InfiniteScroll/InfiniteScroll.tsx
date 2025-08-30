@@ -1,40 +1,41 @@
-import { ReactNode, Ref, useEffect, useLayoutEffect, useRef } from 'react';
-
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { FC, ReactNode, Ref, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import styles from './InfiniteScroll.module.scss';
 
-export type InfiniteScrollProps = {
+type LoadMarkerProps<T extends Element> = {
+  ref?: Ref<T | null>;
+  className?: string;
+};
+
+export type InfiniteScrollProps<T extends Element> = {
   className?: string;
   hasMoreElements?: boolean;
+
+  loadMarker?: FC<LoadMarkerProps<T>>;
 
   onRequesNextPage: () => void;
 
   children: ReactNode;
 };
 
-export type LoadMarkerProps = {
-  ref?: Ref<SVGSVGElement>;
-};
-
-function LoadMarker({ ref }: LoadMarkerProps) {
+function DefaultLoadMarker({ ref, className }: LoadMarkerProps<SVGSVGElement>) {
   return (
-    <IndeterminateCircularProgress
-      className={styles['load-marker']}
-      size="sm"
-      ref={ref}
-    />
+    <IndeterminateCircularProgress ref={ref} className={className} size="sm" />
   );
 }
 
-export function InfiniteScroll({
+export function InfiniteScroll<T extends Element>({
   className,
   hasMoreElements = true,
+  loadMarker,
   onRequesNextPage,
   children,
-}: InfiniteScrollProps) {
-  const maxMarkerRef = useRef<SVGSVGElement>(null);
+}: InfiniteScrollProps<T>) {
+  const maxMarkerRef = useRef<Element>(null);
+
+  const LoadMarker = loadMarker ?? DefaultLoadMarker;
 
   useEffect(() => {
     const { current: maxMarker } = maxMarkerRef;
@@ -75,7 +76,10 @@ export function InfiniteScroll({
     <div className={classNames(styles.root, className)}>
       {children}
 
-      {hasMoreElements && <LoadMarker ref={maxMarkerRef} />}
+      {hasMoreElements && (
+        // @ts-expect-error the type is correct.
+        <LoadMarker ref={maxMarkerRef} />
+      )}
     </div>
   );
 }

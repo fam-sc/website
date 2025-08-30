@@ -1,13 +1,11 @@
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
 
 import { Button, ButtonProps } from '../Button';
 import styles from './UploadFileButton.module.scss';
 
-type LabelProps = PropsMap['label'];
-
 export type UploadFileButtonProps = ButtonProps &
-  LabelProps & {
+  ComponentProps<'label'> & {
     accept?: string;
     disabled?: boolean;
     text?: string;

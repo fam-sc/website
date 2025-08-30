@@ -6,31 +6,30 @@ import {
 } from '@/campaign/handler';
 import { isValidRegistrationClickPlace } from '@/campaign/types';
 
-export async function handleCampaignRequest(request: Request, env: Env) {
+import { app } from './app';
+
+app.post('/campaign', async (request) => {
   const requestId = getCookieValue(request, 'rid');
 
   if (requestId !== undefined) {
     try {
-      await validateCampaignRequest(env, requestId);
+      await validateCampaignRequest(requestId);
     } catch (error) {
       console.error(error);
     }
   }
 
   return new Response();
-}
+});
 
-export async function handleRegistrationClickRequest(
-  request: Request,
-  env: Env
-) {
+app.post('/registration-click', async (request) => {
   const { searchParams } = new URL(request.url);
   const requestId = getCookieValue(request, 'rid');
   const place = parseInt(searchParams.get('place'));
 
   if (requestId !== undefined && isValidRegistrationClickPlace(place)) {
-    await updateCampaignRegistrationClickPlace(env, requestId, place);
+    await updateCampaignRegistrationClickPlace(requestId, place);
   }
 
   return new Response();
-}
+});

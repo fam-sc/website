@@ -1,10 +1,10 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactNode } from 'react';
 
 import { DataState, SuccessDataState } from '@/hooks/useDataLoader';
-import { classNames } from '@/utils/classNames';
 
+import { IndeterminateCircularProgress } from '../../../../shared-ui/src/components/IndeterminateCircularProgress';
 import { ErrorMessage } from '../ErrorMessage';
-import { IndeterminateCircularProgress } from '../IndeterminateCircularProgress';
 import styles from './DataLoadingContainer.module.scss';
 
 export type DataLoadingContainerProps<T> = {

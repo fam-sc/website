@@ -1,20 +1,22 @@
-import { createContext, ReactNode, useMemo, useState } from 'react';
+import { classNames } from '@sc-fam/shared';
+import { createContext, FC, ReactNode, useMemo, useState } from 'react';
 
-import { classNames } from '@/utils/classNames';
-import { contextUseFactory } from '@/utils/react/contextFactory';
-
-import { Typography } from '../Typography';
+import { contextUseFactory } from '../../utils/contextFactory';
 import styles from './Notification.module.scss';
+
+type Typography = FC<{ children: ReactNode }>;
 
 export type NotificationType = 'plain' | 'error';
 
 export type NotificationProps = {
+  typography?: Typography;
   message: string;
   type: NotificationType;
   isVisible: boolean;
 };
 
 export type NotificationWrapperProps = {
+  typography?: Typography;
   children: ReactNode;
 };
 
@@ -26,7 +28,14 @@ export const NotificationContext = createContext<NotificationManager | null>(
   null
 );
 
-export function Notification({ message, type, isVisible }: NotificationProps) {
+export function Notification({
+  typography,
+  message,
+  type,
+  isVisible,
+}: NotificationProps) {
+  const Typography = typography ?? 'p';
+
   return (
     <div
       className={classNames(
@@ -40,7 +49,10 @@ export function Notification({ message, type, isVisible }: NotificationProps) {
   );
 }
 
-export function NotificationWrapper({ children }: NotificationWrapperProps) {
+export function NotificationWrapper({
+  typography,
+  children,
+}: NotificationWrapperProps) {
   const [isVisible, setVisible] = useState<boolean>(false);
   const [notification, setNotification] = useState<{
     message: string;
@@ -69,7 +81,13 @@ export function NotificationWrapper({ children }: NotificationWrapperProps) {
   return (
     <NotificationContext.Provider value={manager}>
       {children}
-      {notification && <Notification isVisible={isVisible} {...notification} />}
+      {notification && (
+        <Notification
+          isVisible={isVisible}
+          typography={typography}
+          {...notification}
+        />
+      )}
     </NotificationContext.Provider>
   );
 }

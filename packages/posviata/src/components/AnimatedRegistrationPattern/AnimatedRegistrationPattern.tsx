@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
 
 import { SvgProps } from '@/icons/types';
-import { classNames } from '@/utils/classNames';
 
 import styles from './AnimatedRegistrationPattern.module.scss';
 

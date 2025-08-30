@@ -1,5 +1,6 @@
+import { classNames } from '@sc-fam/shared';
+
 import { Typography } from '@/components/Typography';
-import { classNames } from '@/utils/classNames';
 
 import styles from './LineNumbers.module.scss';
 

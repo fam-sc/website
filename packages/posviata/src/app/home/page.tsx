@@ -19,7 +19,7 @@ import { Title } from '@/components/Title';
 import { Route } from './+types/page';
 import styles from './page.module.scss';
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   let requestId: string | undefined;
 
   if (!import.meta.env.DEV) {
@@ -38,11 +38,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     const userAgent = request.headers.get('User-Agent');
 
     try {
-      requestId = await registerCampaignRequest(
-        context.cloudflare.env,
-        referrer,
-        userAgent
-      );
+      requestId = await registerCampaignRequest(referrer, userAgent);
     } catch (error) {
       console.error(error);
     }

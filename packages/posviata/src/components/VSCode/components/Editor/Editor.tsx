@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import React, { Suspense } from 'react';
 
 import { LoadingIndicatorWrapper } from '@/components/LoadingIndicatorWrapper';
-import { classNames } from '@/utils/classNames';
 
 import { TextEditor } from '../TextEditor';
 import { useVSCode } from '../VSCodeContext';

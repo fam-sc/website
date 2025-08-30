@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactNode, Ref, useId } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import styles from './SwiperIndicator.module.scss';
 

@@ -1,12 +1,10 @@
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
 
 import { Typography, TypographyProps } from '../Typography';
 import styles from './ColumnText.module.scss';
 
-type ParagraphProps = PropsMap['p'];
-
-export interface ColumnTextProps extends TypographyProps, ParagraphProps {}
+export interface ColumnTextProps extends TypographyProps, ComponentProps<'p'> {}
 
 export function ColumnText({ className, ...rest }: ColumnTextProps) {
   return (

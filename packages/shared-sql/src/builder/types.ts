@@ -1,4 +1,4 @@
-export type ColumnSimpleType<T> = T extends string
+type ColumnSimpleType<T> = T extends string
   ? 'TEXT'
   : T extends number
     ? 'INTEGER' | 'REAL'

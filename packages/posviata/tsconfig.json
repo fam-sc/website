@@ -23,5 +23,10 @@
   },
   "include": ["**/*", ".react-router/types/**/*", "./.storybook/*"],
   "exclude": ["build"],
-  "references": [{ "path": "../shared" }, { "path": "../shared-vite-plugins" }]
+  "references": [
+    { "path": "../shared" },
+    { "path": "../shared-vite-plugins" },
+    { "path": "../shared-sql" },
+    { "path": "../shared-ui" }
+  ]
 }

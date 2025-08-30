@@ -1,13 +1,10 @@
-import { HTMLAttributes, Ref } from 'react';
-
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
 
 import styles from './IndeterminateCircularProgress.module.scss';
 
 export interface IndeterminateCircularProgressProps
-  extends HTMLAttributes<SVGElement> {
-  ref?: Ref<SVGSVGElement>;
-  className?: string;
+  extends ComponentProps<'svg'> {
   size?: 'sm' | 'md';
 }
 

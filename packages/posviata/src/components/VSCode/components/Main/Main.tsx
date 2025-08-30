@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { FC } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { EditorWrapper } from '../EditorWrapper';
 import { FilesTab } from '../FilesTab';

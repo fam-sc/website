@@ -1,3 +1,4 @@
+import { classNames } from '@sc-fam/shared';
 import React, {
   CSSProperties,
   Key,
@@ -12,7 +13,6 @@ import React, {
 } from 'react';
 
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
-import { classNames } from '@/utils/classNames';
 
 import { List } from '../List';
 import { Typography } from '../Typography';

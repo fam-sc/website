@@ -1,17 +1,14 @@
-import { useCallback } from 'react';
+import { classNames } from '@sc-fam/shared';
+import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
+import { ComponentProps, useCallback } from 'react';
 
 import { useCacheInvalidate } from '@/hooks/useCacheInvalidate';
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 import { imageFileGate } from '@/utils/fileGate';
 
-import { useNotification } from '../Notification';
 import { UploadFileButton } from '../UploadFileButton';
 import styles from './CompactInlineImageDropArea.module.scss';
 
-type DivProps = PropsMap['div'];
-
-export interface CompactInlineImageDropAreaProps extends DivProps {
+export interface CompactInlineImageDropAreaProps extends ComponentProps<'div'> {
   src: string | undefined;
   alt?: string;
 

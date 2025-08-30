@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { joinArray } from '@sc-fam/shared/collections';
+import { ComponentProps } from 'react';
 
 import { ArrowRightIcon } from '@/icons/ArrowRightIcon';
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 
 import { Link } from '../Link';
 import styles from './Breadcrumbs.module.scss';
@@ -12,9 +12,7 @@ export type BreadcrumbItem = {
   href: string;
 };
 
-type NavProps = PropsMap['nav'];
-
-export interface BreadcrumbsProps extends NavProps {
+export interface BreadcrumbsProps extends ComponentProps<'nav'> {
   items: BreadcrumbItem[];
 }
 

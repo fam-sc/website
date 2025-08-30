@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { Link } from 'react-router';
 
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EditIcon } from '@/icons/EditIcon';
-import { classNames } from '@/utils/classNames';
 
 import { Typography } from '../Typography';
 import styles from './ModifyHeader.module.scss';

@@ -1,8 +1,9 @@
-import { PropsMap } from '@/types/react';
+import { ComponentProps } from 'react';
+
 import { resolveSizes } from '@/utils/image/sizes';
 import { ImageInfo, ImageSizes } from '@/utils/image/types';
 
-type ImgProps = PropsMap['img'];
+type ImgProps = ComponentProps<'img'>;
 
 interface ImgPropsWithMultiple extends ImgProps {
   multiple?: ImageInfo[];

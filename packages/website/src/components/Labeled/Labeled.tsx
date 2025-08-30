@@ -1,13 +1,9 @@
-import { ReactNode } from 'react';
-
-import { PropsMap } from '@/types/react';
+import { ComponentProps, ReactNode } from 'react';
 
 import { Typography, TypographyVariant } from '../Typography';
 import styles from './Labeled.module.scss';
 
-type DivProps = PropsMap['div'];
-
-export interface LabeledProps extends DivProps {
+export interface LabeledProps extends ComponentProps<'div'> {
   title: string;
   titleVariant?: TypographyVariant;
   children: ReactNode;

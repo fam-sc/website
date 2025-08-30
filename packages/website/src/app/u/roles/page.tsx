@@ -1,11 +1,11 @@
 import { UserRole } from '@sc-fam/data';
+import { InfiniteScroll } from '@sc-fam/shared-ui';
+import { useNotification } from '@sc-fam/shared-ui';
 import { startTransition, useCallback, useOptimistic } from 'react';
 import { useNavigate } from 'react-router';
 
 import { changeUserRole, getAllUsers } from '@/api/users/client';
 import { useAuthInfo } from '@/auth/context';
-import { InfiniteScroll } from '@/components/InfiniteScroll';
-import { useNotification } from '@/components/Notification';
 import { Title } from '@/components/Title';
 import { UserRoleBoard } from '@/components/UserRoleBoard';
 import { usePageFetcher } from '@/hooks/usePageFetcher';

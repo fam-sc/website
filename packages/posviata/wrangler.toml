@@ -11,6 +11,10 @@ d1_databases = [
   { binding = 'DB', database_name = "website-posyvata", database_id = "80c723b8-5cc6-4ea2-92bf-e406b22b1905", experimental_remote = true }
 ]
 
+r2_buckets = [
+  { binding = 'MEDIA_BUCKET', bucket_name = 'posviata', experimental_remote = true }
+]
+
 [assets]
 not_found_handling = "single-page-application"
 

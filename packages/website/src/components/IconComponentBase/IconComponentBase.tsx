@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactNode } from 'react';
 import React from 'react';
 
-import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
 
 import styles from './IconComponentBase.module.scss';

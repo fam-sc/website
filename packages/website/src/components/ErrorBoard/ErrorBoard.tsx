@@ -1,6 +1,7 @@
+import { classNames } from '@sc-fam/shared';
+
 import { ValidationResult } from '@/hooks/useValidation';
 import { ExclamationIcon } from '@/icons/ExclamationIcon';
-import { classNames } from '@/utils/classNames';
 
 import { Typography } from '../Typography';
 import styles from './ErrorBoard.module.scss';

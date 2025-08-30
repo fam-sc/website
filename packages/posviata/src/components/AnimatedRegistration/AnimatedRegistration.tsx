@@ -1,5 +1,6 @@
+import { classNames } from '@sc-fam/shared';
+
 import { RegistrationClickPlace } from '@/campaign/types';
-import { classNames } from '@/utils/classNames';
 
 import { AnimatedRegistrationPattern } from '../AnimatedRegistrationPattern';
 import { RegistrationButton } from '../RegistrationButton';

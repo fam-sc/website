@@ -1,7 +1,5 @@
-import { ChangeEvent, useCallback, useId } from 'react';
-
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ChangeEvent, ComponentProps, useCallback, useId } from 'react';
 
 import { Typography } from '../Typography';
 import { ScoreSelectAdapter } from './adapter';
@@ -19,7 +17,10 @@ export interface ScoreSelectProps<T> {
 }
 
 interface ScoreChoiceProps
-  extends Pick<PropsMap['input'], 'name' | 'checked' | 'type' | 'disabled'> {
+  extends Pick<
+    ComponentProps<'input'>,
+    'name' | 'checked' | 'type' | 'disabled'
+  > {
   value: number;
   onCheckedChanged: (value: number, state: boolean) => void;
 }

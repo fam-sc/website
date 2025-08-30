@@ -1,7 +1,7 @@
 import { UserRole } from '@sc-fam/data';
+import { classNames } from '@sc-fam/shared';
 
 import { UserInfoWithRole } from '@/api/users/types';
-import { classNames } from '@/utils/classNames';
 
 import { List } from '../List';
 import { UserRoleItem } from '../UserRoleItem';

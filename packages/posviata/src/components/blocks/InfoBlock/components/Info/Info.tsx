@@ -1,10 +1,10 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactNode } from 'react';
 
 import { CalendarIcon } from '@/icons/CalendarIcon';
 import { ClockIcon } from '@/icons/ClockIcon';
 import { LocationIcon } from '@/icons/LocationIcon';
 import { PriceIcon } from '@/icons/PriceIcon/PriceIcon';
-import { classNames } from '@/utils/classNames';
 
 import styles from './Info.module.scss';
 

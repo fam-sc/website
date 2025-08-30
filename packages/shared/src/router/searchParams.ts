@@ -2,11 +2,34 @@ import { isInvalid, Validator } from '../minivalidate';
 import { badRequest } from '../responses';
 import { Middleware, RequestArgs } from './middleware';
 
-type ParamValidator<R = unknown> = Validator<R, string>;
-type SearchParamsInput = Record<string, ParamValidator>;
-type SearchParamsOutput<Input extends SearchParamsInput> = {
-  [K in keyof Input]: Input[K] extends ParamValidator<infer R> ? R : never;
-};
+type OptionalMarker<T> = { __optional: T };
+
+type ParamValidator<R = unknown, Optional extends boolean = false> = Validator<
+  R,
+  string,
+  Optional
+>;
+
+type SearchParamsInput = Record<string, ParamValidator<unknown, boolean>>;
+
+type SelectOptionalKeys<T> = {
+  [K in keyof T]: T[K] extends OptionalMarker<unknown> ? K : never;
+}[keyof T];
+
+type ResolveOptional<T> = Partial<{
+  [K in SelectOptionalKeys<T>]: T[K] extends OptionalMarker<infer R>
+    ? R
+    : never;
+}> &
+  Pick<T, Exclude<keyof T, SelectOptionalKeys<T>>>;
+
+type SearchParamsOutput<Input extends SearchParamsInput> = ResolveOptional<{
+  [K in keyof Input]: Input[K] extends ParamValidator<infer R, infer Optional>
+    ? true extends Optional
+      ? OptionalMarker<R>
+      : R
+    : never;
+}>;
 
 export function searchParams<
   T extends SearchParamsInput,
@@ -22,16 +45,20 @@ export function searchParams<
       const validator = input[key];
 
       const value = searchParams.get(key);
-      if (value === null) {
+
+      if (!validator.isOptional && value === null) {
         return badRequest();
       }
 
-      const result = validator(value);
-      if (isInvalid(result)) {
-        return badRequest();
-      }
+      if (value !== null) {
+        const result = validator(value);
+        if (isInvalid(result)) {
+          return badRequest();
+        }
 
-      output[key] = result as Output[keyof Output];
+        // @ts-expect-error Typescript can't infer that result is the correct type.
+        output[key] = result;
+      }
     }
 
     return output as Output;

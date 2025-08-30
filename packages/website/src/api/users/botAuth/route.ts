@@ -2,7 +2,7 @@ import { Repository, UserRole } from '@sc-fam/data';
 import { unauthorized } from '@sc-fam/shared';
 import { telegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/schema.js';
 import { TelegramBotAuthPayload } from '@sc-fam/shared/api/telegram/auth/types.js';
-import { invalid } from '@sc-fam/shared/minivalidate';
+import { invalid, validator } from '@sc-fam/shared/minivalidate';
 import {
   middlewareHandler,
   searchParams,
@@ -49,7 +49,7 @@ app.post(
   '/users/botAuth',
   middlewareHandler(
     searchParams({
-      type: (input) => (isBotType(input) ? input : invalid()),
+      type: validator((input) => (isBotType(input) ? input : invalid())),
     }),
     zodSchema(telegramBotAuthPayload),
     async ({ request, data: [{ type }, payload], env }) => {

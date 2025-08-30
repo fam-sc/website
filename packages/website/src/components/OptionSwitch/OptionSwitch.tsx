@@ -1,16 +1,15 @@
-import { ReactNode, useId } from 'react';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps, ReactNode, useId } from 'react';
 
-import { PropsMap, WithDataSpace } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { WithDataSpace } from '@/types/react';
 
 import { Typography } from '../Typography';
 import styles from './OptionSwitch.module.scss';
 
 type OptionArray = readonly [string, string] | readonly [number, number];
-type ListProps = PropsMap['ul'];
 
 export interface OptionSwitchProps<Opts extends OptionArray>
-  extends ListProps,
+  extends ComponentProps<'ul'>,
     WithDataSpace<'selected'> {
   options: Opts;
   selected?: Opts[0 | 1];

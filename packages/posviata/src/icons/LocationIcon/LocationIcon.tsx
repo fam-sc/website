@@ -1,7 +1,6 @@
+import { classNames } from '@sc-fam/shared';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { SvgProps } from '../types';
 import styles from './LocationIcon.module.scss';

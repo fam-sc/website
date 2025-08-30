@@ -1,4 +1,4 @@
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
 
 import { InteractiveBbqMap } from '../InteractiveBbqMap';
 import { InteractiveMainMap } from '../InteractiveMainMap';

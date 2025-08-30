@@ -1,11 +1,11 @@
 import { shortenGuid } from '@sc-fam/shared';
+import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { getGroups } from '@/api/groups/client';
 import { Group } from '@/api/groups/types';
 import { useDataLoader } from '@/hooks/useDataLoader';
 
-import { useNotification } from '../Notification';
 import { SearchableSelect } from '../SearchableSelect';
 
 export type GroupSelectProps = {

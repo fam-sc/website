@@ -1,5 +1,6 @@
 import '@/theme/global.scss';
 
+import { NotificationWrapper } from '@sc-fam/shared-ui';
 import {
   isRouteErrorResponse,
   Links,
@@ -16,8 +17,8 @@ import type { UserWithRoleAndAvatar } from '@/api/users/types';
 import { AuthProvider } from '@/auth/context';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
-import { NotificationWrapper } from '@/components/Notification';
 import { TurnstileScript } from '@/components/TurnstileScript';
+import { Typography } from '@/components/Typography';
 import { backgroundColor } from '@/theme';
 import { repository } from '@/utils/repo';
 
@@ -76,7 +77,7 @@ export function Layout({
         <TurnstileScript />
       </head>
       <body>
-        <NotificationWrapper>
+        <NotificationWrapper typography={Typography}>
           <AuthProvider value={{ user }}>
             <Header />
             <main>{children}</main>

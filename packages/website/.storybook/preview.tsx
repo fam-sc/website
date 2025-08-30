@@ -1,9 +1,8 @@
 import '../src/theme/global.scss';
 
+import { NotificationWrapper } from '@sc-fam/shared-ui';
 import type { Preview } from '@storybook/react';
 import { createRoutesStub } from 'react-router';
-
-import { NotificationWrapper } from '@/components/Notification';
 
 const preview: Preview = {
   decorators: [

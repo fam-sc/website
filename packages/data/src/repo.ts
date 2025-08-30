@@ -1,7 +1,13 @@
 import { D1Database, D1Result } from '@sc-fam/shared/cloudflare';
+import { batchHelper, batchWithResultsHelper } from '@sc-fam/shared-sql/batch';
+import {
+  buildCreateTableQuery,
+  DataQueryArray,
+  TableDescriptor,
+} from '@sc-fam/shared-sql/builder';
+import { EntityCollectionClass } from '@sc-fam/shared-sql/collection';
 
 import { AdminBotNewUserMessagesCollection } from './collections/adminBotNewUserMessages';
-import { EntityCollectionClass } from './collections/base';
 import { EventCollection } from './collections/events';
 import { ForgotPasswordCollection } from './collections/forgotPasswords';
 import { GalleryImageCollection } from './collections/galleryImages';
@@ -17,10 +23,6 @@ import { ScheduleLessonCollection } from './collections/scheduleLessons';
 import { ScheduleTeacherCollection } from './collections/scheduleTeachers';
 import { SessionCollection } from './collections/sessions';
 import { UserCollection } from './collections/users';
-import { DataQueryArray } from './sqlite/query';
-import { buildCreateTableQuery } from './sqlite/queryBuilder';
-import { TableDescriptor } from './sqlite/types';
-import { batchHelper, batchWithResultsHelper } from './utils/batch';
 
 const collectionTypes = [
   UserCollection,

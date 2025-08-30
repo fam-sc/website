@@ -1,6 +1,7 @@
+import { classNames } from '@sc-fam/shared';
+
 import { Image } from '@/components/Image';
 import Logo from '@/images/logo.png?w=100!';
-import { classNames } from '@/utils/classNames';
 
 import { HeaderProjectNavigation } from '../HeaderProjectNavigation';
 import styles from './Header.module.scss';

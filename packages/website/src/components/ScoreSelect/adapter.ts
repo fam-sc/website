@@ -1,6 +1,6 @@
-import { PropsMap } from '@/types/react';
+import { ComponentProps } from 'react';
 
-export type InputType = PropsMap['input']['type'];
+export type InputType = ComponentProps<'input'>['type'];
 
 export type ScoreSelectAdapter<T> = {
   inputType: InputType;

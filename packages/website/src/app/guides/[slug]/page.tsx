@@ -1,5 +1,6 @@
 import { UserRole } from '@sc-fam/data';
 import { notFound } from '@sc-fam/shared';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -9,7 +10,6 @@ import { Article } from '@/components/Article';
 import { ConfirmationDialog } from '@/components/ConfirmationDialog';
 import { Image } from '@/components/Image';
 import { ModifyHeader } from '@/components/ModifyHeader';
-import { useNotification } from '@/components/Notification';
 import { RichText } from '@/components/RichText';
 import { sizesToImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';

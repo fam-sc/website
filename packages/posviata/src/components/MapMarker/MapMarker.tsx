@@ -1,5 +1,6 @@
+import { classNames } from '@sc-fam/shared';
+
 import { MapMarkerIcon } from '@/icons/MapMarker';
-import { classNames } from '@/utils/classNames';
 
 import { useMapContext } from '../MapContext';
 import styles from './MapMarker.module.scss';

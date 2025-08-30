@@ -1,6 +1,6 @@
+import { classNames } from '@sc-fam/shared';
 import { useMemo } from 'react';
 
-import { classNames } from '@/utils/classNames';
 import { countLines } from '@/utils/markdown/countLines';
 import { RawMarkdownString } from '@/utils/markdown/types';
 

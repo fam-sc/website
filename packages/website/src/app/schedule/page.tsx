@@ -2,6 +2,7 @@ import { UserRole } from '@sc-fam/data';
 import { shortenGuid } from '@sc-fam/shared';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
 import { MINUTE_MS } from '@sc-fam/shared/chrono';
+import { useNotification } from '@sc-fam/shared-ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -11,7 +12,6 @@ import { Schedule } from '@/api/schedule/types';
 import { useAuthInfo } from '@/auth/context';
 import { Button } from '@/components/Button';
 import { GroupSelect } from '@/components/GroupSelect';
-import { useNotification } from '@/components/Notification';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import { CurrentLesson } from '@/components/schedule/ScheduleGrid';
 import { ScheduleGridLoader } from '@/components/schedule/ScheduleGridLoader';

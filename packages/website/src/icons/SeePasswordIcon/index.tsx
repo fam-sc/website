@@ -1,4 +1,4 @@
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
 
 import { SvgProps } from '../types';
 import styles from './index.module.scss';

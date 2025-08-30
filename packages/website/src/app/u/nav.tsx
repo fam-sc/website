@@ -1,10 +1,10 @@
+import { classNames } from '@sc-fam/shared';
 import { useLocation } from 'react-router';
 
 import { logOut } from '@/api/users/client';
 import { Button } from '@/components/Button';
 import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
-import { classNames } from '@/utils/classNames';
 
 import styles from './nav.module.scss';
 import { TabInfo } from './tabs';

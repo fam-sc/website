@@ -1,6 +1,7 @@
+import { classNames } from '@sc-fam/shared';
+
 import { Typography } from '@/components/Typography';
 import { SearchIcon } from '@/icons/SearchIcon';
-import { classNames } from '@/utils/classNames';
 
 import { useVSCode } from '../VSCodeContext';
 import styles from './HeaderProjectNavigation.module.scss';

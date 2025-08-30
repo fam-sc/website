@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from '../Button';
 import { NotificationType, NotificationWrapper, useNotification } from '.';
 
 function Component({ type }: { type: NotificationType }) {
@@ -8,13 +7,13 @@ function Component({ type }: { type: NotificationType }) {
 
   return (
     <NotificationWrapper>
-      <Button
+      <button
         onClick={() => {
           notification.show('Message', type);
         }}
       >
         Show
-      </Button>
+      </button>
     </NotificationWrapper>
   );
 }

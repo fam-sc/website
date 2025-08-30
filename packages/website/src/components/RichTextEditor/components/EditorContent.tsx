@@ -1,13 +1,13 @@
+import { classNames } from '@sc-fam/shared';
+import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
 import { Editor } from '@tiptap/core';
 import { EditorContent as TiptapEditorContent } from '@tiptap/react';
 import { useCallback } from 'react';
 
-import { classNames } from '@/utils/classNames';
 import { imageFileGate, isAllFilesValid } from '@/utils/fileGate';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
 
 import { FileDrop } from '../../FileDrop';
-import { useNotification } from '../../Notification';
 import richTextStyles from '../../RichText/RichText.module.scss';
 import { ScrollDetect } from '../../ScrollDetect';
 import { Typography } from '../../Typography';

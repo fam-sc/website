@@ -1,4 +1,4 @@
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
 
 import { VarImage, VarImageProps } from '../VarImage';
 import styles from './ImageBlur.module.scss';
