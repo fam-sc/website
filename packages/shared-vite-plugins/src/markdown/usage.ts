@@ -1,6 +1,6 @@
 import { Token, TokensList } from 'marked';
 
-import { MarkdownConfig } from './config';
+import { MarkdownConfig } from './config.js';
 
 type KeySet = Set<keyof MarkdownConfig>;
 

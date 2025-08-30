@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 
 import { Plugin } from 'vite';
 
-import { minifyHTML } from './minify';
+import { minifyHTML } from './minify.js';
 
 const PREFIX = 'sc-fam-text-template-plugin';
 

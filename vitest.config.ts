@@ -24,7 +24,7 @@ export default defineConfig({
           { name: 'utils/reactDomEnv', type: 'tsx' },
           { name: 'utils/apiEnv', type: 'ts' },
           { name: 'api/media/resize', type: 'ts' },
-        ], 'mock')],
+        ], 'mock', './packages/website/src')],
         test: {
           include: ['packages/website/**/*.cftest.ts'],
           name: 'cloudflare',

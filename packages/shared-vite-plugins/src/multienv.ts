@@ -19,7 +19,8 @@ function resolveHost(hostOverride: Host | undefined, mode: string): Host {
 
 export function multienvPlugin(
   virtualModules: VirtualModule[],
-  hostOverride?: Host
+  hostOverride?: Host,
+  baseDir: string = './src'
 ): Plugin {
   let host: Host | undefined;
   let config: ResolvedConfig;
@@ -39,7 +40,8 @@ export function multienvPlugin(
       if (module !== undefined) {
         return path.join(
           config.root,
-          `./src/${module.name}.${host}.${module.type}`
+          baseDir,
+          `${module.name}.${host}.${module.type}`
         );
       }
     },

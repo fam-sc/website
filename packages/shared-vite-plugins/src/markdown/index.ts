@@ -1,11 +1,11 @@
 import { lexer } from 'marked';
 import { Plugin } from 'vite';
 
-import { renderTokenArray } from './renderer';
-import { getTokenArrayConfigUsage } from './usage';
-import { getExports, resolveMaybeTsx } from './utils';
+import { renderTokenArray } from './renderer.js';
+import { getTokenArrayConfigUsage } from './usage.js';
+import { getExports, resolveMaybeTsx } from './utils.js';
 
-export type { MarkdownConfig } from './config';
+export type { MarkdownConfig } from './config.js';
 
 const SUFFIX = '?react';
 

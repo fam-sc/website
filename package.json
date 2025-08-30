@@ -14,7 +14,7 @@
     "test": "vitest --run"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "0.8.60",
+    "@cloudflare/vitest-pool-workers": "0.8.68",
     "@eslint/js": "9.32.0",
     "@testing-library/react": "16.3.0",
     "@types/react": "19.1.10",

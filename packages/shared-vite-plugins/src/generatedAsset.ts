@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { isPromise } from '@sc-fam/shared/typecheck.js';
+import { isPromise } from '@sc-fam/shared';
 import { Plugin, ResolvedConfig } from 'vite';
 
 type FactoryOptions = {
