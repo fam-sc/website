@@ -1,13 +1,12 @@
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
+
 import { CloseIcon } from '@/icons/CloseIcon';
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 
 import { IconButton } from '../IconButton';
 import styles from './DeleteButtonWrapper.module.scss';
 
-type DivProps = PropsMap['div'];
-
-export interface DeleteButtonWrapperProps extends DivProps {
+export interface DeleteButtonWrapperProps extends ComponentProps<'div'> {
   disabled?: boolean;
   onDelete: () => void;
 }

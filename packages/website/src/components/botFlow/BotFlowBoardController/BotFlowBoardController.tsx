@@ -1,5 +1,5 @@
+import { IndeterminateCircularProgress } from '@sc-fam/shared-ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import React from 'react';
 
 import {
   fetchBotFlow,
@@ -8,7 +8,6 @@ import {
 } from '@/api/botFlow/client';
 import { BotFlowWithInMeta } from '@/api/botFlow/types';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { useDataLoader } from '@/hooks/useDataLoader';
 
 import { BotFlowBoard } from '../BotFlowBoard';

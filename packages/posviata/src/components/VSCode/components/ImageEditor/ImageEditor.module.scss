@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+
+  > * {
+    width: 100% !important;
+  }
+
+  img {
+    object-fit: contain;
+    width: 100%;
+  }
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+}

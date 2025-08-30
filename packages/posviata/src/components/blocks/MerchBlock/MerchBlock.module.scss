@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 3em;
+  min-height: auto;
+}
+
+.header {
+  font-size: max(3.5em, 3vw);
+  margin-bottom: 0.5em;
+}
+
+.info {
+  margin-left: 2.75em;
+  margin-top: 1em;
+}
+
+.swiper {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.order {
+  margin-top: 1em;
+  align-self: center;
+
+  font-size: 1.25em;
+}

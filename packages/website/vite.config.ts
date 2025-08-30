@@ -3,14 +3,15 @@ import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { cloudflare } from '@cloudflare/vite-plugin';
 import { manifestPlugin } from './vite-plugins/manifest';
-import { imagePlugin } from './vite-plugins/image';
-import { multienvPlugin } from './vite-plugins/multienv';
-import { templatePlugin } from './vite-plugins/template';
-import { cssNameGenerator } from './vite-plugins/css';
-import { markdownPlugin } from './vite-plugins/markdown';
+import { imagePlugin } from '@sc-fam/shared-vite-plugins/image';
+import { multienvPlugin } from '@sc-fam/shared-vite-plugins/multienv';
+import { templatePlugin } from '@sc-fam/shared-vite-plugins/template';
+import { cssNameGenerator } from '@sc-fam/shared-vite-plugins/css';
+import { markdownPlugin } from '@sc-fam/shared-vite-plugins/markdown';
 
 const isLocal = process.env.LOCAL === '1';
 
+// @ts-ignore
 export default defineConfig((env) => ({
   build: {
     outDir: 'build',
@@ -39,7 +40,11 @@ export default defineConfig((env) => ({
     reactRouter(),
     manifestPlugin(),
     imagePlugin(),
-    multienvPlugin(),
+    multienvPlugin([
+      { name: 'utils/reactDomEnv', type: 'tsx' },
+      { name: 'utils/apiEnv', type: 'ts' },
+      { name: 'api/media/resize', type: 'ts' },
+    ]),
     templatePlugin(),
     tsconfigPaths(),
   ],

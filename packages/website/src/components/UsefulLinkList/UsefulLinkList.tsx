@@ -1,4 +1,5 @@
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+
 import { ImageInfo } from '@/utils/image/types';
 
 import { Image } from '../Image';

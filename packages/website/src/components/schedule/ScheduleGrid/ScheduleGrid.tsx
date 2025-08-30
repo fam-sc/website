@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { timeBreakpoints } from '@sc-fam/shared-schedule';
 import { useMemo } from 'react';
 
 import { Day, DaySchedule, Lesson, Time } from '@/api/schedule/types';
-import { classNames } from '@/utils/classNames';
 
 import { DayMarker } from './DayMarker';
 import styles from './ScheduleGrid.module.scss';

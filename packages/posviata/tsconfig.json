@@ -1,0 +1,32 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext.disposable", "esnext"],
+    "noEmit": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "rootDirs": [".", "./.react-router/types"],
+    "types": ["vite/client", "./worker-configuration.d.ts"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["**/*", ".react-router/types/**/*", "./.storybook/*"],
+  "exclude": ["build"],
+  "references": [
+    { "path": "../shared" },
+    { "path": "../shared-vite-plugins" },
+    { "path": "../shared-sql" },
+    { "path": "../shared-ui" }
+  ]
+}

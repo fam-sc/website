@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { Key, ReactNode, useEffect, useRef } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { SwiperIndicator } from '../SwiperIndicator';
 import { SwiperManager } from './manager';

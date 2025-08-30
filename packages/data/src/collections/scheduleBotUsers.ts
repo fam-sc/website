@@ -1,6 +1,7 @@
-import { TableDescriptor } from '../sqlite/types';
+import { TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { RawScheduleBotUser, ScheduleBotOptions } from '../types';
-import { EntityCollection } from './base';
 
 export class ScheduleBotUserCollection extends EntityCollection<RawScheduleBotUser>(
   'schedule_bot_users'

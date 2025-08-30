@@ -1,10 +1,10 @@
 import { emailRegex } from '@sc-fam/shared/string';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { forgotPassword } from '@/api/users/client';
 import { Button } from '@/components/Button';
-import { useNotification } from '@/components/Notification';
 import { TextInput } from '@/components/TextInput';
 import { TurnstileWidget } from '@/components/TurnstileWidget';
 import { Typography } from '@/components/Typography';

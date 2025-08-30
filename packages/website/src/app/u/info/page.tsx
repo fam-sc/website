@@ -1,3 +1,4 @@
+import { useNotification } from '@sc-fam/shared-ui';
 import { ReactNode, useState } from 'react';
 import { redirect } from 'react-router';
 
@@ -5,7 +6,6 @@ import { getSessionId } from '@/api/auth';
 import { updateUserPersonalInfo } from '@/api/users/client';
 import { Button } from '@/components/Button';
 import { Labeled } from '@/components/Labeled';
-import { useNotification } from '@/components/Notification';
 import { TextInput } from '@/components/TextInput';
 import { Title } from '@/components/Title';
 import { repository } from '@/utils/repo';

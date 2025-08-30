@@ -1,0 +1,23 @@
+.root {
+  font-family: Consolas, sans-serif;
+  padding: 4px;
+
+  &:focus {
+    border: none;
+    outline: none;
+  }
+
+  &::selection {
+    background: #dadada43;
+  }
+}
+
+.node-header,
+.node-bold {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.node-italic {
+  font-style: italic;
+}

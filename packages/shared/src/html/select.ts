@@ -1,14 +1,12 @@
 import { DefaultTreeAdapterTypes } from 'parse5';
 
-import { getAttributeValue } from './attrs';
+import { getAttributeValue } from './attrs.js';
 
 type Node = DefaultTreeAdapterTypes.Node;
 type Element = DefaultTreeAdapterTypes.Element;
 
 function matchClass(value: string, part: string): boolean {
   const parts = value.split(' ');
-
-  console.log(parts);
 
   return parts.includes(part);
 }

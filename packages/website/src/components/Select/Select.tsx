@@ -1,13 +1,10 @@
-import { useCallback, useState } from 'react';
-
-import { PropsMap } from '@/types/react';
+import { ComponentProps, useCallback, useState } from 'react';
 
 import { SelectBase } from '../SelectBase';
 import { Typography } from '../Typography';
 
-type DivProps = PropsMap['div'];
-
-export interface SelectProps<T extends string = string> extends DivProps {
+export interface SelectProps<T extends string = string>
+  extends ComponentProps<'div'> {
   items: { key: T; title: string }[];
   selectedItem?: T;
   placeholder: string;

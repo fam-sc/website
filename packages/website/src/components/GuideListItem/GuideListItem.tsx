@@ -1,10 +1,10 @@
+import { classNames } from '@sc-fam/shared';
 import { RichTextString } from '@sc-fam/shared/richText';
 import { Link } from 'react-router';
 
 import { RichText } from '@/components/RichText';
 import { Typography } from '@/components/Typography';
 import { EventIcon } from '@/icons/EventIcon';
-import { classNames } from '@/utils/classNames';
 import { ImageInfo } from '@/utils/image/types';
 
 import { Image } from '../Image';

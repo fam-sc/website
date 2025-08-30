@@ -1,8 +1,8 @@
+import { classNames } from '@sc-fam/shared';
 import { Dispatch, SetStateAction, useCallback } from 'react';
 
 import { QuestionItem } from '@/services/polls/question';
 import { QuestionAnswer } from '@/services/polls/types';
-import { classNames } from '@/utils/classNames';
 
 import { List } from '../List';
 import { PollQuestion } from '../PollQuestion';

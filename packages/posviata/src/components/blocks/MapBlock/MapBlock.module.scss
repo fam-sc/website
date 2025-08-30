@@ -1,0 +1,12 @@
+@use '../../../theme/breakpoints' as *;
+
+.root {
+  min-height: auto;
+  margin-top: 1.5em;
+}
+
+.header {
+  font-size: min(4em, 10vw);
+
+  margin-bottom: 0.5em;
+}

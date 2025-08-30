@@ -1,18 +1,22 @@
-import { cloneElement, ReactElement, useEffect, useRef, useState } from 'react';
+import { classNames } from '@sc-fam/shared';
+import {
+  cloneElement,
+  ComponentProps,
+  ReactElement,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { addNativeEventListener } from '@/hooks/nativeEventListener';
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
 
 import { Button } from '../Button';
 import { Typography } from '../Typography';
 import styles from './InlineQuestion.module.scss';
 
-type DivProps = PropsMap['div'];
-
 type Position = 'left' | 'right';
 
-export interface InlineQuestionProps extends DivProps {
+export interface InlineQuestionProps extends ComponentProps<'div'> {
   questionText: string;
   position?: Position;
   onAction?: (type: 'yes' | 'no') => void;

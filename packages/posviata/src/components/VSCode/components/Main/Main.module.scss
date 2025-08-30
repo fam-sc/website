@@ -1,0 +1,46 @@
+@use '../../../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+
+  flex-grow: 1;
+  align-items: stretch;
+
+  position: relative;
+
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.editor {
+  flex-grow: 1;
+}
+
+.tab-container {
+  position: relative;
+}
+
+.tab-wrapper {
+  width: 20%;
+  min-width: 20%;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 10;
+
+  > * {
+    flex-grow: 1;
+  }
+
+  @include breakpoint-down('md') {
+    $offset: 38px;
+
+    position: absolute;
+
+    width: calc(100% - $offset);
+    height: 100%;
+
+    margin-left: $offset;
+  }
+}

@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { EditorContext, useEditor } from '@tiptap/react';
 import { Ref, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 
-import { classNames } from '@/utils/classNames';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
 import {
   SerializeResultWithFiles,

@@ -1,0 +1,47 @@
+@use '../../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 1em;
+
+  flex-grow: 1;
+}
+
+.header {
+  margin-top: 0.5em;
+}
+
+.year {
+  margin-top: 1em;
+  font-family: 'Press Start', sans-serif;
+  font-size: max(3em, 2vw);
+  color: var(--color-primary);
+  text-shadow: 2px 2px 0 #e0e01a;
+
+  -webkit-text-stroke: 1px #000;
+}
+
+.countdown {
+  width: 90%;
+  height: 100px;
+
+  margin-top: auto;
+  margin-bottom: auto;
+
+  @include breakpoint-up('md') {
+    width: 70%;
+  }
+}
+
+.form-button {
+  margin: 0 1em;
+  margin-bottom: 3em;
+}

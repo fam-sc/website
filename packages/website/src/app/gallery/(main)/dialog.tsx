@@ -1,3 +1,4 @@
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useEffect, useState } from 'react';
 
 import { deleteGalleryImage, fetchGalleryImage } from '@/api/gallery/client';
@@ -9,7 +10,6 @@ import { IconButton } from '@/components/IconButton';
 import { Image } from '@/components/Image';
 import { InlineQuestion } from '@/components/InlineQuestion';
 import { ModalOverlay } from '@/components/ModalOverlay';
-import { useNotification } from '@/components/Notification';
 import { Typography } from '@/components/Typography';
 import { CloseIcon } from '@/icons/CloseIcon';
 import { DeleteIcon } from '@/icons/DeleteIcon';

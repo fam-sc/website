@@ -1,11 +1,11 @@
 import { ScheduleBotOptions } from '@sc-fam/data';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useState } from 'react';
 
 import { updateScheduleBotOptions } from '@/api/users/client';
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { Labeled } from '@/components/Labeled';
-import { useNotification } from '@/components/Notification';
 import { Switch } from '@/components/Switch';
 import { TimePicker } from '@/components/TimePicker';
 import { parseTimeString, secondsToTime } from '@/utils/time';

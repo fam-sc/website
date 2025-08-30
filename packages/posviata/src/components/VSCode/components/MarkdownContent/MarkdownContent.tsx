@@ -1,0 +1,79 @@
+import { classNames } from '@sc-fam/shared';
+
+import {
+  RawMarkdownNode,
+  RawMarkdownNodeType,
+  RawMarkdownString,
+} from '@/utils/markdown/types';
+
+import styles from './MarkdownContent.module.scss';
+
+export interface MarkdownContentProps {
+  className?: string;
+  text: RawMarkdownString;
+}
+
+interface NodeProps {
+  value: RawMarkdownNode;
+}
+
+function getNodeClassName(type: RawMarkdownNodeType): string | undefined {
+  switch (type) {
+    case RawMarkdownNodeType.BOLD: {
+      return 'node-bold';
+    }
+    case RawMarkdownNodeType.ITALIC: {
+      return 'node-italic';
+    }
+    case RawMarkdownNodeType.HEADER: {
+      return 'node-header';
+    }
+  }
+}
+
+function Node({ value }: NodeProps) {
+  if (typeof value === 'string') {
+    return value;
+  } else if (Array.isArray(value)) {
+    return <NodeFragment values={value} />;
+  } else if (value.type === RawMarkdownNodeType.BREAK_LINE) {
+    return <br />;
+  }
+
+  const className = getNodeClassName(value.type);
+
+  return (
+    <span className={className && styles[className]}>
+      <NodeFragment values={value.children} />
+    </span>
+  );
+}
+
+interface NodeFragmentProps {
+  values: RawMarkdownNode[];
+}
+
+function NodeFragment({ values }: NodeFragmentProps) {
+  return values.map((item, i) => <Node key={i} value={item} />);
+}
+
+function preventListener(event: { preventDefault: () => void }) {
+  event.preventDefault();
+
+  return false;
+}
+
+export function MarkdownContent({ className, text }: MarkdownContentProps) {
+  return (
+    <div
+      className={classNames(styles.root, className)}
+      contentEditable
+      suppressContentEditableWarning
+      spellCheck={false}
+      onBeforeInput={preventListener}
+      onKeyDown={preventListener}
+    >
+      <Node value={text} />
+    </div>
+  );
+}

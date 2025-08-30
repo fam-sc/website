@@ -1,0 +1,18 @@
+.circle {
+  r: 0;
+
+  &-anim {
+    r: 40;
+    animation: 0.5s anim linear;
+  }
+}
+
+@keyframes anim {
+  from {
+    r: 0;
+  }
+
+  to {
+    r: 40;
+  }
+}

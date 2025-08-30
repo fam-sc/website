@@ -1,6 +1,7 @@
-import { TableDescriptor } from '../sqlite/types';
+import { TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { AdminBotNewUserMessage } from '../types/adminBot';
-import { EntityCollection } from './base';
 
 export class AdminBotNewUserMessagesCollection extends EntityCollection<AdminBotNewUserMessage>(
   'admin_bot_new_user_messages'

@@ -1,7 +1,6 @@
+import { classNames } from '@sc-fam/shared';
 import { ComponentProps } from 'react';
 import { Link as RouterLink } from 'react-router';
-
-import { classNames } from '@/utils/classNames';
 
 import { Typography, TypographyProps } from '../Typography';
 import styles from './Link.module.scss';

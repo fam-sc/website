@@ -1,6 +1,7 @@
-import { TableDescriptor } from '../sqlite/types';
+import { TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { RawPollRespondent } from '../types/poll';
-import { EntityCollection } from './base';
 
 export class PollRespondentCollection extends EntityCollection<RawPollRespondent>(
   'poll_respondents'

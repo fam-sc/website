@@ -1,8 +1,7 @@
-import { and, or } from '../sqlite/conditions';
-import { notNull } from '../sqlite/modifier';
-import { TableDescriptor } from '../sqlite/types';
+import { and, notNull, or, TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { RawUser, ShortUser, UserPersonalInfo, UserRole } from '../types/user';
-import { EntityCollection } from './base';
 
 export class UserCollection extends EntityCollection<RawUser>('users') {
   static descriptor(): TableDescriptor<RawUser> {

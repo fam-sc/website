@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactNode } from 'react';
 
 import { useScrollbar } from '@/hooks/useScrollbar';
-import { classNames } from '@/utils/classNames';
 
 import styles from './ModalOverlay.module.scss';
 

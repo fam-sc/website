@@ -1,6 +1,6 @@
+import { classNames } from '@sc-fam/shared';
 import { ChangeEvent } from 'react';
 
-import { classNames } from '@/utils/classNames';
 import { Time } from '@/utils/time';
 
 import styles from './TimePicker.module.scss';

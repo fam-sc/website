@@ -1,7 +1,12 @@
-import { RefObject, useEffect, useId, useImperativeHandle } from 'react';
+import {
+  ComponentProps,
+  RefObject,
+  useEffect,
+  useId,
+  useImperativeHandle,
+} from 'react';
 
 import { Turnstile } from '@/api/turnstile/client';
-import { PropsMap } from '@/types/react';
 
 declare global {
   interface Window {
@@ -14,7 +19,7 @@ export type TurnstileWidgetRefType = {
 };
 
 export interface TurnstileWidgetProps
-  extends Omit<PropsMap['div'], 'id' | 'ref'> {
+  extends Omit<ComponentProps<'div'>, 'id' | 'ref'> {
   ref?: RefObject<TurnstileWidgetRefType | null>;
   onSuccess: (token: string) => void;
 }

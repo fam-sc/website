@@ -1,0 +1,1 @@
+export { PriceIcon } from './PriceIcon';

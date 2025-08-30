@@ -1,0 +1,34 @@
+.content {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  max-height: 100vh;
+
+  object-fit: contain;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.shape {
+  stroke: var(--stroke);
+  fill: transparent;
+  filter: drop-shadow(0 0 3px var(--stroke));
+}
+
+.main-place {
+  --stroke: var(--color-primary);
+}
+
+.wc-place {
+  --stroke: #fff;
+}

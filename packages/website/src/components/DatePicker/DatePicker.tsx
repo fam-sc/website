@@ -1,14 +1,11 @@
+import { classNames } from '@sc-fam/shared';
 import { toLocalISOString } from '@sc-fam/shared/chrono';
-
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { ComponentProps } from 'react';
 
 import styles from './DatePicker.module.scss';
 
-type InputProps = PropsMap['input'];
-
 export interface DatePickerProps
-  extends Omit<InputProps, 'value' | 'min' | 'max'> {
+  extends Omit<ComponentProps<'input'>, 'value' | 'min' | 'max'> {
   type?: 'date' | 'datetime-local';
   value?: string | Date;
   min?: string | Date;

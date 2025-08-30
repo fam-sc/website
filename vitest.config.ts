@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 import { defineWorkersProject } from "@cloudflare/vitest-pool-workers/config";
 
-import { multienvPlugin } from './packages/website/vite-plugins/multienv';
+import { multienvPlugin } from './packages/shared-vite-plugins/src/multienv';
 
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { loadEnv } from 'vite';
@@ -20,7 +20,11 @@ export default defineConfig({
     },
     projects: [
       defineWorkersProject({
-        plugins: [multienvPlugin('mock')],
+        plugins: [multienvPlugin([
+          { name: 'utils/reactDomEnv', type: 'tsx' },
+          { name: 'utils/apiEnv', type: 'ts' },
+          { name: 'api/media/resize', type: 'ts' },
+        ], 'mock', './packages/website/src')],
         test: {
           include: ['packages/website/**/*.cftest.ts'],
           name: 'cloudflare',

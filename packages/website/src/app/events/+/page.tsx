@@ -1,6 +1,7 @@
 import { EventStatus, Repository } from '@sc-fam/data';
 import { parseInt } from '@sc-fam/shared';
 import { richTextToHtml } from '@sc-fam/shared/richText';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useRef, useState } from 'react';
 import { redirect, useNavigate } from 'react-router';
 
@@ -12,7 +13,6 @@ import { ErrorBoard } from '@/components/ErrorBoard';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { Labeled } from '@/components/Labeled';
 import { LazyRichTextEditor } from '@/components/LazyRichTextEditor';
-import { useNotification } from '@/components/Notification';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import type { RichTextEditorRef } from '@/components/RichTextEditor';
 import { SlugInput } from '@/components/SlugInput';

@@ -1,8 +1,8 @@
+import { IndeterminateCircularProgress } from '@sc-fam/shared-ui';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { finishSignUp } from '@/api/users/client';
-import { IndeterminateCircularProgress } from '@/components/IndeterminateCircularProgress';
 import { LinkButton } from '@/components/LinkButton';
 import { Typography } from '@/components/Typography';
 

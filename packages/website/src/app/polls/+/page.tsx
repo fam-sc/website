@@ -1,3 +1,4 @@
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -5,7 +6,6 @@ import { addPoll } from '@/api/polls/client';
 import { AddPollPayload } from '@/api/polls/types';
 import { Button } from '@/components/Button';
 import { Labeled } from '@/components/Labeled';
-import { useNotification } from '@/components/Notification';
 import { PollBuilder } from '@/components/PollBuilder';
 import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';

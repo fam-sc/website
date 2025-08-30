@@ -1,5 +1,6 @@
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
+
 import { imageFileGate } from '@/utils/fileGate';
 
 import { BaseFileDropArea } from '../BaseFileDropArea';
@@ -8,9 +9,7 @@ import { ImageBlur } from '../ImageBlur';
 import { VarImageType } from '../VarImage';
 import styles from './InlineImageDropArea.module.scss';
 
-type DivProps = PropsMap['div'];
-
-export interface InlineImageDropAreaProps extends DivProps {
+export interface InlineImageDropAreaProps extends ComponentProps<'div'> {
   disabled?: boolean;
   image?: VarImageType;
   onFile: (file: File | undefined) => void;

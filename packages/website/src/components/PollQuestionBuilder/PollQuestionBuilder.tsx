@@ -1,3 +1,4 @@
+import { classNames } from '@sc-fam/shared';
 import { FC, RefObject, useCallback } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
@@ -7,7 +8,6 @@ import {
   QuestionDescriptorContent,
   QuestionType,
 } from '@/services/polls/types';
-import { classNames } from '@/utils/classNames';
 
 import { DragHandle } from '../DragHandle';
 import { IconButton } from '../IconButton';

@@ -1,6 +1,6 @@
+import { classNames } from '@sc-fam/shared';
 import React, { Attributes, ReactNode } from 'react';
 
-import { classNames } from '@/utils/classNames';
 import { impersonatedComponent } from '@/utils/impersonation';
 
 import styles from './Typography.module.scss';

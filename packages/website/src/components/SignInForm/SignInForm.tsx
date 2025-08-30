@@ -1,4 +1,5 @@
 import { emailRegex } from '@sc-fam/shared/string';
+import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
 import { ReactNode, useState } from 'react';
 
 import { signIn } from '@/api/users/client';
@@ -11,7 +12,6 @@ import { useTurnstile } from '@/hooks/useTurnstile';
 
 import { Labeled } from '../Labeled';
 import { Link } from '../Link';
-import { useNotification } from '../Notification';
 import { TurnstileWidget } from '../TurnstileWidget';
 import styles from './SignInForm.module.scss';
 

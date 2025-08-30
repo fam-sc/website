@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@sc-fam/shared": "workspace:*",
+    "@sc-fam/shared-sql": "workspace:*",
     "typescript": "5.8.3"
   }
 }

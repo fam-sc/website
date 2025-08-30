@@ -1,9 +1,9 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactElement, ReactNode, useId } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
-import { classNames } from '@/utils/classNames';
 
 import { IconButton } from '../IconButton';
 import { ModalOverlay, ModalOverlayEffect } from '../ModalOverlay';

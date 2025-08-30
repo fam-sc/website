@@ -1,0 +1,51 @@
+@use '../../../../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+
+  font-family: 'Press Start', sans-serif;
+}
+
+.part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+}
+
+.main {
+  font-size: max(2em, 4vw);
+  text-shadow: 2px 2px 0 #aaa;
+
+  -webkit-text-stroke: 1px #000;
+}
+
+.measure {
+  font-size: min(1em, 3vw);
+
+  text-shadow: 1px 1px 0 #000;
+
+  @include breakpoint-up('md') {
+    text-shadow: 2px 2px 0 #000;
+  }
+}
+
+.timing {
+  position: relative;
+
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  > * {
+    text-align: center;
+  }
+}
+
+.text {
+  flex-grow: 1;
+}

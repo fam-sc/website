@@ -1,6 +1,6 @@
 import { isUserRole, Repository, UserRole } from '@sc-fam/data';
 import { badRequest, notFound, parseInt, unauthorized } from '@sc-fam/shared';
-import { invalid } from '@sc-fam/shared/minivalidate';
+import { invalid, validator } from '@sc-fam/shared/minivalidate';
 import {
   int,
   middlewareHandler,
@@ -17,11 +17,11 @@ app.post(
   middlewareHandler(
     params({ id: int(badRequest) }),
     searchParams({
-      value: (input) => {
+      value: validator((input) => {
         const int = parseInt(input);
 
         return int !== undefined && isUserRole(int) ? int : invalid();
-      },
+      }),
     }),
     auth({ minRole: UserRole.GROUP_HEAD, get: userWithRoleGetter }),
     async ({

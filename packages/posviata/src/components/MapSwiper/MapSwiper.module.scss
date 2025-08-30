@@ -1,0 +1,24 @@
+.root {
+  overflow: hidden;
+}
+
+.strip {
+  will-change: transform;
+
+  display: flex;
+  align-items: stretch;
+  width: auto;
+
+  transform: translate3d(calc(var(--slide) * (-100vw)), 0, 0);
+  transition: transform 0.25s ease-in;
+}
+
+.slide {
+  width: 100vw;
+  min-width: 100vw;
+  max-height: 100vh;
+
+  > * {
+    margin: 0 1em;
+  }
+}

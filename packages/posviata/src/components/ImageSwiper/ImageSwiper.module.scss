@@ -1,0 +1,81 @@
+@use '../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+  gap: 0.5em;
+}
+
+.swiper {
+  flex-grow: 1;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+
+  border-radius: 1em;
+  padding: 0 0.5em;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+
+    border-radius: 1em;
+    user-select: none;
+
+    box-shadow: 0 0 2px #000;
+  }
+}
+
+.nav-button {
+  --color: #fff;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  display: none;
+  background: none;
+  appearance: none;
+  outline: none;
+  border: none;
+
+  font-family: 'Murs Gothic', sans-serif;
+  font-weight: 700;
+
+  border-radius: 100%;
+  transform-origin: 50% 50%;
+
+  align-self: center;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:disabled {
+    transform: scale(0);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.8);
+  }
+
+  &:hover:not(:disabled) {
+    --color: #dbdbdb;
+  }
+
+  @include breakpoint-up('md') {
+    display: flex;
+  }
+
+  svg {
+    min-width: 2em;
+    min-height: 2em;
+
+    fill: var(--color);
+  }
+}

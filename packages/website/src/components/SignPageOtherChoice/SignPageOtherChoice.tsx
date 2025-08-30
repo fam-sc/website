@@ -1,13 +1,11 @@
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
 
 import { LinkButton } from '../LinkButton';
 import { Typography } from '../Typography';
 import styles from './SignPageOtherChoice.module.scss';
 
-type DivProps = PropsMap['div'];
-
-export interface SignPageOtherChoiceProps extends DivProps {
+export interface SignPageOtherChoiceProps extends ComponentProps<'div'> {
   title: string;
   href: string;
   action: string;

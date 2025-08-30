@@ -1,0 +1,19 @@
+@use '../../../theme/breakpoints' as *;
+
+.root {
+  min-height: auto;
+  margin-top: 2em;
+}
+
+.title {
+  font-size: min(3.5em, 12vw);
+  margin-bottom: 0.5em;
+}
+
+.swiper {
+  margin: 1em 0;
+
+  @include breakpoint-up('md') {
+    margin: 1em 4em;
+  }
+}

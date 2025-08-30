@@ -1,7 +1,7 @@
-import { DataQuery } from '../sqlite/query';
-import { TableDescriptor } from '../sqlite/types';
+import { DataQuery, TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { Group } from '../types/common';
-import { EntityCollection } from './base';
 
 export class GroupCollection extends EntityCollection<Group>('groups') {
   static descriptor(): TableDescriptor<Group> {

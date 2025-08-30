@@ -1,0 +1,35 @@
+@use '../../theme/typography' as *;
+
+$fonts: (
+  murs-gothic: 'Murs Gothic',
+  press-start: 'Press Start',
+);
+
+.root {
+  &-has-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+
+    svg {
+      fill: currentColor;
+    }
+  }
+
+  @each $name, $value in $fonts {
+    &-font-#{$name} {
+      font-family: $value;
+    }
+  }
+
+  @each $variant, $options in $variants {
+    &-variant-#{$variant} {
+      @include variant-body($options);
+    }
+  }
+
+  &-weight-bold {
+    font-weight: 700 !important;
+  }
+}

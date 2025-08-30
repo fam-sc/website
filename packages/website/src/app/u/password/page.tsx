@@ -1,3 +1,4 @@
+import { useNotification } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 
 import { ApiError } from '@/api/error';
@@ -5,7 +6,6 @@ import { ApiErrorCode } from '@/api/errorCodes';
 import { changePassword } from '@/api/users/client';
 import { Button } from '@/components/Button';
 import { ErrorBoard } from '@/components/ErrorBoard';
-import { useNotification } from '@/components/Notification';
 import { PasswordInput } from '@/components/PasswordInput';
 import { Title } from '@/components/Title';
 

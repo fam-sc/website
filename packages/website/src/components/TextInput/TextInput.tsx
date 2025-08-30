@@ -1,16 +1,12 @@
-import { ReactNode, Ref } from 'react';
-
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps, ReactNode, Ref } from 'react';
 
 import { Typography } from '../Typography';
 import styles from './TextInput.module.scss';
 
-type InputProps = PropsMap['input'];
-
 export type TextInputVariant = 'bordered' | 'underline';
 
-export interface TextInputProps extends InputProps {
+export interface TextInputProps extends ComponentProps<'input'> {
   error?: string | boolean;
   endContent?: ReactNode;
   type?: 'text' | 'password' | 'email' | 'tel';

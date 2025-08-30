@@ -1,0 +1,30 @@
+{
+  "name": "@sc-fam/shared-sql",
+  "packageManager": "yarn@4.9.2",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@sc-fam/shared": "workspace:*",
+    "typescript": "5.8.3"
+  },
+  "exports": {
+    "./repo": {
+      "import": "./dist/repo.js",
+      "types": "./dist/repo.d.ts"
+    },
+    "./builder": {
+      "import": "./dist/builder/index.js",
+      "types": "./dist/builder/index.d.ts"
+    },
+    "./collection": {
+      "import": "./dist/collection.js",
+      "types": "./dist/collection.d.ts"
+    },
+    "./batch": {
+      "import": "./dist/batch.js",
+      "types": "./dist/batch.d.ts"
+    }
+  }
+}

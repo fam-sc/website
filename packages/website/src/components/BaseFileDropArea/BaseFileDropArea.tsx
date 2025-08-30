@@ -1,17 +1,17 @@
 // Base unstyled (only functional) building block for file drop areas.
 
-import { useCallback } from 'react';
+import { ComponentProps, useCallback } from 'react';
 
-import { PropsMap, WithDataSpace } from '@/types/react';
+import { WithDataSpace } from '@/types/react';
 import { FileGate, isAllFilesValid } from '@/utils/fileGate';
 
 import { FileDrop } from '../FileDrop';
 import { Typography } from '../Typography';
 import { UploadFileButton } from '../UploadFileButton';
 
-type DivProps = PropsMap['div'];
-
-export interface BaseFileDropAreaProps extends DivProps, WithDataSpace<'over'> {
+export interface BaseFileDropAreaProps
+  extends ComponentProps<'div'>,
+    WithDataSpace<'over'> {
   disabled?: boolean;
   accept?: FileGate;
 

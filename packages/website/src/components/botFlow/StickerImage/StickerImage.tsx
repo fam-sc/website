@@ -1,6 +1,7 @@
+import { classNames } from '@sc-fam/shared';
+
 import { getMediaFileUrl } from '@/api/media';
 import { Image, ImageProps } from '@/components/Image';
-import { classNames } from '@/utils/classNames';
 
 import styles from './StickerImage.module.scss';
 

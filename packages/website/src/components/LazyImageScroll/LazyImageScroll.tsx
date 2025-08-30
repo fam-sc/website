@@ -1,11 +1,11 @@
+import { InfiniteScroll } from '@sc-fam/shared-ui';
+import { useNotification } from '@sc-fam/shared-ui/src/components/Notification';
 import { useCallback } from 'react';
 
 import { usePageFetcher } from '@/hooks/usePageFetcher';
 import { ImageInfo, ImageSizes } from '@/utils/image/types';
 
-import { InfiniteScroll } from '../InfiniteScroll';
 import { List } from '../List';
-import { useNotification } from '../Notification';
 import { VarImage } from '../VarImage';
 import styles from './LazyImageScroll.module.scss';
 

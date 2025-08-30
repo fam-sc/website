@@ -1,10 +1,10 @@
+import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { submitPoll } from '@/api/polls/client';
 import type { Poll } from '@/api/polls/types';
 import { Button } from '@/components/Button';
-import { useNotification } from '@/components/Notification';
 import { PollQuestionList } from '@/components/PollQuestionList';
 import { getEmptyAnswer, isAnswerValid } from '@/services/polls/answer';
 import { apiQuestionToItem } from '@/services/polls/question';

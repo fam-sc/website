@@ -1,0 +1,38 @@
+.root {
+  circle {
+    fill: none;
+    stroke: #fff;
+    stroke: 0.5;
+    opacity: 0.3;
+  }
+}
+
+.hex {
+  fill: none;
+  stroke: #e7e7e7;
+  stroke-width: 2;
+}
+
+.hex-group {
+  will-change: transform;
+  transform-origin: 50% 50%;
+
+  &-spin {
+    animation: 9s hex-anim linear infinite;
+  }
+
+  > g {
+    transform: scale(calc(1 + var(--i) * 0.025));
+    transform-origin: 50% 50%;
+  }
+
+  @keyframes hex-anim {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

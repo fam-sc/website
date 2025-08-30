@@ -1,13 +1,13 @@
 import { UserRole } from '@sc-fam/data';
 import { notFound } from '@sc-fam/shared';
 import { formatDateTime } from '@sc-fam/shared/chrono';
+import { useNotification } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 import { redirect } from 'react-router';
 
 import { getSessionId } from '@/api/auth';
 import { closePoll } from '@/api/polls/client';
 import { Button } from '@/components/Button';
-import { useNotification } from '@/components/Notification';
 import { Prefixed } from '@/components/Prefixed';
 import { Tab } from '@/components/Tab';
 import { Tabs } from '@/components/Tabs';

@@ -1,18 +1,16 @@
-import { PropsMap } from '@/types/react';
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+import { ComponentProps } from 'react';
 
 import { Typography } from '../Typography';
 import styles from './Table.module.scss';
 
-type BaseTableProps = PropsMap['table'];
-
-export interface TableProps extends BaseTableProps {
+export interface TableProps extends ComponentProps<'table'> {
   numbered?: boolean;
   columns: string[];
   data: string[][];
 }
 
-function Th(props: PropsMap['th']) {
+function Th(props: ComponentProps<'th'>) {
   return <Typography as="th" {...props} />;
 }
 

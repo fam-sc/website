@@ -1,4 +1,5 @@
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
+
 import { FileGate } from '@/utils/fileGate';
 
 import { BaseFileDropArea } from '../BaseFileDropArea';

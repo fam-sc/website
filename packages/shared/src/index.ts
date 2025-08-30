@@ -1,3 +1,4 @@
+export { classNames } from './classNames.js';
 export { CookieInfo, getCookieValue, setCookie } from './cookies.js';
 export { getDataUrlContent } from './dataUrl.js';
 export { createDebouncer } from './debouncer.js';

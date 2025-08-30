@@ -1,6 +1,5 @@
 import { EventStatus } from '@sc-fam/data';
-
-import { classNames } from '@/utils/classNames';
+import { classNames } from '@sc-fam/shared';
 
 import { Typography } from '../Typography';
 import styles from './EventStatusMarker.module.scss';

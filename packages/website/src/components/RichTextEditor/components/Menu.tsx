@@ -1,3 +1,4 @@
+import { classNames } from '@sc-fam/shared';
 import { Editor } from '@tiptap/core';
 import { useEditorState } from '@tiptap/react';
 
@@ -8,7 +9,6 @@ import { ItalicIcon } from '@/icons/ItalicIcon';
 import { StrikeIcon } from '@/icons/StrikeIcon';
 import { SubscriptIcon } from '@/icons/SubscriptIcon';
 import { UnderlineIcon } from '@/icons/UnderlineIcon';
-import { classNames } from '@/utils/classNames';
 import { ObjectUrlManager } from '@/utils/objectUrlManager';
 
 import { alignments, headerLevels } from '../types';

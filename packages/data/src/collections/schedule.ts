@@ -1,5 +1,6 @@
-import { DataQuery, query } from '../sqlite/query';
-import { TableDescriptor } from '../sqlite/types';
+import { DataQuery, query, TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import {
   Day,
   DaySchedule,
@@ -11,7 +12,6 @@ import {
   ScheduleWeek,
   ScheduleWithTeachers,
 } from '../types/schedule';
-import { EntityCollection } from './base';
 import { ScheduleLessonCollection } from './scheduleLessons';
 
 function splitToWeeks<Input extends RawLesson, T>(

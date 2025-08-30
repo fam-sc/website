@@ -1,0 +1,25 @@
+@use '../../../theme/breakpoints' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+
+  margin: 3em 12px;
+
+  min-height: auto;
+  align-items: stretch;
+
+  @include breakpoint-up('md') {
+    align-items: center;
+  }
+}
+
+.header {
+  font-size: 3em;
+}
+
+.info {
+  @include breakpoint-up('md') {
+    width: 80%;
+  }
+}

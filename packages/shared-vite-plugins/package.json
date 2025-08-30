@@ -1,0 +1,46 @@
+{
+  "name": "@sc-fam/shared-vite-plugins",
+  "packageManager": "yarn@4.9.2",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "24.2.1",
+    "@types/react": "19.1.10",
+    "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "@sc-fam/shared": "workspace:*",
+    "marked": "16.1.2",
+    "react": "19.1.1",
+    "sharp": "0.34.3",
+    "vite": "7.1.3"
+  },
+  "exports": {
+    "./css": {
+      "import": "./dist/css.js",
+      "types": "./dist/css.d.ts"
+    },
+    "./template": {
+      "import": "./dist/template/index.js",
+      "types": "./dist/template/index.d.ts"
+    },
+    "./image": {
+      "import": "./dist/image/index.js",
+      "types": "./dist/image/index.d.ts"
+    },
+    "./markdown": {
+      "import": "./dist/markdown/index.js",
+      "types": "./dist/markdown/index.d.ts"
+    },
+    "./generatedAsset": {
+      "import": "./dist/generatedAsset.js",
+      "types": "./dist/generatedAsset.d.ts"
+    },
+    "./multienv": {
+      "import": "./dist/multienv.js",
+      "types": "./dist/multienv.d.ts"
+    }
+  }
+}

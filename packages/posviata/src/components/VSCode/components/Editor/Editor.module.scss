@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+  border-bottom-right-radius: inherit;
+
+  > * {
+    flex-grow: 1;
+    border-bottom-right-radius: inherit;
+  }
+}

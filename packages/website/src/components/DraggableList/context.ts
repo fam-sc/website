@@ -1,7 +1,6 @@
 import { Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/dist/types/types';
+import { contextUseFactory } from '@sc-fam/shared-ui';
 import React from 'react';
-
-import { contextUseFactory } from '@/utils/react/contextFactory';
 
 export type ListContextValue = {
   getListLength: () => number;

@@ -1,6 +1,5 @@
+import { classNames } from '@sc-fam/shared';
 import { ReactNode } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import styles from './SignPageLayout.module.scss';
 

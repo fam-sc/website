@@ -1,7 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { RefObject, useCallback, useLayoutEffect, useRef } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
-import { classNames } from '@/utils/classNames';
 
 import { IconButton } from '../IconButton';
 import { TextInput } from '../TextInput';

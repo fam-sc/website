@@ -1,8 +1,7 @@
+import { classNames } from '@sc-fam/shared';
 import { ChainedCommands, Editor } from '@tiptap/core';
 import { useCurrentEditor } from '@tiptap/react';
 import { ReactNode, useCallback } from 'react';
-
-import { classNames } from '@/utils/classNames';
 
 import { IconButton } from '../../IconButton';
 import styles from './ToggleButton.module.scss';

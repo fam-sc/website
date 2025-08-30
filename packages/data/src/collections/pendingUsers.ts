@@ -1,6 +1,7 @@
-import { TableDescriptor } from '../sqlite/types';
+import { TableDescriptor } from '@sc-fam/shared-sql/builder';
+import { EntityCollection } from '@sc-fam/shared-sql/collection';
+
 import { PendingUser } from '../types/user';
-import { EntityCollection } from './base';
 
 export class PendingUserCollection extends EntityCollection<PendingUser>(
   'pending_users'
