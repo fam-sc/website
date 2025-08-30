@@ -41,7 +41,7 @@ export function ExportScheduleForm({
   const [startDate, setStartDate] = useState(
     dateParser(options.initialStartDate)
   );
-  const [endDate, setEndDate] = useState(dateParser(options.initialStartDate));
+  const [endDate, setEndDate] = useState(dateParser(options.initialEndDate));
 
   const selectedColor = useMemo(
     () => ({ id: colorId, ...options.colors[colorId] }),
