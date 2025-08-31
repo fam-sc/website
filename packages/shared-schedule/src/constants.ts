@@ -1,5 +1,5 @@
-// 90 minutes in milliseconds
-export const LESSON_DURATION = 90 * 60 * 1000;
+// 95 minutes in milliseconds
+export const LESSON_DURATION = 95 * 60 * 1000;
 
 export const timeBreakpoints = [
   '08:30',

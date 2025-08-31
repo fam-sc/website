@@ -11,7 +11,6 @@ import {
   HOUR_MS,
   MINUTE_MS,
   parseTime,
-  toLocalISOString,
   WEEK_MS,
 } from '@sc-fam/shared/chrono';
 import {
@@ -61,6 +60,8 @@ async function exportLesson(
   const startDate = getLessonDateFromTiming(options.startDate, timing);
   const endDate = new Date(startDate.getTime() + LESSON_DURATION);
 
+  console.log(startDate.toISOString());
+
   const { place } = lesson;
 
   await addEvent(
@@ -68,11 +69,11 @@ async function exportLesson(
     { calendarId: options.calendarId, sendUpdates: 'all' },
     {
       start: {
-        dateTime: toLocalISOString(startDate),
+        dateTime: startDate.toISOString(),
         timeZone: TIME_ZONE,
       },
       end: {
-        dateTime: toLocalISOString(endDate),
+        dateTime: endDate.toISOString(),
         timeZone: TIME_ZONE,
       },
       summary: lesson.name,
