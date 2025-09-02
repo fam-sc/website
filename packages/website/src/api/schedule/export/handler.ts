@@ -1,3 +1,4 @@
+import { rateLimitOnFetch } from '@sc-fam/shared';
 import {
   addCalendar,
   addCalendarList,
@@ -8,9 +9,11 @@ import {
 import {
   alignDateByWeek,
   DAY_MS,
+  getTimeZoneOffset,
   HOUR_MS,
   MINUTE_MS,
   parseTime,
+  toLocalISOString,
   WEEK_MS,
 } from '@sc-fam/shared/chrono';
 import {
@@ -38,9 +41,14 @@ type ExportLessonOptions = {
   calendarId: string;
   startDate: Date;
   reccurence: string[];
+  offset: number;
 };
 
-export function getLessonDateFromTiming(startDate: Date, timing: LessonTiming) {
+export function getLessonDateFromTiming(
+  startDate: Date,
+  timing: LessonTiming,
+  offset: number
+) {
   const { hour, minute } = parseTime(timing.time);
 
   let alignedDate = alignDateByWeek(startDate);
@@ -49,40 +57,47 @@ export function getLessonDateFromTiming(startDate: Date, timing: LessonTiming) {
   alignedDate += hour * HOUR_MS;
   alignedDate += minute * MINUTE_MS;
 
+  alignedDate -= offset;
+
   return new Date(alignedDate);
 }
 
-async function exportLesson(
+function exportLesson(
   lesson: Lesson,
   timing: LessonTiming,
   options: ExportLessonOptions
 ) {
-  const startDate = getLessonDateFromTiming(options.startDate, timing);
-  const endDate = new Date(startDate.getTime() + LESSON_DURATION);
+  const startDate = getLessonDateFromTiming(
+    options.startDate,
+    timing,
+    options.offset
+  );
 
-  console.log(startDate.toISOString());
+  const endDate = new Date(startDate.getTime() + LESSON_DURATION);
 
   const { place } = lesson;
 
-  await addEvent(
-    options.access,
-    { calendarId: options.calendarId, sendUpdates: 'all' },
-    {
-      start: {
-        dateTime: startDate.toISOString(),
-        timeZone: TIME_ZONE,
-      },
-      end: {
-        dateTime: endDate.toISOString(),
-        timeZone: TIME_ZONE,
-      },
-      summary: lesson.name,
-      eventType: 'default',
-      visibility: 'default',
-      location: place.length > 0 ? place : undefined,
-      description: createLessonDescription(lesson),
-      recurrence: options.reccurence,
-    }
+  return rateLimitOnFetch(() =>
+    addEvent(
+      options.access,
+      { calendarId: options.calendarId, sendUpdates: 'all' },
+      {
+        start: {
+          dateTime: toLocalISOString(startDate),
+          timeZone: TIME_ZONE,
+        },
+        end: {
+          dateTime: toLocalISOString(endDate),
+          timeZone: TIME_ZONE,
+        },
+        summary: lesson.name,
+        eventType: 'default',
+        visibility: 'default',
+        location: place.length > 0 ? place : undefined,
+        description: createLessonDescription(lesson),
+        recurrence: options.reccurence,
+      }
+    )
   );
 }
 
@@ -112,28 +127,33 @@ export async function exportScheduleToGoogleCalendar(
     const until = formatDateToReccurenceRuleDate(new Date(payload.endDate));
     const reccurenceRule = `RRULE:FREQ=WEEKLY;INTERVAL=2;UNTIL=${until}`;
 
+    const startDate = new Date(payload.startDate);
+
     const options: ExportLessonOptions = {
       access,
       calendarId: calendar.id,
-      startDate: new Date(payload.startDate),
+      startDate,
       reccurence: [reccurenceRule],
+      offset: getTimeZoneOffset(startDate, 'Europe/Kiev'),
     };
 
-    let weekIndex = 1;
+    const jobs = schedule.weeks
+      .entries()
+      .map(([weekIndex, week]) =>
+        week.map(({ day, lessons }) =>
+          lessons.map((lesson) =>
+            exportLesson(
+              lesson,
+              { week: weekIndex, day, time: lesson.time },
+              options
+            )
+          )
+        )
+      )
+      .toArray()
+      .flat(2);
 
-    for (const week of schedule.weeks) {
-      for (const { day, lessons } of week) {
-        for (const lesson of lessons) {
-          await exportLesson(
-            lesson,
-            { week: weekIndex, day, time: lesson.time },
-            options
-          );
-        }
-      }
-
-      weekIndex += 1;
-    }
+    await Promise.all(jobs);
   } catch (error: unknown) {
     if (calendar) {
       // Try to cleanup after error.

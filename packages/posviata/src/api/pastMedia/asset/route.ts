@@ -9,11 +9,8 @@ app.get('/past-media/asset', async (request, { env }) => {
     return badRequest({ message: 'No path' });
   }
 
-  console.log(path);
-
   const object = await env.MEDIA_BUCKET.get(path);
   if (object === null) {
-    console.log('not-found');
     return notFound();
   }
 

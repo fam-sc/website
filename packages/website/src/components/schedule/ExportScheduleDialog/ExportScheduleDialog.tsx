@@ -84,10 +84,13 @@ type StepName = keyof typeof steps;
 
 function runTokenFlow(): Promise<GoogleOAuth2TokenResponse> {
   return new Promise((resolve) => {
+    const scope =
+      'https://www.googleapis.com/auth/calendar.calendarlist https://www.googleapis.com/auth/calendar.app.created';
+
     if (import.meta.env.VITE_HOST === 'cf') {
       const client = window.google.accounts.oauth2.initTokenClient({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        scope: 'https://www.googleapis.com/auth/calendar',
+        scope,
         callback: resolve,
       });
 
@@ -98,7 +101,7 @@ function runTokenFlow(): Promise<GoogleOAuth2TokenResponse> {
         resolve({
           access_token: import.meta.env.VITE_TEST_GOOGLE_TOKEN ?? '',
           expires_in: 0,
-          scope: 'https://www.googleapis.com/auth/calendar',
+          scope,
           token_type: 'Bearer',
         });
       }, 1000);

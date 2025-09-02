@@ -1,3 +1,5 @@
+import { FetchError } from './error.js';
+
 export type ExtendedRequestInit =
   | (RequestInit & { json?: false })
   | (Omit<RequestInit, 'body'> & {
@@ -6,14 +8,17 @@ export type ExtendedRequestInit =
     });
 
 async function createErrorResponse(response: Response): Promise<Error> {
-  const { statusText: status } = response;
+  const { statusText, status } = response;
 
   try {
     const text = await response.text();
 
-    return new Error(text.length > 0 ? `${status}: ${text}` : status);
+    return new FetchError(
+      text.length > 0 ? `${statusText}: ${text}` : statusText,
+      status
+    );
   } catch {
-    return new Error(status);
+    return new FetchError(statusText, status);
   }
 }
 

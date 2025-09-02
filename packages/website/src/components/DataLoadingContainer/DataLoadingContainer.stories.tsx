@@ -1,7 +1,7 @@
+import { delay } from '@sc-fam/shared';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { useDataLoader } from '@/hooks/useDataLoader';
-import { delay } from '@/utils/delay';
 
 import { DataLoadingContainer } from '.';
 

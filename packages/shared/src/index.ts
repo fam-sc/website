@@ -2,15 +2,9 @@ export { classNames } from './classNames.js';
 export { CookieInfo, getCookieValue, setCookie } from './cookies.js';
 export { getDataUrlContent } from './dataUrl.js';
 export { createDebouncer } from './debouncer.js';
+export * from './delay.js';
 export { getEnvChecked } from './env.js';
-export {
-  checkedFetch,
-  encodeInitBodyToJson,
-  ensureOkResponse,
-  ExtendedRequestInit,
-  fetchObject,
-  getJsonOrError,
-} from './fetch.js';
+export * from './fetch/index.js';
 export { getAllFiles } from './formData.js';
 export { normalizeGuid, shortenGuid } from './guid.js';
 export { coerce, lerp } from './math.js';
