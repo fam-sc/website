@@ -5,7 +5,7 @@ import { PlusIcon } from '@/icons/PlusIcon';
 import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
 
 import { DraggableList } from '../DraggableList';
-import { IconButton } from '../IconButton';
+import { IconButton } from '@sc-fam/shared-ui';
 import { PollQuestionBuilder } from '../PollQuestionBuilder';
 import styles from './PollBuilder.module.scss';
 

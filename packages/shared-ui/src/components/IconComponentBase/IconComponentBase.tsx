@@ -1,9 +1,7 @@
 import { classNames } from '@sc-fam/shared';
-import { ReactNode } from 'react';
-import React from 'react';
+import { createElement, ReactNode } from 'react';
 
-import { impersonatedComponent } from '@/utils/impersonation';
-
+import { impersonatedComponent } from '../../utils/impersonation';
 import styles from './IconComponentBase.module.scss';
 
 export type IconComponentBaseProps = {
@@ -26,7 +24,7 @@ export const IconComponentBase = impersonatedComponent<
     children,
     ...rest
   }) => {
-    return React.createElement(
+    return createElement(
       as,
       {
         ...rest,

@@ -3,7 +3,7 @@ import { RefObject, useCallback, useLayoutEffect, useRef } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
 
-import { IconButton } from '../IconButton';
+import { IconButton } from '@sc-fam/shared-ui';
 import { TextInput } from '../TextInput';
 import { Typography } from '../Typography';
 import styles from './OptionListBuilder.module.scss';

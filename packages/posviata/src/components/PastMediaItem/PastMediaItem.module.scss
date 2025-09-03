@@ -1,0 +1,13 @@
+.root {
+  transition: transform .1s ease;
+  border-radius: 1em;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  > * {
+    width: 100%;
+    height: 100%;
+  }
+}

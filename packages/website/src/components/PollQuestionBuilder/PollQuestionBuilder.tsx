@@ -10,7 +10,7 @@ import {
 } from '@/services/polls/types';
 
 import { DragHandle } from '../DragHandle';
-import { IconButton } from '../IconButton';
+import { IconButton } from '@sc-fam/shared-ui';
 import { Select } from '../Select';
 import { TextInput } from '../TextInput';
 import {

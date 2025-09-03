@@ -37,12 +37,21 @@ export function InfiniteScroll<T extends Element>({
 
   const LoadMarker = loadMarker ?? DefaultLoadMarker;
 
+  const stableRequestNextPage = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    stableRequestNextPage.current = onRequesNextPage;
+  }, [onRequesNextPage]);
+
   useEffect(() => {
     const { current: maxMarker } = maxMarkerRef;
 
     const observer = new IntersectionObserver(
-      () => {
-        onRequesNextPage();
+      ([entry]) => {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (entry !== undefined && entry.isIntersecting) {
+          stableRequestNextPage.current?.();
+        }
       },
       {
         root: null,
@@ -58,7 +67,7 @@ export function InfiniteScroll<T extends Element>({
     return () => {
       observer.disconnect();
     };
-  }, [onRequesNextPage]);
+  }, []);
 
   useLayoutEffect(() => {
     const { current: maxMarker } = maxMarkerRef;

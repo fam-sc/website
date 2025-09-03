@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { MagicWandIcon } from '@/icons/MagicWandIcon';
 
-import { IconButton } from '../IconButton';
+import { IconButton } from '@sc-fam/shared-ui';
 import { TextInput, TextInputVariant } from '../TextInput';
 import styles from './SlugInput.module.scss';
 

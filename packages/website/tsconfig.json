@@ -32,7 +32,7 @@
     "./.storybook/**/*",
     ".react-router/types/**/*",
     "../shared/src/api/google/gsi.d.ts"
-  ],
+, "../shared-ui/src/utils/impersonation.ts"  ],
   "exclude": ["storybook-static", "build"],
   "references": [
     { "path": "../shared" },

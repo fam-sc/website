@@ -1,11 +1,11 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton } from '@sc-fam/shared-ui';
 import { ReactElement, ReactNode, useId } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useScrollbar } from '@/hooks/useScrollbar';
 import { CloseIcon } from '@/icons/CloseIcon';
 
-import { IconButton } from '../IconButton';
 import { ModalOverlay, ModalOverlayEffect } from '../ModalOverlay';
 import { Typography } from '../Typography';
 import styles from './ModalDialog.module.scss';

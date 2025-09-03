@@ -1,14 +1,32 @@
+import { execFile } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 
 import { getEnvChecked } from '@sc-fam/shared';
 import { ApiD1Database, ApiR2Bucket } from '@sc-fam/shared/cloudflare';
+import { resolveImageSizes } from '@sc-fam/shared/image';
 import { setDefaultDatabase } from '@sc-fam/shared-sql/repo';
 import { config } from 'dotenv';
 import sharp from 'sharp';
 
 import { repository } from '@/data/repo';
 import { PastMediaEntryType } from '@/data/types';
+
+type Phase = 'original-image' | 'opt-image' | 'video-thumbnail';
+
+function execFileAsync(file: string, args: string[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    execFile(file, args, (error, stdout) => {
+      if (error) {
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+        reject(error);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
+}
 
 function getArgs() {
   const args = process.argv.slice(2);
@@ -77,7 +95,7 @@ async function transformContent(sourcePath: string): Promise<Buffer> {
   return buffer;
 }
 
-async function migrateFile(
+async function migrateOriginalImage(
   sourcePath: string,
   year: number,
   storage: ApiR2Bucket
@@ -110,21 +128,96 @@ async function migrateFile(
   }
 }
 
+async function getVideoThumbnail(buffer: Uint8Array) {
+  const inputFileName = `./.${randomUUID()}`;
+  const outputFileName = `./.${randomUUID()}.jpeg`;
+  await fsp.writeFile(inputFileName, buffer);
+
+  await execFileAsync('ffmpeg', [
+    '-i',
+    inputFileName,
+    '-ss',
+    '00:00:00',
+    '-frames:v',
+    '1',
+    outputFileName,
+  ]);
+
+  const result = await fsp.readFile(outputFileName);
+
+  await fsp.rm(inputFileName);
+  await fsp.rm(outputFileName);
+
+  return result;
+}
+
+async function putMultipleImagesFromDb(storage: R2Bucket) {
+  const entries = await repository
+    .pastMediaEntries()
+    .findManyWhere({ type: PastMediaEntryType.IMAGE });
+
+  for (const entry of entries) {
+    try {
+      const object = await storage.get(entry.path);
+      const content = await object?.bytes();
+      if (!content) {
+        console.error('No content', entry.id);
+        continue;
+      }
+
+      const { width, height } = await sharp(content).metadata();
+
+      const sizes = resolveImageSizes({ width, height });
+
+      await Promise.all(
+        sizes.map(async (size) => {
+          const targetContent = await sharp(content)
+            .rotate()
+            .resize({ ...size, kernel: 'lanczos3' })
+            .toBuffer();
+
+          const dotIndex = entry.path.lastIndexOf('.');
+          const extension = entry.path.slice(dotIndex + 1);
+          const targetPath = `${entry.path.slice(0, dotIndex)}.${size.width}.${extension}`;
+          const mimeType = getMimeTypeFromExtension(extension);
+
+          await storage.put(targetPath, targetContent, {
+            httpMetadata: { contentType: mimeType },
+          });
+        })
+      );
+
+      await repository
+        .pastMediaEntries()
+        .updateWhere(
+          { id: entry.id },
+          { meta: JSON.stringify({ widths: sizes.map(({ width }) => width) }) }
+        );
+
+      console.log('> Migrated', entry.path);
+    } catch (error: unknown) {
+      console.error('Error while migrating', entry.id, error);
+    }
+  }
+}
+
 async function main() {
-  const { year, sourcePath } = getArgs();
+  // const { year, sourcePath } = getArgs();
   const { db, storage } = getRemoteApi();
 
   setDefaultDatabase(db);
 
-  const entries = await fsp.readdir(sourcePath);
+  await putMultipleImagesFromDb(storage);
 
-  for (const [index, entry] of entries.entries()) {
-    const filePath = path.join(sourcePath, entry);
+  // const entries = await fsp.readdir(sourcePath);
 
-    await migrateFile(filePath, year, storage);
-
-    console.log(`Moved ${index}/${entries.length}`);
-  }
+  // for (const [index, entry] of entries.entries()) {
+  //   const filePath = path.join(sourcePath, entry);
+  //
+  //   await migrateOriginalImage(filePath, year, storage);
+  //
+  //   console.log(`Moved ${index}/${entries.length}`);
+  // }
 }
 
 void main();

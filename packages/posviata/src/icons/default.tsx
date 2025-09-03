@@ -19,7 +19,13 @@ export function googleIcon(pathData: string): FC<SvgProps> {
   // eslint-disable-next-line react/display-name
   return (rest) => {
     return (
-      <svg viewBox="0 -960 960 960" fill="#fff" {...rest}>
+      <svg
+        width="24px"
+        height="24px"
+        viewBox="0 -960 960 960"
+        color="currentColor"
+        {...rest}
+      >
         <path d={pathData} />
       </svg>
     );

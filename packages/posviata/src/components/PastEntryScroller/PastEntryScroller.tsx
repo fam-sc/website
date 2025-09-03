@@ -3,11 +3,10 @@ import { useCallback, useState } from 'react';
 
 import { getPastMediaEntryPage } from '@/api/client';
 import { PastMediaEntry } from '@/api/pastMedia/types';
-import { PastMediaEntryType } from '@/data/types';
 
 import { LoadingIndicator } from '../LoadingIndicator';
-import { PastMediaImage } from '../PastMediaImage';
-import { PastMediaVideo } from '../PastMediaVideo';
+import { PastMediaDialog } from '../PastMediaDialog';
+import { PastMediaItem } from '../PastMediaItem';
 import styles from './PastEntryScroller.module.scss';
 
 export interface PastEntryScrollerProps {
@@ -18,6 +17,8 @@ export function PastEntryScroller({ year }: PastEntryScrollerProps) {
   const notification = useNotification();
   const [items, setItems] = useState<PastMediaEntry[]>([]);
   const [hasMoreElements, setHasMoreElements] = useState(true);
+
+  const [selectedItem, setSelectedItem] = useState<PastMediaEntry | null>(null);
 
   const requestPage = useCallback(() => {
     const lastId = items.at(-1)?.id;
@@ -42,15 +43,22 @@ export function PastEntryScroller({ year }: PastEntryScrollerProps) {
         hasMoreElements={hasMoreElements}
       >
         <ul className={styles.list}>
-          {items.map(({ id, type, path }) =>
-            type === PastMediaEntryType.IMAGE ? (
-              <PastMediaImage key={id} path={path} />
-            ) : (
-              <PastMediaVideo key={id} path={path} />
-            )
-          )}
+          {items.map((item) => (
+            <PastMediaItem
+              key={item.id}
+              item={item}
+              onClick={() => setSelectedItem(item)}
+            />
+          ))}
         </ul>
       </InfiniteScroll>
+
+      {selectedItem && (
+        <PastMediaDialog
+          item={selectedItem}
+          onClose={() => setSelectedItem(null)}
+        />
+      )}
     </div>
   );
 }

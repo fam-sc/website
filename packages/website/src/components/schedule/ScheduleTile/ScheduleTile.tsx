@@ -7,7 +7,7 @@ import { PlaceIcon } from '@/icons/PlaceIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
 import { UpDownIcon } from '@/icons/UpDownIcon';
 
-import { IconButton } from '../../IconButton';
+import { IconButton } from '@sc-fam/shared-ui';
 import { Link } from '../../Link';
 import { OptionalLink } from '../../OptionalLink';
 import { Typography } from '../../Typography';
