@@ -1,3 +1,4 @@
+import { IconButton } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 
 import { getMediaFileUrl } from '@/api/media';
@@ -8,7 +9,6 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { MenuIcon } from '@/icons/MenuIcon';
 import Logo from '@/images/logo.png?w=100!';
 
-import { IconButton } from '@sc-fam/shared-ui';
 import { Link } from '../Link';
 import { UserAvatarOrPlaceholder } from '../UserAvatarOrPlaceholder';
 import styles from './Header.module.scss';

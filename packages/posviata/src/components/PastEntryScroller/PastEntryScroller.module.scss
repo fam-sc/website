@@ -7,14 +7,14 @@
 
 .list {
   --columns: 2;
-  
+
   list-style: none;
   align-self: stretch;
 
   display: grid;
   grid-template-columns: repeat(var(--columns), 1fr);
   gap: 0.5em;
-  margin: 0 1em;
+  margin: 0 1em 1em;
 
   > * {
     height: 30vh;

@@ -1,9 +1,10 @@
 .root {
-  transition: transform .1s ease;
+  transition: all 0.1s ease;
   border-radius: 1em;
 
   &:hover {
-    transform: scale(1.05);
+    box-shadow: 0 0 10px #000;
+    transform: scale(1.02);
   }
 
   > * {

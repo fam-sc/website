@@ -1,9 +1,9 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 
 import { SeePasswordIcon } from '@/icons/SeePasswordIcon';
 
-import { IconButton } from '@sc-fam/shared-ui';
 import { TextInput, TextInputProps } from '../TextInput';
 import styles from './PasswordInput.module.scss';
 

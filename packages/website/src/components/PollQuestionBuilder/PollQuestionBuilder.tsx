@@ -1,4 +1,5 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton } from '@sc-fam/shared-ui';
 import { FC, RefObject, useCallback } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
@@ -10,7 +11,6 @@ import {
 } from '@/services/polls/types';
 
 import { DragHandle } from '../DragHandle';
-import { IconButton } from '@sc-fam/shared-ui';
 import { Select } from '../Select';
 import { TextInput } from '../TextInput';
 import {

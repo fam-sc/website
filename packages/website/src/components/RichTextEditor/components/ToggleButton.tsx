@@ -1,9 +1,9 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton } from '@sc-fam/shared-ui';
 import { ChainedCommands, Editor } from '@tiptap/core';
 import { useCurrentEditor } from '@tiptap/react';
 import { ReactNode, useCallback } from 'react';
 
-import { IconButton } from '@sc-fam/shared-ui';
 import styles from './ToggleButton.module.scss';
 
 type ToggleKey = {

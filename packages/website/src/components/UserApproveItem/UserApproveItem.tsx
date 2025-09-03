@@ -1,9 +1,9 @@
+import { IconButton } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 
 import { CheckIcon } from '@/icons/CheckIcon';
 import { CloseIcon } from '@/icons/CloseIcon';
 
-import { IconButton } from '@sc-fam/shared-ui';
 import { UserInfoItem, UserInfoItemProps } from '../UserInfoItem';
 import styles from './UserApproveItem.module.scss';
 
