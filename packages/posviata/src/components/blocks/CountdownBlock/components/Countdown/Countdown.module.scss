@@ -16,7 +16,7 @@
 }
 
 .main {
-  font-size: max(2em, 4vw);
+  font-size: max(2em, 4vw) !important;
   text-shadow: 2px 2px 0 #aaa;
 
   -webkit-text-stroke: 1px #000;

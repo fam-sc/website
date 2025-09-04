@@ -54,7 +54,6 @@ export function PastMediaDialog({ item, onClose }: PastMediaDialogProps) {
             className={classNames(styles['content'])}
             sources={item.alternative}
             onClick={stopPropHandler}
-            fit="contain"
           />
         ) : (
           <video

@@ -16,9 +16,9 @@
   gap: 0.5em;
   margin: 0 1em 1em;
 
-  > * {
-    height: 30vh;
-  }
+  // > * {
+  //   height: 30vh;
+  // }
 
   @include breakpoint-up('md') {
     --columns: 3;

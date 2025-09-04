@@ -11,9 +11,7 @@ import { config } from 'dotenv';
 import sharp from 'sharp';
 
 import { repository } from '@/data/repo';
-import { PastMediaEntryType } from '@/data/types';
-
-type Phase = 'original-image' | 'opt-image' | 'video-thumbnail';
+import { PastMediaEntry, PastMediaEntryType } from '@/data/types';
 
 function execFileAsync(file: string, args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -95,11 +93,11 @@ async function transformContent(sourcePath: string): Promise<Buffer> {
   return buffer;
 }
 
-async function migrateOriginalImage(
+async function migrateOriginalMedia(
   sourcePath: string,
   year: number,
   storage: ApiR2Bucket
-) {
+): Promise<[string, PastMediaEntryType]> {
   const extension = path.extname(sourcePath.toLowerCase()).slice(1);
   const mimeType = getMimeTypeFromExtension(extension);
   const type = mimeType.startsWith('image')
@@ -112,15 +110,27 @@ async function migrateOriginalImage(
   const content = await transformContent(sourcePath);
 
   try {
-    await repository.pastMediaEntries().insert({
+    const entry: Partial<PastMediaEntry> = {
       path: filePath,
       type,
       year,
-    });
+    };
+
+    if (type === PastMediaEntryType.IMAGE) {
+      const size = await sharp(sourcePath).metadata();
+
+      entry.meta = JSON.stringify({
+        widths: resolveImageSizes(size).map(({ width }) => width),
+      });
+    }
+
+    await repository.pastMediaEntries().insert(entry);
 
     await storage.put(filePath, content, {
       httpMetadata: { contentType: mimeType },
     });
+
+    return [filePath, type];
   } catch (error: unknown) {
     await repository.pastMediaEntries().deleteWhere({ path: filePath }).get();
 
@@ -128,14 +138,12 @@ async function migrateOriginalImage(
   }
 }
 
-async function getVideoThumbnail(buffer: Uint8Array) {
-  const inputFileName = `./.${randomUUID()}`;
+async function getVideoThumbnail(sourcePath: string) {
   const outputFileName = `./.${randomUUID()}.jpeg`;
-  await fsp.writeFile(inputFileName, buffer);
 
   await execFileAsync('ffmpeg', [
     '-i',
-    inputFileName,
+    sourcePath,
     '-ss',
     '00:00:00',
     '-frames:v',
@@ -145,79 +153,79 @@ async function getVideoThumbnail(buffer: Uint8Array) {
 
   const result = await fsp.readFile(outputFileName);
 
-  await fsp.rm(inputFileName);
   await fsp.rm(outputFileName);
 
   return result;
 }
 
-async function putMultipleImagesFromDb(storage: R2Bucket) {
-  const entries = await repository
-    .pastMediaEntries()
-    .findManyWhere({ type: PastMediaEntryType.IMAGE });
+async function putMultipleImages(
+  sourcePath: string,
+  originalPath: string,
+  storage: ApiR2Bucket
+) {
+  const size = await sharp(sourcePath).metadata();
 
-  for (const entry of entries) {
-    try {
-      const object = await storage.get(entry.path);
-      const content = await object?.bytes();
-      if (!content) {
-        console.error('No content', entry.id);
-        continue;
-      }
+  const sizes = resolveImageSizes(size);
 
-      const { width, height } = await sharp(content).metadata();
+  await Promise.all(
+    sizes.map(async (size) => {
+      const targetContent = await sharp(sourcePath)
+        .rotate()
+        .resize({ ...size, kernel: 'lanczos3' })
+        .toBuffer();
 
-      const sizes = resolveImageSizes({ width, height });
+      const dotIndex = originalPath.lastIndexOf('.');
+      const extension = originalPath.slice(dotIndex + 1);
+      const targetPath = `${originalPath.slice(0, dotIndex)}.${size.width}.${extension}`;
+      const mimeType = getMimeTypeFromExtension(extension);
 
-      await Promise.all(
-        sizes.map(async (size) => {
-          const targetContent = await sharp(content)
-            .rotate()
-            .resize({ ...size, kernel: 'lanczos3' })
-            .toBuffer();
+      await storage.put(targetPath, targetContent, {
+        httpMetadata: { contentType: mimeType },
+      });
+    })
+  );
+}
 
-          const dotIndex = entry.path.lastIndexOf('.');
-          const extension = entry.path.slice(dotIndex + 1);
-          const targetPath = `${entry.path.slice(0, dotIndex)}.${size.width}.${extension}`;
-          const mimeType = getMimeTypeFromExtension(extension);
+async function migrateEntry(
+  sourcePath: string,
+  year: number,
+  storage: ApiR2Bucket
+) {
+  const [originalPath, type] = await migrateOriginalMedia(
+    sourcePath,
+    year,
+    storage
+  );
 
-          await storage.put(targetPath, targetContent, {
-            httpMetadata: { contentType: mimeType },
-          });
-        })
-      );
+  if (type === PastMediaEntryType.IMAGE) {
+    await putMultipleImages(sourcePath, originalPath, storage);
+  } else {
+    const thumbnail = await getVideoThumbnail(sourcePath);
 
-      await repository
-        .pastMediaEntries()
-        .updateWhere(
-          { id: entry.id },
-          { meta: JSON.stringify({ widths: sizes.map(({ width }) => width) }) }
-        );
+    const dotIndex = originalPath.lastIndexOf('.');
+    const targetPath = `${originalPath.slice(0, dotIndex)}.thumbnail.jpeg`;
 
-      console.log('> Migrated', entry.path);
-    } catch (error: unknown) {
-      console.error('Error while migrating', entry.id, error);
-    }
+    await storage.put(targetPath, thumbnail, {
+      httpMetadata: { contentType: 'image/jpeg' },
+    });
   }
 }
 
 async function main() {
-  // const { year, sourcePath } = getArgs();
+  const { year, sourcePath } = getArgs();
   const { db, storage } = getRemoteApi();
 
   setDefaultDatabase(db);
 
-  await putMultipleImagesFromDb(storage);
+  const entries = await fsp.readdir(sourcePath);
 
-  // const entries = await fsp.readdir(sourcePath);
+  for (const [index, entry] of entries.entries()) {
+    const filePath = path.join(sourcePath, entry);
 
-  // for (const [index, entry] of entries.entries()) {
-  //   const filePath = path.join(sourcePath, entry);
-  //
-  //   await migrateOriginalImage(filePath, year, storage);
-  //
-  //   console.log(`Moved ${index}/${entries.length}`);
-  // }
+    await migrateEntry(filePath, year, storage);
+
+    console.log(`Moved ${index}/${entries.length}`);
+  }
 }
 
 void main();
