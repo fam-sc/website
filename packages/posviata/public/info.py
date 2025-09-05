@@ -3,5 +3,5 @@ def item(title, text):
 
 print(item('Дата', '20 вересня'))
 print(item('Час', '12:00'))
-print(item('Де', 'Location'))
-print(item('Ціна', '200'))
+print(item('Де', 'ВДНГ'))
+print(item('Ціна', '250'))

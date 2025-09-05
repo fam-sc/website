@@ -9,9 +9,9 @@ import { InfoBlock } from '@/components/blocks/InfoBlock';
 import { MapBlock } from '@/components/blocks/MapBlock';
 import { MathBlock } from '@/components/blocks/MathBlock';
 import { MerchBlock } from '@/components/blocks/MerchBlock';
+import { PastBlock } from '@/components/blocks/PastBlock';
 import { QuestionBlock } from '@/components/blocks/QuestionBlock';
 import { RegistrationBlock } from '@/components/blocks/RegistrationBlock';
-import { ScheduleBlock } from '@/components/blocks/ScheduleBlock';
 import { VSCodeBlock } from '@/components/blocks/VSCodeBlock';
 import { Footer } from '@/components/Footer';
 import { Title } from '@/components/Title';
@@ -71,10 +71,11 @@ export default function Page() {
       <MathBlock />
       <ImagesBlock />
       <VSCodeBlock />
+      <PastBlock />
       <MerchBlock />
       <InfoBlock />
       <MapBlock />
-      <ScheduleBlock />
+      {/* <ScheduleBlock /> */}
       <RegistrationBlock />
       <QuestionBlock />
       <Footer />

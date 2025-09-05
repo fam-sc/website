@@ -1,0 +1,28 @@
+.root {
+  margin-top: 2em;
+  min-height: auto;
+}
+
+.header {
+  font-size: min(12vw, 3em);
+  margin-bottom: 0.5em;
+}
+
+.row {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+
+  > * {
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-text-on-background);
+    font-size: 1.5em;
+
+    transition: box-shadow 0.1s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 0 5px var(--color-primary);
+    }
+  }
+}

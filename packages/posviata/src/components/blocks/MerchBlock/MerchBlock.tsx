@@ -21,7 +21,7 @@ export function MerchBlock() {
       <Info className={styles.info} />
 
       <LinkButton
-        href="https://forms.gle/WPXYnWLoAa1wPKWq5"
+        to="https://forms.gle/WPXYnWLoAa1wPKWq5"
         className={styles.order}
       >
         Замовляй зараз

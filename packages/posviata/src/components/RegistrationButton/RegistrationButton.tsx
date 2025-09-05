@@ -15,7 +15,7 @@ export function RegistrationButton({
 }: RegistrationButtonProps) {
   return (
     <LinkButton
-      href="https://google.com"
+      to="https://docs.google.com/forms/d/e/1FAIpQLScq3Bg7HVgADeKTkfOK7HdBDfwwLneAxGKVZTXO39IX93yaKw/viewform"
       onClick={() => {
         void postUserClickedRegistration(place);
       }}

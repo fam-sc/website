@@ -1,10 +1,10 @@
 import { UserRole } from '@sc-fam/data';
 import { notFound } from '@sc-fam/shared';
+import { IconLinkButton } from '@sc-fam/shared-ui';
 import { PropsWithChildren } from 'react';
 import { redirect } from 'react-router';
 
 import { getSessionId } from '@/api/auth';
-import { IconLinkButton } from '@/components/IconLinkButton';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 import { InfoIcon } from '@/icons/InfoIcon';

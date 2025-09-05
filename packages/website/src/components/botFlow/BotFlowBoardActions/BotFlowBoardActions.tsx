@@ -1,7 +1,7 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton, IconButtonProps } from '@sc-fam/shared-ui';
 
 import { Dropdown } from '@/components/Dropdown';
-import { IconButton, IconButtonProps } from '@/components/IconButton';
 import { Typography } from '@/components/Typography';
 import { PlusIcon } from '@/icons/PlusIcon';
 import { SaveIcon } from '@/icons/SaveIcon';
