@@ -1,4 +1,5 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton } from '@sc-fam/shared-ui';
 import { ComponentProps, useState } from 'react';
 
 import { Lesson } from '@/api/schedule/types';
@@ -7,7 +8,6 @@ import { PlaceIcon } from '@/icons/PlaceIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
 import { UpDownIcon } from '@/icons/UpDownIcon';
 
-import { IconButton } from '../../IconButton';
 import { Link } from '../../Link';
 import { OptionalLink } from '../../OptionalLink';
 import { Typography } from '../../Typography';

@@ -6,9 +6,14 @@ import styles from './PastMediaVideo.module.scss';
 export interface PastMediaVideoProps {
   className?: string;
   path: string;
+  thumbnail: string;
 }
 
-export function PastMediaVideo({ className, path }: PastMediaVideoProps) {
+export function PastMediaVideo({
+  className,
+  path,
+  thumbnail,
+}: PastMediaVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const onMouseEnter = useCallback(() => {
@@ -34,7 +39,15 @@ export function PastMediaVideo({ className, path }: PastMediaVideoProps) {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <video src={path} ref={videoRef} muted controls={false} />
+      <video
+        src={path}
+        poster={thumbnail}
+        ref={videoRef}
+        muted
+        disablePictureInPicture
+        controls={false}
+        preload="metadata"
+      />
     </div>
   );
 }

@@ -35,6 +35,17 @@
     margin-right: 0.5em;
   }
 
+  &-copy {
+    transform: scale(0);
+    transition: transform 0.075s linear !important;
+
+    margin-left: 1em;
+  }
+
+  &:hover .exec-copy {
+    transform: scale(1);
+  }
+
   @include breakpoint-up('md') {
     display: flex;
   }
@@ -62,6 +73,16 @@
   &-title {
     color: var(--color-primary);
     margin-right: 0.25em;
+  }
+
+  &-link {
+    text-decoration: none;
+
+    .item-text {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
   }
 
   svg {

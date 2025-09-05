@@ -1,3 +1,5 @@
+@use '../../../theme/breakpoints' as *;
+
 .root {
   display: flex;
   flex-direction: column;
@@ -12,8 +14,12 @@
 }
 
 .info {
-  margin-left: 2.75em;
+  margin-left: 1em;
   margin-top: 1em;
+
+  @include breakpoint-up('md') {
+    margin-left: 2.75em;
+  }
 }
 
 .swiper {

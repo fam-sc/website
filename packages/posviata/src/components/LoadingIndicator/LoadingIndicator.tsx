@@ -47,7 +47,7 @@ export function LoadingIndicator({ ref, className }: LoadingIndicatorProps) {
   }, [ref]);
 
   return (
-    <div ref={ref} className={classNames(styles.root, className)}>
+    <div ref={rootRef} className={classNames(styles.root, className)}>
       {NAMES.map((name, index) => (
         <div key={index} className={styles.block}>
           <span>{name}</span>

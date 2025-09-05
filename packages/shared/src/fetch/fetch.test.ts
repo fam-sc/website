@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
+import { FetchError } from './error.js';
 import {
   encodeInitBodyToJson,
   ensureOkResponse,
@@ -23,7 +24,7 @@ describe('getJsonOrError', () => {
     });
 
     await expect(getJsonOrError(response)).rejects.toEqual(
-      new Error('Bad Request')
+      new FetchError('Bad Request', 400)
     );
   });
 
@@ -34,7 +35,7 @@ describe('getJsonOrError', () => {
     });
 
     await expect(getJsonOrError(response)).rejects.toEqual(
-      new Error('Bad Request: message')
+      new FetchError('Bad Request: message', 400)
     );
   });
 
@@ -47,7 +48,7 @@ describe('getJsonOrError', () => {
     response.text = () => Promise.reject(new Error('message'));
 
     await expect(getJsonOrError(response)).rejects.toEqual(
-      new Error('Bad Request')
+      new FetchError('Bad Request', 400)
     );
   });
 });
@@ -64,7 +65,7 @@ describe('ensureOkResponse', () => {
     });
 
     await expect(ensureOkResponse(response)).rejects.toEqual(
-      new Error('Bad Request')
+      new FetchError('Bad Request', 400)
     );
   });
 });

@@ -1,6 +1,6 @@
-import { DragHandleIcon } from '@/icons/DragHandleIcon';
+import { BaseIconButtonProps, IconButton } from '@sc-fam/shared-ui';
 
-import { BaseIconButtonProps, IconButton } from '../IconButton';
+import { DragHandleIcon } from '@/icons/DragHandleIcon';
 
 export type DragHandleProps = Omit<BaseIconButtonProps, 'title' | 'children'>;
 

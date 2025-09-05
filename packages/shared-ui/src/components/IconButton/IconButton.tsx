@@ -1,6 +1,5 @@
-import { TitleRequiredProps } from '@/types/react';
-import { ImpersonatedProps } from '@/utils/impersonation';
-
+import { TitleRequiredProps } from '../../types/react';
+import { ImpersonatedProps } from '../../utils/impersonation';
 import {
   IconComponentBase,
   IconComponentBaseProps,

@@ -1,5 +1,6 @@
 import '@/theme/global.scss';
 
+import { NotificationWrapper } from '@sc-fam/shared-ui';
 import {
   isRouteErrorResponse,
   Links,
@@ -9,6 +10,7 @@ import {
 } from 'react-router';
 
 import { SchemaScript } from '@/components/SchemaScript';
+import { Typography } from '@/components/Typography';
 
 import type { Route } from './+types/root';
 
@@ -53,7 +55,10 @@ export function Layout({
         />
       </head>
       <body>
-        {children}
+        <NotificationWrapper typography={Typography}>
+          {children}
+        </NotificationWrapper>
+
         <Scripts />
       </body>
     </html>

@@ -19,4 +19,5 @@ export type PastMediaEntry = {
   type: PastMediaEntryType;
   path: string;
   year: number;
+  meta: string | null;
 };

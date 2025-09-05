@@ -1,6 +1,5 @@
 import { classNames } from '@sc-fam/shared';
-
-import { impersonatedComponent } from '@/utils/impersonation';
+import { impersonatedComponent } from '@sc-fam/shared-ui';
 
 import { Typography } from '../Typography';
 import styles from './Button.module.scss';

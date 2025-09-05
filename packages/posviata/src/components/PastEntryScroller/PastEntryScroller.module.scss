@@ -1,18 +1,26 @@
+@use '../../theme/breakpoints' as *;
+
 .root {
   display: flex;
   flex-direction: column;
 }
 
 .list {
+  --columns: 2;
+
   list-style: none;
   align-self: stretch;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--columns), 1fr);
   gap: 0.5em;
-  margin: 0 1em;
+  margin: 0 1em 1em;
 
-  > * {
-    height: 30vh;
+  // > * {
+  //   height: 30vh;
+  // }
+
+  @include breakpoint-up('md') {
+    --columns: 3;
   }
 }

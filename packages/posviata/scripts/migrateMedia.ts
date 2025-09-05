@@ -1,14 +1,30 @@
+import { execFile } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 
 import { getEnvChecked } from '@sc-fam/shared';
 import { ApiD1Database, ApiR2Bucket } from '@sc-fam/shared/cloudflare';
+import { resolveImageSizes } from '@sc-fam/shared/image';
 import { setDefaultDatabase } from '@sc-fam/shared-sql/repo';
 import { config } from 'dotenv';
 import sharp from 'sharp';
 
 import { repository } from '@/data/repo';
-import { PastMediaEntryType } from '@/data/types';
+import { PastMediaEntry, PastMediaEntryType } from '@/data/types';
+
+function execFileAsync(file: string, args: string[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    execFile(file, args, (error, stdout) => {
+      if (error) {
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+        reject(error);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
+}
 
 function getArgs() {
   const args = process.argv.slice(2);
@@ -77,11 +93,11 @@ async function transformContent(sourcePath: string): Promise<Buffer> {
   return buffer;
 }
 
-async function migrateFile(
+async function migrateOriginalMedia(
   sourcePath: string,
   year: number,
   storage: ApiR2Bucket
-) {
+): Promise<[string, PastMediaEntryType]> {
   const extension = path.extname(sourcePath.toLowerCase()).slice(1);
   const mimeType = getMimeTypeFromExtension(extension);
   const type = mimeType.startsWith('image')
@@ -94,19 +110,104 @@ async function migrateFile(
   const content = await transformContent(sourcePath);
 
   try {
-    await repository.pastMediaEntries().insert({
+    const entry: Partial<PastMediaEntry> = {
       path: filePath,
       type,
       year,
-    });
+    };
+
+    if (type === PastMediaEntryType.IMAGE) {
+      const size = await sharp(sourcePath).metadata();
+
+      entry.meta = JSON.stringify({
+        widths: resolveImageSizes(size).map(({ width }) => width),
+      });
+    }
+
+    await repository.pastMediaEntries().insert(entry);
 
     await storage.put(filePath, content, {
       httpMetadata: { contentType: mimeType },
     });
+
+    return [filePath, type];
   } catch (error: unknown) {
     await repository.pastMediaEntries().deleteWhere({ path: filePath }).get();
 
     throw error;
+  }
+}
+
+async function getVideoThumbnail(sourcePath: string) {
+  const outputFileName = `./.${randomUUID()}.jpeg`;
+
+  await execFileAsync('ffmpeg', [
+    '-i',
+    sourcePath,
+    '-ss',
+    '00:00:00',
+    '-frames:v',
+    '1',
+    outputFileName,
+  ]);
+
+  const result = await fsp.readFile(outputFileName);
+
+  await fsp.rm(outputFileName);
+
+  return result;
+}
+
+async function putMultipleImages(
+  sourcePath: string,
+  originalPath: string,
+  storage: ApiR2Bucket
+) {
+  const size = await sharp(sourcePath).metadata();
+
+  const sizes = resolveImageSizes(size);
+
+  await Promise.all(
+    sizes.map(async (size) => {
+      const targetContent = await sharp(sourcePath)
+        .rotate()
+        .resize({ ...size, kernel: 'lanczos3' })
+        .toBuffer();
+
+      const dotIndex = originalPath.lastIndexOf('.');
+      const extension = originalPath.slice(dotIndex + 1);
+      const targetPath = `${originalPath.slice(0, dotIndex)}.${size.width}.${extension}`;
+      const mimeType = getMimeTypeFromExtension(extension);
+
+      await storage.put(targetPath, targetContent, {
+        httpMetadata: { contentType: mimeType },
+      });
+    })
+  );
+}
+
+async function migrateEntry(
+  sourcePath: string,
+  year: number,
+  storage: ApiR2Bucket
+) {
+  const [originalPath, type] = await migrateOriginalMedia(
+    sourcePath,
+    year,
+    storage
+  );
+
+  if (type === PastMediaEntryType.IMAGE) {
+    await putMultipleImages(sourcePath, originalPath, storage);
+  } else {
+    const thumbnail = await getVideoThumbnail(sourcePath);
+
+    const dotIndex = originalPath.lastIndexOf('.');
+    const targetPath = `${originalPath.slice(0, dotIndex)}.thumbnail.jpeg`;
+
+    await storage.put(targetPath, thumbnail, {
+      httpMetadata: { contentType: 'image/jpeg' },
+    });
   }
 }
 
@@ -121,7 +222,7 @@ async function main() {
   for (const [index, entry] of entries.entries()) {
     const filePath = path.join(sourcePath, entry);
 
-    await migrateFile(filePath, year, storage);
+    await migrateEntry(filePath, year, storage);
 
     console.log(`Moved ${index}/${entries.length}`);
   }

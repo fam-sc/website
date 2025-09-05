@@ -1,4 +1,4 @@
-import { useNotification } from '@sc-fam/shared-ui';
+import { IconButton, useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useEffect, useState } from 'react';
 
 import { deleteGalleryImage, fetchGalleryImage } from '@/api/gallery/client';
@@ -6,7 +6,6 @@ import {
   GalleryImageWithEvent,
   GalleryImageWithSizes,
 } from '@/api/gallery/types';
-import { IconButton } from '@/components/IconButton';
 import { Image } from '@/components/Image';
 import { InlineQuestion } from '@/components/InlineQuestion';
 import { ModalOverlay } from '@/components/ModalOverlay';

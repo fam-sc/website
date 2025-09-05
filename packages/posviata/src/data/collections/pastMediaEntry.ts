@@ -12,6 +12,7 @@ export class PastMediaEntryCollection extends EntityCollection<PastMediaEntry>(
       type: 'INTEGER NOT NULL',
       path: 'TEXT NOT NULL',
       year: 'INTEGER NOT NULL',
+      meta: 'TEXT',
     };
   }
 }

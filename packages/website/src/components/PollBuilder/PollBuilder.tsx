@@ -1,11 +1,11 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton } from '@sc-fam/shared-ui';
 import { Dispatch, SetStateAction, useCallback, useRef } from 'react';
 
 import { PlusIcon } from '@/icons/PlusIcon';
 import { isValidItem, QuestionBuildItem } from '@/services/polls/buildItem';
 
 import { DraggableList } from '../DraggableList';
-import { IconButton } from '../IconButton';
 import { PollQuestionBuilder } from '../PollQuestionBuilder';
 import styles from './PollBuilder.module.scss';
 

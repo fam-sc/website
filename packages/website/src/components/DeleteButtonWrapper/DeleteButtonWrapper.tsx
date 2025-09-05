@@ -1,9 +1,9 @@
 import { classNames } from '@sc-fam/shared';
+import { IconButton } from '@sc-fam/shared-ui';
 import { ComponentProps } from 'react';
 
 import { CloseIcon } from '@/icons/CloseIcon';
 
-import { IconButton } from '../IconButton';
 import styles from './DeleteButtonWrapper.module.scss';
 
 export interface DeleteButtonWrapperProps extends ComponentProps<'div'> {
