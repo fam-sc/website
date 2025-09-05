@@ -19,7 +19,9 @@ export function MapSelector({ className }: MapSelectorProps) {
       <OptionSwitch
         className={styles.switch}
         options={options}
-        renderOption={(option) => (option === 'main' ? 'ВДНГ' : 'BBQ Сад')}
+        renderOption={(option) =>
+          option === 'main' ? 'ВДНГ' : 'BBQ-зона «Сад»'
+        }
         selected={selectedType}
         onOptionSelected={setSelectedType}
       />

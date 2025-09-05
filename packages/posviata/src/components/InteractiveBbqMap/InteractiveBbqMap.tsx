@@ -18,21 +18,21 @@ export function InteractiveBbqMap({
       <div className={styles.content}>
         <Image className={styles.image} multiple={mapImage} draggable={false} />
 
-        <svg viewBox="0 0 100 105.781" className={styles.overlay}>
+        <svg viewBox="0 0 1574 1665" className={styles.overlay}>
           <MovingPath
             className={classNames(styles.shape, styles['main-place'])}
-            d="m1.2488 1.9203 29.946-0.018608 0.03543 9.5557s-0.67391 0.74582-2.3276 1.8443c-5.3846 3.5769-3.8359 7.7695-6.1726 8.7154-1.1079 0.44851-9.9086 0.28637-13.114 0.3331-2.867 0.0637-5.5984-0.21488-8.4517-0.45265z"
-            fill={100}
-            gap={15}
-            strokeWidth=".5"
+            d="M252 728L259 623L246 525.5L181.5 476.5L76.5 461.5V369.5L166 329.5L252 183.5L551.5 194.5L749.5 270.5L794.5 399.5L749.5 516L642 537L621.75 632.5L556 728H252Z"
+            fill={750}
+            gap={120}
+            strokeWidth="5"
           />
 
           <MovingPath
             className={classNames(styles.shape, styles['wc-place'])}
-            d="m91.968 97.945 4.9019-0.01181-0.14318 6.0807h-4.8428z"
-            fill={25}
-            gap={6}
-            strokeWidth=".3"
+            d="M1442.5 1530 h79 v98h-79Z"
+            fill={70}
+            gap={20}
+            strokeWidth="5"
           />
         </svg>
       </div>
