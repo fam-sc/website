@@ -13,7 +13,13 @@ export async function putMultipleSizedImages(
 ): Promise<void> {
   await Promise.all(
     imageData.sizes.map(async ({ width, height }) => {
-      const result = await resizeImage(env, content, width, height);
+      const result = await resizeImage(
+        env,
+        content,
+        width,
+        height,
+        imageData.format
+      );
 
       mediaTransaction.put(`${path}/${width}.${imageData.format}`, result, {
         httpMetadata: { contentType: 'image/png' },

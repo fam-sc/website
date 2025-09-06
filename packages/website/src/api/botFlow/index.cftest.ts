@@ -38,12 +38,11 @@ describe('getBotFlow', () => {
     const botFlow = await getBotFlow(env);
 
     const actual = botFlow.meta.icons;
+    const prefix = 'bot-flow/tg-sticker';
 
     expect(actual).toEqual(
-      expectedStickers.map((value) => value.custom_emoji_id)
+      expectedStickers.map((value) => `${prefix}/${value.custom_emoji_id}.webp`)
     );
-
-    const prefix = 'bot-flow/tg-sticker';
 
     const { objects } = await env.MEDIA_BUCKET.list({
       prefix,
@@ -53,7 +52,7 @@ describe('getBotFlow', () => {
     expect(objectKeys).toEqual(
       new Set(
         expectedStickers.map(
-          ({ custom_emoji_id }) => `${prefix}/${custom_emoji_id}`
+          ({ custom_emoji_id }) => `${prefix}/${custom_emoji_id}.webp`
         )
       )
     );

@@ -6,8 +6,7 @@ import {
   RichTextString,
 } from '@sc-fam/shared/richText';
 
-import { resolveImageData } from '@/api/media/imageData';
-
+import { resolveImageData } from '../../media/imageData';
 import { putMultipleSizedImages } from '../../media/multiple';
 import { MediaTransaction } from '../../media/transaction';
 import { MediaSubPathWithImageSize } from '../../media/types';
