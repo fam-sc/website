@@ -17,6 +17,7 @@ export async function deleteMessagesAcrossChats(
 
 export async function getFileDownloadUrlById(
   bot: TelegramBot,
+  botKey: string,
   file_id: string
 ): Promise<string> {
   const { file_path } = await bot(getFile({ file_id }));
@@ -24,5 +25,5 @@ export async function getFileDownloadUrlById(
     throw new Error('No file_path');
   }
 
-  return `https://api.telegram.org/file/bot/${file_path}`;
+  return `https://api.telegram.org/file/bot${botKey}/${file_path}`;
 }

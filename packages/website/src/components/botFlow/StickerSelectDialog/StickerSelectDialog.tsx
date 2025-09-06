@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
+import { StickerId } from '@/api/botFlow/types';
 import { Button } from '@/components/Button';
 import { ModalDialog } from '@/components/ModalDialog';
 import { SelectableList } from '@/components/SelectableList';
@@ -8,10 +9,10 @@ import { StickerImage } from '../StickerImage';
 import styles from './StickerSelectDialog.module.scss';
 
 export interface StickerSelectDialogProps {
-  stickers: string[];
-  selectedSticker?: string;
+  stickers: StickerId[];
+  selectedSticker?: StickerId;
 
-  onEmojiChanged?: (id: string) => void;
+  onEmojiChanged?: (id: StickerId) => void;
   onClose: () => void;
 }
 
@@ -58,7 +59,7 @@ export function StickerSelectDialog({
         selectedItem={selectedListSticker}
         onSelect={setSelectedListSticker}
       >
-        {({ id }) => <StickerImage key={id} stickerId={id} />}
+        {({ id }) => <StickerImage key={id} stickerKey={id} />}
       </SelectableList>
     </ModalDialog>
   );

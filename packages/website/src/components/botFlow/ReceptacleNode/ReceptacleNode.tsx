@@ -1,12 +1,14 @@
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { useStore } from 'zustand';
 
+import { StickerId } from '@/api/botFlow/types';
+
 import { useFlowStore } from '../BotFlowBoard/store';
 import { NodeContainer } from '../NodeContainer';
 import { StickerSelect } from '../StickerSelect';
 
 type ReceptacleNodeType = Node<
-  { stickers: string[]; emojiId: string },
+  { stickers: StickerId[]; emojiId: StickerId },
   'receptacle'
 >;
 

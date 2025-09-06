@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import { StickerId } from '@/api/botFlow/types';
 import { Typography } from '@/components/Typography';
 
 import { Button } from '../../Button';
@@ -7,9 +8,9 @@ import { StickerImage } from '../StickerImage';
 import { StickerSelectDialog } from '../StickerSelectDialog';
 
 export type StickerSelectProps = {
-  stickers: string[];
-  selectedStickerId?: string;
-  onEmojiChanged?: (emoji: string) => void;
+  stickers: StickerId[];
+  selectedStickerId?: StickerId;
+  onEmojiChanged?: (emoji: StickerId) => void;
 };
 
 export function StickerSelect({
@@ -35,7 +36,7 @@ export function StickerSelect({
     <>
       <Button buttonVariant="flat-inverted" onClick={onShow}>
         {selectedSticker ? (
-          <StickerImage stickerId={selectedSticker} />
+          <StickerImage stickerKey={selectedSticker} />
         ) : (
           <Typography>?</Typography>
         )}

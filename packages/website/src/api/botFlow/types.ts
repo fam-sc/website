@@ -1,3 +1,4 @@
+import { ImageFormat } from '@sc-fam/shared/image/mime.js';
 import { infer as zodInfer } from 'zod/v4-mini';
 
 import type {
@@ -19,8 +20,10 @@ export type Position = zodInfer<typeof position>;
 
 export type PositionMap = zodInfer<typeof positionMap>;
 
+export type StickerId = `bot-flow/tg-sticker/${string}.${ImageFormat}`;
+
 export type BotFlowOutMeta = {
-  icons: string[];
+  icons: StickerId[];
   positions: PositionMap | undefined;
 };
 

@@ -8,6 +8,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { NodeJsRuntimeStreamingBlobPayloadInputTypes } from '@smithy/types';
 
 import {
   R2Bucket,
@@ -58,7 +59,12 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
     key: string,
     result: Pick<
       HeadObjectOutput,
-      `Checksum${'SHA1' | 'SHA256'}` | 'ETag' | 'StorageClass' | 'VersionId'
+      | `Checksum${'SHA1' | 'SHA256'}`
+      | 'ETag'
+      | 'StorageClass'
+      | 'VersionId'
+      | 'ContentType'
+      | 'Metadata'
     >
   ) {
     return {
@@ -70,6 +76,8 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
       storageClass: result.StorageClass ?? '',
       uploaded: new Date(),
       version: result.VersionId ?? '',
+      customMetadata: result.Metadata,
+      httpMetadata: { contentType: result.ContentType },
       writeHttpMetadata: () => {},
     };
   }
@@ -131,7 +139,7 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
     options?: R2PutOptions
   ): Promise<R2Object> {
     if (value !== null) {
-      let body: unknown = value;
+      let body: NodeJsRuntimeStreamingBlobPayloadInputTypes = value;
 
       if (!(value instanceof Uint8Array)) {
         if (ArrayBuffer.isView(value)) {
@@ -163,6 +171,7 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
           Body: body as string | ReadableStream | Uint8Array,
           ChecksumAlgorithm: 'CRC32',
           ContentType: contentType,
+          Metadata: options?.customMetadata,
         })
       );
 
@@ -204,19 +213,32 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
       })
     );
 
-    return {
-      objects:
-        result.Contents?.map((content) => ({
-          key: content.Key ?? '',
+    const objects: R2Object[] = await Promise.all(
+      (result.Contents ?? []).map(async (object) => {
+        const objectWithMeta = await this.client.send(
+          new GetObjectCommand({
+            Bucket: this.bucketName,
+            Key: object.Key ?? '',
+          })
+        );
+
+        return {
+          key: object.Key ?? '',
           checksums: { toJSON: () => ({}) },
-          etag: content.ETag ?? '',
-          size: content.Size ?? 0,
-          httpEtag: content.ETag ?? '',
-          storageClass: content.StorageClass ?? '',
+          etag: object.ETag ?? '',
+          size: object.Size ?? 0,
+          httpEtag: object.ETag ?? '',
+          storageClass: object.StorageClass ?? '',
           uploaded: new Date(),
+          customMetadata: objectWithMeta.Metadata,
           version: '',
           writeHttpMetadata: () => {},
-        })) ?? [],
+        };
+      })
+    );
+
+    return {
+      objects,
       delimitedPrefixes: [],
       truncated: false,
     };
