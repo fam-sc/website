@@ -8,7 +8,6 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { NodeJsRuntimeStreamingBlobPayloadInputTypes } from '@smithy/types';
 
 import {
   R2Bucket,
@@ -139,7 +138,7 @@ export class ApiR2Bucket implements R2Bucket, Disposable {
     options?: R2PutOptions
   ): Promise<R2Object> {
     if (value !== null) {
-      let body: NodeJsRuntimeStreamingBlobPayloadInputTypes = value;
+      let body: unknown = value;
 
       if (!(value instanceof Uint8Array)) {
         if (ArrayBuffer.isView(value)) {
