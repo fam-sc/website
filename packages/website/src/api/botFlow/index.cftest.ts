@@ -37,7 +37,7 @@ describe('getBotFlow', () => {
 
     const botFlow = await getBotFlow(env);
 
-    const actual = botFlow.meta.icons;
+    const actual = botFlow.meta.stickers;
     const prefix = 'bot-flow/tg-sticker';
 
     expect(actual).toEqual(

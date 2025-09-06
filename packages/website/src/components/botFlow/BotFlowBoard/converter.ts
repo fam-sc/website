@@ -84,7 +84,7 @@ export function botFlowToNodes({
         x: 500,
         y: index * 500,
       }),
-      data: { stickers: meta.icons, emojiId: value.emojiId },
+      data: { stickers: meta.stickers, emojiId: value.emojiId },
     })),
   ].flat();
 }

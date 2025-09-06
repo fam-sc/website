@@ -14,7 +14,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./worker-configuration.d.ts"],
+  "include": ["./src", "./worker-configuration.d.ts", "./env.d.ts"],
   "exclude": ["./node_modules"],
   "references": [{ "path": "../data" }, { "path": "../shared" }]
 }

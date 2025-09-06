@@ -20,10 +20,11 @@ export type Position = zodInfer<typeof position>;
 
 export type PositionMap = zodInfer<typeof positionMap>;
 
-export type StickerId = `bot-flow/tg-sticker/${string}.${ImageFormat}`;
+export type StickerSource = `bot-flow/tg-sticker/${string}.${ImageFormat}`;
+export type StickerInfo = { id: string; source: StickerSource };
 
 export type BotFlowOutMeta = {
-  icons: StickerId[];
+  stickers: StickerInfo[];
   positions: PositionMap | undefined;
 };
 

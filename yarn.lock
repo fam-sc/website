@@ -3125,6 +3125,7 @@ __metadata:
     "@sc-fam/shared": "workspace:*"
     "@types/node": "npm:24.2.0"
     dotenv: "npm:17.2.0"
+    telegram-standard-bot-api: "npm:1.0.8"
     tsx: "npm:4.20.3"
     typescript: "npm:5.8.3"
     wrangler: "npm:4.33.1"

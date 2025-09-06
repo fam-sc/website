@@ -1,6 +1,3 @@
-import { createTelegramBot } from 'telegram-standard-bot-api';
-import { getForumTopicIconStickers } from 'telegram-standard-bot-api/methods';
-
 import {
   BotFlowInMeta,
   BotFlowWithInMeta,
@@ -14,7 +11,7 @@ import {
   putInternalBotFlowConfig,
 } from './internal/client';
 import { BotFlowConfig } from './internal/types';
-import { downloadStickers, listMediaStickers } from './stickers';
+import { listMediaStickers } from './stickers';
 
 const NODE_POSITIONS_PATH: MediaFilePath = 'bot-flow/node-positions.json';
 
@@ -31,18 +28,11 @@ async function putNodePositions(bucket: R2Bucket, positions: PositionMap) {
 
 export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
   const bucket = env.MEDIA_BUCKET;
-  const botKey = env.TG_BOT_KEY;
-  const bot = createTelegramBot({ apiKey: botKey });
 
-  const [stickers, mediaStickers] = await Promise.all([
-    bot(getForumTopicIconStickers()),
-    listMediaStickers(bucket),
-  ]);
-
-  const [config, positions, icons] = await Promise.all([
+  const [config, positions, stickers] = await Promise.all([
     getInternalBotFlowConfig(env.HELPDESK_API_KEY),
     getNodePositions(bucket),
-    downloadStickers(bot, botKey, bucket, stickers, mediaStickers),
+    listMediaStickers(bucket),
   ]);
 
   const { steps, receptacles, options } = config;
@@ -66,7 +56,7 @@ export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
       id: value.id,
       emojiId: value.emoji_id,
     })),
-    meta: { icons, positions },
+    meta: { stickers, positions },
   };
 }
 

@@ -1,14 +1,14 @@
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { useStore } from 'zustand';
 
-import { StickerId } from '@/api/botFlow/types';
+import { StickerInfo } from '@/api/botFlow/types';
 
 import { useFlowStore } from '../BotFlowBoard/store';
 import { NodeContainer } from '../NodeContainer';
 import { StickerSelect } from '../StickerSelect';
 
 type ReceptacleNodeType = Node<
-  { stickers: StickerId[]; emojiId: StickerId },
+  { stickers: StickerInfo[]; emojiId: string },
   'receptacle'
 >;
 
@@ -25,7 +25,7 @@ export function ReceptacleNode({ id, data }: NodeProps<ReceptacleNodeType>) {
         stickers={data.stickers}
         selectedStickerId={data.emojiId}
         onEmojiChanged={(emoji) => {
-          onEmojiChanged(id, emoji);
+          onEmojiChanged(id, emoji.id);
         }}
       />
 
