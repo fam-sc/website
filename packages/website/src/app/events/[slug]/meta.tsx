@@ -15,7 +15,7 @@ export function EventMeta({ event }: { event: Event }) {
   );
 
   const ogImage = useMemo(() => {
-    const size = nearestSize(event.images, 1920);
+    const size = nearestSize(event.images.sizes, 1920);
 
     return getMediaFileUrl(`events/${event.id}/${size.width}`);
   }, [event]);

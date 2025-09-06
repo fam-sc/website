@@ -8,7 +8,7 @@ import { GalleryImageWithSizes } from '@/api/gallery/types';
 import { useAuthInfo } from '@/auth/context';
 import { LazyImageScroll } from '@/components/LazyImageScroll';
 import { UploadIcon } from '@/icons/UploadIcon';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -25,9 +25,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 
   const repo = repository(context);
-  const sizes = await repo.galleryImages().getImageSizes(numberId);
+  const imageData = await repo.galleryImages().getImageData(numberId);
 
-  return sizes !== null ? { id: numberId, sizes } : null;
+  return imageData !== null ? { id: numberId, imageData } : null;
 }
 
 export default function Page({
@@ -43,8 +43,8 @@ export default function Page({
   const canModify = user !== null && user.role >= UserRole.ADMIN;
 
   const getImageInfo = useCallback(
-    ({ id, sizes }: GalleryImageWithSizes) =>
-      sizesToImages(`gallery/${id}`, sizes),
+    ({ id, imageData }: GalleryImageWithSizes) =>
+      imageDataToClientImages(`gallery/${id}`, imageData),
     []
   );
 

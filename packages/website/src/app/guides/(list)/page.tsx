@@ -10,7 +10,7 @@ import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { Pagination } from '@/components/Pagination';
 import { PlusIcon } from '@/icons/PlusIcon';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 import { createPageUrl } from '@/utils/page';
 import { repository } from '@/utils/repo';
 
@@ -77,7 +77,9 @@ export default function Page({
           <li key={id}>
             <GuideListItem
               {...rest}
-              images={images ? sizesToImages(`guides/${id}`, images) : null}
+              images={
+                images ? imageDataToClientImages(`guides/${id}`, images) : null
+              }
             />
           </li>
         ))}

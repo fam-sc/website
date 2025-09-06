@@ -20,6 +20,7 @@ test.each<[RichTextString, string]>([
     {
       name: '#image',
       filePath: 'rich-text-image/123',
+      format: 'png',
       sizes: [
         { width: 100, height: 100 },
         { width: 200, height: 200 },

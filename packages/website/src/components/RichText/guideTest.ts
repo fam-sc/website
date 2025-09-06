@@ -115,6 +115,7 @@ export const testRichText: RichTextString = [
       {
         name: '#image',
         filePath: 'rich-text-image/4811aedd-0281-4bb8-aae8-9390472aa521',
+        format: 'png',
         sizes: [{ width: 1280, height: 960 }],
       },
       {
@@ -381,6 +382,7 @@ export const testRichText: RichTextString = [
     children: [
       {
         name: '#image',
+        format: 'png',
         filePath: 'rich-text-image/4bd593ef-a639-491d-b550-951d63bd3156',
         sizes: [{ width: 980, height: 300 }],
       },
@@ -427,6 +429,7 @@ export const testRichText: RichTextString = [
       {
         name: '#image',
         filePath: 'rich-text-image/b9754a97-870b-4547-8d3a-69dcb004e69a',
+        format: 'png',
         sizes: [{ width: 1126, height: 750 }],
       },
       { name: 'figcaption' },
@@ -482,6 +485,7 @@ export const testRichText: RichTextString = [
       {
         name: '#image',
         filePath: 'rich-text-image/17e65266-34ad-4c8d-919f-8523adaeee82',
+        format: 'png',
         sizes: [{ width: 1920, height: 1080 }],
       },
       { name: 'figcaption' },

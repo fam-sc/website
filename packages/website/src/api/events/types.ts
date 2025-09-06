@@ -1,5 +1,4 @@
-import { EventStatus } from '@sc-fam/data';
-import { ImageSize } from '@sc-fam/shared/image';
+import { EventStatus, ImageData } from '@sc-fam/data';
 import { RichTextString } from '@sc-fam/shared/richText';
 import { infer as zodInfer } from 'zod/v4-mini';
 
@@ -7,7 +6,7 @@ import type { payloadSchema } from './payloads';
 export type { EventStatus } from '@sc-fam/data';
 
 export type ShortEvent = {
-  id: string;
+  id: number;
   title: string;
 };
 
@@ -18,7 +17,7 @@ export type Event = {
   status: EventStatus;
   date: string;
   description: RichTextString;
-  images: ImageSize[];
+  images: ImageData;
 };
 
 export type WithDescriptionFiles<Image extends File | undefined> = zodInfer<

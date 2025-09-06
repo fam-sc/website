@@ -3292,6 +3292,8 @@ __metadata:
     "@react-router/dev": "npm:7.8.1"
     "@react-router/express": "npm:7.8.1"
     "@react-router/node": "npm:7.8.1"
+    "@sc-fam/data": "workspace:*"
+    "@sc-fam/shared": "workspace:*"
     "@sc-fam/shared-ui": "workspace:*"
     "@sc-fam/shared-vite-plugins": "workspace:*"
     "@storybook/addon-a11y": "npm:9.1.1"

@@ -1,11 +1,11 @@
 import { Repository, UserRole } from '@sc-fam/data';
-import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
 import { formData, middlewareHandler } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
 import { MediaTransaction } from '@/api/media/transaction';
 
 import { auth } from '../authRoute';
+import { resolveImageData } from '../media/imageData';
 import { putMultipleSizedImages } from '../media/multiple';
 import { hydrateRichText } from '../richText/hydration';
 import { parseAddGuidePayload } from './payloads';
@@ -25,16 +25,14 @@ app.post(
       });
 
       const imageBuffer = await image?.bytes();
-      const sizes = imageBuffer
-        ? resolveImageSizes(getImageSize(imageBuffer))
-        : null;
+      const imageData = imageBuffer ? resolveImageData(imageBuffer) : null;
 
-      return { richTextDescription, sizes, imageBuffer };
+      return { richTextDescription, imageData, imageBuffer };
     },
     auth({ minRole: UserRole.ADMIN }),
     async ({
       env,
-      data: [{ title, slug }, { richTextDescription, sizes, imageBuffer }],
+      data: [{ title, slug }, { richTextDescription, imageData, imageBuffer }],
     }) => {
       const now = Date.now();
 
@@ -45,18 +43,18 @@ app.post(
         description: richTextDescription,
         createdAtDate: now,
         updatedAtDate: now,
-        images: sizes,
+        images: imageData,
       });
 
       // Use media and repo transactions here to ensure consistency if an error happens somewhere.
       await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
 
-      if (imageBuffer && sizes) {
+      if (imageBuffer && imageData) {
         await putMultipleSizedImages(
           env,
           `guides/${id}`,
           imageBuffer,
-          sizes,
+          imageData,
           mediaTransaction
         );
       }

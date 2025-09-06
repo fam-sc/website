@@ -46,6 +46,7 @@ export const elementNode: ZodMiniType<RichTextAtomNode> = discriminatedUnion(
     object({
       name: literal('#image'),
       filePath,
+      format: union([literal('png'), literal('jpeg'), literal('webp')]),
       sizes: array(
         object({
           width: dimension,

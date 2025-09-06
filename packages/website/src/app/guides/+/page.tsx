@@ -22,7 +22,7 @@ import {
   testValidationResult,
   useValidation,
 } from '@/hooks/useValidation';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -70,7 +70,7 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
 
   const [image, setImage] = useSelectableImage(() =>
     guide && guide.images
-      ? sizesToImages(`guides/${guide.id}`, guide.images)
+      ? imageDataToClientImages(`guides/${guide.id}`, guide.images)
       : undefined
   );
   const imageFileRef = useRef<File>(undefined);

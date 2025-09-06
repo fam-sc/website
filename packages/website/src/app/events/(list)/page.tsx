@@ -10,7 +10,7 @@ import { LinkButton } from '@/components/LinkButton';
 import { List } from '@/components/List';
 import { Pagination } from '@/components/Pagination';
 import { PlusIcon } from '@/icons/PlusIcon';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -72,7 +72,7 @@ export default function Page({
           <li key={id}>
             <EventListItem
               {...rest}
-              images={sizesToImages(`events/${id}`, images)}
+              images={imageDataToClientImages(`events/${id}`, images)}
             />
           </li>
         ))}

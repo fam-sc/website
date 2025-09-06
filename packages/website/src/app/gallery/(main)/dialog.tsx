@@ -14,7 +14,7 @@ import { CloseIcon } from '@/icons/CloseIcon';
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EventIcon } from '@/icons/EventIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 
 import styles from './dialog.module.scss';
 
@@ -77,7 +77,10 @@ export function GalleryImageInfoDialog({
 
       <div className={styles.content}>
         <Image
-          multiple={sizesToImages(`gallery/${info.id}`, info.sizes)}
+          multiple={imageDataToClientImages(
+            `gallery/${info.id}`,
+            info.imageData
+          )}
           sizes={{ 900: '100vw', default: '60vw' }}
         />
 

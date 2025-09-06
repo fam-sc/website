@@ -1,10 +1,10 @@
-import { ImageSize } from '@sc-fam/shared/image';
 import { TableDescriptor } from '@sc-fam/shared-sql/builder';
 import { EntityCollection } from '@sc-fam/shared-sql/collection';
 
 import {
   GalleryImage,
   GalleryImageWithEvent,
+  ImageData,
   RawGalleryImage,
 } from '../types/common';
 
@@ -62,11 +62,11 @@ export class GalleryImageCollection extends EntityCollection<RawGalleryImage>(
 
     return result.map(({ id, images }) => ({
       id,
-      images: JSON.parse(images) as ImageSize[],
+      images: JSON.parse(images) as ImageData,
     }));
   }
 
-  async getImageSizes(id: number): Promise<ImageSize[] | null> {
+  async getImageData(id: number): Promise<ImageData | null> {
     const result = await this.findOneWhere({ id }, ['images']);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return

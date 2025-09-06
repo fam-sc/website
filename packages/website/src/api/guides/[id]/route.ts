@@ -1,10 +1,10 @@
 import { Repository, UserRole } from '@sc-fam/data';
 import { notFound, ok } from '@sc-fam/shared';
-import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
 import { int, middlewareHandler, params } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
 import { auth } from '@/api/authRoute';
+import { resolveImageData } from '@/api/media/imageData';
 import { putMultipleSizedImages } from '@/api/media/multiple';
 import { MediaTransaction } from '@/api/media/transaction';
 import { hydrateRichText } from '@/api/richText/hydration';
@@ -22,8 +22,7 @@ app.put(
         parseEditGuidePayload(formData);
 
       const imageBuffer = await image?.bytes();
-      const imageSize = imageBuffer && getImageSize(imageBuffer);
-      const sizes = imageSize && resolveImageSizes(imageSize);
+      const imageData = imageBuffer && resolveImageData(imageBuffer);
 
       // Use media and repo transactions here to ensure consistency if an error happens somewhere.
       await using mediaTransaction = new MediaTransaction(env.MEDIA_BUCKET);
@@ -46,15 +45,15 @@ app.put(
         slug,
         description: hydratedDescription,
         updatedAtDate: Date.now(),
-        images: sizes,
+        images: imageData,
       });
 
-      if (imageBuffer && sizes) {
+      if (imageBuffer && imageData) {
         await putMultipleSizedImages(
           env,
           `guides/${id}`,
           imageBuffer,
-          sizes,
+          imageData,
           mediaTransaction
         );
       }

@@ -191,6 +191,7 @@ async function postProcessDescription(
       return {
         name: '#image',
         filePath,
+        format: image.format,
         sizes: [image.size],
       };
     } else {
@@ -303,7 +304,9 @@ async function migrateArticle(url: string) {
     description: newDescription,
     createdAtDate: now,
     updatedAtDate: now,
-    images: mainImage ? [mainImage.size] : null,
+    images: mainImage
+      ? { format: mainImage.format, sizes: [mainImage.size] }
+      : null,
   });
 
   if (mainImage) {

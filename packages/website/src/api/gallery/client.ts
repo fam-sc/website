@@ -17,7 +17,7 @@ export function uploadGalleryImages(payload: UploadGalleryImagesPayload) {
   formData.set('date', payload.date.toISOString());
 
   if (payload.eventId !== null) {
-    formData.set('eventId', payload.eventId);
+    formData.set('eventId', payload.eventId.toString());
   }
 
   for (const file of payload.files) {

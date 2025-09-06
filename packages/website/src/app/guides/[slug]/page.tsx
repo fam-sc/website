@@ -11,7 +11,7 @@ import { ConfirmationDialog } from '@/components/ConfirmationDialog';
 import { Image } from '@/components/Image';
 import { ModifyHeader } from '@/components/ModifyHeader';
 import { RichText } from '@/components/RichText';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -73,7 +73,7 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
       {guide.images && (
         <Image
           className={styles.image}
-          multiple={sizesToImages(`guides/${guide.id}`, guide.images)}
+          multiple={imageDataToClientImages(`guides/${guide.id}`, guide.images)}
         />
       )}
 

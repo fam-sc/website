@@ -12,7 +12,7 @@ function generateEvents(n: number): EventWithId[] {
   const result: EventWithId[] = [];
 
   for (let i = 1; i <= n; i++) {
-    result.push({ id: i.toString(), title: `Event ${i}` });
+    result.push({ id: i, title: `Event ${i}` });
   }
 
   return result;

@@ -1,16 +1,16 @@
-import { ImageSize } from '@sc-fam/shared/image';
+import { ImageData } from '@sc-fam/data';
 
 import { getMediaFileUrl } from '@/api/media';
 import { MediaSubPathWithImageSize } from '@/api/media/types';
 
 import { ImageInfo } from './types';
 
-export function sizesToImages(
+export function imageDataToClientImages(
   prefix: MediaSubPathWithImageSize,
-  sizes: ImageSize[]
+  data: ImageData
 ): ImageInfo[] {
-  return sizes.map(({ width, height }) => ({
-    src: getMediaFileUrl(`${prefix}/${width}.png`),
+  return data.sizes.map(({ width, height }) => ({
+    src: getMediaFileUrl(`${prefix}/${width}.${data.format}`),
     width,
     height,
   }));
