@@ -7,7 +7,7 @@ import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
 import { UsefulLinkList } from '@/components/UsefulLinkList';
 import { useDataLoader } from '@/hooks/useDataLoader';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 
 import styles from './page.module.scss';
 import { usefulLinks } from './usefulLinks';
@@ -39,7 +39,7 @@ export default function Page() {
               <li key={id}>
                 <EventListItem
                   {...rest}
-                  images={sizesToImages(`events/${id}`, images)}
+                  images={imageDataToClientImages(`events/${id}`, images)}
                 />
               </li>
             ))}

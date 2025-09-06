@@ -114,6 +114,8 @@ $variants: ('solid', 'outlined', 'flat');
   }
 
   &-variant-flat-inverted {
+    color: #000;
+
     &:hover:not(:disabled) {
       background-color: #dcdcdc;
     }

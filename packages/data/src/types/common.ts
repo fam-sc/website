@@ -1,7 +1,10 @@
-import { ImageSize } from '@sc-fam/shared/image';
+import { ImageFormat, ImageSize } from '@sc-fam/shared/image';
 import { RichTextString } from '@sc-fam/shared/richText';
 
 import { UserRole } from './user';
+import { Replace } from './utils';
+
+export type ImageData = { format: ImageFormat; sizes: ImageSize[] };
 
 export enum EventStatus {
   PENDING = 0,
@@ -18,10 +21,13 @@ export type RawEvent = {
   images: string;
 };
 
-export type Event = Omit<RawEvent, 'description' | 'images'> & {
-  description: RichTextString;
-  images: ImageSize[];
-};
+export type Event = Replace<
+  RawEvent,
+  {
+    description: RichTextString;
+    images: ImageData;
+  }
+>;
 
 export type RawGalleryImage = {
   id: number;
@@ -31,13 +37,12 @@ export type RawGalleryImage = {
   images: string;
 };
 
-export type GalleryImage = {
-  id: number;
-  date: number;
-  order: number;
-  eventId: number | null;
-  images: ImageSize[];
-};
+export type GalleryImage = Replace<
+  RawGalleryImage,
+  {
+    images: ImageData;
+  }
+>;
 
 export type GalleryImageWithEvent = {
   id: number;

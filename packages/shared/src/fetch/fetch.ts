@@ -7,7 +7,7 @@ export type ExtendedRequestInit =
       body: object;
     });
 
-async function createErrorResponse(response: Response): Promise<Error> {
+export async function createErrorResponse(response: Response): Promise<Error> {
   const { statusText, status } = response;
 
   try {

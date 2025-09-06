@@ -1,8 +1,3 @@
-import { getFileDownloadUrlById } from '@sc-fam/shared/api/telegram/utils.js';
-import { createTelegramBot, TelegramBot } from 'telegram-standard-bot-api';
-import { getForumTopicIconStickers } from 'telegram-standard-bot-api/methods';
-import { Sticker } from 'telegram-standard-bot-api/types';
-
 import {
   BotFlowInMeta,
   BotFlowWithInMeta,
@@ -10,25 +5,15 @@ import {
   PositionMap,
 } from '@/api/botFlow/types';
 
-import { putMediaFileViaUrl } from '../media';
 import { MediaFilePath } from '../media/types';
 import {
   getInternalBotFlowConfig,
   putInternalBotFlowConfig,
 } from './internal/client';
 import { BotFlowConfig } from './internal/types';
+import { listMediaStickers } from './stickers';
 
 const NODE_POSITIONS_PATH: MediaFilePath = 'bot-flow/node-positions.json';
-
-function getStickerPath(value: Sticker): MediaFilePath {
-  return `bot-flow/tg-sticker/${value.custom_emoji_id}`;
-}
-
-async function listMediaStickers(bucket: R2Bucket): Promise<string[]> {
-  const { objects } = await bucket.list({ prefix: `bot-flow/tg-sticker` });
-
-  return objects.map(({ key }) => key);
-}
 
 async function getNodePositions(bucket: R2Bucket): Promise<PositionMap> {
   const object = await bucket.get(NODE_POSITIONS_PATH);
@@ -41,42 +26,13 @@ async function putNodePositions(bucket: R2Bucket, positions: PositionMap) {
   await bucket.put(NODE_POSITIONS_PATH, JSON.stringify(positions));
 }
 
-async function downloadStickers(
-  bot: TelegramBot,
-  bucket: R2Bucket,
-  stickers: Sticker[],
-  currentStickers: string[]
-) {
-  await Promise.all(
-    stickers
-      .filter((sticker) => !currentStickers.includes(getStickerPath(sticker)))
-      .map(async (sticker) => {
-        const fileId = sticker.thumbnail?.file_id;
-
-        if (fileId !== undefined) {
-          const url = await getFileDownloadUrlById(bot, fileId);
-
-          await putMediaFileViaUrl(bucket, getStickerPath(sticker), url);
-        }
-      })
-  );
-}
-
 export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
   const bucket = env.MEDIA_BUCKET;
-  const bot = createTelegramBot({ apiKey: env.TG_BOT_KEY });
 
-  const [stickers, mediaStickers] = await Promise.all([
-    bot(getForumTopicIconStickers()),
-    listMediaStickers(bucket),
-  ]);
-
-  const icons = stickers.map((value) => value.custom_emoji_id as string);
-
-  const [config, positions] = await Promise.all([
+  const [config, positions, stickers] = await Promise.all([
     getInternalBotFlowConfig(env.HELPDESK_API_KEY),
     getNodePositions(bucket),
-    downloadStickers(bot, bucket, stickers, mediaStickers),
+    listMediaStickers(bucket),
   ]);
 
   const { steps, receptacles, options } = config;
@@ -100,7 +56,7 @@ export async function getBotFlow(env: Env): Promise<BotFlowWithOutMeta> {
       id: value.id,
       emojiId: value.emoji_id,
     })),
-    meta: { icons, positions },
+    meta: { stickers, positions },
   };
 }
 

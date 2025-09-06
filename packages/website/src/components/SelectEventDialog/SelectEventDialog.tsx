@@ -8,7 +8,7 @@ import { Typography } from '../Typography';
 import styles from './SelectEventDialog.module.scss';
 
 export type EventWithId = {
-  id: string;
+  id: number;
   title: string;
 };
 

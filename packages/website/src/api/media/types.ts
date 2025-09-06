@@ -1,5 +1,7 @@
+import { ImageFormat } from '@sc-fam/shared/image';
+
 type Concat<T extends string, U extends string> = T | `${T}${U}`;
-type ImageWithSize = Concat<`${string}/${number}`, '.png'>;
+type ImageWithSize = Concat<`${string}/${number}`, `.${ImageFormat}`>;
 
 type MediaPathMap = {
   events: ImageWithSize;

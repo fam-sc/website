@@ -7,7 +7,7 @@ import {
 import React, { Key, ReactNode } from 'react';
 import { Link } from 'react-router';
 
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 
 import { Image } from '../Image';
 import { Typography } from '../Typography';
@@ -48,7 +48,7 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
 
   switch (node.name) {
     case '#image': {
-      return <Image multiple={sizesToImages(node.filePath, node.sizes)} />;
+      return <Image multiple={imageDataToClientImages(node.filePath, node)} />;
     }
     case '#placeholder-image':
     case '#unsized-image': {

@@ -16,7 +16,7 @@ export function GuideMeta({ guide }: { guide: Guide }) {
 
   const ogImage = useMemo(() => {
     if (guide.images) {
-      const size = nearestSize(guide.images, 1920);
+      const size = nearestSize(guide.images.sizes, 1920);
 
       return getMediaFileUrl(`guides/${guide.id}/${size.width}`);
     }

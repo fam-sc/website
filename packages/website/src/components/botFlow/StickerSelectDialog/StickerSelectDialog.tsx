@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 
+import { StickerInfo } from '@/api/botFlow/types';
 import { Button } from '@/components/Button';
 import { ModalDialog } from '@/components/ModalDialog';
 import { SelectableList } from '@/components/SelectableList';
@@ -8,10 +9,10 @@ import { StickerImage } from '../StickerImage';
 import styles from './StickerSelectDialog.module.scss';
 
 export interface StickerSelectDialogProps {
-  stickers: string[];
-  selectedSticker?: string;
+  stickers: StickerInfo[];
+  selectedSticker?: StickerInfo;
 
-  onEmojiChanged?: (id: string) => void;
+  onEmojiChanged?: (id: StickerInfo) => void;
   onClose: () => void;
 }
 
@@ -21,17 +22,12 @@ export function StickerSelectDialog({
   selectedSticker,
   stickers,
 }: StickerSelectDialogProps) {
-  const listStickers = useMemo(
-    () => stickers.map((id) => ({ id })),
-    [stickers]
-  );
-  const [selectedListSticker, setSelectedListSticker] = useState(
-    selectedSticker ? { id: selectedSticker } : undefined
-  );
+  const [selectedListSticker, setSelectedListSticker] =
+    useState(selectedSticker);
 
   const onSelect = useCallback(() => {
     if (selectedListSticker !== undefined) {
-      onEmojiChanged?.(selectedListSticker.id);
+      onEmojiChanged?.(selectedListSticker);
     }
 
     onClose();
@@ -54,11 +50,11 @@ export function StickerSelectDialog({
     >
       <SelectableList
         className={styles.grid}
-        items={listStickers}
+        items={stickers}
         selectedItem={selectedListSticker}
         onSelect={setSelectedListSticker}
       >
-        {({ id }) => <StickerImage key={id} stickerId={id} />}
+        {({ id, source }) => <StickerImage key={id} source={source} />}
       </SelectableList>
     </ModalDialog>
   );

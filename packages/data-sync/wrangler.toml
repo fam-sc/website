@@ -8,6 +8,10 @@ d1_databases = [
   { binding = 'DB', database_name = "website", database_id = "402b9901-777f-46ac-a699-2b3d32593d32" }
 ]
 
+r2_buckets = [
+  { binding = 'MEDIA_BUCKET', bucket_name = 'sc-fam-website', preview_bucket_name = 'sc-fam-website-preview' }
+]
+
 [observability]
 enabled = true
 head_sampling_rate = 1

@@ -1,4 +1,4 @@
-import { ImageSize } from '../image/types';
+import { ImageFormat, ImageSize } from '../image';
 
 export type RichTextPlainNode = string;
 
@@ -63,6 +63,7 @@ export interface RichTextUnsizedImageNode {
 export interface RichTextImageNode {
   name: '#image';
   filePath: FilePath;
+  format: ImageFormat;
   sizes: ImageSize[];
 }
 

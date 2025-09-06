@@ -82,6 +82,7 @@ describe('hydrateRichText', () => {
       previous: {
         name: '#image',
         filePath: 'rich-text-image/1',
+        format: 'png',
         sizes,
       },
     });
@@ -91,6 +92,7 @@ describe('hydrateRichText', () => {
       {
         name: '#image',
         filePath: 'rich-text-image/1',
+        format: 'png',
         sizes,
       },
     ]);
@@ -102,6 +104,7 @@ describe('hydrateRichText', () => {
       {
         name: '#image',
         filePath: 'rich-text-image/1',
+        format: 'png',
         sizes: [{ width: 2, height: 4 }],
       },
       {
@@ -131,11 +134,13 @@ describe('hydrateRichText', () => {
       {
         name: '#image',
         filePath: 'rich-text-image/1',
+        format: 'png',
         sizes: [{ width: 2, height: 4 }],
       },
       {
         name: '#image',
         filePath,
+        format: 'png',
         sizes: [{ width: 2, height: 2 }],
       },
     ]);

@@ -11,13 +11,11 @@ app.get('/events/latest', async () => {
   const repo = Repository.openConnection();
   const result = await repo.events().getLatestEvents(3);
 
-  return ok(
-    result.map(
-      ({ date, description, ...rest }): Event => ({
-        ...rest,
-        date: formatDateTime(date),
-        description: shortenRichText(description, 200, 'ellipsis'),
-      })
-    )
+  return ok<Event[]>(
+    result.map(({ date, description, ...rest }) => ({
+      ...rest,
+      date: formatDateTime(date),
+      description: shortenRichText(description, 200, 'ellipsis'),
+    }))
   );
 });

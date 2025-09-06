@@ -1,3 +1,5 @@
+import { ImageData } from '@sc-fam/data';
+
 export type GalleryImageWithEvent = {
   id: number;
   date: string;
@@ -9,5 +11,5 @@ export type GalleryImageWithEvent = {
 
 export type GalleryImageWithSizes = {
   id: number;
-  sizes: { width: number; height: number }[];
+  imageData: ImageData;
 };

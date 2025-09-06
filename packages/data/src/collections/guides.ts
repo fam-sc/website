@@ -1,12 +1,11 @@
-import { ImageSize } from '@sc-fam/shared/image';
 import { RichTextString } from '@sc-fam/shared/richText';
 import { Conditions, TableDescriptor } from '@sc-fam/shared-sql/builder';
 import { EntityCollection } from '@sc-fam/shared-sql/collection';
 
-import { Guide, RawGuide } from '../types';
+import { Guide, ImageData, RawGuide } from '../types';
 
-function mapImages<E extends null | undefined>(
-  images: ImageSize[] | E
+function mapImageData<E extends null | undefined>(
+  images: ImageData | E
 ): string | E {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (images === undefined || images === null) {
@@ -43,7 +42,7 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
       {
         description:
           description !== undefined ? JSON.stringify(description) : undefined,
-        images: mapImages(images),
+        images: mapImageData(images),
         ...rest,
       }
     );
@@ -57,7 +56,7 @@ export class GuideCollection extends EntityCollection<RawGuide>('guides') {
     return this.insert(
       {
         description: JSON.stringify(description),
-        images: mapImages(images),
+        images: mapImageData(images),
         ...rest,
       },
       'id'

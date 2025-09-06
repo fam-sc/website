@@ -24,7 +24,7 @@ import {
   testValidationResult,
   useValidation,
 } from '@/hooks/useValidation';
-import { sizesToImages } from '@/utils/image/transform';
+import { imageDataToClientImages } from '@/utils/image/transform';
 import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
@@ -72,7 +72,7 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
   const errorAlert = useNotification();
 
   const [image, setImage] = useSelectableImage(
-    () => event && sizesToImages(`events/${event.id}`, event.images)
+    () => event && imageDataToClientImages(`events/${event.id}`, event.images)
   );
   const imageFileRef = useRef<File>(undefined);
 

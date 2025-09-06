@@ -1,16 +1,16 @@
 import { randomUUID } from 'node:crypto';
 
-import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
 import {
   getRichTextChildren,
   RichTextAtomNode,
   RichTextString,
 } from '@sc-fam/shared/richText';
 
-import { MediaTransaction } from '../..//media/transaction';
+import { resolveImageData } from '../../media/imageData';
 import { putMultipleSizedImages } from '../../media/multiple';
+import { MediaTransaction } from '../../media/transaction';
 import { MediaSubPathWithImageSize } from '../../media/types';
-import { getImageSizeMap, ImageSizeMap } from './analysis';
+import { getImageSizeMap, ImageDataMap } from './analysis';
 
 export type HydrationContext = {
   env: Env;
@@ -32,19 +32,19 @@ export function hydrateRichText(
 
 function hydrateRichTextBase(
   node: RichTextAtomNode,
-  imageSizeMap: ImageSizeMap,
+  imageSizeMap: ImageDataMap,
   context: HydrationContext
 ): Promise<RichTextAtomNode>;
 
 function hydrateRichTextBase(
   node: RichTextString,
-  imageSizeMap: ImageSizeMap,
+  imageSizeMap: ImageDataMap,
   context: HydrationContext
 ): Promise<RichTextString>;
 
 async function hydrateRichTextBase(
   node: RichTextString,
-  imageSizeMap: ImageSizeMap,
+  imageSizeMap: ImageDataMap,
   context: HydrationContext
 ): Promise<RichTextString> {
   if (typeof node === 'string') {
@@ -57,12 +57,12 @@ async function hydrateRichTextBase(
 
   switch (node.name) {
     case '#unsized-image': {
-      const sizes = imageSizeMap[node.filePath];
-      if (sizes === undefined) {
+      const imageData = imageSizeMap[node.filePath];
+      if (imageData === undefined) {
         throw new Error('Unknown unsized image');
       }
 
-      return { name: '#image', filePath: node.filePath, sizes };
+      return { name: '#image', filePath: node.filePath, ...imageData };
     }
     case '#placeholder-image': {
       const file = context.files.at(node.id);
@@ -71,8 +71,7 @@ async function hydrateRichTextBase(
       }
 
       const dataContent = await file.bytes();
-      const imageSize = getImageSize(dataContent);
-      const sizes = resolveImageSizes(imageSize);
+      const imageData = resolveImageData(dataContent);
 
       const id = randomUUID();
       const path: MediaSubPathWithImageSize = `rich-text-image/${id}`;
@@ -81,11 +80,11 @@ async function hydrateRichTextBase(
         context.env,
         path,
         dataContent,
-        sizes,
+        imageData,
         context.mediaTransaction
       );
 
-      return { name: '#image', filePath: path, sizes };
+      return { name: '#image', filePath: path, ...imageData };
     }
     case '#image': {
       return node;
@@ -108,7 +107,7 @@ async function hydrateRichTextBase(
 
 async function hydrateRichTextArray(
   nodes: RichTextAtomNode[],
-  imageSizeMap: ImageSizeMap,
+  imageSizeMap: ImageDataMap,
   context: HydrationContext
 ): Promise<RichTextAtomNode[]> {
   return Promise.all(

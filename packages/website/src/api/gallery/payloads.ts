@@ -1,5 +1,5 @@
 export type UploadGalleryImagesPayload = {
   date: Date;
-  eventId: string | null;
+  eventId: number | null;
   files: File[];
 };

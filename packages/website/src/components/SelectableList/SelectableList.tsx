@@ -8,7 +8,7 @@ export interface SelectableListProps<T extends { id: Key }> {
   className?: string;
   items: T[];
 
-  selectedItem?: T;
+  selectedItem?: NoInfer<T>;
   onSelect?: (value: T) => void;
 
   children: (value: T) => ReactNode;

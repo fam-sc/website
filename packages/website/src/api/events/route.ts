@@ -1,6 +1,5 @@
 import { Repository, UserRole } from '@sc-fam/data';
 import { ok } from '@sc-fam/shared';
-import { getImageSize, resolveImageSizes } from '@sc-fam/shared/image';
 import { enumValidator } from '@sc-fam/shared/minivalidate';
 import { middlewareHandler, searchParams } from '@sc-fam/shared/router';
 
@@ -9,8 +8,10 @@ import { parseAddEventPayload } from '@/api/events/payloads';
 import { MediaTransaction } from '@/api/media/transaction';
 
 import { auth } from '../authRoute';
+import { resolveImageData } from '../media/imageData';
 import { putMultipleSizedImages } from '../media/multiple';
 import { hydrateRichText } from '../richText/hydration';
+import { ShortEvent } from './types';
 
 app.get(
   '/events',
@@ -20,7 +21,7 @@ app.get(
       const repo = Repository.openConnection();
       const result = await repo.events().getAllShortEvents();
 
-      return ok(result);
+      return ok<ShortEvent[]>(result);
     }
   )
 );
@@ -44,13 +45,13 @@ app.post(
       });
 
       const imageBuffer = await image.bytes();
-      const sizes = resolveImageSizes(getImageSize(imageBuffer));
+      const imageData = resolveImageData(imageBuffer);
 
       const repo = Repository.openConnection();
       const id = await repo.events().insertEvent({
         date: date.getTime(),
         description: richTextDescription,
-        images: sizes,
+        images: imageData,
         ...restPayload,
       });
 
@@ -58,7 +59,7 @@ app.post(
         env,
         `events/${id}`,
         imageBuffer,
-        sizes,
+        imageData,
         mediaTransaction
       );
 
