@@ -3149,15 +3149,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sc-fam/media-worker@workspace:packages/media-worker":
-  version: 0.0.0-use.local
-  resolution: "@sc-fam/media-worker@workspace:packages/media-worker"
-  dependencies:
-    typescript: "npm:5.8.3"
-    wrangler: "npm:4.33.1"
-  languageName: unknown
-  linkType: soft
-
 "@sc-fam/posviata@workspace:packages/posviata":
   version: 0.0.0-use.local
   resolution: "@sc-fam/posviata@workspace:packages/posviata"
