@@ -28,6 +28,6 @@ export type DaySchedule = {
 };
 
 export type Schedule = {
-  groupCampusId: string;
+  groupName: string;
   weeks: [DaySchedule[], DaySchedule[]];
 };

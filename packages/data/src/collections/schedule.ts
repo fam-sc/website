@@ -15,7 +15,7 @@ import {
 import { ScheduleLessonCollection } from './scheduleLessons';
 
 function splitToWeeks<Input extends RawLesson, T>(
-  rawLessons: Omit<Input, 'groupCampusId'>[],
+  rawLessons: Omit<Input, 'groupName'>[],
   mapEntry: (input: Omit<Input, 'week' | 'day'>) => T
 ): [ScheduleWeek<T>, ScheduleWeek<T>] {
   type Item = Partial<Record<Day, DaySchedule<T>>>;
@@ -41,13 +41,13 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
 ) {
   static descriptor(): TableDescriptor<RawSchedule> {
     return {
-      groupCampusId: 'TEXT NOT NULL PRIMARY KEY',
+      groupName: 'TEXT NOT NULL PRIMARY KEY',
       links: 'TEXT',
       lastUpdateTime: 'INTEGER NOT NULL',
     };
   }
 
-  getSchedule(groupCampusId: string): DataQuery<ScheduleWithTeachers | null> {
+  getSchedule(groupName: string): DataQuery<ScheduleWithTeachers | null> {
     type R = RawLesson & {
       lesson_name: string;
       teacher_link: string | null;
@@ -57,11 +57,11 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
       `SELECT week, day, place, teacher, time, type, link, schedule_teachers.link as teacher_link, schedule_lessons.name as lesson_name
       FROM schedule_lessons 
       RIGHT JOIN schedule_teachers ON schedule_lessons.teacher=schedule_teachers.name 
-      WHERE groupCampusId=?`,
-      [groupCampusId]
+      WHERE groupName=?`,
+      [groupName]
     );
 
-    const metaQuery = this.findOneWhereAction({ groupCampusId }, [
+    const metaQuery = this.findOneWhereAction({ groupName }, [
       'links',
       'lastUpdateTime',
     ]);
@@ -69,7 +69,7 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
     return query.merge([scheduleQuery, metaQuery]).map(([lessons, meta]) => {
       return lessons.length > 0
         ? {
-            groupCampusId,
+            groupName,
             weeks: splitToWeeks<R, LessonWithTeacher>(
               lessons,
               ({ teacher, teacher_link, lesson_name, ...rest }) => ({
@@ -88,17 +88,20 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
     });
   }
 
-  upsertWeeks({ groupCampusId, weeks }: ScheduleWithTeachers) {
+  upsertWeeks({
+    groupName,
+    weeks,
+  }: Pick<ScheduleWithTeachers, 'groupName' | 'weeks'>) {
     const lessons = this.getCollection(ScheduleLessonCollection);
 
     return [
-      lessons.deleteWhere({ groupCampusId }),
+      lessons.deleteWhere({ groupName }),
       ...lessons.insertOrReplaceManyAction(
         weeks
           .map((week, index) =>
             week.map(({ day, lessons }) =>
               lessons.map(({ teacher, ...rest }) => ({
-                groupCampusId,
+                groupName,
                 week: (index + 1) as 1 | 2,
                 day,
                 teacher: teacher.name,
@@ -111,23 +114,20 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
     ];
   }
 
-  insertPlaceholder(groupCampusId: string) {
-    return this.insertOrIgnoreAction({ groupCampusId, lastUpdateTime: 0 });
+  insertPlaceholder(groupName: string) {
+    return this.insertOrIgnoreAction({ groupName, lastUpdateTime: 0 });
   }
 
-  updateLinks(groupCampusId: string, links: Schedule['links']) {
-    return this.updateWhere(
-      { groupCampusId },
-      { links: JSON.stringify(links) }
-    );
+  updateLinks(groupName: string, links: Schedule['links']) {
+    return this.updateWhere({ groupName }, { links: JSON.stringify(links) });
   }
 
-  updateLastUpdateTime(groupCampusId: string, time: number) {
-    return this.updateWhereAction({ groupCampusId }, { lastUpdateTime: time });
+  updateLastUpdateTime(groupName: string, time: number) {
+    return this.updateWhereAction({ groupName }, { lastUpdateTime: time });
   }
 
-  getLinks(groupCampusId: string): DataQuery<Record<LessonId, string>> {
-    return this.findOneWhereAction({ groupCampusId }, ['links']).map(
+  getLinks(groupName: string): DataQuery<Record<LessonId, string>> {
+    return this.findOneWhereAction({ groupName }, ['links']).map(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       (result) => (result && result.links ? JSON.parse(result.links) : {})
     );

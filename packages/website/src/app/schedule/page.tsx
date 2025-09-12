@@ -1,5 +1,4 @@
 import { UserRole } from '@sc-fam/data';
-import { shortenGuid } from '@sc-fam/shared';
 import { getCurrentTime } from '@sc-fam/shared/api/campus/index.js';
 import { MINUTE_MS } from '@sc-fam/shared/chrono';
 import { useNotification } from '@sc-fam/shared-ui';
@@ -20,8 +19,8 @@ import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { CalendarIcon } from '@/icons/CalendarIcon';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { EditIcon } from '@/icons/EditIcon';
+import { decodeGroup, encodeGroup } from '@/services/groups/coder';
 import { scheduleToUpdateLinksPayload } from '@/services/schedule/links';
-import { repository } from '@/utils/repo';
 
 import { Route } from './+types/page';
 import { calculateCurrentLesson } from './date';
@@ -45,19 +44,16 @@ const ExportScheduleDialog = React.lazy(async () => {
   return { default: ExportScheduleDialog };
 });
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const { currentWeek } = await getCurrentTime();
 
   const { searchParams } = new URL(request.url);
   const rawGroup = searchParams.get('group');
-  const groupId = rawGroup !== null && rawGroup.length > 0 ? rawGroup : null;
 
-  const group =
-    groupId !== null
-      ? await repository(context).groups().findByCampusId(groupId).get()
-      : null;
-
-  return { initialWeek: currentWeek, initialGroup: group };
+  return {
+    initialWeek: currentWeek,
+    initialGroup: rawGroup ? decodeGroup(rawGroup) : null,
+  };
 }
 
 export default function Page({
@@ -69,10 +65,7 @@ export default function Page({
   const canModify = user !== null && user.role >= UserRole.GROUP_HEAD;
 
   const [selectedWeek, setSelectedWeek] = useState<Week>(initialWeek);
-  const [selectedGroup, setSelectedGroup] = useState<{
-    campusId: string;
-    name?: string;
-  } | null>(initialGroup);
+  const [selectedGroup, setSelectedGroup] = useState(initialGroup);
   const [isScheduleEditable, setScheduleEditable] = useState(false);
   const [currentLesson, setCurrentLesson] = useState<CurrentLesson>();
   const [exportDialogShown, setExportDialogShown] = useState(false);
@@ -86,7 +79,7 @@ export default function Page({
       const savedGroup = retrieveSavedSelectedGroup();
 
       if (savedGroup !== null) {
-        setSelectedGroup({ campusId: savedGroup });
+        setSelectedGroup(savedGroup);
       }
     }
   }, [initialGroup]);
@@ -95,16 +88,15 @@ export default function Page({
     let url = '/schedule';
 
     if (selectedGroup) {
-      url += `?group=${shortenGuid(selectedGroup.campusId)}`;
+      url += `?group=${encodeGroup(selectedGroup)}`;
     }
 
     void navigate(url, { preventScrollReset: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedGroup?.campusId]);
+  }, [navigate, selectedGroup]);
 
   useEffect(() => {
     if (selectedGroup) {
-      saveSelectedGroup(selectedGroup.campusId);
+      saveSelectedGroup(selectedGroup);
     }
   }, [selectedGroup]);
 
@@ -115,9 +107,7 @@ export default function Page({
   return (
     <>
       <Title>
-        {selectedGroup?.name
-          ? `Розклад групи ${selectedGroup.name}`
-          : 'Розклад'}
+        {selectedGroup ? `Розклад групи ${selectedGroup}` : 'Розклад'}
       </Title>
 
       {canModify && (
@@ -130,7 +120,8 @@ export default function Page({
             if (isScheduleEditable) {
               if (schedule !== undefined && selectedGroup !== null) {
                 const payload = scheduleToUpdateLinksPayload(schedule);
-                updateScheduleLinks(selectedGroup.campusId, payload)
+
+                updateScheduleLinks(selectedGroup, payload)
                   .then(() => {
                     setScheduleEditable(false);
                   })
@@ -162,16 +153,15 @@ export default function Page({
       <GroupSelect
         disabled={isScheduleEditable}
         className={styles['group-select']}
-        selectedId={selectedGroup?.campusId}
+        selected={selectedGroup ?? undefined}
         onSelected={setSelectedGroup}
         onGroupsLoaded={useCallback((groups: Group[]) => {
           setSelectedGroup((selectedGroup) => {
-            if (selectedGroup && selectedGroup.name === undefined) {
-              const group = groups.find(
-                ({ campusId }) => campusId === selectedGroup.campusId
-              );
-
-              return group ?? null;
+            if (
+              selectedGroup !== null &&
+              !groups.some(({ name }) => name === selectedGroup)
+            ) {
+              return null;
             }
 
             return selectedGroup;
@@ -182,7 +172,7 @@ export default function Page({
       <ScheduleGridLoader
         className={styles['schedule-grid']}
         week={selectedWeek}
-        groupId={selectedGroup?.campusId}
+        group={selectedGroup ?? undefined}
         currentLesson={currentLesson}
         isEditable={isScheduleEditable}
         onScheduleChanged={useCallback((newSchedule: Schedule) => {
@@ -206,7 +196,7 @@ export default function Page({
 
       {exportDialogShown && selectedGroup && (
         <ExportScheduleDialog
-          groupId={selectedGroup.campusId}
+          group={selectedGroup}
           onClose={() => setExportDialogShown(false)}
         />
       )}

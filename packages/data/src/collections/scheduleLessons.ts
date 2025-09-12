@@ -8,7 +8,7 @@ export class ScheduleLessonCollection extends EntityCollection<RawLesson>(
 ) {
   static descriptor(): TableDescriptor<RawLesson> {
     return {
-      groupCampusId: 'TEXT NOT NULL',
+      groupName: 'TEXT NOT NULL',
       week: 'INTEGER NOT NULL',
       day: 'INTEGER NOT NULL',
       type: 'INTEGER NOT NULL',

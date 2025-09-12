@@ -1,4 +1,3 @@
-import { normalizeGuid } from '@sc-fam/shared';
 import { string } from '@sc-fam/shared/minivalidate';
 import {
   middlewareHandler,
@@ -17,15 +16,11 @@ app.post(
   middlewareHandler(
     accessToken(),
     searchParams({
-      groupId: string(),
+      group: string(),
     }),
     zodSchema(exportSchedulePayload),
-    async ({ data: [access, { groupId }, payload] }) => {
-      await exportScheduleToGoogleCalendar(
-        access,
-        normalizeGuid(groupId),
-        payload
-      );
+    async ({ data: [access, { group: groupName }, payload] }) => {
+      await exportScheduleToGoogleCalendar(access, groupName, payload);
 
       return new Response();
     }

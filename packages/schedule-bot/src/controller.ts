@@ -81,6 +81,7 @@ const commands: CommandMap = {
 
     const repo = Repository.openConnection();
     const group = await repo.scheduleBotUsers().getUserAcademicGroup(fromId);
+
     if (group === null) {
       await sendKeyedMessage(fromId, 'auth-required');
       return;

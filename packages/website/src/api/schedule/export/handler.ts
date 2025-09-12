@@ -103,10 +103,10 @@ function exportLesson(
 
 export async function exportScheduleToGoogleCalendar(
   access: string,
-  groupId: string,
+  groupName: string,
   payload: ExportSchedulePayload
 ) {
-  const schedule = await getScheduleForGroup(groupId);
+  const schedule = await getScheduleForGroup(groupName);
   if (schedule === null) {
     throw new Error('Cannot find schedule');
   }

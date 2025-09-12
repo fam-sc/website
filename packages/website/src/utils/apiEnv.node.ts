@@ -21,5 +21,5 @@ export function getApiEnv(): Env {
     MEDIA_BUCKET: bucket,
     DB: getDatabase(),
     IMAGES: {} as ImagesBinding,
-  };
+  } as unknown as Env;
 }

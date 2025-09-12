@@ -17,7 +17,7 @@ import { ExportScheduleForm } from '../ExportScheduleForm';
 import styles from './ExportScheduleDialog.module.scss';
 
 export interface ExportScheduleDialogProps {
-  groupId: string;
+  group: string;
 
   onClose: () => void;
 }
@@ -110,7 +110,7 @@ function runTokenFlow(): Promise<GoogleOAuth2TokenResponse> {
 }
 
 export function ExportScheduleDialog({
-  groupId,
+  group,
   onClose,
 }: ExportScheduleDialogProps) {
   const [stepName, setStepName] = useState<StepName>('auth');
@@ -130,7 +130,7 @@ export function ExportScheduleDialog({
           const { access_token, token_type } = await runTokenFlow();
           const access = `${token_type} ${access_token}`;
 
-          const options = await getExportScheduleOptions(groupId, access);
+          const options = await getExportScheduleOptions(group, access);
 
           accessInfo.current = access;
 
@@ -152,7 +152,7 @@ export function ExportScheduleDialog({
 
         setStepName('exportInProgress');
 
-        exportSchedule(groupId, value, access)
+        exportSchedule(group, value, access)
           .then(() => {
             notification.show('Розклад успішно експортовано', 'plain');
             onClose();
@@ -169,7 +169,7 @@ export function ExportScheduleDialog({
         break;
       }
     }
-  }, [stepName, groupId, notification, onClose]);
+  }, [stepName, group, notification, onClose]);
 
   const onPayloadChanged = useCallback((value: ExportSchedulePayload) => {
     payload.current = value;

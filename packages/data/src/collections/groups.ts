@@ -6,8 +6,8 @@ import { Group } from '../types/common';
 export class GroupCollection extends EntityCollection<Group>('groups') {
   static descriptor(): TableDescriptor<Group> {
     return {
-      campusId: 'TEXT NOT NULL PRIMARY KEY',
       name: 'TEXT NOT NULL',
+      campusId: 'TEXT NOT NULL',
     };
   }
 
@@ -15,11 +15,11 @@ export class GroupCollection extends EntityCollection<Group>('groups') {
     return this.insertOrReplaceManyAction(groups);
   }
 
-  findByCampusId(campusId: string) {
-    return this.findOneWhereAction({ campusId });
+  findByName(name: string) {
+    return this.findOneWhereAction({ name });
   }
 
-  groupExists(campusId: string): DataQuery<boolean> {
-    return this.count({ campusId }).map((result) => result > 0);
+  groupExists(name: string): DataQuery<boolean> {
+    return this.count({ name }).map((result) => result > 0);
   }
 }

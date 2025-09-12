@@ -25,7 +25,7 @@ export function broadcastUpdatedLesson(
   lesson: Lesson
 ): Schedule {
   return {
-    groupCampusId: schedule.groupCampusId,
+    groupName: schedule.groupName,
     weeks: schedule.weeks.map((week) =>
       week.map((day) => broadcastUpdatedLessonToDay(day, lesson))
     ) as Schedule['weeks'],

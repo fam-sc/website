@@ -3,7 +3,9 @@ import { EntityCollection } from '@sc-fam/shared-sql/collection';
 
 import { ScheduleTeacher, ScheduleWithTeachers } from '../types/schedule';
 
-function uniqueTeachers(schedule: ScheduleWithTeachers): ScheduleTeacher[] {
+function uniqueTeachers(
+  schedule: Pick<ScheduleWithTeachers, 'weeks'>
+): ScheduleTeacher[] {
   const result = new Map<string, ScheduleTeacher>();
 
   for (const week of schedule.weeks) {
@@ -24,7 +26,7 @@ export class ScheduleTeacherCollection extends EntityCollection<ScheduleTeacher>
     return { name: 'TEXT NOT NULL PRIMARY KEY', link: 'TEXT' };
   }
 
-  insertFromSchedule(schedule: ScheduleWithTeachers) {
+  insertFromSchedule(schedule: Pick<ScheduleWithTeachers, 'weeks'>) {
     return this.insertOrReplaceManyAction(uniqueTeachers(schedule));
   }
 

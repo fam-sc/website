@@ -1,19 +1,20 @@
 import { UpdateScheduleLinksPayload } from '@/api/schedule/payloads';
 import { Schedule } from '@/api/schedule/types';
+import { encodeGroup } from '@/services/groups/coder';
 
 import { apiCheckedFetch, apiFetchObject } from '../fetch';
 import { ExportScheduleOptions } from './export/options/types';
 import { ExportSchedulePayload } from './export/types';
 
-export function getSchedule(groupId: string): Promise<Schedule> {
-  return apiFetchObject(`/schedule?group=${groupId}`);
+export function getSchedule(groupName: string): Promise<Schedule> {
+  return apiFetchObject(`/schedule?group=${encodeGroup(groupName)}`);
 }
 
 export async function updateScheduleLinks(
-  groupId: string,
+  groupName: string,
   payload: UpdateScheduleLinksPayload
 ) {
-  await apiCheckedFetch(`/schedule?group=${groupId}&type=link`, {
+  await apiCheckedFetch(`/schedule?group=${encodeGroup(groupName)}&type=link`, {
     method: 'PATCH',
     body: payload,
     json: true,
@@ -21,22 +22,25 @@ export async function updateScheduleLinks(
 }
 
 export function getExportScheduleOptions(
-  groupId: string,
+  groupName: string,
   access: string
 ): Promise<ExportScheduleOptions> {
-  return apiFetchObject(`/schedule/export/options?groupId=${groupId}`, {
-    headers: {
-      'X-Access-Token': access,
-    },
-  });
+  return apiFetchObject(
+    `/schedule/export/options?group=${encodeGroup(groupName)}`,
+    {
+      headers: {
+        'X-Access-Token': access,
+      },
+    }
+  );
 }
 
 export function exportSchedule(
-  groupId: string,
+  groupName: string,
   payload: ExportSchedulePayload,
   access: string
 ) {
-  return apiCheckedFetch(`/schedule/export?groupId=${groupId}`, {
+  return apiCheckedFetch(`/schedule/export?group=${encodeGroup(groupName)}`, {
     method: 'POST',
     headers: {
       'X-Access-Token': access,

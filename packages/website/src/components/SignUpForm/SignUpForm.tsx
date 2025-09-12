@@ -1,7 +1,6 @@
-import { normalizeGuid } from '@sc-fam/shared';
 import { emailRegex } from '@sc-fam/shared/string';
 import { useNotification } from '@sc-fam/shared-ui';
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { SignUpData } from '@/api/auth/types';
@@ -84,7 +83,7 @@ export function SignUpForm() {
         'email',
         'password',
       ]),
-      academicGroup: normalizeGuid(group as string),
+      academicGroup: group as string,
       turnstileToken,
     };
 
@@ -132,12 +131,7 @@ export function SignUpForm() {
       </FieldBlock>
 
       <FieldBlock title="Група (АА-11)">
-        <GroupSelect
-          selectedId={group}
-          onSelected={useCallback((group) => {
-            setGroup(group.campusId);
-          }, [])}
-        />
+        <GroupSelect selected={group} onSelected={setGroup} />
       </FieldBlock>
 
       <FieldBlock title="Пошта">

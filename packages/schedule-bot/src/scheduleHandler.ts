@@ -24,7 +24,7 @@ function getUniqueGroups(users: { academicGroup: string }[]): Set<string> {
   return result;
 }
 
-async function getSchedule(group: string): Promise<Schedule | null> {
+async function getSchedule(groupName: string): Promise<Schedule | null> {
   if (DEV) {
     const week = ([1, 2, 3, 4, 5, 6, 7] as Day[]).map(
       (day): DaySchedule => ({
@@ -40,10 +40,10 @@ async function getSchedule(group: string): Promise<Schedule | null> {
       })
     );
 
-    return { groupCampusId: group, weeks: [week, week] };
+    return { groupName, weeks: [week, week] };
   }
 
-  return getScheduleForGroup(group);
+  return getScheduleForGroup(groupName);
 }
 
 export async function getCurrentDayLessons(group: string) {
@@ -74,7 +74,7 @@ async function getScheduleMap(
 
   for (const schedule of schedules) {
     if (schedule) {
-      result[schedule.groupCampusId] = schedule;
+      result[schedule.groupName] = schedule;
     }
   }
 

@@ -1,4 +1,3 @@
-import { shortenGuid } from '@sc-fam/shared';
 import { useNotification } from '@sc-fam/shared-ui';
 import { useCallback, useEffect, useMemo } from 'react';
 
@@ -11,8 +10,8 @@ import { SearchableSelect } from '../SearchableSelect';
 export type GroupSelectProps = {
   className?: string;
   disabled?: boolean;
-  selectedId: string | undefined;
-  onSelected: (value: Group) => void;
+  selected: string | undefined;
+  onSelected: (value: string) => void;
   onGroupsLoaded?: (groups: Group[]) => void;
 };
 
@@ -23,7 +22,7 @@ function prefixSearch(item: { title: string }, query: string): boolean {
 export function GroupSelect({
   disabled,
   className,
-  selectedId,
+  selected,
   onSelected,
   onGroupsLoaded,
 }: GroupSelectProps) {
@@ -31,9 +30,9 @@ export function GroupSelect({
   const items = useMemo(
     () =>
       itemsState.type === 'success'
-        ? itemsState.value.map((item) => ({
-            key: item.campusId,
-            title: item.name,
+        ? itemsState.value.map(({ name }) => ({
+            key: name,
+            title: name,
           }))
         : [],
     [itemsState]
@@ -61,7 +60,7 @@ export function GroupSelect({
       const group = items.find((group) => group.key === key);
 
       if (group !== undefined) {
-        onSelected({ campusId: key, name: group.title });
+        onSelected(group.title);
       }
     },
     [items, onSelected]
@@ -73,9 +72,7 @@ export function GroupSelect({
       items={items}
       placeholder="Виберіть групу"
       disabled={typeof itemsState !== 'object' || disabled}
-      selectedItem={
-        selectedId === undefined ? undefined : shortenGuid(selectedId)
-      }
+      selectedItem={selected}
       onItemSelected={onItemSelected}
       search={prefixSearch}
     />

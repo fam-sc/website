@@ -6,7 +6,6 @@ export * from './delay.js';
 export { getEnvChecked } from './env.js';
 export * from './fetch/index.js';
 export { getAllFiles } from './formData.js';
-export { normalizeGuid, shortenGuid } from './guid.js';
 export { coerce, lerp } from './math.js';
 export { parseInt } from './parseInt.js';
 export { formPersonName } from './person.js';

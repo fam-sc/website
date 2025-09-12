@@ -11,7 +11,7 @@ import { Schedule } from './types';
 
 test('dataScheduleToApiSchedule', () => {
   const actual = dataScheduleToApiSchedule({
-    groupCampusId: '123',
+    groupName: '123',
     lastUpdateTime: 0,
     links: { [lessonId('lab', 'Lesson 1', 'Teacher 1')]: 'link' },
     weeks: [
@@ -47,7 +47,7 @@ test('dataScheduleToApiSchedule', () => {
   });
 
   const expected: Schedule = {
-    groupCampusId: '123',
+    groupName: '123',
     weeks: [
       [
         {
@@ -125,10 +125,7 @@ test('campusScheduleToDataSchedule', () => {
     teachers
   );
 
-  const expected: ScheduleWithTeachers = {
-    groupCampusId: '123',
-    lastUpdateTime: 0,
-    links: undefined,
+  const expected: Pick<ScheduleWithTeachers, 'weeks'> = {
     weeks: [
       [
         {

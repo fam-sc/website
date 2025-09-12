@@ -10,7 +10,7 @@ import styles from './ScheduleGridLoader.module.scss';
 export type ScheduleGridLoaderProps = {
   className?: string;
   week: 1 | 2;
-  groupId: string | undefined;
+  group: string | undefined;
   currentLesson: CurrentLesson | undefined;
   isEditable?: boolean;
   onScheduleChanged?: (value: Schedule) => void;
@@ -18,7 +18,7 @@ export type ScheduleGridLoaderProps = {
 
 export function ScheduleGridLoader({
   className,
-  groupId,
+  group,
   week,
   currentLesson,
   isEditable,
@@ -26,8 +26,8 @@ export function ScheduleGridLoader({
 }: ScheduleGridLoaderProps) {
   const [scheduleState, onRetry, setScheduleState] = useDataLoader(
     () =>
-      groupId === undefined ? Promise.resolve(undefined) : getSchedule(groupId),
-    [groupId]
+      group === undefined ? Promise.resolve(undefined) : getSchedule(group),
+    [group]
   );
 
   return (

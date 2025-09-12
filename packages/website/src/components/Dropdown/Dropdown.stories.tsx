@@ -15,9 +15,6 @@ export const BottomLeft: Story = {
     children: <Button>Trigger</Button>,
     items: ['Item 1', 'Item 2', 'Item 3'].map((id) => ({ id })),
     renderItem: ({ id }) => id,
-    onAction: (id) => {
-      console.log(id);
-    },
   },
 };
 
@@ -28,9 +25,6 @@ export const BottomRight: Story = {
     children: <Button>Trigger</Button>,
     items: ['Item 11111', 'Item 2', 'Item 3'].map((id) => ({ id })),
     renderItem: ({ id }) => id,
-    onAction: (id) => {
-      console.log(id);
-    },
   },
 };
 
@@ -41,9 +35,6 @@ export const LeftRight: Story = {
     children: <Button>Trigger</Button>,
     items: ['Item 11111', 'Item 2', 'Item 3'].map((id) => ({ id })),
     renderItem: ({ id }) => id,
-    onAction: (id) => {
-      console.log(id);
-    },
   },
 };
 
@@ -53,9 +44,6 @@ export const RightLeft: Story = {
     children: <Button>Trigger</Button>,
     items: ['Item 11111', 'Item 2', 'Item 3'].map((id) => ({ id })),
     renderItem: ({ id }) => id,
-    onAction: (id) => {
-      console.log(id);
-    },
   },
 };
 
@@ -66,8 +54,5 @@ export const TopBottom: Story = {
     children: <Button>Trigger</Button>,
     items: ['Item 11111', 'Item 2', 'Item 3'].map((id) => ({ id })),
     renderItem: ({ id }) => id,
-    onAction: (id) => {
-      console.log(id);
-    },
   },
 };

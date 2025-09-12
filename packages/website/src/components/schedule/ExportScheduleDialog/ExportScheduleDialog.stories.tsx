@@ -10,6 +10,6 @@ type Story = StoryObj<typeof ExportScheduleDialog>;
 
 export const Primary: Story = {
   args: {
-    groupId: '52b',
+    group: '52b',
   },
 };

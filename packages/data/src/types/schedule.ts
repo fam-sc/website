@@ -34,7 +34,7 @@ export type ScheduleWeek<T = Lesson> = DaySchedule<T>[];
 
 export type Schedule<T = Lesson> = {
   lastUpdateTime: number;
-  groupCampusId: string;
+  groupName: string;
   weeks: [ScheduleWeek<T>, ScheduleWeek<T>];
 
   // undefined means that link wasn't fetched.
@@ -46,12 +46,12 @@ export type ScheduleWithTeachers = Schedule<LessonWithTeacher>;
 
 export type RawSchedule = {
   lastUpdateTime: number;
-  groupCampusId: string;
+  groupName: string;
   links: string | null | undefined;
 };
 
 export interface RawLesson extends Lesson {
-  groupCampusId: string;
+  groupName: string;
   week: 1 | 2;
   day: Day;
 }
