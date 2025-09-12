@@ -122,12 +122,10 @@
   td {
     width: 100%;
     overflow-wrap: break-word;
-    word-wrap: break-all;
     padding: 0.4rem;
 
     @include breakpoint-up('md') {
       width: auto;
-      word-wrap: initial;
       overflow-wrap: initial;
     }
   }
