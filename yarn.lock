@@ -1212,25 +1212,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bufbuild/protobuf@npm:^2.5.0":
+  version: 2.8.0
+  resolution: "@bufbuild/protobuf@npm:2.8.0"
+  checksum: 10c0/970faf0b58fd10c3c650224fda51f471b0f2005222fb33b43e6f8894478bc905b5a3bc0577cd7539afd7d2493fa6a6e588b89e67bdabd2750acf26cb40da237f
+  languageName: node
+  linkType: hard
+
 "@cloudflare/kv-asset-handler@npm:0.4.0":
   version: 0.4.0
   resolution: "@cloudflare/kv-asset-handler@npm:0.4.0"
   dependencies:
     mime: "npm:^3.0.0"
   checksum: 10c0/54273c796d9815294599d7958a1a4e342f5519a03cc24c9501cf24d8721de9dbb8c53262941acb0e058bd9e952f807e3e1caa3ae242a0eabc26b1d2caa9a26f6
-  languageName: node
-  linkType: hard
-
-"@cloudflare/unenv-preset@npm:2.7.0":
-  version: 2.7.0
-  resolution: "@cloudflare/unenv-preset@npm:2.7.0"
-  peerDependencies:
-    unenv: 2.0.0-rc.19
-    workerd: ^1.20250816.0
-  peerDependenciesMeta:
-    workerd:
-      optional: true
-  checksum: 10c0/5a64f43b5d24624d7a9ed36d4e321c4aeadf2e36051ead46d9ffbc4ba7d96f7f114872558f261b745eef1cdd8c503e87f4b654ee413c6640a0c65b074a8c0aee
   languageName: node
   linkType: hard
 
@@ -1244,26 +1238,6 @@ __metadata:
     workerd:
       optional: true
   checksum: 10c0/13d0fdf2183d1c55e3f5dd02c42619df61b130fa772a1add25d46680fa43adda952408449ba83b79bc045ac55409892ac002c8d52d457d8b20c2c7cf0749eeb2
-  languageName: node
-  linkType: hard
-
-"@cloudflare/vite-plugin@npm:1.12.1":
-  version: 1.12.1
-  resolution: "@cloudflare/vite-plugin@npm:1.12.1"
-  dependencies:
-    "@cloudflare/unenv-preset": "npm:2.7.0"
-    "@remix-run/node-fetch-server": "npm:^0.8.0"
-    get-port: "npm:^7.1.0"
-    miniflare: "npm:4.20250823.1"
-    picocolors: "npm:^1.1.1"
-    tinyglobby: "npm:^0.2.12"
-    unenv: "npm:2.0.0-rc.19"
-    wrangler: "npm:4.33.1"
-    ws: "npm:8.18.0"
-  peerDependencies:
-    vite: ^6.1.0 || ^7.0.0
-    wrangler: ^4.33.1
-  checksum: 10c0/e7d4555bff810fdb5761958b7339709766a1d4f4ccc139197f27eeb16af0352a20caba346ba756585a70e319bcb5380ae0fc852f7a7d51be127e5cd59167246f
   languageName: node
   linkType: hard
 
@@ -1306,24 +1280,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workerd-darwin-64@npm:1.20250823.0":
-  version: 1.20250823.0
-  resolution: "@cloudflare/workerd-darwin-64@npm:1.20250823.0"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
 "@cloudflare/workerd-darwin-64@npm:1.20250906.0":
   version: 1.20250906.0
   resolution: "@cloudflare/workerd-darwin-64@npm:1.20250906.0"
   conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@cloudflare/workerd-darwin-arm64@npm:1.20250823.0":
-  version: 1.20250823.0
-  resolution: "@cloudflare/workerd-darwin-arm64@npm:1.20250823.0"
-  conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -1334,13 +1294,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workerd-linux-64@npm:1.20250823.0":
-  version: 1.20250823.0
-  resolution: "@cloudflare/workerd-linux-64@npm:1.20250823.0"
-  conditions: os=linux & cpu=x64
-  languageName: node
-  linkType: hard
-
 "@cloudflare/workerd-linux-64@npm:1.20250906.0":
   version: 1.20250906.0
   resolution: "@cloudflare/workerd-linux-64@npm:1.20250906.0"
@@ -1348,24 +1301,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workerd-linux-arm64@npm:1.20250823.0":
-  version: 1.20250823.0
-  resolution: "@cloudflare/workerd-linux-arm64@npm:1.20250823.0"
-  conditions: os=linux & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@cloudflare/workerd-linux-arm64@npm:1.20250906.0":
   version: 1.20250906.0
   resolution: "@cloudflare/workerd-linux-arm64@npm:1.20250906.0"
   conditions: os=linux & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@cloudflare/workerd-windows-64@npm:1.20250823.0":
-  version: 1.20250823.0
-  resolution: "@cloudflare/workerd-windows-64@npm:1.20250823.0"
-  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -3777,7 +3716,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sc-fam/mail-test@workspace:packages/mail-test"
   dependencies:
-    vite: "npm:7.1.3"
+    vite: "npm:7.1.5"
   languageName: unknown
   linkType: soft
 
@@ -3785,7 +3724,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sc-fam/posviata@workspace:packages/posviata"
   dependencies:
-    "@cloudflare/vite-plugin": "npm:1.12.1"
+    "@cloudflare/vite-plugin": "npm:1.13.0"
     "@react-router/dev": "npm:7.8.1"
     "@react-router/express": "npm:7.8.1"
     "@react-router/node": "npm:7.8.1"
@@ -3819,7 +3758,7 @@ __metadata:
     swiper: "npm:11.2.10"
     tsx: "npm:4.20.5"
     typescript: "npm:5.8.3"
-    vite: "npm:7.1.3"
+    vite: "npm:7.1.5"
     vite-tsconfig-paths: "npm:5.1.4"
     wrangler: "npm:4.36.0"
   languageName: unknown
@@ -3879,6 +3818,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sc-fam/shared-vite-plugins@workspace:packages/shared-vite-plugins"
   dependencies:
+    "@node-rs/xxhash": "npm:1.7.6"
     "@sc-fam/shared": "workspace:*"
     "@types/node": "npm:24.2.1"
     "@types/react": "npm:19.1.13"
@@ -3886,7 +3826,7 @@ __metadata:
     react: "npm:19.1.1"
     sharp: "npm:0.34.3"
     typescript: "npm:5.8.3"
-    vite: "npm:7.1.3"
+    vite: "npm:7.1.5"
   languageName: unknown
   linkType: soft
 
@@ -3911,7 +3851,6 @@ __metadata:
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "npm:1.1.0"
     "@atlaskit/pragmatic-drag-and-drop-live-region": "npm:1.3.1"
     "@cloudflare/vite-plugin": "npm:1.13.0"
-    "@node-rs/xxhash": "npm:1.7.6"
     "@react-router/dev": "npm:7.9.0"
     "@react-router/express": "npm:7.9.0"
     "@react-router/node": "npm:7.9.0"
@@ -3947,7 +3886,6 @@ __metadata:
     "@types/express": "npm:5.0.3"
     "@types/morgan": "npm:1.9.10"
     "@types/node": "npm:24.2.0"
-    "@types/punycode": "npm:^2"
     "@types/react": "npm:19.1.13"
     "@types/react-dom": "npm:19.1.9"
     "@xyflow/react": "npm:12.8.4"
@@ -3955,21 +3893,18 @@ __metadata:
     dotenv: "npm:17.2.0"
     express: "npm:5.1.0"
     isbot: "npm:5.1.30"
-    marked: "npm:16.1.2"
     morgan: "npm:1.10.0"
     parse5: "npm:8.0.0"
-    punycode: "npm:2.3.1"
     react: "npm:19.1.1"
     react-dom: "npm:19.1.1"
     react-router: "npm:7.9.0"
-    sass: "npm:1.89.2"
-    sass-loader: "npm:16.0.5"
+    sass-embedded: "npm:1.92.1"
     sharp: "npm:0.34.3"
     storybook: "npm:9.1.5"
     telegram-standard-bot-api: "npm:1.0.8"
     tsx: "npm:4.20.5"
     typescript: "npm:5.8.3"
-    vite: "npm:7.1.3"
+    vite: "npm:7.1.5"
     vite-tsconfig-paths: "npm:5.1.4"
     wrangler: "npm:4.36.0"
     zod: "npm:4.0.15"
@@ -5742,13 +5677,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/punycode@npm:^2":
-  version: 2.1.4
-  resolution: "@types/punycode@npm:2.1.4"
-  checksum: 10c0/0472cc871783a22859ad83fe7cb62d23226ff78694b9807d2a3ec37571d46b05409ca9282c8ccedfb59e58e4a4561b27463623ce95bcfd6bd9c11ac1ef3cd0d1
-  languageName: node
-  linkType: hard
-
 "@types/qs@npm:*":
   version: 6.14.0
   resolution: "@types/qs@npm:6.14.0"
@@ -6704,6 +6632,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"buffer-builder@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "buffer-builder@npm:0.2.0"
+  checksum: 10c0/e50c3a379f4acaea75ade1ee3e8c07ed6d7c5dfc3f98adbcf0159bfe1a4ce8ca1fe3689e861fcdb3fcef0012ebd4345a6112a5b8a1185295452bb66d7b6dc8a1
+  languageName: node
+  linkType: hard
+
 "builtin-modules@npm:^5.0.0":
   version: 5.0.0
   resolution: "builtin-modules@npm:5.0.0"
@@ -6961,6 +6896,13 @@ __metadata:
   version: 2.9.3
   resolution: "colord@npm:2.9.3"
   checksum: 10c0/9699e956894d8996b28c686afe8988720785f476f59335c80ce852ded76ab3ebe252703aec53d9bef54f6219aea6b960fb3d9a8300058a1d0c0d4026460cd110
+  languageName: node
+  linkType: hard
+
+"colorjs.io@npm:^0.5.0":
+  version: 0.5.2
+  resolution: "colorjs.io@npm:0.5.2"
+  checksum: 10c0/2e6ea43629e325e721b92429239de3a6f42fb6d88ba6e4c2aeff0288c196d876f2f7ee82aea95bd40072d5cdc8cb87f042f4d94c134dcabf0e34a717e4caacb9
   languageName: node
   linkType: hard
 
@@ -8887,7 +8829,7 @@ __metadata:
     "@types/node": "npm:24.1.0"
     "@vitejs/plugin-react": "npm:5.0.2"
     typescript: "npm:5.8.3"
-    vite: "npm:7.1.3"
+    vite: "npm:7.1.5"
     wrangler: "npm:4.36.0"
   languageName: unknown
   linkType: soft
@@ -10131,28 +10073,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"miniflare@npm:4.20250823.1":
-  version: 4.20250823.1
-  resolution: "miniflare@npm:4.20250823.1"
-  dependencies:
-    "@cspotcode/source-map-support": "npm:0.8.1"
-    acorn: "npm:8.14.0"
-    acorn-walk: "npm:8.3.2"
-    exit-hook: "npm:2.2.1"
-    glob-to-regexp: "npm:0.4.1"
-    sharp: "npm:^0.33.5"
-    stoppable: "npm:1.1.0"
-    undici: "npm:^7.10.0"
-    workerd: "npm:1.20250823.0"
-    ws: "npm:8.18.0"
-    youch: "npm:4.1.0-beta.10"
-    zod: "npm:3.22.3"
-  bin:
-    miniflare: bootstrap.js
-  checksum: 10c0/d45c9dd5cb085438217cd7386951060232ac042a0021cece24784bc7758105603c39c6621a54e9f2b1b8db927c9f75e90dcdd485afee12a8718c311499f31a81
-  languageName: node
-  linkType: hard
-
 "miniflare@npm:4.20250906.1":
   version: 4.20250906.1
   resolution: "miniflare@npm:4.20250906.1"
@@ -10417,13 +10337,6 @@ __metadata:
   version: 1.0.0
   resolution: "negotiator@npm:1.0.0"
   checksum: 10c0/4c559dd52669ea48e1914f9d634227c561221dd54734070791f999c52ed0ff36e437b2e07d5c1f6e32909fc625fe46491c16e4a8f0572567d4dd15c3a4fda04b
-  languageName: node
-  linkType: hard
-
-"neo-async@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "neo-async@npm:2.6.2"
-  checksum: 10c0/c2f5a604a54a8ec5438a342e1f356dff4bc33ccccdb6dc668d94fe8e5eccfc9d2c2eea6064b0967a767ba63b33763f51ccf2cd2441b461a7322656c1f06b3f5d
   languageName: node
   linkType: hard
 
@@ -11411,7 +11324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"punycode@npm:2.3.1, punycode@npm:^2.1.0":
+"punycode@npm:^2.1.0":
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
   checksum: 10c0/14f76a8206bc3464f794fb2e3d3cc665ae416c01893ad7a02b23766eb07159144ee612ad67af5e84fa4479ccfe67678c4feb126b0485651b302babf66f04f9e9
@@ -11907,6 +11820,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rxjs@npm:^7.4.0":
+  version: 7.8.2
+  resolution: "rxjs@npm:7.8.2"
+  dependencies:
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/1fcd33d2066ada98ba8f21fcbbcaee9f0b271de1d38dc7f4e256bfbc6ffcdde68c8bfb69093de7eeb46f24b1fb820620bf0223706cff26b4ab99a7ff7b2e2c45
+  languageName: node
+  linkType: hard
+
 "safe-array-concat@npm:^1.1.3":
   version: 1.1.3
   resolution: "safe-array-concat@npm:1.1.3"
@@ -11962,35 +11884,212 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass-loader@npm:16.0.5":
-  version: 16.0.5
-  resolution: "sass-loader@npm:16.0.5"
+"sass-embedded-all-unknown@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-all-unknown@npm:1.92.1"
   dependencies:
-    neo-async: "npm:^2.6.2"
-  peerDependencies:
-    "@rspack/core": 0.x || 1.x
-    node-sass: ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
-    sass: ^1.3.0
-    sass-embedded: "*"
-    webpack: ^5.0.0
-  peerDependenciesMeta:
-    "@rspack/core":
-      optional: true
-    node-sass:
-      optional: true
-    sass:
-      optional: true
-    sass-embedded:
-      optional: true
-    webpack:
-      optional: true
-  checksum: 10c0/216422b7b9e6e3f22739dc96887d883d2415f188d5c47631fd28c80608b5fae71167b26d0c74a1e917614e4d494fa73b1190ad5ca2f587c1afee84dc1d30f003
+    sass: "npm:1.92.1"
+  conditions: (!cpu=arm | !cpu=arm64 | !cpu=riscv64 | !cpu=x64)
   languageName: node
   linkType: hard
 
-"sass@npm:1.89.2":
-  version: 1.89.2
-  resolution: "sass@npm:1.89.2"
+"sass-embedded-android-arm64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-android-arm64@npm:1.92.1"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-android-arm@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-android-arm@npm:1.92.1"
+  conditions: os=android & cpu=arm
+  languageName: node
+  linkType: hard
+
+"sass-embedded-android-riscv64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-android-riscv64@npm:1.92.1"
+  conditions: os=android & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-android-x64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-android-x64@npm:1.92.1"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-darwin-arm64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-darwin-arm64@npm:1.92.1"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-darwin-x64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-darwin-x64@npm:1.92.1"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-arm64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-arm64@npm:1.92.1"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-arm@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-arm@npm:1.92.1"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-musl-arm64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-musl-arm64@npm:1.92.1"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-musl-arm@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-musl-arm@npm:1.92.1"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-musl-riscv64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-musl-riscv64@npm:1.92.1"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-musl-x64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-musl-x64@npm:1.92.1"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-riscv64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-riscv64@npm:1.92.1"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-linux-x64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-linux-x64@npm:1.92.1"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-unknown-all@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-unknown-all@npm:1.92.1"
+  dependencies:
+    sass: "npm:1.92.1"
+  conditions: (!os=android | !os=darwin | !os=linux | !os=win32)
+  languageName: node
+  linkType: hard
+
+"sass-embedded-win32-arm64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-win32-arm64@npm:1.92.1"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"sass-embedded-win32-x64@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded-win32-x64@npm:1.92.1"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"sass-embedded@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass-embedded@npm:1.92.1"
+  dependencies:
+    "@bufbuild/protobuf": "npm:^2.5.0"
+    buffer-builder: "npm:^0.2.0"
+    colorjs.io: "npm:^0.5.0"
+    immutable: "npm:^5.0.2"
+    rxjs: "npm:^7.4.0"
+    sass-embedded-all-unknown: "npm:1.92.1"
+    sass-embedded-android-arm: "npm:1.92.1"
+    sass-embedded-android-arm64: "npm:1.92.1"
+    sass-embedded-android-riscv64: "npm:1.92.1"
+    sass-embedded-android-x64: "npm:1.92.1"
+    sass-embedded-darwin-arm64: "npm:1.92.1"
+    sass-embedded-darwin-x64: "npm:1.92.1"
+    sass-embedded-linux-arm: "npm:1.92.1"
+    sass-embedded-linux-arm64: "npm:1.92.1"
+    sass-embedded-linux-musl-arm: "npm:1.92.1"
+    sass-embedded-linux-musl-arm64: "npm:1.92.1"
+    sass-embedded-linux-musl-riscv64: "npm:1.92.1"
+    sass-embedded-linux-musl-x64: "npm:1.92.1"
+    sass-embedded-linux-riscv64: "npm:1.92.1"
+    sass-embedded-linux-x64: "npm:1.92.1"
+    sass-embedded-unknown-all: "npm:1.92.1"
+    sass-embedded-win32-arm64: "npm:1.92.1"
+    sass-embedded-win32-x64: "npm:1.92.1"
+    supports-color: "npm:^8.1.1"
+    sync-child-process: "npm:^1.0.2"
+    varint: "npm:^6.0.0"
+  dependenciesMeta:
+    sass-embedded-all-unknown:
+      optional: true
+    sass-embedded-android-arm:
+      optional: true
+    sass-embedded-android-arm64:
+      optional: true
+    sass-embedded-android-riscv64:
+      optional: true
+    sass-embedded-android-x64:
+      optional: true
+    sass-embedded-darwin-arm64:
+      optional: true
+    sass-embedded-darwin-x64:
+      optional: true
+    sass-embedded-linux-arm:
+      optional: true
+    sass-embedded-linux-arm64:
+      optional: true
+    sass-embedded-linux-musl-arm:
+      optional: true
+    sass-embedded-linux-musl-arm64:
+      optional: true
+    sass-embedded-linux-musl-riscv64:
+      optional: true
+    sass-embedded-linux-musl-x64:
+      optional: true
+    sass-embedded-linux-riscv64:
+      optional: true
+    sass-embedded-linux-x64:
+      optional: true
+    sass-embedded-unknown-all:
+      optional: true
+    sass-embedded-win32-arm64:
+      optional: true
+    sass-embedded-win32-x64:
+      optional: true
+  bin:
+    sass: dist/bin/sass.js
+  checksum: 10c0/d93033899f4efe317434eee7959bd00bb4fcec1f43ab60617b49de2ad03f6d6a60a3c0171dc8752b53d3a212dcab63e9c991272f84dabd7df89639bcaa523a43
+  languageName: node
+  linkType: hard
+
+"sass@npm:1.92.1":
+  version: 1.92.1
+  resolution: "sass@npm:1.92.1"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -12001,7 +12100,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10c0/752ccc7581b0c6395f63918116c20924e99943a86d79e94f5c4a0d41b1e981fe1f0ecd1ee82fff21496f81dbc91f68fb35a498166562ec8ec53e7aad7c3dbd9d
+  checksum: 10c0/4c43975580f6bd5511bb140ec8445d936663ffacc7d0513aae65b95e2a46a954268177406b2dd4ac32494e868520ac5ea929c3521f04bc10293fb16dc25b2935
   languageName: node
   linkType: hard
 
@@ -12937,6 +13036,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"supports-color@npm:^8.1.1":
+  version: 8.1.1
+  resolution: "supports-color@npm:8.1.1"
+  dependencies:
+    has-flag: "npm:^4.0.0"
+  checksum: 10c0/ea1d3c275dd604c974670f63943ed9bd83623edc102430c05adb8efc56ba492746b6e95386e7831b872ec3807fd89dd8eb43f735195f37b5ec343e4234cc7e89
+  languageName: node
+  linkType: hard
+
 "supports-hyperlinks@npm:^3.2.0":
   version: 3.2.0
   resolution: "supports-hyperlinks@npm:3.2.0"
@@ -12965,6 +13073,22 @@ __metadata:
   version: 11.2.10
   resolution: "swiper@npm:11.2.10"
   checksum: 10c0/b7e3a7c79d92ccc62af77744edc376c9aefc771a0abd50c4adf07b5e3450b5da9ca7f84f5809e275ff65e1bc9d4500d930628e84a76fc7f2db403291c69b7fac
+  languageName: node
+  linkType: hard
+
+"sync-child-process@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "sync-child-process@npm:1.0.2"
+  dependencies:
+    sync-message-port: "npm:^1.0.0"
+  checksum: 10c0/f73c87251346fba28da8ac5bc8ed4c9474504a5250ab4bd44582beae8e25c230e0a5b7b16076488fee1aed39a1865de5ed4cec19c6fa4efdbb1081c514615170
+  languageName: node
+  linkType: hard
+
+"sync-message-port@npm:^1.0.0":
+  version: 1.1.3
+  resolution: "sync-message-port@npm:1.1.3"
+  checksum: 10c0/d259b08ab6da284135ba45bc13724268688b469371259f5978b2905e2c79342032b9240093b2483e83cfeccfd3a5e8300978e67090385f9b6b38941fcce1aec4
   languageName: node
   linkType: hard
 
@@ -13013,7 +13137,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:5.0.2"
     react: "npm:19.1.1"
     react-dom: "npm:19.1.1"
-    vite: "npm:7.1.3"
+    vite: "npm:7.1.5"
     wrangler: "npm:4.36.0"
   languageName: unknown
   linkType: soft
@@ -13074,6 +13198,16 @@ __metadata:
     fdir: "npm:^6.4.4"
     picomatch: "npm:^4.0.2"
   checksum: 10c0/f789ed6c924287a9b7d3612056ed0cda67306cd2c80c249fd280cf1504742b12583a2089b61f4abbd24605f390809017240e250241f09938054c9b363e51c0a6
+  languageName: node
+  linkType: hard
+
+"tinyglobby@npm:^0.2.15":
+  version: 0.2.15
+  resolution: "tinyglobby@npm:0.2.15"
+  dependencies:
+    fdir: "npm:^6.5.0"
+    picomatch: "npm:^4.0.3"
+  checksum: 10c0/869c31490d0d88eedb8305d178d4c75e7463e820df5a9b9d388291daf93e8b1eb5de1dad1c1e139767e4269fe75f3b10d5009b2cc14db96ff98986920a186844
   languageName: node
   linkType: hard
 
@@ -13181,7 +13315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.1, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
+"tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
@@ -13366,26 +13500,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^7.10.0":
-  version: 7.13.0
-  resolution: "undici@npm:7.13.0"
-  checksum: 10c0/8865d40b141f073215a6763aad5d1b2f4bd4e252600e93e68055d6c5d23a8a0e5782669236b2ecfa4d415d1d969d9c4623ff1c0386d32fa60088a19ffa58c611
-  languageName: node
-  linkType: hard
-
-"unenv@npm:2.0.0-rc.19":
-  version: 2.0.0-rc.19
-  resolution: "unenv@npm:2.0.0-rc.19"
-  dependencies:
-    defu: "npm:^6.1.4"
-    exsolve: "npm:^1.0.7"
-    ohash: "npm:^2.0.11"
-    pathe: "npm:^2.0.3"
-    ufo: "npm:^1.6.1"
-  checksum: 10c0/6c104af99097704e3d65562e2ec3ed876a1846df0b61b4e0714e99128d6dd6103d7022d6425bb0bfc9f6f453c52d09d152ff31f83ec118188503a9e33677bc3c
-  languageName: node
-  linkType: hard
-
 "unenv@npm:2.0.0-rc.21":
   version: 2.0.0-rc.21
   resolution: "unenv@npm:2.0.0-rc.21"
@@ -13537,6 +13651,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"varint@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "varint@npm:6.0.0"
+  checksum: 10c0/737fc37088a62ed3bd21466e318d21ca7ac4991d0f25546f518f017703be4ed0f9df1c5559f1dd533dddba4435a1b758fd9230e4772c1a930ef72b42f5c750fd
+  languageName: node
+  linkType: hard
+
 "vary@npm:^1.1.2":
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
@@ -13575,9 +13696,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:7.1.3":
-  version: 7.1.3
-  resolution: "vite@npm:7.1.3"
+"vite@npm:7.1.5":
+  version: 7.1.5
+  resolution: "vite@npm:7.1.5"
   dependencies:
     esbuild: "npm:^0.25.0"
     fdir: "npm:^6.5.0"
@@ -13585,7 +13706,7 @@ __metadata:
     picomatch: "npm:^4.0.3"
     postcss: "npm:^8.5.6"
     rollup: "npm:^4.43.0"
-    tinyglobby: "npm:^0.2.14"
+    tinyglobby: "npm:^0.2.15"
   peerDependencies:
     "@types/node": ^20.19.0 || >=22.12.0
     jiti: ">=1.21.0"
@@ -13626,7 +13747,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/a0aa418beab80673dc9a3e9d1fa49472955d6ef9d41a4c9c6bd402953f411346f612864dae267adfb2bb8ceeb894482369316ffae5816c84fd45990e352b727d
+  checksum: 10c0/782d2f20c25541b26d1fb39bef5f194149caff39dc25b7836e25f049ca919f2e2ce186bddb21f3f20f6195354b3579ec637a8ca08d65b117f8b6f81e3e730a9c
   languageName: node
   linkType: hard
 
@@ -13941,32 +14062,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workerd@npm:1.20250823.0":
-  version: 1.20250823.0
-  resolution: "workerd@npm:1.20250823.0"
-  dependencies:
-    "@cloudflare/workerd-darwin-64": "npm:1.20250823.0"
-    "@cloudflare/workerd-darwin-arm64": "npm:1.20250823.0"
-    "@cloudflare/workerd-linux-64": "npm:1.20250823.0"
-    "@cloudflare/workerd-linux-arm64": "npm:1.20250823.0"
-    "@cloudflare/workerd-windows-64": "npm:1.20250823.0"
-  dependenciesMeta:
-    "@cloudflare/workerd-darwin-64":
-      optional: true
-    "@cloudflare/workerd-darwin-arm64":
-      optional: true
-    "@cloudflare/workerd-linux-64":
-      optional: true
-    "@cloudflare/workerd-linux-arm64":
-      optional: true
-    "@cloudflare/workerd-windows-64":
-      optional: true
-  bin:
-    workerd: bin/workerd
-  checksum: 10c0/27553c818fd20b9c89cb5869af41ddb4ddbc52fc7f37acafd4962fb5f1a1b5fd144ca7f07940c4e836fa780fd121a4dacbb3f80ddac153597c69ca6e0fe8072c
-  languageName: node
-  linkType: hard
-
 "workerd@npm:1.20250906.0":
   version: 1.20250906.0
   resolution: "workerd@npm:1.20250906.0"
@@ -13990,34 +14085,6 @@ __metadata:
   bin:
     workerd: bin/workerd
   checksum: 10c0/14b9a5cd0e6abee0a0823e08ff6cc74f961b5ce7a0b2492f0ef4f9aaa81f0c35aac36b587c7d7e5780cd0002f8a853d4cd370154cacae298f4c671e1a842b0a3
-  languageName: node
-  linkType: hard
-
-"wrangler@npm:4.33.1":
-  version: 4.33.1
-  resolution: "wrangler@npm:4.33.1"
-  dependencies:
-    "@cloudflare/kv-asset-handler": "npm:0.4.0"
-    "@cloudflare/unenv-preset": "npm:2.7.0"
-    blake3-wasm: "npm:2.1.5"
-    esbuild: "npm:0.25.4"
-    fsevents: "npm:~2.3.2"
-    miniflare: "npm:4.20250823.1"
-    path-to-regexp: "npm:6.3.0"
-    unenv: "npm:2.0.0-rc.19"
-    workerd: "npm:1.20250823.0"
-  peerDependencies:
-    "@cloudflare/workers-types": ^4.20250823.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@cloudflare/workers-types":
-      optional: true
-  bin:
-    wrangler: bin/wrangler.js
-    wrangler2: bin/wrangler.js
-  checksum: 10c0/5380270ed78b2e049ec58b140431e33c9895a65706175deda74bd3ec7c69d9cb19687110c74de322957275200e60b50091500352a8aa00303da7e646e2df8eaa
   languageName: node
   linkType: hard
 

@@ -1,6 +1,7 @@
 import '@/theme/global.scss';
 
 import { NotificationWrapper } from '@sc-fam/shared-ui';
+import * as Sentry from '@sentry/react-router';
 import {
   isRouteErrorResponse,
   Links,
@@ -21,8 +22,6 @@ import { TurnstileScript } from '@/components/TurnstileScript';
 import { Typography } from '@/components/Typography';
 import { backgroundColor } from '@/theme';
 import { repository } from '@/utils/repo';
-
-import * as Sentry from '@sentry/react-router';
 
 import type { Route } from './+types/root';
 import { getMinRoleForRoute } from './permissions';
@@ -106,7 +105,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? '404' : 'Error';
-    details = error.status === 404 ? 'The requested page could not be found.' : error.statusText || details;
+    details =
+      error.status === 404
+        ? 'The requested page could not be found.'
+        : error.statusText || details;
   } else if (error && error instanceof Error) {
     // you only want to capture non 404-errors that reach the boundary
     Sentry.captureException(error);
