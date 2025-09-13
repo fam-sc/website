@@ -5,4 +5,5 @@ interface Env {
   ADMIN_BOT_ACCESS_KEY: string;
   HELPDESK_API_KEY: string;
   TG_BOT_KEY: string;
+  SENTRY_DSN: string;
 }

@@ -22,6 +22,8 @@
     "@sc-fam/data": "workspace:*",
     "@sc-fam/shared": "workspace:*",
     "@sc-fam/shared-ui": "workspace:*",
+    "@sentry/cloudflare": "10.11.0",
+    "@sentry/react-router": "10.11.0",
     "@tiptap/core": "3.4.2",
     "@tiptap/extension-blockquote": "3.4.2",
     "@tiptap/extension-bold": "3.4.2",
