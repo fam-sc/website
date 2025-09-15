@@ -19,7 +19,6 @@ import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { CalendarIcon } from '@/icons/CalendarIcon';
 import { CheckIcon } from '@/icons/CheckIcon';
 import { EditIcon } from '@/icons/EditIcon';
-import { decodeGroup, encodeGroup } from '@/services/groups/coder';
 import { scheduleToUpdateLinksPayload } from '@/services/schedule/links';
 
 import { Route } from './+types/page';
@@ -52,7 +51,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   return {
     initialWeek: currentWeek,
-    initialGroup: rawGroup ? decodeGroup(rawGroup) : null,
+    initialGroup: rawGroup,
   };
 }
 
@@ -88,7 +87,7 @@ export default function Page({
     let url = '/schedule';
 
     if (selectedGroup) {
-      url += `?group=${encodeGroup(selectedGroup)}`;
+      url += `?group=${selectedGroup}`;
     }
 
     void navigate(url, { preventScrollReset: true });

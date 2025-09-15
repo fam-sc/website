@@ -24,7 +24,10 @@ export async function getApiErrorFromResponse(
 }
 
 export async function apiFetch(url: string, init?: ExtendedRequestInit) {
-  return fetch(`/api${url}`, encodeInitBodyToJson(init));
+  const { host, protocol } = window.location;
+  const resource = new URL(`${protocol}//${host}/api${url}`);
+
+  return fetch(resource, encodeInitBodyToJson(init));
 }
 
 export async function apiCheckedFetch(

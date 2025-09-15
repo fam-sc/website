@@ -6,7 +6,6 @@ import { middlewareHandler, zodSchema } from '@sc-fam/shared/router';
 import { app } from '@/api/app';
 import { hashPassword } from '@/api/auth/password';
 import { SignUpDataSchema } from '@/api/auth/schema';
-import { decodeGroup } from '@/services/groups/coder';
 
 import { sendMail } from '../mail';
 import { verifyTurnstileTokenByHost } from '../turnstile/verify';
@@ -37,13 +36,8 @@ app.post(
   middlewareHandler(
     zodSchema(SignUpDataSchema),
     async ({ request, env, data: [payload] }) => {
-      const {
-        email,
-        academicGroup: rawAcademicGroup,
-        password,
-        turnstileToken,
-        ...rest
-      } = payload;
+      const { email, academicGroup, password, turnstileToken, ...rest } =
+        payload;
 
       const tokenVerification = await verifyTurnstileTokenByHost(
         env,
@@ -63,7 +57,6 @@ app.post(
 
       const repo = Repository.openConnection();
 
-      const academicGroup = decodeGroup(rawAcademicGroup);
       const groupExists = await repo.groups().groupExists(academicGroup).get();
       if (!groupExists) {
         return badRequest({ message: 'Unknown academic group' });

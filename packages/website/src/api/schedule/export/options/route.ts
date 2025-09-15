@@ -5,7 +5,6 @@ import { string } from '@sc-fam/shared/minivalidate';
 import { middlewareHandler, searchParams } from '@sc-fam/shared/router';
 
 import { app } from '@/api/app';
-import { decodeGroup } from '@/services/groups/coder';
 
 import { accessToken } from '../accessToken';
 import { ExportScheduleOptions } from './types';
@@ -30,7 +29,7 @@ app.get(
       }
 
       return ok<ExportScheduleOptions>({
-        groupName: decodeGroup(groupName),
+        groupName,
         colors,
         initialStartDate: semesterStart,
         initialEndDate: semesterEnd,

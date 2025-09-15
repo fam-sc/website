@@ -6,7 +6,6 @@ import { getScheduleForGroup } from '@sc-fam/shared-schedule';
 
 import { app } from '@/api/app';
 import { auth } from '@/api/authRoute';
-import { decodeGroup } from '@/services/groups/coder';
 
 import { isValidPayload } from './links';
 
@@ -18,7 +17,7 @@ app.get('/schedule', async (request) => {
     return badRequest({ message: 'No group parameter' });
   }
 
-  const result = await getScheduleForGroup(decodeGroup(group));
+  const result = await getScheduleForGroup(group);
   if (result === null) {
     return notFound();
   }
@@ -41,9 +40,7 @@ app.patch(
       }
 
       const repo = Repository.openConnection();
-      const { changes } = await repo
-        .schedule()
-        .updateLinks(decodeGroup(group), payload);
+      const { changes } = await repo.schedule().updateLinks(group, payload);
 
       return changes > 0 ? new Response() : notFound();
     }
