@@ -8,3 +8,10 @@ export class ApiError extends Error {
     this.code = code;
   }
 }
+
+export function isApiError(
+  value: unknown,
+  code: ApiErrorCode
+): value is ApiError {
+  return value instanceof ApiError && value.code === code;
+}

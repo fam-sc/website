@@ -61,13 +61,14 @@ export type ScheduleTeacher = {
   link: string | null;
 };
 
-export type ScheduleBotUser = {
-  id: number;
+export interface ScheduleBotUser {
   telegramId: number;
   notificationEnabled: boolean;
   startTime: number | null;
   endTime: number | null;
-};
+  userId: number | null;
+  academicGroup: string | null;
+}
 
 export type ScheduleBotOptions = Pick<
   ScheduleBotUser,

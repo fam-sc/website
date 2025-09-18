@@ -12,6 +12,7 @@ async function main() {
       commands: [
         { command: '/switch', description: '🔘 Вкл/Викл' },
         { command: '/myday', description: '🗓 Розклад на день' },
+        { command: '/change_group', description: 'Змінити групу' },
       ],
     })
   );

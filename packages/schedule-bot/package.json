@@ -9,12 +9,14 @@
     "typegen": "wrangler types",
     "webhook:set": "tsx ./src/scripts/setWebhook.ts",
     "webhook:delete": "tsx ./src/scripts/deleteWebhook.ts",
-    "set-commands": "tsx ./src/scripts/setCommands.ts"
+    "set-commands": "tsx ./src/scripts/setCommands.ts",
+    "db:init": "tsx ./src/scripts/initDatabase.ts"
   },
   "dependencies": {
     "@sc-fam/data": "workspace:*",
     "@sc-fam/shared": "workspace:*",
     "@sc-fam/shared-schedule": "workspace:*",
+    "@sc-fam/shared-sql": "workspace:*",
     "telegram-standard-bot-api": "1.0.8",
     "wrangler": "4.36.0"
   },

@@ -57,6 +57,12 @@ export class UserCollection extends EntityCollection<RawUser>('users') {
     ]);
   }
 
+  async hasUserWithAdminBotTelegramId(telegramId: number) {
+    const count = await this.count({ adminBotUserId: telegramId }).get();
+
+    return count > 0;
+  }
+
   getRoleAndGroupById(userId: number) {
     return this.findOneWhereAction({ id: userId }, ['academicGroup', 'role']);
   }

@@ -144,6 +144,13 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.insertBase('INSERT', value, returning);
     }
 
+    insertAction<R extends keyof Raw & string>(
+      value: Partial<Raw>,
+      returning?: R
+    ): DataQuery<Raw[R] | undefined> {
+      return this.insertBaseAction('INSERT', value, returning);
+    }
+
     insertOrReplace<R extends keyof Raw & string>(
       value: Partial<Raw>,
       returning?: R

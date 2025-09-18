@@ -14,7 +14,7 @@ app.put(
     async ({ data: [payload, { id: userId }] }) => {
       const repo = Repository.openConnection();
 
-      await repo.scheduleBotUsers().updateUserOptions(userId, payload);
+      await repo.scheduleBotUsers().updateOptionsByUserId(userId, payload);
 
       return new Response();
     }

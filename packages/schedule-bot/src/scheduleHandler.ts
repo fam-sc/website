@@ -117,7 +117,7 @@ async function handleOnTime(timeBreakpoint: Time, now: Date) {
 }
 
 async function handleUser(
-  { id, telegramId }: Pick<ScheduleBotUser, 'id' | 'telegramId'>,
+  { userId, telegramId }: Pick<ScheduleBotUser, 'userId' | 'telegramId'>,
   schedule: Schedule,
   { currentWeek, currentDay }: CurrentTime,
   now: Time
@@ -135,11 +135,11 @@ async function handleUser(
     const lessons = day.lessons.filter((lesson) => lesson.time === now);
 
     if (lessons.length > 0) {
-      await handleLessonNotification(telegramId, lessons);
+      await handleLessonNotification(telegramId, lessons, userId !== null);
     }
   } catch (error: unknown) {
     console.error(
-      `time = ${now}; userId = ${id}; tgUserId = ${telegramId}`,
+      `time = ${now}; userId = ${userId}; tgUserId = ${telegramId}`,
       error
     );
   }

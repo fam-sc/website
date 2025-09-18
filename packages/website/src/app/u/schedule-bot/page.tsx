@@ -21,7 +21,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     return redirect('/');
   }
 
-  const options = await repo.scheduleBotUsers().getUserOptions(userId);
+  const options = await repo.scheduleBotUsers().getOptionsByUserId(userId);
 
   return options;
 }

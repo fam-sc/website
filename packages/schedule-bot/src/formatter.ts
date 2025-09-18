@@ -2,6 +2,12 @@ import { Lesson } from '@sc-fam/shared-schedule';
 
 import { getMessage } from './messages';
 
+type LessonFormatOptions = {
+  withTime?: boolean;
+  withLinks?: boolean;
+  withLessonLink?: boolean;
+};
+
 function getMaxLineWidth(text: string): number {
   const lengths = text.split('\n').map((line) => line.length);
 
@@ -17,14 +23,13 @@ function formatLink(
     : value.name;
 }
 
-function formatLesson(
-  lesson: Lesson,
-  withTime: boolean,
-  linkEnabled: boolean = true
-): string {
-  let line = `📎 ${formatLink(lesson, linkEnabled)}`;
-  line += `\n👨‍🏫 Викладач: ${formatLink(lesson.teacher, linkEnabled)}`;
-  if (withTime) {
+function formatLesson(lesson: Lesson, options?: LessonFormatOptions): string {
+  const withLinks = options?.withLinks ?? true;
+
+  let line = `📎 ${formatLink(lesson, withLinks && (options?.withLessonLink ?? true))}`;
+  line += `\n👨‍🏫 Викладач: ${formatLink(lesson.teacher, withLinks)}`;
+
+  if (options?.withTime ?? true) {
     line += `\n🕒 Час: ${lesson.time}`;
   }
 
@@ -35,12 +40,19 @@ function formatLesson(
   return line;
 }
 
-export function formatLessonNotification(lessons: Lesson[]) {
+export function formatLessonNotification(
+  lessons: Lesson[],
+  options?: Pick<LessonFormatOptions, 'withLessonLink'>
+) {
+  const formatOptions = { ...options, withTime: false };
+
   let text = getMessage(
     lessons.length === 1 ? 'lessons-started-singular' : 'lessons-started-plural'
   );
   text += '\n\n';
-  text += lessons.map((lesson) => formatLesson(lesson, false)).join('\n\n');
+  text += lessons
+    .map((lesson) => formatLesson(lesson, formatOptions))
+    .join('\n\n');
 
   return text;
 }
@@ -48,23 +60,28 @@ export function formatLessonNotification(lessons: Lesson[]) {
 function formatMyDayLessonsBase(
   lessons: Lesson[],
   delimiter: string,
-  linkEnabled: boolean = true
+  options?: Omit<LessonFormatOptions, 'withTime'>
 ) {
+  const formatOptions = { withTime: true, ...options };
+
   let text = getMessage('myday-title');
   text += '\n\n';
   text += lessons
-    .map((lesson) => formatLesson(lesson, true, linkEnabled))
+    .map((lesson) => formatLesson(lesson, formatOptions))
     .join(`\n\n*${delimiter}*\n\n`);
 
   return text;
 }
 
-export function formatMyDayLessons(lessons: Lesson[]) {
-  const approx = formatMyDayLessonsBase(lessons, '', false);
+export function formatMyDayLessons(
+  lessons: Lesson[],
+  options?: Pick<LessonFormatOptions, 'withLessonLink'>
+) {
+  const approx = formatMyDayLessonsBase(lessons, '', { withLinks: false });
   const maxLineWidth = getMaxLineWidth(approx);
 
   const delimiterWidth = Math.min(Math.floor(maxLineWidth / 2.25), 12);
   const delimiter = '﹏'.repeat(delimiterWidth);
 
-  return formatMyDayLessonsBase(lessons, delimiter);
+  return formatMyDayLessonsBase(lessons, delimiter, options);
 }

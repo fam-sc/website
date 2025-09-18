@@ -3,16 +3,26 @@ import { EntityCollection } from '@sc-fam/shared-sql/collection';
 
 import { RawScheduleBotUser, ScheduleBotOptions } from '../types';
 
+type NewUserInfo = {
+  telegramId: number;
+} & (
+  | {
+      userId: number;
+    }
+  | { academicGroup: string }
+);
+
 export class ScheduleBotUserCollection extends EntityCollection<RawScheduleBotUser>(
   'schedule_bot_users'
 ) {
   static descriptor(): TableDescriptor<RawScheduleBotUser> {
     return {
-      id: 'INTEGER NOT NULL PRIMARY KEY',
-      telegramId: 'INTEGER NOT NULL',
+      telegramId: 'INTEGER NOT NULL PRIMARY KEY',
       startTime: 'INTEGER',
       endTime: 'INTEGER',
       notificationEnabled: 'INTEGER',
+      userId: 'INTEGER',
+      academicGroup: 'TEXT',
     };
   }
 
@@ -24,30 +34,43 @@ export class ScheduleBotUserCollection extends EntityCollection<RawScheduleBotUs
 
   findAllUsersToSendNotification(currentTime: number) {
     return this.selectAll<{
-      id: number;
       telegramId: number;
+      userId: number | null;
       academicGroup: string;
     }>(
-      `SELECT schedule_bot_users.id as id, telegramId, users.academicGroup as academicGroup
+      `SELECT telegramId, schedule_bot_users.userId as userId, coalesce(users.academicGroup, schedule_bot_users.academicGroup) as academicGroup
       FROM schedule_bot_users
-      INNER JOIN users ON schedule_bot_users.id = users.id
+      LEFT JOIN users ON schedule_bot_users.userId = users.id
       WHERE notificationEnabled=1 AND (startTime IS NULL OR startTime >= ?) AND (endTime IS NULL OR endTime <= ?)`,
       [currentTime, currentTime]
     );
   }
 
-  addUser(id: number, telegramId: number) {
+  async hasUserByTelegramId(telegramId: number) {
+    const count = await this.count({ telegramId }).get();
+
+    return count > 0;
+  }
+
+  addUser(info: NewUserInfo) {
     return this.insert({
-      id,
-      telegramId,
       notificationEnabled: 1,
       startTime: null,
       endTime: null,
+      ...info,
     });
   }
 
-  async getUserOptions(id: number): Promise<ScheduleBotOptions | null> {
-    const result = await this.findOneWhere({ id }, [
+  async addOrUpdateGroup(telegramId: number, academicGroup: string) {
+    const exists = await this.count({ telegramId }).get();
+
+    await (exists
+      ? this.updateWhere({ telegramId }, { academicGroup })
+      : this.addUser({ telegramId, academicGroup }));
+  }
+
+  async getOptionsByUserId(userId: number): Promise<ScheduleBotOptions | null> {
+    const result = await this.findOneWhere({ userId }, [
       'notificationEnabled',
       'startTime',
       'endTime',
@@ -58,12 +81,12 @@ export class ScheduleBotUserCollection extends EntityCollection<RawScheduleBotUs
       : null;
   }
 
-  updateUserOptions(
-    id: number,
+  updateOptionsByUserId(
+    userId: number,
     { notificationEnabled, startTime, endTime }: ScheduleBotOptions
   ) {
     return this.updateWhere(
-      { id },
+      { userId },
       { notificationEnabled: notificationEnabled ? 1 : 0, startTime, endTime }
     );
   }
@@ -80,15 +103,19 @@ export class ScheduleBotUserCollection extends EntityCollection<RawScheduleBotUs
     return result ? result.notificationEnabled === 1 : null;
   }
 
-  async getUserAcademicGroup(telegramId: number) {
-    const result = await this.selectOne<{ academicGroup: string }>(
-      `SELECT academicGroup
+  async getUserIdByTelegrmId(telegramId: number) {
+    const result = await this.findOneWhere({ telegramId }, ['userId']);
+
+    return result?.userId ?? null;
+  }
+
+  getUserAndAcademicGroup(telegramId: number) {
+    return this.selectOne<{ userId: number | null; academicGroup: string }>(
+      `SELECT schedule_bot_users.userId as userId, coalesce(users.academicGroup, schedule_bot_users.academicGroup) as academicGroup
       FROM schedule_bot_users
-      INNER JOIN users ON users.id = schedule_bot_users.id
+      LEFT JOIN users ON users.id = schedule_bot_users.userId
       WHERE telegramId=?`,
       [telegramId]
     );
-
-    return result?.academicGroup ?? null;
   }
 }

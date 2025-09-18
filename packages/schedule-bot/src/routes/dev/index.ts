@@ -30,7 +30,7 @@ if (DEV) {
       role: UserRole.ADMIN,
     });
 
-    await repo.scheduleBotUsers().addUser(userId, tgId);
+    await repo.scheduleBotUsers().addUser({ telegramId: tgId, userId });
 
     return new Response(JSON.stringify({ userId }));
   });

@@ -12,12 +12,14 @@ import {
 import { authorizeAdminBot } from '@/api/adminbot/client';
 import { app } from '@/api/app';
 import { getSessionId } from '@/api/auth';
+import { ApiErrorCode } from '@/api/errorCodes';
 import { authorizeScheduleBot } from '@/api/schedulebot/client';
 
 import { BotType, isBotType } from './types';
 
 type BotInfo = {
   authorize: (payload: TelegramBotAuthPayload, env: Env) => Promise<Response>;
+  hasUser: (repo: Repository, telegramUserId: number) => Promise<boolean>;
   updateUser: (
     users: Repository,
     id: number,
@@ -29,19 +31,22 @@ type BotInfo = {
 
 const bots: Record<BotType, BotInfo> = {
   admin: {
+    minRole: UserRole.GROUP_HEAD,
     authorize: (payload, env) =>
       authorizeAdminBot(payload, env.ADMIN_BOT_ACCESS_KEY),
+    hasUser: (repo, telegramUserId) =>
+      repo.users().hasUserWithAdminBotTelegramId(telegramUserId),
     updateUser: (repo, id, telegramUserId) =>
       repo.users().updateAdminBotUserId(id, telegramUserId),
-
-    minRole: UserRole.GROUP_HEAD,
   },
   schedule: {
+    minRole: UserRole.STUDENT,
     authorize: (payload, env) =>
       authorizeScheduleBot(payload, env.SCHEDULE_BOT_ACCESS_KEY),
-    updateUser: (repo, id, telegramUserId) =>
-      repo.scheduleBotUsers().addUser(id, telegramUserId),
-    minRole: UserRole.ADMIN,
+    hasUser: (repo, telegramUserId) =>
+      repo.scheduleBotUsers().hasUserByTelegramId(telegramUserId),
+    updateUser: (repo, userId, telegramId) =>
+      repo.scheduleBotUsers().addUser({ telegramId, userId }),
   },
 };
 
@@ -58,12 +63,20 @@ app.post(
         return unauthorized();
       }
 
-      const { authorize, updateUser, minRole } = bots[type];
+      const { authorize, updateUser, hasUser, minRole } = bots[type];
 
       const repo = Repository.openConnection();
       const user = await repo.sessions().getUserWithRole(sessionId);
       if (user === null || user.role < minRole) {
         return unauthorized();
+      }
+
+      const userExists = await hasUser(repo, payload.id);
+      if (userExists) {
+        return unauthorized({
+          code: ApiErrorCode.TELEGRAM_USER_ALREADY_LINKED,
+          message: 'Telegram user already linked',
+        });
       }
 
       try {

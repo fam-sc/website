@@ -1,6 +1,8 @@
 import { useNotification } from '@sc-fam/shared-ui';
 import { useState } from 'react';
 
+import { isApiError } from '@/api/error';
+import { ApiErrorCode } from '@/api/errorCodes';
 import { BotType } from '@/api/users/botAuth/types';
 import { authorizeTelegramBotToUser } from '@/api/users/client';
 
@@ -43,7 +45,16 @@ export function TelegramBotLinker({
 
                 setState('widget');
 
-                notification.show('Сталася помилка при авторизації', 'error');
+                const isLinked = isApiError(
+                  error,
+                  ApiErrorCode.TELEGRAM_USER_ALREADY_LINKED
+                );
+
+                const message = isLinked
+                  ? 'Цей телеграм акаунт вже використовується'
+                  : 'Сталася помилка при авторизації';
+
+                notification.show(message, 'error');
               });
           }}
         />
