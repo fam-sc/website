@@ -103,11 +103,12 @@ export default function Page({
     setCurrentLesson(calculateCurrentLesson(now));
   });
 
+  const title = selectedGroup ? `Розклад групи ${selectedGroup}` : 'Розклад';
+
   return (
     <>
-      <Title>
-        {selectedGroup ? `Розклад групи ${selectedGroup}` : 'Розклад'}
-      </Title>
+      <Title>{title}</Title>
+      <meta name="description">{title}</meta>
 
       {canModify && (
         <Button

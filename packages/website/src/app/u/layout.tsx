@@ -48,6 +48,8 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className={styles.root}>
+      <meta name="robots" content="noindex,nofollow" />
+
       <div className={styles['nav-side']}>
         <UserAvatar
           className={styles.avatar}

@@ -3900,6 +3900,7 @@ __metadata:
     react-dom: "npm:19.1.1"
     react-router: "npm:7.9.0"
     sass-embedded: "npm:1.92.1"
+    schema-dts: "npm:1.1.5"
     sharp: "npm:0.34.3"
     storybook: "npm:9.1.5"
     telegram-standard-bot-api: "npm:1.0.8"

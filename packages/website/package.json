@@ -49,6 +49,7 @@
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-router": "7.9.0",
+    "schema-dts": "1.1.5",
     "sharp": "0.34.3",
     "telegram-standard-bot-api": "1.0.8",
     "zod": "4.0.15",

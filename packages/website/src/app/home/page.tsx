@@ -1,3 +1,5 @@
+import { WebSite } from 'schema-dts';
+
 import { ColumnText } from '@/components/ColumnText';
 import { Image } from '@/components/Image';
 import { Swiper } from '@/components/Swiper';
@@ -7,9 +9,20 @@ import InvitationImage from '@/images/logo-2.png?multiple';
 import SwiperImage1 from '@/images/swiper/1.jpg?multiple';
 import SwiperImage2 from '@/images/swiper/2.jpg?multiple';
 import SwiperImage3 from '@/images/swiper/3.png?multiple';
+import { PageHandle } from '@/utils/handle';
 
 import GreetingContent from './greeting.md?react';
 import styles from './page.module.scss';
+
+export const handle: PageHandle<WebSite> = {
+  schema: {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Студрада ФПМ',
+    url: 'https://sc-fam.org/',
+    alternateName: ['СР ФПМ', 'Студентська рада ФПМ', 'sc-fam.org'],
+  },
+};
 
 export default function HomePage() {
   return (

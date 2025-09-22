@@ -11,6 +11,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useMatches,
 } from 'react-router';
 
 import { getSessionId } from '@/api/auth';
@@ -18,9 +19,11 @@ import type { UserWithRoleAndAvatar } from '@/api/users/types';
 import { AuthProvider } from '@/auth/context';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { SchemaScript } from '@/components/SchemaScript';
 import { TurnstileScript } from '@/components/TurnstileScript';
 import { Typography } from '@/components/Typography';
 import { backgroundColor } from '@/theme';
+import { PageHandle } from '@/utils/handle';
 import { repository } from '@/utils/repo';
 
 import type { Route } from './+types/root';
@@ -61,6 +64,7 @@ export function Layout({
   children,
 }: Route.ComponentProps & { children: React.ReactNode }) {
   const { user } = useLoaderData();
+  const matches = useMatches();
 
   return (
     <html lang="en">
@@ -76,6 +80,16 @@ export function Layout({
         <Meta />
         <Links />
         <TurnstileScript />
+
+        {matches.map((match, i) => {
+          const handle = match.handle as PageHandle | undefined;
+
+          if (!handle?.schema) {
+            return null;
+          }
+
+          return <SchemaScript key={i} data={handle.schema} />;
+        })}
       </head>
       <body>
         <NotificationWrapper typography={Typography}>
