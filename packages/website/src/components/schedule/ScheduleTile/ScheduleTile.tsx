@@ -2,7 +2,7 @@ import { classNames } from '@sc-fam/shared';
 import { IconButton } from '@sc-fam/shared-ui';
 import { ComponentProps, useState } from 'react';
 
-import { Lesson } from '@/api/schedule/types';
+import { Lesson, LessonType } from '@/api/schedule/types';
 import { LinkIcon } from '@/icons/LinkIcon';
 import { PlaceIcon } from '@/icons/PlaceIcon';
 import { TimeIcon } from '@/icons/TimeIcon';
@@ -21,7 +21,7 @@ export interface ScheduleTileProps extends ComponentProps<'div'> {
   onLinkChanged?: (text: string) => void;
 }
 
-const lessonTypeTextMap: Record<Lesson['type'], string> = {
+const lessonTypeTextMap: Record<LessonType, string> = {
   lec: 'Лекція',
   lab: 'Лаба',
   prac: 'Практика',
@@ -82,7 +82,9 @@ export function ScheduleTile({
         )}
       </div>
 
-      <Typography className={styles.name}>{lesson.name}</Typography>
+      <OptionalLink className={styles.name} to={lesson.disciplineLink}>
+        {lesson.name}
+      </OptionalLink>
 
       <OptionalLink to={lesson.teacher.link} linkVariant="clean">
         {lesson.teacher.name}

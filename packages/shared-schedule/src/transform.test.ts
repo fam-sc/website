@@ -1,4 +1,7 @@
-import { LessonType, ScheduleWithTeachers } from '@sc-fam/data';
+import {
+  LessonType,
+  ScheduleWithTeachersAndDisciplineLink,
+} from '@sc-fam/data';
 import { Teacher } from '@sc-fam/shared/api/pma/types.js';
 import { expect, test } from 'vitest';
 
@@ -25,6 +28,7 @@ test('dataScheduleToApiSchedule', () => {
               teacher: { name: 'Teacher 1', link: 'Teacher link 1' },
               time: '10:25',
               type: LessonType.LAB,
+              disciplineLink: 'Link 1',
             },
           ],
         },
@@ -39,6 +43,7 @@ test('dataScheduleToApiSchedule', () => {
               teacher: { name: 'Teacher 2', link: null },
               time: '10:25',
               type: LessonType.LECTURE,
+              disciplineLink: 'Link 2',
             },
           ],
         },
@@ -60,6 +65,7 @@ test('dataScheduleToApiSchedule', () => {
               time: '10:25',
               type: 'lab',
               link: 'link',
+              disciplineLink: 'Link 1',
             },
           ],
         },
@@ -74,6 +80,7 @@ test('dataScheduleToApiSchedule', () => {
               teacher: { name: 'Teacher 2', link: null },
               time: '10:25',
               type: 'lec',
+              disciplineLink: 'Link 2',
             },
           ],
         },
@@ -122,10 +129,11 @@ test('campusScheduleToDataSchedule', () => {
         },
       ],
     },
-    teachers
+    teachers,
+    [{ name: 'Lesson 1', link: 'Link 1' }]
   );
 
-  const expected: Pick<ScheduleWithTeachers, 'weeks'> = {
+  const expected: Pick<ScheduleWithTeachersAndDisciplineLink, 'weeks'> = {
     weeks: [
       [
         {
@@ -137,6 +145,7 @@ test('campusScheduleToDataSchedule', () => {
               teacher: { name: 'Teacher 1', link: 'link 1' },
               time: '10:25',
               type: LessonType.LECTURE,
+              disciplineLink: 'Link 1',
             },
           ],
         },
@@ -151,6 +160,7 @@ test('campusScheduleToDataSchedule', () => {
               teacher: { name: 'Teacher 2', link: null },
               time: '10:25',
               type: LessonType.LAB,
+              disciplineLink: null,
             },
           ],
         },

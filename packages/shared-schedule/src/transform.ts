@@ -1,10 +1,11 @@
 import {
   Day,
   DaySchedule as DataDaySchedule,
+  Discipline,
   LessonId,
   LessonType,
-  LessonWithTeacher,
-  ScheduleWithTeachers as DataScheduleWithTeachers,
+  LessonWithTeacherAndDiscipline,
+  ScheduleWithTeachersAndDisciplineLink as DataScheduleWithTeachersAndDisciplineLink,
 } from '@sc-fam/data';
 import {
   DaySchedule as CampusDaySchedule,
@@ -65,8 +66,9 @@ function campusTimeToApiTime(time: CampusTime): Time {
 
 export function campusDayScheduleToDaySchedule(
   schedule: CampusDaySchedule,
-  teachers: Teacher[]
-): DataDaySchedule<LessonWithTeacher> {
+  teachers: Teacher[],
+  disciplines: Discipline[]
+): DataDaySchedule<LessonWithTeacherAndDiscipline> {
   return {
     day: campusDayToWeekdayNumber(schedule.day),
     lessons: schedule.pairs.map(({ name, place, time, tag, teacherName }) => ({
@@ -78,33 +80,40 @@ export function campusDayScheduleToDaySchedule(
         name: teacherName,
         link: null,
       },
+      disciplineLink:
+        disciplines.find((discipline) => discipline.name === name)?.link ??
+        null,
     })),
   };
 }
 
 export function campusScheduleToDataSchedule(
   value: LessonSchedule,
-  teachers: Teacher[]
-): Pick<DataScheduleWithTeachers, 'weeks'> {
+  teachers: Teacher[],
+  disciplines: Discipline[]
+): Pick<DataScheduleWithTeachersAndDisciplineLink, 'weeks'> {
   return {
     weeks: [value.scheduleFirstWeek, value.scheduleSecondWeek].map((schedule) =>
-      schedule.map((day) => campusDayScheduleToDaySchedule(day, teachers))
-    ) as DataScheduleWithTeachers['weeks'],
+      schedule.map((day) =>
+        campusDayScheduleToDaySchedule(day, teachers, disciplines)
+      )
+    ) as DataScheduleWithTeachersAndDisciplineLink['weeks'],
   };
 }
 
 function dataScheduleWeekToApiScheduleWeek(
-  { day, lessons }: DataDaySchedule<LessonWithTeacher>,
+  { day, lessons }: DataDaySchedule<LessonWithTeacherAndDiscipline>,
   links: Record<LessonId, string>
 ): ApiDaySchedule {
   return {
     day,
-    lessons: lessons.map(({ teacher, type, name, ...rest }) => {
+    lessons: lessons.map(({ teacher, type, name, disciplineLink, ...rest }) => {
       const lessonType = dataLessonTypeToApi(type);
       const link = links[lessonId(lessonType, name, teacher.name)];
 
       return {
         ...rest,
+        disciplineLink: disciplineLink ?? undefined,
         type: lessonType,
         teacher,
         name,
@@ -115,7 +124,7 @@ function dataScheduleWeekToApiScheduleWeek(
 }
 
 export function dataScheduleToApiSchedule(
-  schedule: DataScheduleWithTeachers
+  schedule: DataScheduleWithTeachersAndDisciplineLink
 ): ApiSchedule {
   const links = schedule.links ?? {};
 

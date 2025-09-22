@@ -1,19 +1,23 @@
-import { Repository, ScheduleWithTeachers } from '@sc-fam/data';
+import {
+  Repository,
+  ScheduleWithTeachersAndDisciplineLink,
+} from '@sc-fam/data';
 import { getLessons } from '@sc-fam/shared/api/campus/index.js';
 
-import { getTeachers, getUniqueTeachers } from './teachers';
+import { getTeachers } from './teachers';
 import {
   campusScheduleToDataSchedule,
   dataScheduleToApiSchedule,
 } from './transform';
 import { Schedule as ApiSchedule } from './types';
+import { getUniqueLessonNames, getUniqueTeachers } from './utils';
 
 // 7 days
 const SCHEDULE_INVALIDATE_TIME = 7 * 24 * 60 * 60 * 1000;
 
 async function getDataSchedule(
   groupName: string
-): Promise<ScheduleWithTeachers | null> {
+): Promise<ScheduleWithTeachersAndDisciplineLink | null> {
   const repo = Repository.openConnection();
   const [schedule, group] = await repo.batch([
     repo.schedule().getSchedule(groupName),
@@ -31,8 +35,17 @@ async function getDataSchedule(
     now - schedule.lastUpdateTime > SCHEDULE_INVALIDATE_TIME
   ) {
     const campusSchedule = await getLessons(group.campusId);
-    const teachers = await getTeachers(getUniqueTeachers(campusSchedule));
-    const { weeks } = campusScheduleToDataSchedule(campusSchedule, teachers);
+
+    const [teachers, disciplines] = await Promise.all([
+      getTeachers(getUniqueTeachers(campusSchedule)),
+      repo.disciplines().getByNames(getUniqueLessonNames(campusSchedule)),
+    ]);
+
+    const { weeks } = campusScheduleToDataSchedule(
+      campusSchedule,
+      teachers,
+      disciplines
+    );
 
     const [links] = await repo.batch([
       repo.schedule().getLinks(groupName),

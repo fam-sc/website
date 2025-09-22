@@ -39,7 +39,11 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
   if (Array.isArray(node)) {
     const children = node.map((element, index) => renderNode(element, index));
 
-    return key === undefined ? children : <div key={key}>{children}</div>;
+    return key === undefined ? (
+      <>{children}</>
+    ) : (
+      <div key={key}>{children}</div>
+    );
   }
 
   if (typeof node === 'string') {
@@ -48,14 +52,19 @@ function renderNode(node: RichTextNode, key?: Key): ReactNode {
 
   switch (node.name) {
     case '#image': {
-      return <Image multiple={imageDataToClientImages(node.filePath, node)} />;
+      return (
+        <Image
+          key={key}
+          multiple={imageDataToClientImages(node.filePath, node)}
+        />
+      );
     }
     case '#placeholder-image':
     case '#unsized-image': {
       return null;
     }
     default: {
-      return renderElementNode(node);
+      return renderElementNode(node, key);
     }
   }
 }

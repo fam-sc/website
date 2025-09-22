@@ -5,12 +5,12 @@ import {
   Day,
   DaySchedule,
   LessonId,
-  LessonWithTeacher,
+  LessonWithTeacherAndDiscipline,
   RawLesson,
   RawSchedule,
   Schedule,
   ScheduleWeek,
-  ScheduleWithTeachers,
+  ScheduleWithTeachersAndDisciplineLink,
 } from '../types/schedule';
 import { ScheduleLessonCollection } from './scheduleLessons';
 
@@ -47,16 +47,20 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
     };
   }
 
-  getSchedule(groupName: string): DataQuery<ScheduleWithTeachers | null> {
+  getSchedule(
+    groupName: string
+  ): DataQuery<ScheduleWithTeachersAndDisciplineLink | null> {
     type R = RawLesson & {
       lesson_name: string;
       teacher_link: string | null;
+      discipline_link: string | null;
     };
 
     const scheduleQuery = this.selectAllAction<R>(
-      `SELECT week, day, place, teacher, time, type, link, schedule_teachers.link as teacher_link, schedule_lessons.name as lesson_name
+      `SELECT week, day, place, teacher, time, type, schedule_teachers.link as teacher_link, schedule_lessons.name as lesson_name, disciplines.link as discipline_link
       FROM schedule_lessons 
-      RIGHT JOIN schedule_teachers ON schedule_lessons.teacher=schedule_teachers.name 
+      LEFT JOIN schedule_teachers ON schedule_lessons.teacher=schedule_teachers.name
+      LEFT JOIN disciplines ON schedule_lessons.name=disciplines.name
       WHERE groupName=?`,
       [groupName]
     );
@@ -70,11 +74,18 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
       return lessons.length > 0
         ? {
             groupName,
-            weeks: splitToWeeks<R, LessonWithTeacher>(
+            weeks: splitToWeeks<R, LessonWithTeacherAndDiscipline>(
               lessons,
-              ({ teacher, teacher_link, lesson_name, ...rest }) => ({
+              ({
+                teacher,
+                teacher_link,
+                lesson_name,
+                discipline_link,
+                ...rest
+              }) => ({
                 ...rest,
                 name: lesson_name,
+                disciplineLink: discipline_link,
                 teacher: {
                   name: teacher,
                   link: teacher_link,
@@ -91,7 +102,7 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
   upsertWeeks({
     groupName,
     weeks,
-  }: Pick<ScheduleWithTeachers, 'groupName' | 'weeks'>) {
+  }: Pick<ScheduleWithTeachersAndDisciplineLink, 'groupName' | 'weeks'>) {
     const lessons = this.getCollection(ScheduleLessonCollection);
 
     return [
@@ -100,12 +111,15 @@ export class ScheduleCollection extends EntityCollection<RawSchedule>(
         weeks
           .map((week, index) =>
             week.map(({ day, lessons }) =>
-              lessons.map(({ teacher, ...rest }) => ({
+              lessons.map(({ teacher, name, place, time, type }) => ({
                 groupName,
                 week: (index + 1) as 1 | 2,
                 day,
                 teacher: teacher.name,
-                ...rest,
+                name,
+                place,
+                time,
+                type,
               }))
             )
           )

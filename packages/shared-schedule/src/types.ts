@@ -19,6 +19,7 @@ export type Lesson = {
   teacher: ScheduleTeacher;
   time: Time;
   place: string;
+  disciplineLink?: string;
   link?: string;
 };
 

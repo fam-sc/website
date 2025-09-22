@@ -8,6 +8,7 @@ import {
 import { EntityCollectionClass } from '@sc-fam/shared-sql/collection';
 
 import { AdminBotNewUserMessagesCollection } from './collections/adminBotNewUserMessages';
+import { DisciplineCollection } from './collections/disciplines';
 import { EventCollection } from './collections/events';
 import { ForgotPasswordCollection } from './collections/forgotPasswords';
 import { GalleryImageCollection } from './collections/galleryImages';
@@ -41,6 +42,7 @@ const collectionTypes = [
   GuideCollection,
   ScheduleBotUserCollection,
   GlobalOptionsCollection,
+  DisciplineCollection,
 ];
 
 export class Repository {
@@ -85,6 +87,7 @@ export class Repository {
   guides = this.collection(GuideCollection);
   scheduleBotUsers = this.collection(ScheduleBotUserCollection);
   globalOptions = this.collection(GlobalOptionsCollection);
+  disciplines = this.collection(DisciplineCollection);
 
   static async init(database: D1Database) {
     const tables: [string, TableDescriptor<unknown>][] = [];

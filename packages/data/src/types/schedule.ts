@@ -25,6 +25,10 @@ export type LessonWithTeacher = Omit<Lesson, 'teacher'> & {
   teacher: ScheduleTeacher;
 };
 
+export interface LessonWithTeacherAndDiscipline extends LessonWithTeacher {
+  disciplineLink: string | null;
+}
+
 export type DaySchedule<T = Lesson> = {
   day: Day;
   lessons: T[];
@@ -43,6 +47,8 @@ export type Schedule<T = Lesson> = {
 };
 
 export type ScheduleWithTeachers = Schedule<LessonWithTeacher>;
+export type ScheduleWithTeachersAndDisciplineLink =
+  Schedule<LessonWithTeacherAndDiscipline>;
 
 export type RawSchedule = {
   lastUpdateTime: number;

@@ -208,6 +208,13 @@ export function EntityCollection<Raw extends object>(tableName: string) {
       return this.insertManyBase('INSERT', values, returning);
     }
 
+    insertManyAction<R extends keyof Raw & string>(
+      values: Partial<Raw>[],
+      returning?: R
+    ) {
+      return this.insertManyBaseAction('INSERT', values, returning);
+    }
+
     insertOrReplaceMany(values: Partial<Raw>[]): Promise<void>;
 
     insertOrReplaceMany<R extends keyof Raw & string>(
