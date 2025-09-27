@@ -7,7 +7,7 @@ import { MailIcon } from '@/icons/MailIcon';
 import { QuestionIcon } from '@/icons/QuestionIcon';
 import { TelegramIcon } from '@/icons/TelegramIcon';
 import { TikTokIcon } from '@/icons/TikTokIcon';
-import logo from '@/images/logo.png?w=20!';
+import logo from '@/images/logo.png?w=32!';
 
 import { Link } from '../Link';
 import { Typography } from '../Typography';
@@ -19,14 +19,16 @@ export interface FooterProps {
 
 type LinkWithIconProps = {
   to: string;
+  title?: string;
   small?: boolean;
   children: ReactNode;
 };
 
-function LinkWithIcon({ to, small, children }: LinkWithIconProps) {
+function LinkWithIcon({ to, small, title, children }: LinkWithIconProps) {
   return (
     <Link
       to={to}
+      title={title}
       className={classNames(
         styles['link-with-icon'],
         small && styles['link-with-icon-small']
@@ -79,19 +81,22 @@ export function Footer({ className }: FooterProps) {
       </Section>
 
       <div className={styles.icons}>
-        <LinkWithIcon to="mailto:sr.fam.kpi@gmail.com">
+        <LinkWithIcon to="mailto:sr.fam.kpi@gmail.com" title="Пошта">
           <MailIcon />
         </LinkWithIcon>
 
-        <LinkWithIcon to="https://www.instagram.com/fam_kpi/">
+        <LinkWithIcon to="https://www.instagram.com/fam_kpi/" title="Інстаграм">
           <InstagramIcon />
         </LinkWithIcon>
 
-        <LinkWithIcon to="https://t.me/primat_kpi">
+        <LinkWithIcon to="https://t.me/primat_kpi" title="Телеграм">
           <TelegramIcon />
         </LinkWithIcon>
 
-        <LinkWithIcon to="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1">
+        <LinkWithIcon
+          to="https://www.tiktok.com/@fam_kpi?_t=ZM-8vrGKJSe9Rt&_r=1"
+          title="Тікток"
+        >
           <TikTokIcon />
         </LinkWithIcon>
       </div>
