@@ -124,10 +124,8 @@ async function handleUser(
 ) {
   try {
     const week = schedule.weeks[currentWeek - 1];
-    const day = week[currentDay - 1];
+    const day = week.find((value) => value.day === currentDay);
 
-    // It might be undefined if the index is out of bounds.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (day === undefined) {
       return;
     }
