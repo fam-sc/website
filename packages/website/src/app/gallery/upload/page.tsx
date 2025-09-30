@@ -8,6 +8,7 @@ import { uploadGalleryImages } from '@/api/gallery/client';
 import { Button } from '@/components/Button';
 import { DatePicker } from '@/components/DatePicker';
 import { MultipleInlineImageDropArea } from '@/components/MultipleInlineImageDropArea';
+import { NoIndex } from '@/components/NoIndex';
 import { SelectEventDialog } from '@/components/SelectEventDialog';
 import { Title } from '@/components/Title';
 import { Typography } from '@/components/Typography';
@@ -34,6 +35,8 @@ export default function Page() {
 
   return (
     <div className={styles.content}>
+      <NoIndex />
+
       <Title>Завантаження фото</Title>
 
       <MultipleInlineImageDropArea

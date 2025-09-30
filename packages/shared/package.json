@@ -73,6 +73,10 @@
     "./api/google": {
       "import": "./dist/api/google/index.js",
       "types": "./dist/api/google/index.d.ts"
+    },
+    "./sitemap": {
+      "import": "./dist/sitemap/index.js",
+      "types": "./dist/sitemap/index.d.ts"
     }
   }
 }

@@ -13,6 +13,7 @@ import { ErrorBoard } from '@/components/ErrorBoard';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { Labeled } from '@/components/Labeled';
 import { LazyRichTextEditor } from '@/components/LazyRichTextEditor';
+import { NoIndex } from '@/components/NoIndex';
 import { OptionSwitch } from '@/components/OptionSwitch';
 import type { RichTextEditorRef } from '@/components/RichTextEditor';
 import { SlugInput } from '@/components/SlugInput';
@@ -98,6 +99,8 @@ export default function Page({ loaderData: { event } }: Route.ComponentProps) {
 
   return (
     <div className={styles.root}>
+      <NoIndex />
+
       <Title>
         {event !== undefined ? 'Редагування події' : 'Додати подію'}
       </Title>

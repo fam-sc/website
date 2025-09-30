@@ -12,6 +12,7 @@ import { ErrorBoard } from '@/components/ErrorBoard';
 import { InlineImageDropArea } from '@/components/InlineImageDropArea';
 import { Labeled } from '@/components/Labeled';
 import { LazyRichTextEditor } from '@/components/LazyRichTextEditor';
+import { NoIndex } from '@/components/NoIndex';
 import type { RichTextEditorRef } from '@/components/RichTextEditor';
 import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
@@ -94,6 +95,8 @@ export default function Page({ loaderData: { guide } }: Route.ComponentProps) {
 
   return (
     <div className={styles.root}>
+      <NoIndex />
+
       <Title>
         {guide !== undefined ? 'Редагування події' : 'Додати подію'}
       </Title>

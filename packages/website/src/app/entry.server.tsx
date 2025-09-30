@@ -8,6 +8,7 @@ import { getApiEnv } from 'virtual:utils/apiEnv';
 import { renderResponse } from 'virtual:utils/reactDomEnv';
 
 import { app } from '@/api/app';
+import { handleSitemapRequest } from '@/api/sitemap/route';
 
 import { redirects } from './redirects';
 
@@ -29,6 +30,10 @@ export default async function handleRequest(
   Repository.setDefaultDatabase(loadContext.cloudflare.env.DB);
 
   const { pathname } = new URL(request.url);
+
+  if (pathname === '/sitemap.xml') {
+    return handleSitemapRequest(loadContext.cloudflare.env);
+  }
 
   if (pathname.startsWith('/api')) {
     try {

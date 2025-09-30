@@ -4,7 +4,6 @@
   "scripts": {
     "build:no-emit": "tsc --noEmit",
     "dev": "wrangler dev --test-scheduled",
-    "dev:remote": "yarn dev --remote",
     "deploy": "wrangler deploy",
     "typegen": "wrangler types"
   },

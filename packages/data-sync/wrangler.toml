@@ -5,11 +5,11 @@ compatibility_flags = ["nodejs_compat"]
 minify = true
 
 d1_databases = [
-  { binding = 'DB', database_name = "website", database_id = "402b9901-777f-46ac-a699-2b3d32593d32" }
+  { binding = 'DB', database_name = "website", database_id = "402b9901-777f-46ac-a699-2b3d32593d32", remote = true }
 ]
 
 r2_buckets = [
-  { binding = 'MEDIA_BUCKET', bucket_name = 'sc-fam-website', preview_bucket_name = 'sc-fam-website-preview' }
+  { binding = 'MEDIA_BUCKET', bucket_name = 'sc-fam-website', remote = true }
 ]
 
 [observability]

@@ -6,6 +6,7 @@ import { addPoll } from '@/api/polls/client';
 import { AddPollPayload } from '@/api/polls/types';
 import { Button } from '@/components/Button';
 import { Labeled } from '@/components/Labeled';
+import { NoIndex } from '@/components/NoIndex';
 import { PollBuilder } from '@/components/PollBuilder';
 import { SlugInput } from '@/components/SlugInput';
 import { TextInput } from '@/components/TextInput';
@@ -56,6 +57,8 @@ export default function Page() {
 
   return (
     <div className={styles.content}>
+      <NoIndex />
+
       <Labeled title="Заголовок">
         <TextInput
           disabled={isActionPending}
