@@ -70,6 +70,7 @@ export default tseslint.config(
       'unicorn/prefer-global-this': 'off',
       'unicorn/no-magic-array-flat-depth': 'off',
       'unicorn/no-for-loop': 'off',
+      'unicorn/no-anonymous-default-export': 'off',
       'import/no-anonymous-default-export': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',

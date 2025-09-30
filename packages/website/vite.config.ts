@@ -8,6 +8,7 @@ import { multienvPlugin } from '@sc-fam/shared-vite-plugins/multienv';
 import { templatePlugin } from '@sc-fam/shared-vite-plugins/template';
 import { cssNameGenerator } from '@sc-fam/shared-vite-plugins/css';
 import { markdownPlugin } from '@sc-fam/shared-vite-plugins/markdown';
+import { robotsPlugin } from './vite-plugins/robots';
 
 const isLocal = process.env.LOCAL === '1';
 
@@ -46,6 +47,7 @@ export default defineConfig((env) => ({
       { name: 'api/media/resize', type: 'ts' },
     ]),
     templatePlugin(),
+    robotsPlugin(),
     tsconfigPaths(),
   ],
 }));

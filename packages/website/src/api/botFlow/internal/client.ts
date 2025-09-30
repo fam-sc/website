@@ -3,7 +3,7 @@ import { checkedFetch, fetchObject } from '@sc-fam/shared';
 import { botFlowConfig } from './schema';
 import { BotFlowConfig } from './types';
 
-const CONFIG_URL = 'https://bot.sc-fam.workers.dev/config';
+const CONFIG_URL = 'https://bot.sc-fam.org/config';
 
 function authorization(apiKey: string): HeadersInit {
   return {

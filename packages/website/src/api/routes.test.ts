@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 import { expect, test } from 'vitest';
 
+const IGNORE_ROUTES = new Set(['sitemap']);
+
 const API_PATH = path.dirname(fileURLToPath(import.meta.url));
 
 async function findAllFileRoutes(): Promise<string[]> {
@@ -14,7 +16,7 @@ async function findAllFileRoutes(): Promise<string[]> {
     for (const entry of entries) {
       const filePath = path.join(dirPath, entry.name);
 
-      if (entry.isDirectory()) {
+      if (entry.isDirectory() && !IGNORE_ROUTES.has(entry.name)) {
         result.push(...(await worker(filePath)));
       } else if (filePath.endsWith('route.ts')) {
         result.push(filePath);

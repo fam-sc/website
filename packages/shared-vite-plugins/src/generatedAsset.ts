@@ -8,7 +8,7 @@ type FactoryOptions = {
   pluginName: string;
   outputName: string;
   contentType: string;
-  generator: () => string | Promise<string>;
+  generator: (mode: string) => string | Promise<string>;
 };
 
 export function generatedAssetFactory({
@@ -28,7 +28,7 @@ export function generatedAssetFactory({
       },
       async writeBundle() {
         if (!config.build.ssr) {
-          const content = await generator();
+          const content = await generator(config.mode);
 
           await fs.writeFile(
             path.join(config.build.outDir, 'client', outputName),
@@ -50,7 +50,7 @@ export function generatedAssetFactory({
             return;
           }
 
-          const tempOutput = generator();
+          const tempOutput = generator(config.mode);
           const outputPromise = isPromise(tempOutput)
             ? tempOutput
             : Promise.resolve(tempOutput);
