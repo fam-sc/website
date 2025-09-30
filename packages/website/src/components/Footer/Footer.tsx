@@ -68,7 +68,7 @@ export function Footer({ className }: FooterProps) {
           Чат-бот
         </LinkWithIcon>
 
-        <LinkWithIcon to="/home">
+        <LinkWithIcon to="/">
           <img src={logo} width={15} height={15} alt="Bot" />
           Про нас
         </LinkWithIcon>
