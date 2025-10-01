@@ -6,7 +6,8 @@
     { "path": "./packages/shared-schedule" },
     { "path": "./packages/shared-vite-plugins" },
     { "path": "./packages/shared-sql" },
-    { "path": "./packages/shared-ui" }
+    { "path": "./packages/shared-ui" },
+    { "path": "./packages/shared-polls" }
   ],
   "include": []
 }

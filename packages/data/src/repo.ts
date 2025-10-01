@@ -18,6 +18,7 @@ import { GuideCollection } from './collections/guides';
 import { PendingUserCollection } from './collections/pendingUsers';
 import { PollRespondentCollection } from './collections/pollRespondents';
 import { PollCollection } from './collections/polls';
+import { PollSpreadsheetEntryCollection } from './collections/pollSpreadsheetEntries';
 import { ScheduleCollection } from './collections/schedule';
 import { ScheduleBotUserCollection } from './collections/scheduleBotUsers';
 import { ScheduleLessonCollection } from './collections/scheduleLessons';
@@ -37,6 +38,7 @@ const collectionTypes = [
   GroupCollection,
   PollCollection,
   PollRespondentCollection,
+  PollSpreadsheetEntryCollection,
   ForgotPasswordCollection,
   AdminBotNewUserMessagesCollection,
   GuideCollection,
@@ -82,6 +84,7 @@ export class Repository {
   scheduleTeachers = this.collection(ScheduleTeacherCollection);
   groups = this.collection(GroupCollection);
   polls = this.collection(PollCollection);
+  pollSpreadsheetEntries = this.collection(PollSpreadsheetEntryCollection);
   forgotPasswordEntries = this.collection(ForgotPasswordCollection);
   adminBotNewUserMessages = this.collection(AdminBotNewUserMessagesCollection);
   guides = this.collection(GuideCollection);

@@ -5,6 +5,7 @@ export type RawPoll = {
   startDate: number;
   endDate: number | null;
   questions: string;
+  spreadsheetId: string | null;
 };
 
 export type Poll = Omit<RawPoll, 'questions'> & {
@@ -34,7 +35,7 @@ type PollQuestionContentMap = {
   score: { items: number[] };
 };
 
-type PollQuestionType = keyof PollQuestionContentMap;
+export type PollQuestionType = keyof PollQuestionContentMap;
 
 export type PollQuestion<T extends PollQuestionType = PollQuestionType> = {
   [K in T]: { type: K; title: string } & PollQuestionContentMap[K];
@@ -75,4 +76,10 @@ export type PollRespondentAnswer = {
 
   // if question's type is score.
   selected?: number;
+};
+
+// If this entry exists, it means that answer for userId is already in the spreadsheet
+export type PollSpreadsheetEntry = {
+  spreadsheetId: string;
+  userId: number;
 };

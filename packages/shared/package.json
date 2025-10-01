@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.862.0",
+    "jose": "6.0.12",
     "parse5": "8.0.0",
     "sharp": "0.34.3",
     "telegram-standard-bot-api": "1.0.8",
@@ -77,6 +78,14 @@
     "./sitemap": {
       "import": "./dist/sitemap/index.js",
       "types": "./dist/sitemap/index.d.ts"
+    },
+    "./api/google/calendar": {
+      "import": "./dist/api/google/calendar.js",
+      "types": "./dist/api/google/calendar.d.ts"
+    },
+    "./api/google/spreadsheets": {
+      "import": "./dist/api/google/spreadsheets/index.js",
+      "types": "./dist/api/google/spreadsheets/inedx.d.ts"
     }
   }
 }

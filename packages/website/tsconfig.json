@@ -39,6 +39,7 @@
     { "path": "../shared" },
     { "path": "../data" },
     { "path": "../shared-schedule" },
-    { "path": "../shared-ui" }
+    { "path": "../shared-ui" },
+    { "path": "../shared-polls" }
   ]
 }

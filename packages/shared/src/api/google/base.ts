@@ -16,13 +16,13 @@ function requestBody(
   };
 }
 
-function url(path: string): string {
-  return `https://www.googleapis.com${path}`;
+function url(path: string | URL): string | URL {
+  return typeof path === 'string' ? `https://www.googleapis.com${path}` : path;
 }
 
 export function fetchGoogleApiObject<T>(
   method: string,
-  path: string,
+  path: string | URL,
   access: string,
   body?: object
 ): Promise<T> {
@@ -31,7 +31,7 @@ export function fetchGoogleApiObject<T>(
 
 export function fetchGoogleApi(
   method: string,
-  path: string,
+  path: string | URL,
   access: string,
   body?: object
 ) {

@@ -10,7 +10,9 @@
     { "path": "./packages/shared-ui" },
     { "path": "./packages/shared-vite-plugins" },
     { "path": "./packages/website" },
-    { "path": "./packages/posviata" }
+    { "path": "./packages/posviata" },
+    { "path": "./packages/shared-polls" },
+    { "path": "./packages/website" }
   ],
   "include": []
 }

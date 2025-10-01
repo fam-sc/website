@@ -12,8 +12,22 @@ import {
   PollRespondent,
   PollRespondentAnswer,
   RawPoll,
+  RawPollRespondent,
 } from '../types/poll';
 import { PollRespondentCollection } from './pollRespondents';
+
+type Respondent = Pick<RawPollRespondent, 'date' | 'answers'> & {
+  userId?: number;
+};
+
+function parseRespondents<T extends Respondent>(respondents: T[]) {
+  return respondents.map(({ answers, ...rest }) => {
+    return {
+      answers: JSON.parse(answers) as PollRespondentAnswer[],
+      ...rest,
+    };
+  });
+}
 
 export class PollCollection extends EntityCollection<RawPoll>('polls') {
   static descriptor(): TableDescriptor<RawPoll> {
@@ -24,6 +38,7 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
       endDate: 'INTEGER',
       questions: 'TEXT NOT NULL',
       slug: 'TEXT NOT NULL',
+      spreadsheetId: 'TEXT',
     };
   }
 
@@ -87,16 +102,41 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
       return null;
     }
 
-    const { questions } = questionsValue;
+    return {
+      questions: JSON.parse(questionsValue.questions) as PollQuestion[],
+      respondents: parseRespondents(respondents),
+    };
+  }
+
+  async findPollForSpreadsheet(id: number) {
+    type Respondent = Pick<RawPollRespondent, 'date' | 'answers' | 'userId'>;
+
+    const questionQuery = this.findOneWhereAction({ id }, [
+      'questions',
+      'spreadsheetId',
+    ]);
+
+    const answersQuery = this.selectAllAction<Respondent>(
+      `SELECT date, poll_respondents.userId, answers
+      FROM polls
+      INNER JOIN poll_respondents ON polls.id = poll_respondents.pollId
+      LEFT JOIN poll_spreadsheet_entries ON polls.spreadsheetId = poll_spreadsheet_entries.spreadsheetId
+      WHERE poll_spreadsheet_entries.userId IS NULL AND polls.id = ?`,
+      [id]
+    );
+
+    const [questionsValue, respondents] = await query
+      .merge([questionQuery, answersQuery], this.queryContext)
+      .get();
+
+    if (questionsValue === null) {
+      return null;
+    }
 
     return {
-      questions: JSON.parse(questions) as PollQuestion[],
-      respondents: respondents.map(({ date, answers }) => {
-        return {
-          date,
-          answers: JSON.parse(answers) as PollRespondentAnswer[],
-        };
-      }),
+      spreadsheetId: questionsValue.spreadsheetId,
+      questions: JSON.parse(questionsValue.questions) as PollQuestion[],
+      newRespondents: parseRespondents(respondents),
     };
   }
 
@@ -126,5 +166,9 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
       .get();
 
     return { total, items };
+  }
+
+  setSpreadsheet(pollId: number, spreadsheetId: string) {
+    return this.updateWhere({ id: pollId }, { spreadsheetId });
   }
 }

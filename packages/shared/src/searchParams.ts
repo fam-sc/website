@@ -10,3 +10,20 @@ export function searchParamsToObject(
 
   return result;
 }
+
+export function withSearchParams(
+  url: string,
+  values: Record<string, string | number | boolean | undefined>
+) {
+  const urlObject = new URL(url);
+
+  for (const key in values) {
+    const value = values[key];
+
+    if (value !== undefined) {
+      urlObject.searchParams.set(key, String(value));
+    }
+  }
+
+  return urlObject;
+}

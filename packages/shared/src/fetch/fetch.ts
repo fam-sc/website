@@ -13,6 +13,8 @@ export async function createErrorResponse(response: Response): Promise<Error> {
   try {
     const text = await response.text();
 
+    console.log(text);
+
     return new FetchError(
       text.length > 0 ? `${statusText}: ${text}` : statusText,
       status

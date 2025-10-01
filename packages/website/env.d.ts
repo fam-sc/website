@@ -6,4 +6,8 @@ interface Env {
   HELPDESK_API_KEY: string;
   TG_BOT_KEY: string;
   SENTRY_DSN: string;
+
+  GOOGLE_SA_KEY: string;
+  GOOGLE_SA_KEY_ID: string;
+  GOOGLE_SA_ACCOUNT: string;
 }
