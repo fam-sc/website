@@ -1,6 +1,7 @@
 import {
   Conditions,
   isNull,
+  notNull,
   query,
   TableDescriptor,
 } from '@sc-fam/shared-sql/builder';
@@ -168,7 +169,21 @@ export class PollCollection extends EntityCollection<RawPoll>('polls') {
     return { total, items };
   }
 
+  async getSpreadsheet(id: number) {
+    const result = await this.findOneWhere({ id }, ['spreadsheetId']);
+
+    return result?.spreadsheetId ?? null;
+  }
+
   setSpreadsheet(pollId: number, spreadsheetId: string) {
     return this.updateWhere({ id: pollId }, { spreadsheetId });
+  }
+
+  async getPollIdsWithSpreadsheet() {
+    const values = await this.findManyWhere({ spreadsheetId: notNull() }, [
+      'id',
+    ]);
+
+    return values.map(({ id }) => id);
   }
 }

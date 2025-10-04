@@ -1,8 +1,9 @@
 import { UserRole } from '@sc-fam/data';
 import { badRequest, internalServerError, notFound } from '@sc-fam/shared';
+import { scope } from '@sc-fam/shared/api/google';
 import { middlewareHandler } from '@sc-fam/shared/router/middleware.js';
 import {
-  exportPollToSpreadsheet,
+  exportPollToSpreadsheetWithAuth,
   PollExportError,
   PollExportErrorType,
 } from '@sc-fam/shared-polls';
@@ -11,23 +12,21 @@ import { app } from '@/api/app';
 import { auth } from '@/api/authRoute';
 import { getServiceAccountAuthOptions } from '@/api/googleAuth';
 
-app.post(
-  '/polls/spreadsheet/export/:pollId',
-  middlewareHandler(
-    auth({ minRole: UserRole.ADMIN }),
-    async ({ env, params: { pollId: rawPollId } }) => {
-      const pollId = Number.parseInt(rawPollId);
-      if (Number.isNaN(pollId)) {
-        return badRequest({ message: 'Invalid poll id' });
-      }
+import { pollId } from '../middleware';
 
+app.post(
+  '/polls/:id/spreadsheet/export',
+  middlewareHandler(
+    pollId(),
+    auth({ minRole: UserRole.ADMIN }),
+    async ({ env, data: [pollId] }) => {
       try {
         const options = await getServiceAccountAuthOptions(
           env,
-          'https://www.googleapis.com/auth/spreadsheets'
+          scope('spreadsheets')
         );
 
-        await exportPollToSpreadsheet(pollId, options);
+        await exportPollToSpreadsheetWithAuth(pollId, options);
 
         return new Response();
       } catch (error) {

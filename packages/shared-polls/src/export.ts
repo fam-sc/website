@@ -172,9 +172,18 @@ function dataRequests(
   ];
 }
 
-export async function exportPollToSpreadsheet(
+export async function exportPollToSpreadsheetWithAuth(
   pollId: number,
   accessOptions: TwoLeggedOptions
+): Promise<void> {
+  const access = await getTwoLeggedAccessToken(accessOptions);
+
+  return exportPollToSpreadsheet(pollId, access);
+}
+
+export async function exportPollToSpreadsheet(
+  pollId: number,
+  access: string
 ): Promise<void> {
   const repo = Repository.openConnection();
 
@@ -191,7 +200,6 @@ export async function exportPollToSpreadsheet(
     );
   }
 
-  const access = await getTwoLeggedAccessToken(accessOptions);
   const spreadsheet = await getSpreadsheet(access, { spreadsheetId });
   const { sheetId } = spreadsheet.sheets[0].properties;
 

@@ -6,6 +6,8 @@ import './gallery/[id]/route';
 import './groups/route';
 import './polls/route';
 import './polls/[id]/route';
+import './polls/[id]/spreadsheet/route';
+import './polls/[id]/spreadsheet/export/route';
 import './polls/[id]/close/route';
 import './polls/[id]/table/route';
 import './guides/route';

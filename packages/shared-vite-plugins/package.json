@@ -15,8 +15,10 @@
     "@sc-fam/shared": "workspace:*",
     "marked": "16.1.2",
     "react": "19.1.1",
-    "sharp": "0.34.3",
-    "vite": "7.1.5"
+    "sharp": "0.34.3"
+  },
+  "peerDependencies": {
+    "vite": "^7.0.0"
   },
   "exports": {
     "./css": {

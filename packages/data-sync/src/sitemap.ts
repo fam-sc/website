@@ -57,7 +57,5 @@ export async function updateSitemap(env: Env) {
   const entries = await getSitemap();
   const sitemap = createSitemap(entries);
 
-  console.log(sitemap);
-
   await env.MEDIA_BUCKET.put('website/sitemap.xml', sitemap);
 }

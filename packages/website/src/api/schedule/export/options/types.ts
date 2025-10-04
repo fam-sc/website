@@ -1,6 +1,6 @@
-import { Color } from '@sc-fam/shared/api/google';
+import { Color } from '@sc-fam/shared/api/google/calendar';
 
-export { Color } from '@sc-fam/shared/api/google';
+export { Color } from '@sc-fam/shared/api/google/calendar';
 
 export type ExportScheduleOptions = {
   groupName: string;

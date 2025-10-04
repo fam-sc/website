@@ -32,7 +32,8 @@
     "./.storybook/**/*",
     ".react-router/types/**/*",
     "../shared/src/api/google/gsi.d.ts",
-    "../shared-ui/src/utils/impersonation.ts"
+    "../shared-ui/src/utils/impersonation.ts",
+    "@types/google.picker"
   ],
   "exclude": ["storybook-static", "build"],
   "references": [

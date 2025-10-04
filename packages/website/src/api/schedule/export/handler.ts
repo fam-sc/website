@@ -5,7 +5,7 @@ import {
   addEvent,
   Calendar,
   deleteCalendar,
-} from '@sc-fam/shared/api/google';
+} from '@sc-fam/shared/api/google/calendar';
 import {
   alignDateByWeek,
   DAY_MS,

@@ -148,5 +148,9 @@ export type Sheet = {
 };
 
 export type Spreadsheet = {
+  properties: {
+    title: string;
+  };
   sheets: Sheet[];
+  spreadsheetUrl: string;
 };

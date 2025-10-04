@@ -21,5 +21,8 @@ export function getApiEnv(): Env {
     MEDIA_BUCKET: bucket,
     DB: getDatabase(),
     IMAGES: {} as ImagesBinding,
+    GOOGLE_SA_KEY: getEnvChecked('GOOGLE_SA_KEY'),
+    GOOGLE_SA_KEY_ID: getEnvChecked('GOOGLE_SA_KEY_ID'),
+    GOOGLE_SA_ACCOUNT: getEnvChecked('GOOGLE_SA_ACCOUNT'),
   } as unknown as Env;
 }

@@ -1,4 +1,5 @@
 import { checkedFetch, ExtendedRequestInit, fetchObject } from '../../fetch';
+import { rateLimitOnFetch } from '../../fetch/rateLimit.js';
 
 function requestBody(
   method: string,
@@ -26,7 +27,9 @@ export function fetchGoogleApiObject<T>(
   access: string,
   body?: object
 ): Promise<T> {
-  return fetchObject(url(path), requestBody(method, access, body));
+  return rateLimitOnFetch(() =>
+    fetchObject(url(path), requestBody(method, access, body))
+  );
 }
 
 export function fetchGoogleApi(
@@ -35,5 +38,7 @@ export function fetchGoogleApi(
   access: string,
   body?: object
 ) {
-  return checkedFetch(url(path), requestBody(method, access, body));
+  return rateLimitOnFetch(() =>
+    checkedFetch(url(path), requestBody(method, access, body))
+  );
 }
