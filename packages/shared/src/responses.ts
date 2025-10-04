@@ -22,7 +22,7 @@ export const badRequest = helper('Bad Request', 400);
 export const conflict = helper('Conflict', 409);
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-export function ok<T extends object>(value?: T): Response {
+export function ok<T extends object | null>(value?: T): Response {
   return value === undefined ? new Response() : jsonResponse(value, 200);
 }
 

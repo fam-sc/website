@@ -6,6 +6,7 @@ export default {
     'packages/website/build/**',
     'packages/website/storybook-static/**',
     'packages/posviata/build/**',
+    'packages/google-auth-test/dist/**',
     'coverage/**',
   ],
   rules: {

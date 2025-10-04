@@ -1,0 +1,17 @@
+{
+  "name": "@sc-fam/shared-polls",
+  "packageManager": "yarn@4.9.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build:no-emit": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json",
+    "dev": "yarn build --watch"
+  },
+  "dependencies": {
+    "@sc-fam/data": "workspace:*",
+    "@sc-fam/shared": "workspace:*",
+    "jose": "6.0.12"
+  }
+}

@@ -8,6 +8,7 @@ import { multienvPlugin } from '@sc-fam/shared-vite-plugins/multienv';
 import { rawMarkdownPlugin } from './vite-plugins/markdown';
 import autoprefixer from 'autoprefixer';
 
+// @ts-ignore
 export default defineConfig({
   build: {
     outDir: 'build',
@@ -26,9 +27,11 @@ export default defineConfig({
   plugins: [
     cloudflare({ viteEnvironment: { name: 'ssr' }, persistState: true, experimental: { remoteBindings: true } }),
     reactRouter(),
+    // @ts-ignore
     imagePlugin(),
     tsconfigPaths(),
     rawMarkdownPlugin(),
+    // @ts-ignore
     multienvPlugin([
       { name: 'utils/reactDomEnv', type: 'tsx' },
     ], 'cf'),

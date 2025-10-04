@@ -9,8 +9,13 @@
 .header {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.spreadsheet-linker {
+  margin-left: auto;
 }
 
 .close {
-  margin-left: auto;
+  margin-left: 1em;
 }

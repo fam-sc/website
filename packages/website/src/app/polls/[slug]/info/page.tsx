@@ -8,6 +8,7 @@ import { redirect } from 'react-router';
 import { getSessionId } from '@/api/auth';
 import { closePoll } from '@/api/polls/client';
 import { Button } from '@/components/Button';
+import { PollSpreadsheetLinker } from '@/components/PollSpreadsheetLinker';
 import { Prefixed } from '@/components/Prefixed';
 import { Tab } from '@/components/Tab';
 import { Tabs } from '@/components/Tabs';
@@ -55,6 +56,11 @@ export default function Page({ loaderData: { poll } }: Route.ComponentProps) {
 
       <div className={styles.header}>
         <Typography variant="h5">{poll.title}</Typography>
+
+        <PollSpreadsheetLinker
+          className={styles['spreadsheet-linker']}
+          pollId={poll.id}
+        />
 
         {!isPollClosed && (
           <Button

@@ -12,7 +12,7 @@ function isRetryError(error: unknown): boolean {
 export async function rateLimitOnFetch<R>(
   factory: () => Promise<R>
   // @ts-expect-error Typescript doesn't know that the function never returns in the end.
-): Promise<R | null> {
+): Promise<R> {
   let delayMs = MIN_DELAY;
   let multiplier = 2;
 

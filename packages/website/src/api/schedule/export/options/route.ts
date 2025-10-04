@@ -1,6 +1,6 @@
 import { Repository } from '@sc-fam/data';
 import { ok } from '@sc-fam/shared';
-import { getColors } from '@sc-fam/shared/api/google';
+import { getColors } from '@sc-fam/shared/api/google/calendar';
 import { string } from '@sc-fam/shared/minivalidate';
 import { middlewareHandler, searchParams } from '@sc-fam/shared/router';
 

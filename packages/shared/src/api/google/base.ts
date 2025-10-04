@@ -1,4 +1,5 @@
 import { checkedFetch, ExtendedRequestInit, fetchObject } from '../../fetch';
+import { rateLimitOnFetch } from '../../fetch/rateLimit.js';
 
 function requestBody(
   method: string,
@@ -16,24 +17,28 @@ function requestBody(
   };
 }
 
-function url(path: string): string {
-  return `https://www.googleapis.com${path}`;
+function url(path: string | URL): string | URL {
+  return typeof path === 'string' ? `https://www.googleapis.com${path}` : path;
 }
 
 export function fetchGoogleApiObject<T>(
   method: string,
-  path: string,
+  path: string | URL,
   access: string,
   body?: object
 ): Promise<T> {
-  return fetchObject(url(path), requestBody(method, access, body));
+  return rateLimitOnFetch(() =>
+    fetchObject(url(path), requestBody(method, access, body))
+  );
 }
 
 export function fetchGoogleApi(
   method: string,
-  path: string,
+  path: string | URL,
   access: string,
   body?: object
 ) {
-  return checkedFetch(url(path), requestBody(method, access, body));
+  return rateLimitOnFetch(() =>
+    checkedFetch(url(path), requestBody(method, access, body))
+  );
 }

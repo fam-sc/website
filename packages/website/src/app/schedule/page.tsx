@@ -108,7 +108,7 @@ export default function Page({
   return (
     <>
       <Title>{title}</Title>
-      <meta name="description">{title}</meta>
+      <meta name="description" content={title} />
 
       {canModify && (
         <Button
